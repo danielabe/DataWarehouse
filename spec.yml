@@ -29,28 +29,28 @@ schemes:
 paths:
   /users:
     get:
-        tags:
-        - "users"
-        summary: "Return the list of all users"
-        description: ""
-        operationId: "getUsers"
-        produces:
-        - "application/json"
-        parameters:
-        - in: "header"
-          name: "Authorization"
-          description: "Authentication token with administrator role"
-          required: true
-          type: "string"
-        responses:
-          "200":
-            description: "Successful operation"
-            schema:
-              type: "array"
-              items:
-                $ref: '#/definitions/User'
-          "403":
-            description: "Unauthorized"
+      tags:
+      - "users"
+      summary: "Return the list of all users"
+      description: ""
+      operationId: "getUsers"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authentication token with administrator role"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: '#/definitions/User'
+        "403":
+          description: "Unauthorized"
   /users/register:
     post:
       tags:
@@ -110,33 +110,33 @@ paths:
           description: "Bad request"
   /users/{userId}:
     get:
-        tags:
-        - "users"
-        summary: "Return user information"
-        description: ""
-        operationId: "getInfoUser"
-        produces:
-        - "application/json"
-        parameters:
-        - in: "header"
-          name: "Authorization"
-          description: "Authorization token obtained at logging"
-          required: true
-          type: "string"
-        - in: "path"
-          name: "userId"
-          description: "User Id"
-          required: true
-          type: "string"
-        responses:
-          "200":
-            description: "Successful operation"
-            schema:
-              $ref: '#/definitions/User'
-          "401":
-            description: "Unauthorized"
-          "404":
-            description: "User not found"
+      tags:
+      - "users"
+      summary: "Return user information"
+      description: ""
+      operationId: "getInfoUser"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authorization token obtained at logging"
+        required: true
+        type: "string"
+      - in: "path"
+        name: "userId"
+        description: "User Id"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: '#/definitions/User'
+        "401":
+          description: "Unauthorized"
+        "404":
+          description: "User not found"
     put:
       tags:
       - "users"
@@ -205,256 +205,349 @@ paths:
           description: "User not found"
   /regions:
     get:
-        tags:
-        - "regions"
-        summary: "Return the list of all regions"
-        description: ""
-        operationId: "getRegions"
-        produces:
-        - "application/json"
-        parameters:
-        - in: "header"
-          name: "Authorization"
-          description: "Authorization token obtained at logging"
-          required: true
-          type: "string"
-        responses:
-          "200":
-            description: "Successful operation"
-            schema:
-              type: "array"
-              items:
-                $ref: '#/definitions/Region'
-          "401":
-            description: "Unauthorized"
+      tags:
+      - "regions"
+      summary: "Return the list of all regions"
+      description: ""
+      operationId: "getRegions"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authorization token obtained at logging"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: '#/definitions/Region'
+        "401":
+          description: "Unauthorized"
+    post:
+      tags:
+      - "regions"
+      summary: "Create a new region"
+      description: ""
+      operationId: "createRegion"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authorization token obtained at logging"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Region object to create"
+        required: true
+        schema:
+          $ref: "#/definitions/NewRegion"
+      responses:
+        "201":
+          description: "Region successfully created"
+          schema:
+            $ref: '#/definitions/Region'
+        "400":
+          description: "Bad request"
+        "401":
+          description: "Unauthorized"
   /regions/{regionId}:
     get:
-        tags:
-        - "regions"
-        summary: "Return a region"
-        description: ""
-        operationId: "getRegion"
-        produces:
-        - "application/json"
-        parameters:
-        - in: "header"
-          name: "Authorization"
-          description: "Authorization token obtained at logging"
-          required: true
-          type: "string"
-        - in: "path"
-          name: "regionId"
-          description: "Region Id"
-          required: true
-          type: "string"
-        responses:
-          "200":
-            description: "Successful operation"
-            schema:
-              $ref: '#/definitions/Region'
-          "401":
-            description: "Unauthorized"
-          "404":
-            description: "Region not found"
+      tags:
+      - "regions"
+      summary: "Return a region"
+      description: ""
+      operationId: "getRegion"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authorization token obtained at logging"
+        required: true
+        type: "string"
+      - in: "path"
+        name: "regionId"
+        description: "Region Id"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: '#/definitions/Region'
+        "401":
+          description: "Unauthorized"
+        "404":
+          description: "Region not found"
   /regions/{regionId}/countries:
     get:
-        tags:
-        - "regions"
-        summary: "Return countries of a region"
-        description: ""
-        operationId: "getCountriesRegion"
-        produces:
-        - "application/json"
-        parameters:
-        - in: "header"
-          name: "Authorization"
-          description: "Authorization token obtained at logging"
-          required: true
-          type: "string"
-        - in: "path"
-          name: "regionId"
-          description: "Region Id"
-          required: true
-          type: "string"
-        responses:
-          "200":
-            description: "Successful operation"
-            schema:
-              type: "array"
-              items:
-                $ref: '#/definitions/Country'
-          "401":
-            description: "Unauthorized"
-          "404":
-            description: "Region not found"
+      tags:
+      - "regions"
+      summary: "Return countries of a region"
+      description: ""
+      operationId: "getCountriesRegion"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authorization token obtained at logging"
+        required: true
+        type: "string"
+      - in: "path"
+        name: "regionId"
+        description: "Region Id"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: '#/definitions/Country'
+        "401":
+          description: "Unauthorized"
+        "404":
+          description: "Region not found"
   /regions/{regionId}/cities:
     get:
-        tags:
-        - "regions"
-        summary: "Return cities of a region"
-        description: ""
-        operationId: "getCitiesRegion"
-        produces:
-        - "application/json"
-        parameters:
-        - in: "header"
-          name: "Authorization"
-          description: "Authorization token obtained at logging"
-          required: true
-          type: "string"
-        - in: "path"
-          name: "regionId"
-          description: "Region Id"
-          required: true
-          type: "string"
-        responses:
-          "200":
-            description: "Successful operation"
-            schema:
-              type: "array"
-              items:
-                $ref: '#/definitions/City'
-          "401":
-            description: "Unauthorized"
-          "404":
-            description: "Region not found"
+      tags:
+      - "regions"
+      summary: "Return cities of a region"
+      description: ""
+      operationId: "getCitiesRegion"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authorization token obtained at logging"
+        required: true
+        type: "string"
+      - in: "path"
+        name: "regionId"
+        description: "Region Id"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: '#/definitions/City'
+        "401":
+          description: "Unauthorized"
+        "404":
+          description: "Region not found"
   /countries:
     get:
-        tags:
-        - "countries"
-        summary: "Return the list of all countries"
-        description: ""
-        operationId: "getCountries"
-        produces:
-        - "application/json"
-        parameters:
-        - in: "header"
-          name: "Authorization"
-          description: "Authorization token obtained at logging"
-          required: true
-          type: "string"
-        responses:
-          "200":
-            description: "Successful operation"
-            schema:
-              type: "array"
-              items:
-                $ref: '#/definitions/Country'
-          "401":
-            description: "Unauthorized"
+      tags:
+      - "countries"
+      summary: "Return the list of all countries"
+      description: ""
+      operationId: "getCountries"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authorization token obtained at logging"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: '#/definitions/Country'
+        "401":
+          description: "Unauthorized"
+    post:
+      tags:
+      - "countries"
+      summary: "Create a new country"
+      description: ""
+      operationId: "createCountry"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authorization token obtained at logging"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Country object to create"
+        required: true
+        schema:
+          $ref: "#/definitions/NewCountry"
+      responses:
+        "201":
+          description: "Country successfully created"
+          schema:
+            $ref: '#/definitions/Country'
+        "400":
+          description: "Bad request"
+        "401":
+          description: "Unauthorized"
   /countries/{countryId}:
     get:
-        tags:
-        - "countries"
-        summary: "Return a country"
-        description: ""
-        operationId: "getCountry"
-        produces:
-        - "application/json"
-        parameters:
-        - in: "header"
-          name: "Authorization"
-          description: "Authorization token obtained at logging"
-          required: true
-          type: "string"
-        - in: "path"
-          name: "countryId"
-          description: "Country Id"
-          required: true
-          type: "string"
-        responses:
-          "200":
-            description: "Successful operation"
-            schema:
-              $ref: '#/definitions/Country'
-          "401":
-            description: "Unauthorized"
-          "404":
-            description: "Country not found"
+      tags:
+      - "countries"
+      summary: "Return a country"
+      description: ""
+      operationId: "getCountry"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authorization token obtained at logging"
+        required: true
+        type: "string"
+      - in: "path"
+        name: "countryId"
+        description: "Country Id"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: '#/definitions/Country'
+        "401":
+          description: "Unauthorized"
+        "404":
+          description: "Country not found"
   /countries/{countryId}/cities:
     get:
-        tags:
-        - "countries"
-        summary: "Return cities of a country"
-        description: ""
-        operationId: "getCitiesCountry"
-        produces:
-        - "application/json"
-        parameters:
-        - in: "header"
-          name: "Authorization"
-          description: "Authorization token obtained at logging"
-          required: true
-          type: "string"
-        - in: "path"
-          name: "countryId"
-          description: "Country Id"
-          required: true
-          type: "string"
-        responses:
-          "200":
-            description: "Successful operation"
-            schema:
-              type: "array"
-              items:
-                $ref: '#/definitions/City'
-          "401":
-            description: "Unauthorized"
-          "404":
-            description: "Country not found"
+      tags:
+      - "countries"
+      summary: "Return cities of a country"
+      description: ""
+      operationId: "getCitiesCountry"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authorization token obtained at logging"
+        required: true
+        type: "string"
+      - in: "path"
+        name: "countryId"
+        description: "Country Id"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: '#/definitions/City'
+        "401":
+          description: "Unauthorized"
+        "404":
+          description: "Country not found"
   /cities:
     get:
-        tags:
-        - "cities"
-        summary: "Return the list of all cities"
-        description: ""
-        operationId: "getCities"
-        produces:
-        - "application/json"
-        parameters:
-        - in: "header"
-          name: "Authorization"
-          description: "Authorization token obtained at logging"
-          required: true
-          type: "string"
-        responses:
-          "200":
-            description: "Successful operation"
-            schema:
-              type: "array"
-              items:
-                $ref: '#/definitions/City'
-          "401":
-            description: "Unauthorized"
+      tags:
+      - "cities"
+      summary: "Return the list of all cities"
+      description: ""
+      operationId: "getCities"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authorization token obtained at logging"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: '#/definitions/City'
+        "401":
+          description: "Unauthorized"
+    post:
+      tags:
+      - "cities"
+      summary: "Create a new city"
+      description: ""
+      operationId: "createCity"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authorization token obtained at logging"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "City object to create"
+        required: true
+        schema:
+          $ref: "#/definitions/NewCity"
+      responses:
+        "201":
+          description: "City successfully created"
+          schema:
+            $ref: '#/definitions/City'
+        "400":
+          description: "Bad request"
+        "401":
+          description: "Unauthorized"
   /cities/{cityId}:
     get:
-        tags:
-        - "cities"
-        summary: "Return a city"
-        description: ""
-        operationId: "getCity"
-        produces:
-        - "application/json"
-        parameters:
-        - in: "header"
-          name: "Authorization"
-          description: "Authorization token obtained at logging"
-          required: true
-          type: "string"
-        - in: "path"
-          name: "cityId"
-          description: "City Id"
-          required: true
-          type: "string"
-        responses:
-          "200":
-            description: "Successful operation"
-            schema:
-              $ref: '#/definitions/City'
-          "401":
-            description: "Unauthorized"
-          "404":
-            description: "City not found"
+      tags:
+      - "cities"
+      summary: "Return a city"
+      description: ""
+      operationId: "getCity"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authorization token obtained at logging"
+        required: true
+        type: "string"
+      - in: "path"
+        name: "cityId"
+        description: "City Id"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: '#/definitions/City'
+        "401":
+          description: "Unauthorized"
+        "404":
+          description: "City not found"
   
   
   
@@ -850,6 +943,24 @@ definitions:
         type: "integer"
         format: "int64"
         example: 5
+      city_name:
+        type: "string"
+        example: "Córdoba"
+  NewRegion:
+    type: "object"
+    properties:
+      region_name:
+        type: "string"
+        example: "Sudamérica"
+  NewCountry:
+    type: "object"
+    properties:
+      country_name:
+        type: "string"
+        example: "Argentina"
+  NewCity:
+    type: "object"
+    properties:
       city_name:
         type: "string"
         example: "Córdoba"
