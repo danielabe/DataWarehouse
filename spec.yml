@@ -287,6 +287,72 @@ paths:
           description: "Unauthorized"
         "404":
           description: "Region not found"
+    put:
+      tags:
+      - "regions"
+      summary: "Modify a region"
+      description: ""
+      operationId: "updateRegion"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authorization token obtained at logging"
+        required: true
+        type: "string"
+      - in: "path"
+        name: "regionId"
+        description: "Region Id to modify"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Region modified"
+        required: true
+        schema:
+          $ref: "#/definitions/NewRegion"
+      responses:
+        "200":
+          description: "Region successfully modified"
+          schema:
+            $ref: "#/definitions/Region"
+        "400":
+          description: "Bad request"
+        "401":
+          description: "Unauthorized"
+        "404":
+          description: "Region not found"
+    delete:
+      tags:
+      - "regions"
+      summary: "Delete a region"
+      description: ""
+      operationId: "deleteRegion"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authorization token obtained at logging"
+        required: true
+        type: "string"
+      - in: "path"
+        name: "regionId"
+        description: "Region Id to delete"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Region successfully removed"
+          schema:
+            $ref: "#/definitions/Region"
+        "401":
+          description: "Unauthorized"
+        "404":
+          description: "Region not found"
   /regions/{regionId}/countries:
     get:
       tags:
@@ -433,6 +499,72 @@ paths:
           description: "Unauthorized"
         "404":
           description: "Country not found"
+    put:
+      tags:
+      - "countries"
+      summary: "Modify a country"
+      description: ""
+      operationId: "updateCountry"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authorization token obtained at logging"
+        required: true
+        type: "string"
+      - in: "path"
+        name: "countryId"
+        description: "Country Id to modify"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Country modified"
+        required: true
+        schema:
+          $ref: "#/definitions/NewCountry"
+      responses:
+        "200":
+          description: "Country successfully modified"
+          schema:
+            $ref: "#/definitions/Country"
+        "400":
+          description: "Bad request"
+        "401":
+          description: "Unauthorized"
+        "404":
+          description: "Country not found"
+    delete:
+      tags:
+      - "countries"
+      summary: "Delete a country"
+      description: ""
+      operationId: "deleteCountry"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authorization token obtained at logging"
+        required: true
+        type: "string"
+      - in: "path"
+        name: "countryId"
+        description: "Country Id to delete"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Country successfully removed"
+          schema:
+            $ref: "#/definitions/Country"
+        "401":
+          description: "Unauthorized"
+        "404":
+          description: "Country not found"
   /countries/{countryId}/cities:
     get:
       tags:
@@ -548,6 +680,78 @@ paths:
           description: "Unauthorized"
         "404":
           description: "City not found"
+    put:
+      tags:
+      - "cities"
+      summary: "Modify a city"
+      description: ""
+      operationId: "updateCity"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authorization token obtained at logging"
+        required: true
+        type: "string"
+      - in: "path"
+        name: "cityId"
+        description: "City Id to modify"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "City modified"
+        required: true
+        schema:
+          $ref: "#/definitions/NewCity"
+      responses:
+        "200":
+          description: "City successfully modified"
+          schema:
+            $ref: "#/definitions/City"
+        "400":
+          description: "Bad request"
+        "401":
+          description: "Unauthorized"
+        "404":
+          description: "City not found"
+    delete:
+      tags:
+      - "cities"
+      summary: "Delete a city"
+      description: ""
+      operationId: "deleteCity"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authorization token obtained at logging"
+        required: true
+        type: "string"
+      - in: "path"
+        name: "cityId"
+        description: "City Id to delete"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "City successfully removed"
+          schema:
+            $ref: "#/definitions/City"
+        "401":
+          description: "Unauthorized"
+        "404":
+          description: "City not found"
+  
+  
+  
+  
+  
+  
   
   
   
@@ -965,6 +1169,10 @@ definitions:
         type: "string"
         example: "Córdoba"
     
+        
+        
+        
+        
         
         
         
