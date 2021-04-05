@@ -746,6 +746,159 @@ paths:
           description: "Unauthorized"
         "404":
           description: "City not found"
+  /companies:
+    get:
+      tags:
+      - "companies"
+      summary: "Return the list of all companies"
+      description: ""
+      operationId: "getCompanies"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authorization token obtained at logging"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: '#/definitions/Company'
+        "401":
+          description: "Unauthorized"
+    post:
+      tags:
+      - "companies"
+      summary: "Create a new company"
+      description: ""
+      operationId: "createCompany"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authorization token obtained at logging"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Company object to create"
+        required: true
+        schema:
+          $ref: "#/definitions/NewCompany"
+      responses:
+        "201":
+          description: "Company successfully created"
+          schema:
+            $ref: '#/definitions/Company'
+        "400":
+          description: "Bad request"
+        "401":
+          description: "Unauthorized"
+  /companies/{companyId}:
+    get:
+      tags:
+      - "companies"
+      summary: "Return a company"
+      description: ""
+      operationId: "getCompany"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authorization token obtained at logging"
+        required: true
+        type: "string"
+      - in: "path"
+        name: "companyId"
+        description: "Company Id"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: '#/definitions/Company'
+        "401":
+          description: "Unauthorized"
+        "404":
+          description: "Company not found"
+    put:
+      tags:
+      - "companies"
+      summary: "Modify a company"
+      description: ""
+      operationId: "updateCompany"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authorization token obtained at logging"
+        required: true
+        type: "string"
+      - in: "path"
+        name: "companyId"
+        description: "Company Id to modify"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Company modified"
+        required: true
+        schema:
+          $ref: "#/definitions/NewCompany"
+      responses:
+        "200":
+          description: "Company successfully modified"
+          schema:
+            $ref: "#/definitions/Company"
+        "400":
+          description: "Bad request"
+        "401":
+          description: "Unauthorized"
+        "404":
+          description: "Company not found"
+    delete:
+      tags:
+      - "companies"
+      summary: "Delete a company"
+      description: ""
+      operationId: "deleteCompany"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authorization token obtained at logging"
+        required: true
+        type: "string"
+      - in: "path"
+        name: "companyId"
+        description: "Company Id to delete"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Company successfully removed"
+          schema:
+            $ref: "#/definitions/Company"
+        "401":
+          description: "Unauthorized"
+        "404":
+          description: "Company not found"
+  
+  
+  
   
   
   
@@ -1168,6 +1321,34 @@ definitions:
       city_name:
         type: "string"
         example: "Córdoba"
+  Company:
+    type: "object"
+    properties:
+      company_id:
+        type: "integer"
+        format: "int64"
+        example: 1
+      company_name:
+        type: "string"
+        example: "Acámica"
+      country:
+        type: "string"
+        example: "Argentina"
+      address:
+        type: "string"
+        example: "Humboldt 1967, Buenos Aires"
+  NewCompany:
+    type: "object"
+    properties:
+      company_name:
+        type: "string"
+        example: "Acámica"
+      country:
+        type: "string"
+        example: "Argentina"
+      address:
+        type: "string"
+        example: "Humboldt 1967, Buenos Aires"
     
         
         
