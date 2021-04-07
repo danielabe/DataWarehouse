@@ -1122,9 +1122,6 @@ definitions:
       lastname:
         type: "string"
         example: "Mercury"
-      perfil:
-        type: "string"
-        example: "Admin"
       password:
         type: "string"
   Region:
