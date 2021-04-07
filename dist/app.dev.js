@@ -14,7 +14,8 @@ var _require = require('./queries.js'),
     createUser = _require.createUser,
     getUser = _require.getUser,
     modifyUser = _require.modifyUser,
-    deleteUser = _require.deleteUser;
+    deleteUser = _require.deleteUser,
+    getRegions = _require.getRegions;
 
 var _require2 = require('./functions.js'),
     validateLogin = _require2.validateLogin,
@@ -135,6 +136,20 @@ app["delete"]('/users/:userId', validateUser, validateUserId, function _callee6(
         case 2:
         case "end":
           return _context6.stop();
+      }
+    }
+  });
+});
+app.get('/regions', function _callee7(req, res) {
+  return regeneratorRuntime.async(function _callee7$(_context7) {
+    while (1) {
+      switch (_context7.prev = _context7.next) {
+        case 0:
+          getRegions(req, res);
+
+        case 1:
+        case "end":
+          return _context7.stop();
       }
     }
   });

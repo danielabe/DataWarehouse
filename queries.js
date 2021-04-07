@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 
 const authorizationPassword = 'tmo$Q$bG5xR56'
 
+//users
 async function selectUserLogin(username, password, req, res) {
     const user = await db.query(`SELECT * FROM users WHERE email = :username && password = :password`, { 
         replacements: { username, password },
@@ -115,5 +116,11 @@ async function deleteUser(userId, req, res) {
     res.status(200).json({ user_id, firstname, lastname, email, perfil })
 }
 
+//regions
+async function getRegions(req, res) {
+    const regions = await db.query(`SELECT * FROM regions`, { type: QueryTypes.SELECT })
+    res.status(200).json(regions)
+}
+
 module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, validateEmailQuery,
-    validateUserIdQuery, getUser, modifyUser, deleteUser }
+    validateUserIdQuery, getUser, modifyUser, deleteUser, getRegions }

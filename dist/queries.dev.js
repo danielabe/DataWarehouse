@@ -8,7 +8,7 @@ var _require2 = require("./db"),
 
 var jwt = require('jsonwebtoken');
 
-var authorizationPassword = 'tmo$Q$bG5xR56';
+var authorizationPassword = 'tmo$Q$bG5xR56'; //users
 
 function selectUserLogin(username, password, req, res) {
   var user, perfil, user_id;
@@ -292,6 +292,30 @@ function deleteUser(userId, req, res) {
       }
     }
   });
+} //regions
+
+
+function getRegions(req, res) {
+  var regions;
+  return regeneratorRuntime.async(function getRegions$(_context10) {
+    while (1) {
+      switch (_context10.prev = _context10.next) {
+        case 0:
+          _context10.next = 2;
+          return regeneratorRuntime.awrap(db.query("SELECT * FROM regions", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          regions = _context10.sent;
+          res.status(200).json(regions);
+
+        case 4:
+        case "end":
+          return _context10.stop();
+      }
+    }
+  });
 }
 
 module.exports = {
@@ -303,5 +327,6 @@ module.exports = {
   validateUserIdQuery: validateUserIdQuery,
   getUser: getUser,
   modifyUser: modifyUser,
-  deleteUser: deleteUser
+  deleteUser: deleteUser,
+  getRegions: getRegions
 };
