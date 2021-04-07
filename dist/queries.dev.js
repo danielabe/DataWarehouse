@@ -161,10 +161,63 @@ function validateEmailQuery(req, res, next) {
   });
 }
 
+function validateUserIdQuery(req, res, next) {
+  var userId, users, usersArray;
+  return regeneratorRuntime.async(function validateUserIdQuery$(_context6) {
+    while (1) {
+      switch (_context6.prev = _context6.next) {
+        case 0:
+          userId = +req.params.userId;
+          _context6.next = 3;
+          return regeneratorRuntime.awrap(db.query("SELECT user_id FROM users", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 3:
+          users = _context6.sent;
+          usersArray = users.map(function (id) {
+            return id.user_id;
+          });
+          if (usersArray.includes(userId)) next();else res.status(404).send("The user does not exist").end();
+
+        case 6:
+        case "end":
+          return _context6.stop();
+      }
+    }
+  });
+}
+
+function getUser(userId, req, res) {
+  var user;
+  return regeneratorRuntime.async(function getUser$(_context7) {
+    while (1) {
+      switch (_context7.prev = _context7.next) {
+        case 0:
+          _context7.next = 2;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT user_id, firstname, lastname, email, perfil FROM users WHERE user_id = ?\n    ", {
+            replacements: [userId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          user = _context7.sent;
+          res.status(200).json(user[0]);
+
+        case 4:
+        case "end":
+          return _context7.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   selectUserLogin: selectUserLogin,
   validateLoginQuery: validateLoginQuery,
   getUsers: getUsers,
   createUser: createUser,
-  validateEmailQuery: validateEmailQuery
+  validateEmailQuery: validateEmailQuery,
+  validateUserIdQuery: validateUserIdQuery,
+  getUser: getUser
 };

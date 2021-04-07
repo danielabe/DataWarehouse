@@ -6,7 +6,8 @@ var authorizationPassword = 'tmo$Q$bG5xR56';
 
 var _require = require('./queries.js'),
     validateLoginQuery = _require.validateLoginQuery,
-    validateEmailQuery = _require.validateEmailQuery;
+    validateEmailQuery = _require.validateEmailQuery,
+    validateUserIdQuery = _require.validateUserIdQuery;
 
 function validateLogin(req, res, next) {
   return regeneratorRuntime.async(function validateLogin$(_context) {
@@ -83,6 +84,28 @@ function validatePassword(req, res, next) {
 // No blank spaces
 
 
+function validateUser(req, res, next) {
+  var userId = +req.params.userId;
+  var token = jwt.verify(req.headers.authorization.split(' ')[1], authorizationPassword);
+  if (token.user_id === userId || token.perfil === "Admin") next();else res.status(401).send("You do not have enough permissions").end();
+}
+
+function validateUserId(req, res, next) {
+  return regeneratorRuntime.async(function validateUserId$(_context3) {
+    while (1) {
+      switch (_context3.prev = _context3.next) {
+        case 0:
+          _context3.next = 2;
+          return regeneratorRuntime.awrap(validateUserIdQuery(req, res, next));
+
+        case 2:
+        case "end":
+          return _context3.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   validateLogin: validateLogin,
   verifyToken: verifyToken,
@@ -90,5 +113,7 @@ module.exports = {
   validateFirstname: validateFirstname,
   validateLastname: validateLastname,
   validateEmail: validateEmail,
-  validatePassword: validatePassword
+  validatePassword: validatePassword,
+  validateUser: validateUser,
+  validateUserId: validateUserId
 };

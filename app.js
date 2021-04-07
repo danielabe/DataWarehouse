@@ -3,10 +3,10 @@ const app = express()
 const helmet = require('helmet')
 const jwt = require('jsonwebtoken')
 
-const { selectUserLogin, getUsers, createUser } = require('./queries.js')
+const { selectUserLogin, getUsers, createUser, getUser } = require('./queries.js')
 
 const { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
-    validateEmail, validatePassword } = require('./functions.js')
+    validateEmail, validatePassword, validateUser, validateUserId } = require('./functions.js')
 
 app.use(express.json())
 app.use(helmet())
@@ -36,6 +36,11 @@ app.post('/users/register', filterAdmin, validateFirstname,  validateLastname, v
     }
     createUser(newUser, req, res)
 })
+
+app.get('/users/:userId', validateUser, validateUserId, async (req, res) => {
+    const userId = +req.params.userId
+    getUser(userId, req, res)
+}) 
 
 /* express-rate-limit, .env, bcrypt
 */

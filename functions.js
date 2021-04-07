@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 
 const authorizationPassword = 'tmo$Q$bG5xR56'
 
-const { validateLoginQuery, validateEmailQuery } = require('./queries.js')
+const { validateLoginQuery, validateEmailQuery, validateUserIdQuery } = require('./queries.js')
 
 async function validateLogin(req, res, next) {
     await validateLoginQuery(req, res, next)
@@ -56,7 +56,18 @@ function validatePassword(req, res, next) {
 // At least 1 digit
 // No blank spaces
 
+function validateUser(req, res, next) {
+    const userId = +req.params.userId
+    const token = jwt.verify(req.headers.authorization.split(' ')[1], authorizationPassword)
+    if(token.user_id === userId || token.perfil === "Admin") next()
+    else res.status(401).send("You do not have enough permissions").end()
+}
+
+async function validateUserId(req, res, next) {
+    await validateUserIdQuery(req, res, next)
+}
+
 module.exports = { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
-    validateEmail, validatePassword
+    validateEmail, validatePassword, validateUser, validateUserId
 }
 

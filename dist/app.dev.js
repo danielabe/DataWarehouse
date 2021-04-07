@@ -11,7 +11,8 @@ var jwt = require('jsonwebtoken');
 var _require = require('./queries.js'),
     selectUserLogin = _require.selectUserLogin,
     getUsers = _require.getUsers,
-    createUser = _require.createUser;
+    createUser = _require.createUser,
+    getUser = _require.getUser;
 
 var _require2 = require('./functions.js'),
     validateLogin = _require2.validateLogin,
@@ -20,7 +21,9 @@ var _require2 = require('./functions.js'),
     validateFirstname = _require2.validateFirstname,
     validateLastname = _require2.validateLastname,
     validateEmail = _require2.validateEmail,
-    validatePassword = _require2.validatePassword;
+    validatePassword = _require2.validatePassword,
+    validateUser = _require2.validateUser,
+    validateUserId = _require2.validateUserId;
 
 app.use(express.json());
 app.use(helmet());
@@ -79,6 +82,22 @@ app.post('/users/register', filterAdmin, validateFirstname, validateLastname, va
         case 2:
         case "end":
           return _context3.stop();
+      }
+    }
+  });
+});
+app.get('/users/:userId', validateUser, validateUserId, function _callee4(req, res) {
+  var userId;
+  return regeneratorRuntime.async(function _callee4$(_context4) {
+    while (1) {
+      switch (_context4.prev = _context4.next) {
+        case 0:
+          userId = +req.params.userId;
+          getUser(userId, req, res);
+
+        case 2:
+        case "end":
+          return _context4.stop();
       }
     }
   });
