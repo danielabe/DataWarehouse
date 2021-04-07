@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 07-04-2021 a las 15:49:19
+-- Tiempo de generación: 07-04-2021 a las 18:38:27
 -- Versión del servidor: 10.4.17-MariaDB
 -- Versión de PHP: 8.0.0
 
@@ -163,7 +163,7 @@ CREATE TABLE `users` (
   `firstname` varchar(64) NOT NULL,
   `lastname` varchar(64) NOT NULL,
   `email` varchar(65) NOT NULL,
-  `perfil` enum('Admin','Básico') NOT NULL,
+  `perfil` enum('Admin','Básico') NOT NULL DEFAULT 'Básico',
   `password` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -172,7 +172,18 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `firstname`, `lastname`, `email`, `perfil`, `password`) VALUES
-(1, 'Daniela', 'Berardi', 'danielaberardi@live.com.ar', 'Admin', '1234');
+(1, 'Daniela', 'Berardi', 'danielaberardi@live.com.ar', 'Admin', '1234'),
+(2, 'Olivia', 'Dichiara', 'olivia@hotmail.com', 'Básico', '5678'),
+(3, 'gustavo1', '', '', 'Admin', ''),
+(4, 'gustavo2', 'gustavo2', '', 'Admin', ''),
+(5, 'gustavo2', 'elias', '', 'Admin', ''),
+(6, 'gustavo2', 'elias', 'g@yahoo.com.ar', 'Admin', ''),
+(7, 'gustavo2', 'elias', 'gus@yahoo.com', 'Admin', ''),
+(8, 'gustavo2', 'elias', 'gus@yahoo.com', 'Básico', ''),
+(9, 'gustavo2', 'elias', 'gust@yahoo.com', 'Básico', ''),
+(10, 'gustavo2', 'elias', 'gust@yahoo.co', 'Básico', ''),
+(11, 'gustavo2', 'elias', 'gusta@yahoo.com', 'Básico', ''),
+(12, 'gustavo2', 'elias', 'gustav@yahoo.com', 'Básico', '');
 
 --
 -- Índices para tablas volcadas
@@ -276,7 +287,7 @@ ALTER TABLE `regions`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `user_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Restricciones para tablas volcadas
