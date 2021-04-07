@@ -2,7 +2,8 @@ const jwt = require('jsonwebtoken')
 
 const authorizationPassword = 'tmo$Q$bG5xR56'
 
-const { validateLoginQuery, validateEmailQuery, validateUserIdQuery } = require('./queries.js')
+const { validateLoginQuery, validateEmailQuery, validateUserIdQuery, 
+    validateEmailQueryPut } = require('./queries.js')
 
 async function validateLogin(req, res, next) {
     await validateLoginQuery(req, res, next)
@@ -67,7 +68,29 @@ async function validateUserId(req, res, next) {
     await validateUserIdQuery(req, res, next)
 }
 
+function validateFirstnamePut(req, res, next) {
+    if(req.body.firstname) {
+        if(req.body.firstname.length >= 3 && req.body.firstname.length <= 64) next()  
+        else res.status(400).send("The firstname length is wrong").end()
+    } else next()
+}
+
+function validateLastnamePut(req, res, next) {
+    if(req.body.lastname) {
+        if(req.body.lastname.length >= 2 && req.body.lastname.length <= 64) next()  
+        else res.status(400).send("The lastname length is wrong").end()
+    } else next()
+}
+
+function validatePasswordPut(req, res, next) {
+    if(req.body.password) {
+        if(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$@$!%*?&#.$($)$-$_]{4,15}$/.test(req.body.password)) next()
+        else res.status(400).send("The password is wrong").end()
+    } else next()
+}
+
 module.exports = { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
-    validateEmail, validatePassword, validateUser, validateUserId
+    validateEmail, validatePassword, validateUser, validateUserId, validateFirstnamePut, 
+    validateLastnamePut, validatePasswordPut
 }
 

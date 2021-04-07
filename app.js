@@ -3,10 +3,11 @@ const app = express()
 const helmet = require('helmet')
 const jwt = require('jsonwebtoken')
 
-const { selectUserLogin, getUsers, createUser, getUser } = require('./queries.js')
+const { selectUserLogin, getUsers, createUser, getUser, modifyUser } = require('./queries.js')
 
 const { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
-    validateEmail, validatePassword, validateUser, validateUserId } = require('./functions.js')
+    validateEmail, validatePassword, validateUser, validateUserId, validateFirstnamePut,
+    validateLastnamePut, validatePasswordPut } = require('./functions.js')
 
 app.use(express.json())
 app.use(helmet())
@@ -27,7 +28,7 @@ app.get('/users', filterAdmin, async (req, res) => {    // Función disponible s
 })
 
 app.post('/users/register', filterAdmin, validateFirstname,  validateLastname, validateEmail, 
-    validatePassword, async (req, res) => {
+validatePassword, async (req, res) => {
     const newUser = {
         firstname: req.body.firstname,
         lastname: req.body.lastname,
@@ -41,6 +42,12 @@ app.get('/users/:userId', validateUser, validateUserId, async (req, res) => {
     const userId = +req.params.userId
     getUser(userId, req, res)
 }) 
+
+app.put('/users/:userId', validateUser, validateUserId, validateFirstnamePut, 
+validateLastnamePut, validatePasswordPut, async (req, res) => {
+    const userId = +req.params.userId
+    modifyUser(userId, req, res)
+})
 
 /* express-rate-limit, .env, bcrypt
 */

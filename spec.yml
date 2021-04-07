@@ -1122,9 +1122,6 @@ definitions:
       lastname:
         type: "string"
         example: "Mercury"
-      email:
-        type: "string"
-        example: "freddiemercury@gmail.com"
       perfil:
         type: "string"
         example: "Admin"

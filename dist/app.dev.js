@@ -12,7 +12,8 @@ var _require = require('./queries.js'),
     selectUserLogin = _require.selectUserLogin,
     getUsers = _require.getUsers,
     createUser = _require.createUser,
-    getUser = _require.getUser;
+    getUser = _require.getUser,
+    modifyUser = _require.modifyUser;
 
 var _require2 = require('./functions.js'),
     validateLogin = _require2.validateLogin,
@@ -23,7 +24,10 @@ var _require2 = require('./functions.js'),
     validateEmail = _require2.validateEmail,
     validatePassword = _require2.validatePassword,
     validateUser = _require2.validateUser,
-    validateUserId = _require2.validateUserId;
+    validateUserId = _require2.validateUserId,
+    validateFirstnamePut = _require2.validateFirstnamePut,
+    validateLastnamePut = _require2.validateLastnamePut,
+    validatePasswordPut = _require2.validatePasswordPut;
 
 app.use(express.json());
 app.use(helmet());
@@ -98,6 +102,22 @@ app.get('/users/:userId', validateUser, validateUserId, function _callee4(req, r
         case 2:
         case "end":
           return _context4.stop();
+      }
+    }
+  });
+});
+app.put('/users/:userId', validateUser, validateUserId, validateFirstnamePut, validateLastnamePut, validatePasswordPut, function _callee5(req, res) {
+  var userId;
+  return regeneratorRuntime.async(function _callee5$(_context5) {
+    while (1) {
+      switch (_context5.prev = _context5.next) {
+        case 0:
+          userId = +req.params.userId;
+          modifyUser(userId, req, res);
+
+        case 2:
+        case "end":
+          return _context5.stop();
       }
     }
   });

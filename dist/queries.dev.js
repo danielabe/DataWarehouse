@@ -102,13 +102,14 @@ function createUser(newUser, req, res) {
       switch (_context4.prev = _context4.next) {
         case 0:
           _context4.next = 2;
-          return regeneratorRuntime.awrap(db.query("\n    INSERT INTO users (firstname, lastname, email)\n    VALUES (:firstname, :lastname, :email)\n    ", {
+          return regeneratorRuntime.awrap(db.query("\n    INSERT INTO users (firstname, lastname, email, password)\n    VALUES (:firstname, :lastname, :email, :password)\n    ", {
             replacements: newUser,
             type: QueryTypes.INSERT
           }));
 
         case 2:
           inserted = _context4.sent;
+          console.log(inserted);
           firstname = newUser.firstname, lastname = newUser.lastname, email = newUser.email;
           res.status(201).json(Object.assign({}, {
             user_id: inserted[0]
@@ -116,11 +117,11 @@ function createUser(newUser, req, res) {
             firstname: firstname,
             lastname: lastname,
             email: email
-            /*, perfil: perfil , :lastname, :email, :perfil, :password   , lastname, email, perfil, password*/
-
+          }, {
+            perfil: "Básico"
           }));
 
-        case 5:
+        case 6:
         case "end":
           return _context4.stop();
       }
@@ -145,7 +146,6 @@ function validateEmailQuery(req, res, next) {
           emailsArray = emails.map(function (user) {
             return user.email;
           });
-          console.log(emailsArray);
 
           if (/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(email)) {
             if (emailsArray.every(function (e) {
@@ -153,7 +153,7 @@ function validateEmailQuery(req, res, next) {
             })) next();else res.status(400).send("The email already exists").end();
           } else res.status(400).send("The email is wrong").end();
 
-        case 7:
+        case 6:
         case "end":
           return _context5.stop();
       }
@@ -212,6 +212,48 @@ function getUser(userId, req, res) {
   });
 }
 
+function modifyUser(userId, req, res) {
+  var user, password, newUser, modified;
+  return regeneratorRuntime.async(function modifyUser$(_context8) {
+    while (1) {
+      switch (_context8.prev = _context8.next) {
+        case 0:
+          _context8.next = 2;
+          return regeneratorRuntime.awrap(db.query("SELECT * FROM users WHERE user_id = ?", {
+            replacements: [userId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          user = _context8.sent;
+          password = req.body.password || user[0].password;
+          newUser = {
+            user_id: userId,
+            firstname: req.body.firstname || user[0].firstname,
+            lastname: req.body.lastname || user[0].lastname,
+            email: req.body.email || user[0].email,
+            perfil: user[0].perfil
+          };
+          _context8.next = 7;
+          return regeneratorRuntime.awrap(db.query("\n    UPDATE users SET firstname = :firstname, lastname = :lastname, email = :email, \n    password = :password WHERE user_id = :user_id\n    ", {
+            replacements: Object.assign({}, newUser, {
+              password: password
+            }),
+            type: QueryTypes.UPDATE
+          }));
+
+        case 7:
+          modified = _context8.sent;
+          res.status(200).json(newUser);
+
+        case 9:
+        case "end":
+          return _context8.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   selectUserLogin: selectUserLogin,
   validateLoginQuery: validateLoginQuery,
@@ -219,5 +261,6 @@ module.exports = {
   createUser: createUser,
   validateEmailQuery: validateEmailQuery,
   validateUserIdQuery: validateUserIdQuery,
-  getUser: getUser
+  getUser: getUser,
+  modifyUser: modifyUser
 };

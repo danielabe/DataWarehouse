@@ -7,7 +7,8 @@ var authorizationPassword = 'tmo$Q$bG5xR56';
 var _require = require('./queries.js'),
     validateLoginQuery = _require.validateLoginQuery,
     validateEmailQuery = _require.validateEmailQuery,
-    validateUserIdQuery = _require.validateUserIdQuery;
+    validateUserIdQuery = _require.validateUserIdQuery,
+    validateEmailQueryPut = _require.validateEmailQueryPut;
 
 function validateLogin(req, res, next) {
   return regeneratorRuntime.async(function validateLogin$(_context) {
@@ -106,6 +107,24 @@ function validateUserId(req, res, next) {
   });
 }
 
+function validateFirstnamePut(req, res, next) {
+  if (req.body.firstname) {
+    if (req.body.firstname.length >= 3 && req.body.firstname.length <= 64) next();else res.status(400).send("The firstname length is wrong").end();
+  } else next();
+}
+
+function validateLastnamePut(req, res, next) {
+  if (req.body.lastname) {
+    if (req.body.lastname.length >= 2 && req.body.lastname.length <= 64) next();else res.status(400).send("The lastname length is wrong").end();
+  } else next();
+}
+
+function validatePasswordPut(req, res, next) {
+  if (req.body.password) {
+    if (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$@$!%*?&#.$($)$-$_]{4,15}$/.test(req.body.password)) next();else res.status(400).send("The password is wrong").end();
+  } else next();
+}
+
 module.exports = {
   validateLogin: validateLogin,
   verifyToken: verifyToken,
@@ -115,5 +134,8 @@ module.exports = {
   validateEmail: validateEmail,
   validatePassword: validatePassword,
   validateUser: validateUser,
-  validateUserId: validateUserId
+  validateUserId: validateUserId,
+  validateFirstnamePut: validateFirstnamePut,
+  validateLastnamePut: validateLastnamePut,
+  validatePasswordPut: validatePasswordPut
 };
