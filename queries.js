@@ -102,5 +102,18 @@ async function modifyUser(userId, req, res) {
     res.status(200).json(newUser)
 }
 
+async function deleteUser(userId, req, res) {
+    const user = await db.query(`SELECT * FROM users WHERE user_id = ?`, {
+        replacements: [userId],
+        type: QueryTypes.SELECT 
+    })
+    const deleted = await db.query(`DELETE FROM users WHERE user_id = ?`, {
+        replacements: [userId],
+        type: QueryTypes.DELETE
+    })
+    const {user_id, firstname, lastname, email, perfil} = user[0]
+    res.status(200).json({ user_id, firstname, lastname, email, perfil })
+}
+
 module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, validateEmailQuery,
-    validateUserIdQuery, getUser, modifyUser }
+    validateUserIdQuery, getUser, modifyUser, deleteUser }

@@ -13,7 +13,8 @@ var _require = require('./queries.js'),
     getUsers = _require.getUsers,
     createUser = _require.createUser,
     getUser = _require.getUser,
-    modifyUser = _require.modifyUser;
+    modifyUser = _require.modifyUser,
+    deleteUser = _require.deleteUser;
 
 var _require2 = require('./functions.js'),
     validateLogin = _require2.validateLogin,
@@ -118,6 +119,22 @@ app.put('/users/:userId', validateUser, validateUserId, validateFirstnamePut, va
         case 2:
         case "end":
           return _context5.stop();
+      }
+    }
+  });
+});
+app["delete"]('/users/:userId', validateUser, validateUserId, function _callee6(req, res) {
+  var userId;
+  return regeneratorRuntime.async(function _callee6$(_context6) {
+    while (1) {
+      switch (_context6.prev = _context6.next) {
+        case 0:
+          userId = +req.params.userId;
+          deleteUser(userId, req, res);
+
+        case 2:
+        case "end":
+          return _context6.stop();
       }
     }
   });

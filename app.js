@@ -3,7 +3,7 @@ const app = express()
 const helmet = require('helmet')
 const jwt = require('jsonwebtoken')
 
-const { selectUserLogin, getUsers, createUser, getUser, modifyUser } = require('./queries.js')
+const { selectUserLogin, getUsers, createUser, getUser, modifyUser, deleteUser } = require('./queries.js')
 
 const { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
     validateEmail, validatePassword, validateUser, validateUserId, validateFirstnamePut,
@@ -47,6 +47,11 @@ app.put('/users/:userId', validateUser, validateUserId, validateFirstnamePut,
 validateLastnamePut, validatePasswordPut, async (req, res) => {
     const userId = +req.params.userId
     modifyUser(userId, req, res)
+})
+
+app.delete('/users/:userId', validateUser, validateUserId, async (req, res) => {
+    const userId = +req.params.userId
+    deleteUser(userId, req, res)
 })
 
 /* express-rate-limit, .env, bcrypt

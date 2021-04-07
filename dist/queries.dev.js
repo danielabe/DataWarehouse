@@ -254,6 +254,46 @@ function modifyUser(userId, req, res) {
   });
 }
 
+function deleteUser(userId, req, res) {
+  var user, deleted, _user$, user_id, firstname, lastname, email, perfil;
+
+  return regeneratorRuntime.async(function deleteUser$(_context9) {
+    while (1) {
+      switch (_context9.prev = _context9.next) {
+        case 0:
+          _context9.next = 2;
+          return regeneratorRuntime.awrap(db.query("SELECT * FROM users WHERE user_id = ?", {
+            replacements: [userId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          user = _context9.sent;
+          _context9.next = 5;
+          return regeneratorRuntime.awrap(db.query("DELETE FROM users WHERE user_id = ?", {
+            replacements: [userId],
+            type: QueryTypes.DELETE
+          }));
+
+        case 5:
+          deleted = _context9.sent;
+          _user$ = user[0], user_id = _user$.user_id, firstname = _user$.firstname, lastname = _user$.lastname, email = _user$.email, perfil = _user$.perfil;
+          res.status(200).json({
+            user_id: user_id,
+            firstname: firstname,
+            lastname: lastname,
+            email: email,
+            perfil: perfil
+          });
+
+        case 8:
+        case "end":
+          return _context9.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   selectUserLogin: selectUserLogin,
   validateLoginQuery: validateLoginQuery,
@@ -262,5 +302,6 @@ module.exports = {
   validateEmailQuery: validateEmailQuery,
   validateUserIdQuery: validateUserIdQuery,
   getUser: getUser,
-  modifyUser: modifyUser
+  modifyUser: modifyUser,
+  deleteUser: deleteUser
 };
