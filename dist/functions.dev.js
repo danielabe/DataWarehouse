@@ -23,6 +23,31 @@ function validateLogin(req, res, next) {
   });
 }
 
+function verifyToken(req, res, next) {
+  var fullToken = req.headers.authorization || "0.0.0";
+  var token = fullToken.split(' ')[1];
+
+  try {
+    jwt.verify(token, authorizationPassword);
+    next();
+  } catch (error) {
+    res.status(401).send(error);
+  }
+}
+
+function filterAdmin(req, res, next) {
+  var token = req.headers.authorization.split(' ')[1];
+  var user = jwt.verify(token, authorizationPassword);
+
+  if (user.perfil === "Admin") {
+    next();
+  } else {
+    res.status(403).send("You do not have administrator permissions").end();
+  }
+}
+
 module.exports = {
-  validateLogin: validateLogin
+  validateLogin: validateLogin,
+  verifyToken: verifyToken,
+  filterAdmin: filterAdmin
 };

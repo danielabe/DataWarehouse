@@ -24,4 +24,13 @@ async function validateLoginQuery(req, res, next) {
     else res.status(400).send("Invalid credentials").end()
 }
 
-module.exports = { selectUserLogin, validateLoginQuery }
+async function getUsers(req, res) {
+    const users = await db.query(`
+    SELECT user_id, firstname, lastname, email, perfil FROM users
+    `, { 
+        type: QueryTypes.SELECT 
+    })
+    res.status(200).json(users)
+}
+
+module.exports = { selectUserLogin, validateLoginQuery, getUsers }

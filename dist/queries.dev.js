@@ -72,7 +72,31 @@ function validateLoginQuery(req, res, next) {
   });
 }
 
+function getUsers(req, res) {
+  var users;
+  return regeneratorRuntime.async(function getUsers$(_context3) {
+    while (1) {
+      switch (_context3.prev = _context3.next) {
+        case 0:
+          _context3.next = 2;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT user_id, firstname, lastname, email, perfil FROM users\n    ", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          users = _context3.sent;
+          res.status(200).json(users);
+
+        case 4:
+        case "end":
+          return _context3.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   selectUserLogin: selectUserLogin,
-  validateLoginQuery: validateLoginQuery
+  validateLoginQuery: validateLoginQuery,
+  getUsers: getUsers
 };
