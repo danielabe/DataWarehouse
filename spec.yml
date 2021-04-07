@@ -51,6 +51,31 @@ paths:
               $ref: '#/definitions/User'
         "403":
           description: "Unauthorized"
+  /users/login:
+    post:
+      tags:
+      - "users"
+      summary: "Log In"
+      description: ""
+      operationId: "loginUser"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "User object <br> Username field:  enter your email"
+        required: true
+        schema:
+          $ref: "#/definitions/LoginUser"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: '#/definitions/Token'
+        "400":
+          description: "Bad request"
   /users/register:
     post:
       tags:
@@ -83,31 +108,6 @@ paths:
           description: "Bad request"
         "403":
             description: "Unauthorized"
-  /users/login:
-    post:
-      tags:
-      - "users"
-      summary: "Log In"
-      description: ""
-      operationId: "loginUser"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "User object <br> Username field:  enter your email"
-        required: true
-        schema:
-          $ref: "#/definitions/LoginUser"
-      responses:
-        "200":
-          description: "Successful operation"
-          schema:
-            $ref: '#/definitions/Token'
-        "400":
-          description: "Bad request"
   /users/{userId}:
     get:
       tags:
