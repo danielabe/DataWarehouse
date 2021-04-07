@@ -33,4 +33,30 @@ async function getUsers(req, res) {
     res.status(200).json(users)
 }
 
-module.exports = { selectUserLogin, validateLoginQuery, getUsers }
+async function createUser(newUser, req, res) {
+    const inserted = await db.query(`
+    INSERT INTO users (firstname, lastname, email)
+    VALUES (:firstname, :lastname, :email)
+    `, {
+        replacements: newUser,
+        type: QueryTypes.INSERT
+    })
+    const { firstname , lastname, email/*, perfil */ } = newUser
+    res.status(201).json(Object.assign({}, { user_id: inserted[0] } , 
+        { firstname: firstname , lastname: lastname, email: email/*, perfil: perfil , :lastname, :email, :perfil, :password   , lastname, email, perfil, password*/}))
+}
+
+async function validateEmailQuery(req, res, next) {
+    const email = req.body.email
+    const emails = await db.query(`SELECT email FROM users`, {
+        type: QueryTypes.SELECT
+    })
+    const emailsArray = emails.map(user => user.email)
+    console.log(emailsArray)
+    if(/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(email)) {
+        if(emailsArray.every(e => e != email)) next()
+        else res.status(400).send("The email already exists").end()
+    } else res.status(400).send("The email is wrong").end()
+}
+
+module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, validateEmailQuery }

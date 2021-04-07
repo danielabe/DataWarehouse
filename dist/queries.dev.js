@@ -95,8 +95,76 @@ function getUsers(req, res) {
   });
 }
 
+function createUser(newUser, req, res) {
+  var inserted, firstname, lastname, email;
+  return regeneratorRuntime.async(function createUser$(_context4) {
+    while (1) {
+      switch (_context4.prev = _context4.next) {
+        case 0:
+          _context4.next = 2;
+          return regeneratorRuntime.awrap(db.query("\n    INSERT INTO users (firstname, lastname, email)\n    VALUES (:firstname, :lastname, :email)\n    ", {
+            replacements: newUser,
+            type: QueryTypes.INSERT
+          }));
+
+        case 2:
+          inserted = _context4.sent;
+          firstname = newUser.firstname, lastname = newUser.lastname, email = newUser.email;
+          res.status(201).json(Object.assign({}, {
+            user_id: inserted[0]
+          }, {
+            firstname: firstname,
+            lastname: lastname,
+            email: email
+            /*, perfil: perfil , :lastname, :email, :perfil, :password   , lastname, email, perfil, password*/
+
+          }));
+
+        case 5:
+        case "end":
+          return _context4.stop();
+      }
+    }
+  });
+}
+
+function validateEmailQuery(req, res, next) {
+  var email, emails, emailsArray;
+  return regeneratorRuntime.async(function validateEmailQuery$(_context5) {
+    while (1) {
+      switch (_context5.prev = _context5.next) {
+        case 0:
+          email = req.body.email;
+          _context5.next = 3;
+          return regeneratorRuntime.awrap(db.query("SELECT email FROM users", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 3:
+          emails = _context5.sent;
+          emailsArray = emails.map(function (user) {
+            return user.email;
+          });
+          console.log(emailsArray);
+
+          if (/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(email)) {
+            if (emailsArray.every(function (e) {
+              return e != email;
+            })) next();else res.status(400).send("The email already exists").end();
+          } else res.status(400).send("The email is wrong").end();
+
+        case 7:
+        case "end":
+          return _context5.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   selectUserLogin: selectUserLogin,
   validateLoginQuery: validateLoginQuery,
-  getUsers: getUsers
+  getUsers: getUsers,
+  createUser: createUser,
+  validateEmailQuery: validateEmailQuery
 };

@@ -4,18 +4,26 @@ var express = require('express');
 
 var app = express();
 
+var helmet = require('helmet');
+
 var jwt = require('jsonwebtoken');
 
 var _require = require('./queries.js'),
     selectUserLogin = _require.selectUserLogin,
-    getUsers = _require.getUsers;
+    getUsers = _require.getUsers,
+    createUser = _require.createUser;
 
 var _require2 = require('./functions.js'),
     validateLogin = _require2.validateLogin,
     verifyToken = _require2.verifyToken,
-    filterAdmin = _require2.filterAdmin;
+    filterAdmin = _require2.filterAdmin,
+    validateFirstname = _require2.validateFirstname,
+    validateLastname = _require2.validateLastname,
+    validateEmail = _require2.validateEmail,
+    validatePassword = _require2.validatePassword;
 
 app.use(express.json());
+app.use(helmet());
 app.listen(process.env.PORT || 3000, function () {
   return console.log('server started');
 }); //login
@@ -54,3 +62,26 @@ app.get('/users', filterAdmin, function _callee2(req, res) {
     }
   });
 });
+app.post('/users/register', filterAdmin, validateFirstname, validateLastname, validateEmail, validatePassword, function _callee3(req, res) {
+  var newUser;
+  return regeneratorRuntime.async(function _callee3$(_context3) {
+    while (1) {
+      switch (_context3.prev = _context3.next) {
+        case 0:
+          newUser = {
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            email: req.body.email,
+            password: req.body.password
+          };
+          createUser(newUser, req, res);
+
+        case 2:
+        case "end":
+          return _context3.stop();
+      }
+    }
+  });
+});
+/* express-rate-limit, .env, bcrypt
+*/
