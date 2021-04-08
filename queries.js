@@ -146,6 +146,27 @@ async function createRegion(newRegion, req, res) {
     res.status(201).json(Object.assign({}, { region_id: inserted[0] } , { newRegion }))
 }
 
+async function validateRegionIdQuery(req, res, next) {
+    const regionId = +req.params.regionId
+    const regions = await db.query(`SELECT region_id FROM regions`, {
+        type: QueryTypes.SELECT
+    })
+    const regionsArray = regions.map(id => id.region_id)
+    if(regionsArray.includes(regionId)) next()
+    else res.status(404).send("The region does not exist").end()
+}
+
+async function getRegion(regionId, req, res) {
+    const region = await db.query(`
+    SELECT * FROM regions WHERE region_id = ?
+    `, { 
+        replacements: [regionId],
+        type: QueryTypes.SELECT 
+    })
+    res.status(200).json(region[0])
+}
+
 module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, 
     validateEmailQuery, validateUserIdQuery, getUser, modifyUser, deleteUser, 
-    getRegions, createRegion, validateRegionNameQuery }
+    getRegions, createRegion, validateRegionNameQuery, validateRegionIdQuery, 
+    getRegion }

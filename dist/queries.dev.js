@@ -381,6 +381,57 @@ function createRegion(newRegion, req, res) {
   });
 }
 
+function validateRegionIdQuery(req, res, next) {
+  var regionId, regions, regionsArray;
+  return regeneratorRuntime.async(function validateRegionIdQuery$(_context13) {
+    while (1) {
+      switch (_context13.prev = _context13.next) {
+        case 0:
+          regionId = +req.params.regionId;
+          _context13.next = 3;
+          return regeneratorRuntime.awrap(db.query("SELECT region_id FROM regions", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 3:
+          regions = _context13.sent;
+          regionsArray = regions.map(function (id) {
+            return id.region_id;
+          });
+          if (regionsArray.includes(regionId)) next();else res.status(404).send("The region does not exist").end();
+
+        case 6:
+        case "end":
+          return _context13.stop();
+      }
+    }
+  });
+}
+
+function getRegion(regionId, req, res) {
+  var region;
+  return regeneratorRuntime.async(function getRegion$(_context14) {
+    while (1) {
+      switch (_context14.prev = _context14.next) {
+        case 0:
+          _context14.next = 2;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM regions WHERE region_id = ?\n    ", {
+            replacements: [regionId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          region = _context14.sent;
+          res.status(200).json(region[0]);
+
+        case 4:
+        case "end":
+          return _context14.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   selectUserLogin: selectUserLogin,
   validateLoginQuery: validateLoginQuery,
@@ -393,5 +444,7 @@ module.exports = {
   deleteUser: deleteUser,
   getRegions: getRegions,
   createRegion: createRegion,
-  validateRegionNameQuery: validateRegionNameQuery
+  validateRegionNameQuery: validateRegionNameQuery,
+  validateRegionIdQuery: validateRegionIdQuery,
+  getRegion: getRegion
 };

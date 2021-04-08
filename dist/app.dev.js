@@ -16,7 +16,8 @@ var _require = require('./queries.js'),
     modifyUser = _require.modifyUser,
     deleteUser = _require.deleteUser,
     getRegions = _require.getRegions,
-    createRegion = _require.createRegion;
+    createRegion = _require.createRegion,
+    getRegion = _require.getRegion;
 
 var _require2 = require('./functions.js'),
     validateLogin = _require2.validateLogin,
@@ -31,7 +32,8 @@ var _require2 = require('./functions.js'),
     validateFirstnamePut = _require2.validateFirstnamePut,
     validateLastnamePut = _require2.validateLastnamePut,
     validatePasswordPut = _require2.validatePasswordPut,
-    validateRegionName = _require2.validateRegionName;
+    validateRegionName = _require2.validateRegionName,
+    validateRegionId = _require2.validateRegionId;
 
 app.use(express.json());
 app.use(helmet());
@@ -169,6 +171,22 @@ app.post('/regions', validateRegionName, function _callee8(req, res) {
         case 2:
         case "end":
           return _context8.stop();
+      }
+    }
+  });
+});
+app.get('/regions/:regionId', validateRegionId, function _callee9(req, res) {
+  var regionId;
+  return regeneratorRuntime.async(function _callee9$(_context9) {
+    while (1) {
+      switch (_context9.prev = _context9.next) {
+        case 0:
+          regionId = +req.params.regionId;
+          getRegion(regionId, req, res);
+
+        case 2:
+        case "end":
+          return _context9.stop();
       }
     }
   });
