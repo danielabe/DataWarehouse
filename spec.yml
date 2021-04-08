@@ -1141,6 +1141,10 @@ definitions:
         type: "integer"
         format: "int64"
         example: 5
+      region_id:
+        type: "integer"
+        format: "int64"
+        example: 3
       country_name:
         type: "string"
         example: "Argentina"
@@ -1264,5 +1268,4 @@ definitions:
         type: "integer"
         format: "int64"
         example: 100
-  
     

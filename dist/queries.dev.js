@@ -547,6 +547,31 @@ function deleteRegion(regionId, req, res) {
   });
 }
 
+function getCountriesRegion(regionId, req, res) {
+  var countries;
+  return regeneratorRuntime.async(function getCountriesRegion$(_context18) {
+    while (1) {
+      switch (_context18.prev = _context18.next) {
+        case 0:
+          _context18.next = 2;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM countries WHERE region_id = ?\n    ", {
+            replacements: [regionId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          countries = _context18.sent;
+          console.table(countries);
+          res.status(200).json(countries);
+
+        case 5:
+        case "end":
+          return _context18.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   selectUserLogin: selectUserLogin,
   validateLoginQuery: validateLoginQuery,
@@ -564,5 +589,6 @@ module.exports = {
   getRegion: getRegion,
   validateRegionNamePutQuery: validateRegionNamePutQuery,
   modifyRegion: modifyRegion,
-  deleteRegion: deleteRegion
+  deleteRegion: deleteRegion,
+  getCountriesRegion: getCountriesRegion
 };

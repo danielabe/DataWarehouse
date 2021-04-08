@@ -211,7 +211,16 @@ async function deleteRegion(regionId, req, res) {
     res.status(200).json(region)
 }
 
+async function getCountriesRegion(regionId, req, res) {
+    const countries = await db.query(`
+    SELECT * FROM countries WHERE region_id = ?
+    `, { replacements: [regionId],
+        type: QueryTypes.SELECT })
+        console.table(countries)
+    res.status(200).json(countries)
+}
+
 module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, 
     validateEmailQuery, validateUserIdQuery, getUser, modifyUser, deleteUser, 
     getRegions, createRegion, validateRegionNameQuery, validateRegionIdQuery, 
-    getRegion, validateRegionNamePutQuery, modifyRegion, deleteRegion }
+    getRegion, validateRegionNamePutQuery, modifyRegion, deleteRegion, getCountriesRegion }
