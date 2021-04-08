@@ -122,5 +122,30 @@ async function getRegions(req, res) {
     res.status(200).json(regions)
 }
 
-module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, validateEmailQuery,
-    validateUserIdQuery, getUser, modifyUser, deleteUser, getRegions }
+async function validateRegionNameQuery(req, res, next) {
+    const region = req.body.region_name
+    const regions = await db.query(`SELECT region_name FROM regions`, {
+        type: QueryTypes.SELECT
+    })
+    const regionsArray = regions.map(region => region.region_name)
+    if(req.body.region_name.length >= 2 && req.body.region_name.length <= 64) {
+        if(regionsArray.every(name => name !== region)) next()
+        else res.status(400).send("The region already exists").end()
+    } else res.status(400).send("The region name length is wrong").end()
+}
+
+async function createRegion(newRegion, req, res) {
+    console.log(newRegion)
+    const inserted = await db.query(`
+    INSERT INTO regions (region_name)
+    VALUES (:newRegion)
+    `, {
+        replacements: {newRegion},
+        type: QueryTypes.INSERT
+    })
+    res.status(201).json(Object.assign({}, { region_id: inserted[0] } , { newRegion }))
+}
+
+module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, 
+    validateEmailQuery, validateUserIdQuery, getUser, modifyUser, deleteUser, 
+    getRegions, createRegion, validateRegionNameQuery }

@@ -3,11 +3,12 @@ const app = express()
 const helmet = require('helmet')
 const jwt = require('jsonwebtoken')
 
-const { selectUserLogin, getUsers, createUser, getUser, modifyUser, deleteUser, getRegions } = require('./queries.js')
+const { selectUserLogin, getUsers, createUser, getUser, modifyUser, deleteUser, getRegions,
+    createRegion } = require('./queries.js')
 
 const { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
     validateEmail, validatePassword, validateUser, validateUserId, validateFirstnamePut,
-    validateLastnamePut, validatePasswordPut } = require('./functions.js')
+    validateLastnamePut, validatePasswordPut, validateRegionName } = require('./functions.js')
 
 app.use(express.json())
 app.use(helmet())
@@ -54,8 +55,14 @@ app.delete('/users/:userId', validateUser, validateUserId, async (req, res) => {
     deleteUser(userId, req, res)
 })
 
+//regions
 app.get('/regions', async (req, res) => {    
     getRegions(req, res)                                 
+})
+
+app.post('/regions', validateRegionName,  async (req, res) => {
+    const newRegion = req.body.region_name
+    createRegion(newRegion, req, res)
 })
 
 /* express-rate-limit, .env, bcrypt

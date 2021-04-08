@@ -15,7 +15,8 @@ var _require = require('./queries.js'),
     getUser = _require.getUser,
     modifyUser = _require.modifyUser,
     deleteUser = _require.deleteUser,
-    getRegions = _require.getRegions;
+    getRegions = _require.getRegions,
+    createRegion = _require.createRegion;
 
 var _require2 = require('./functions.js'),
     validateLogin = _require2.validateLogin,
@@ -29,7 +30,8 @@ var _require2 = require('./functions.js'),
     validateUserId = _require2.validateUserId,
     validateFirstnamePut = _require2.validateFirstnamePut,
     validateLastnamePut = _require2.validateLastnamePut,
-    validatePasswordPut = _require2.validatePasswordPut;
+    validatePasswordPut = _require2.validatePasswordPut,
+    validateRegionName = _require2.validateRegionName;
 
 app.use(express.json());
 app.use(helmet());
@@ -139,7 +141,8 @@ app["delete"]('/users/:userId', validateUser, validateUserId, function _callee6(
       }
     }
   });
-});
+}); //regions
+
 app.get('/regions', function _callee7(req, res) {
   return regeneratorRuntime.async(function _callee7$(_context7) {
     while (1) {
@@ -150,6 +153,22 @@ app.get('/regions', function _callee7(req, res) {
         case 1:
         case "end":
           return _context7.stop();
+      }
+    }
+  });
+});
+app.post('/regions', validateRegionName, function _callee8(req, res) {
+  var newRegion;
+  return regeneratorRuntime.async(function _callee8$(_context8) {
+    while (1) {
+      switch (_context8.prev = _context8.next) {
+        case 0:
+          newRegion = req.body.region_name;
+          createRegion(newRegion, req, res);
+
+        case 2:
+        case "end":
+          return _context8.stop();
       }
     }
   });

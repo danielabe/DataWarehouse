@@ -318,6 +318,69 @@ function getRegions(req, res) {
   });
 }
 
+function validateRegionNameQuery(req, res, next) {
+  var region, regions, regionsArray;
+  return regeneratorRuntime.async(function validateRegionNameQuery$(_context11) {
+    while (1) {
+      switch (_context11.prev = _context11.next) {
+        case 0:
+          region = req.body.region_name;
+          _context11.next = 3;
+          return regeneratorRuntime.awrap(db.query("SELECT region_name FROM regions", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 3:
+          regions = _context11.sent;
+          regionsArray = regions.map(function (region) {
+            return region.region_name;
+          });
+
+          if (req.body.region_name.length >= 2 && req.body.region_name.length <= 64) {
+            if (regionsArray.every(function (name) {
+              return name !== region;
+            })) next();else res.status(400).send("The region already exists").end();
+          } else res.status(400).send("The region name length is wrong").end();
+
+        case 6:
+        case "end":
+          return _context11.stop();
+      }
+    }
+  });
+}
+
+function createRegion(newRegion, req, res) {
+  var inserted;
+  return regeneratorRuntime.async(function createRegion$(_context12) {
+    while (1) {
+      switch (_context12.prev = _context12.next) {
+        case 0:
+          console.log(newRegion);
+          _context12.next = 3;
+          return regeneratorRuntime.awrap(db.query("\n    INSERT INTO regions (region_name)\n    VALUES (:newRegion)\n    ", {
+            replacements: {
+              newRegion: newRegion
+            },
+            type: QueryTypes.INSERT
+          }));
+
+        case 3:
+          inserted = _context12.sent;
+          res.status(201).json(Object.assign({}, {
+            region_id: inserted[0]
+          }, {
+            newRegion: newRegion
+          }));
+
+        case 5:
+        case "end":
+          return _context12.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   selectUserLogin: selectUserLogin,
   validateLoginQuery: validateLoginQuery,
@@ -328,5 +391,7 @@ module.exports = {
   getUser: getUser,
   modifyUser: modifyUser,
   deleteUser: deleteUser,
-  getRegions: getRegions
+  getRegions: getRegions,
+  createRegion: createRegion,
+  validateRegionNameQuery: validateRegionNameQuery
 };
