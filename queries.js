@@ -147,7 +147,7 @@ async function createRegion(newRegion, req, res) {
 }
 
 async function validateRegionIdQuery(req, res, next) {
-    const regionId = +req.params.regionId
+    const regionId = +req.params.regionId || req.body.region_id
     const regions = await db.query(`SELECT region_id FROM regions`, {
         type: QueryTypes.SELECT
     })
@@ -233,13 +233,38 @@ async function getCitiesRegion(regionId, req, res) {
     res.status(200).json(cities)
 }
 
+//countries
 async function getCountries(req, res) {
     const countries = await db.query(`SELECT * FROM countries`, { type: QueryTypes.SELECT })
     res.status(200).json(countries)
+}
+
+async function validateCountryNameQuery(req, res, next) {
+    const country = req.body.country_name
+    const countries = await db.query(`SELECT country_name FROM countries`, {
+        type: QueryTypes.SELECT
+    })
+    const countriesArray = countries.map(country => country.country_name)
+    if(req.body.country_name.length >= 2 && req.body.country_name.length <= 64) {
+        if(countriesArray.every(name => name !== country)) next()
+        else res.status(400).send("The country already exists").end()
+    } else res.status(400).send("The country name length is wrong").end()
+}
+
+async function createCountry(country_name, region_id, req, res) {
+    const inserted = await db.query(`
+    INSERT INTO countries (region_id, country_name)
+    VALUES (:region_id, :country_name)
+    `, {
+        replacements: { country_name, region_id },
+        type: QueryTypes.INSERT
+    })
+    res.status(201).json(Object.assign({}, { country_id: inserted[0], region_id: region_id, country_name: country_name }))
 }
 
 module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, 
     validateEmailQuery, validateUserIdQuery, getUser, modifyUser, deleteUser, 
     getRegions, createRegion, validateRegionNameQuery, validateRegionIdQuery, 
     getRegion, validateRegionNamePutQuery, modifyRegion, deleteRegion, 
-    getCountriesRegion, getCitiesRegion, getCountries }
+    getCountriesRegion, getCitiesRegion, getCountries, validateCountryNameQuery,
+    createCountry }

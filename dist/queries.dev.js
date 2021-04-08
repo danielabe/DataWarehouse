@@ -387,7 +387,7 @@ function validateRegionIdQuery(req, res, next) {
     while (1) {
       switch (_context13.prev = _context13.next) {
         case 0:
-          regionId = +req.params.regionId;
+          regionId = +req.params.regionId || req.body.region_id;
           _context13.next = 3;
           return regeneratorRuntime.awrap(db.query("SELECT region_id FROM regions", {
             type: QueryTypes.SELECT
@@ -595,7 +595,8 @@ function getCitiesRegion(regionId, req, res) {
       }
     }
   });
-}
+} //countries
+
 
 function getCountries(req, res) {
   var countries;
@@ -615,6 +616,69 @@ function getCountries(req, res) {
         case 4:
         case "end":
           return _context20.stop();
+      }
+    }
+  });
+}
+
+function validateCountryNameQuery(req, res, next) {
+  var country, countries, countriesArray;
+  return regeneratorRuntime.async(function validateCountryNameQuery$(_context21) {
+    while (1) {
+      switch (_context21.prev = _context21.next) {
+        case 0:
+          country = req.body.country_name;
+          _context21.next = 3;
+          return regeneratorRuntime.awrap(db.query("SELECT country_name FROM countries", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 3:
+          countries = _context21.sent;
+          countriesArray = countries.map(function (country) {
+            return country.country_name;
+          });
+
+          if (req.body.country_name.length >= 2 && req.body.country_name.length <= 64) {
+            if (countriesArray.every(function (name) {
+              return name !== country;
+            })) next();else res.status(400).send("The country already exists").end();
+          } else res.status(400).send("The country name length is wrong").end();
+
+        case 6:
+        case "end":
+          return _context21.stop();
+      }
+    }
+  });
+}
+
+function createCountry(country_name, region_id, req, res) {
+  var inserted;
+  return regeneratorRuntime.async(function createCountry$(_context22) {
+    while (1) {
+      switch (_context22.prev = _context22.next) {
+        case 0:
+          _context22.next = 2;
+          return regeneratorRuntime.awrap(db.query("\n    INSERT INTO countries (region_id, country_name)\n    VALUES (:region_id, :country_name)\n    ", {
+            replacements: {
+              country_name: country_name,
+              region_id: region_id
+            },
+            type: QueryTypes.INSERT
+          }));
+
+        case 2:
+          inserted = _context22.sent;
+          res.status(201).json(Object.assign({}, {
+            country_id: inserted[0],
+            region_id: region_id,
+            country_name: country_name
+          }));
+
+        case 4:
+        case "end":
+          return _context22.stop();
       }
     }
   });
@@ -640,5 +704,7 @@ module.exports = {
   deleteRegion: deleteRegion,
   getCountriesRegion: getCountriesRegion,
   getCitiesRegion: getCitiesRegion,
-  getCountries: getCountries
+  getCountries: getCountries,
+  validateCountryNameQuery: validateCountryNameQuery,
+  createCountry: createCountry
 };

@@ -22,7 +22,8 @@ var _require = require('./queries.js'),
     deleteRegion = _require.deleteRegion,
     getCountriesRegion = _require.getCountriesRegion,
     getCitiesRegion = _require.getCitiesRegion,
-    getCountries = _require.getCountries;
+    getCountries = _require.getCountries,
+    createCountry = _require.createCountry;
 
 var _require2 = require('./functions.js'),
     validateLogin = _require2.validateLogin,
@@ -39,7 +40,8 @@ var _require2 = require('./functions.js'),
     validatePasswordPut = _require2.validatePasswordPut,
     validateRegionName = _require2.validateRegionName,
     validateRegionId = _require2.validateRegionId,
-    validateRegionNamePut = _require2.validateRegionNamePut;
+    validateRegionNamePut = _require2.validateRegionNamePut,
+    validateCountryName = _require2.validateCountryName;
 
 app.use(express.json());
 app.use(helmet());
@@ -260,7 +262,8 @@ app.get('/regions/:regionId/cities', validateRegionId, function _callee13(req, r
       }
     }
   });
-});
+}); //countries
+
 app.get('/countries', function _callee14(req, res) {
   return regeneratorRuntime.async(function _callee14$(_context14) {
     while (1) {
@@ -271,6 +274,23 @@ app.get('/countries', function _callee14(req, res) {
         case 1:
         case "end":
           return _context14.stop();
+      }
+    }
+  });
+});
+app.post('/countries', validateCountryName, validateRegionId, function _callee15(req, res) {
+  var _req$body2, region_id, country_name;
+
+  return regeneratorRuntime.async(function _callee15$(_context15) {
+    while (1) {
+      switch (_context15.prev = _context15.next) {
+        case 0:
+          _req$body2 = req.body, region_id = _req$body2.region_id, country_name = _req$body2.country_name;
+          createCountry(country_name, region_id, req, res);
+
+        case 2:
+        case "end":
+          return _context15.stop();
       }
     }
   });

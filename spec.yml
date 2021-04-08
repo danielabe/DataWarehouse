@@ -470,6 +470,8 @@ paths:
           description: "Bad request"
         "401":
           description: "Unauthorized"
+        "404":
+          description: "Region not found"
   /countries/{countryId}:
     get:
       tags:
@@ -1167,6 +1169,10 @@ definitions:
   NewCountry:
     type: "object"
     properties:
+      region_id:
+        type: "integer"
+        format: "int64"
+        example: 3
       country_name:
         type: "string"
         example: "Argentina"
