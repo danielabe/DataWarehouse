@@ -4,7 +4,8 @@ const helmet = require('helmet')
 const jwt = require('jsonwebtoken')
 
 const { selectUserLogin, getUsers, createUser, getUser, modifyUser, deleteUser, getRegions,
-    createRegion, getRegion, modifyRegion, deleteRegion, getCountriesRegion } = require('./queries.js')
+    createRegion, getRegion, modifyRegion, deleteRegion, getCountriesRegion,
+    getCitiesRegion } = require('./queries.js')
 
 const { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
     validateEmail, validatePassword, validateUser, validateUserId, validateFirstnamePut,
@@ -84,6 +85,11 @@ app.delete('/regions/:regionId', validateRegionId, async (req, res) => {
 app.get('/regions/:regionId/countries', validateRegionId, async (req, res) => {
     const regionId = +req.params.regionId
     getCountriesRegion(regionId, req, res)
+}) 
+
+app.get('/regions/:regionId/cities', validateRegionId, async (req, res) => {
+    const regionId = +req.params.regionId
+    getCitiesRegion(regionId, req, res)
 }) 
 
 /* express-rate-limit, .env, bcrypt
