@@ -245,36 +245,5 @@ app.get('/regions/:regionId/countries', validateRegionId, function _callee12(req
     }
   });
 });
-app.get('/regions/:regionId/cities', validateRegionId, function _callee13(req, res) {
-  var regionId;
-  return regeneratorRuntime.async(function _callee13$(_context13) {
-    while (1) {
-      switch (_context13.prev = _context13.next) {
-        case 0:
-          regionId = +req.params.regionId;
-          getCitiesRegion(regionId, req, res);
-
-        case 2:
-        case "end":
-          return _context13.stop();
-      }
-    }
-  });
-}); //countries
-
-app.get('/countries', function _callee14(req, res) {
-  return regeneratorRuntime.async(function _callee14$(_context14) {
-    while (1) {
-      switch (_context14.prev = _context14.next) {
-        case 0:
-          getCountries(req, res);
-
-        case 1:
-        case "end":
-          return _context14.stop();
-      }
-    }
-  });
-});
 /* express-rate-limit, .env, bcrypt
 */

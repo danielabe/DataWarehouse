@@ -241,5 +241,4 @@ async function getCountries(req, res) {
 module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, 
     validateEmailQuery, validateUserIdQuery, getUser, modifyUser, deleteUser, 
     getRegions, createRegion, validateRegionNameQuery, validateRegionIdQuery, 
-    getRegion, validateRegionNamePutQuery, modifyRegion, deleteRegion, 
-    getCountriesRegion, getCitiesRegion, getCountries }
+    getRegion, validateRegionNamePutQuery, modifyRegion, deleteRegion, getCountriesRegion }

@@ -638,7 +638,5 @@ module.exports = {
   validateRegionNamePutQuery: validateRegionNamePutQuery,
   modifyRegion: modifyRegion,
   deleteRegion: deleteRegion,
-  getCountriesRegion: getCountriesRegion,
-  getCitiesRegion: getCitiesRegion,
-  getCountries: getCountries
+  getCountriesRegion: getCountriesRegion
 };
