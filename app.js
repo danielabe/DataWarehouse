@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 
 const { selectUserLogin, getUsers, createUser, getUser, modifyUser, deleteUser, getRegions,
     createRegion, getRegion, modifyRegion, deleteRegion, getCountriesRegion,
-    getCitiesRegion } = require('./queries.js')
+    getCitiesRegion, getCountries } = require('./queries.js')
 
 const { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
     validateEmail, validatePassword, validateUser, validateUserId, validateFirstnamePut,
@@ -91,6 +91,11 @@ app.get('/regions/:regionId/cities', validateRegionId, async (req, res) => {
     const regionId = +req.params.regionId
     getCitiesRegion(regionId, req, res)
 }) 
+
+//countries
+app.get('/countries', async (req, res) => {    
+    getCountries(req, res)                                 
+})
 
 /* express-rate-limit, .env, bcrypt
 */

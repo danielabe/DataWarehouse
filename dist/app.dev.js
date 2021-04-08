@@ -21,7 +21,8 @@ var _require = require('./queries.js'),
     modifyRegion = _require.modifyRegion,
     deleteRegion = _require.deleteRegion,
     getCountriesRegion = _require.getCountriesRegion,
-    getCitiesRegion = _require.getCitiesRegion;
+    getCitiesRegion = _require.getCitiesRegion,
+    getCountries = _require.getCountries;
 
 var _require2 = require('./functions.js'),
     validateLogin = _require2.validateLogin,
@@ -256,6 +257,21 @@ app.get('/regions/:regionId/cities', validateRegionId, function _callee13(req, r
         case 2:
         case "end":
           return _context13.stop();
+      }
+    }
+  });
+}); //countries
+
+app.get('/countries', function _callee14(req, res) {
+  return regeneratorRuntime.async(function _callee14$(_context14) {
+    while (1) {
+      switch (_context14.prev = _context14.next) {
+        case 0:
+          getCountries(req, res);
+
+        case 1:
+        case "end":
+          return _context14.stop();
       }
     }
   });

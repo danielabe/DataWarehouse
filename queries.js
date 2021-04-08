@@ -233,8 +233,13 @@ async function getCitiesRegion(regionId, req, res) {
     res.status(200).json(cities)
 }
 
+async function getCountries(req, res) {
+    const countries = await db.query(`SELECT * FROM countries`, { type: QueryTypes.SELECT })
+    res.status(200).json(countries)
+}
+
 module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, 
     validateEmailQuery, validateUserIdQuery, getUser, modifyUser, deleteUser, 
     getRegions, createRegion, validateRegionNameQuery, validateRegionIdQuery, 
     getRegion, validateRegionNamePutQuery, modifyRegion, deleteRegion, 
-    getCountriesRegion, getCitiesRegion }
+    getCountriesRegion, getCitiesRegion, getCountries }

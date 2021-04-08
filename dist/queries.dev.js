@@ -597,6 +597,29 @@ function getCitiesRegion(regionId, req, res) {
   });
 }
 
+function getCountries(req, res) {
+  var countries;
+  return regeneratorRuntime.async(function getCountries$(_context20) {
+    while (1) {
+      switch (_context20.prev = _context20.next) {
+        case 0:
+          _context20.next = 2;
+          return regeneratorRuntime.awrap(db.query("SELECT * FROM countries", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          countries = _context20.sent;
+          res.status(200).json(countries);
+
+        case 4:
+        case "end":
+          return _context20.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   selectUserLogin: selectUserLogin,
   validateLoginQuery: validateLoginQuery,
@@ -616,5 +639,6 @@ module.exports = {
   modifyRegion: modifyRegion,
   deleteRegion: deleteRegion,
   getCountriesRegion: getCountriesRegion,
-  getCitiesRegion: getCitiesRegion
+  getCitiesRegion: getCitiesRegion,
+  getCountries: getCountries
 };
