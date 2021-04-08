@@ -513,6 +513,40 @@ function modifyRegion(regionId, req, res) {
   });
 }
 
+function deleteRegion(regionId, req, res) {
+  var region, deleted, _region$, region_id, firstname, lastname, email, perfil;
+
+  return regeneratorRuntime.async(function deleteRegion$(_context17) {
+    while (1) {
+      switch (_context17.prev = _context17.next) {
+        case 0:
+          _context17.next = 2;
+          return regeneratorRuntime.awrap(db.query("SELECT * FROM regions WHERE region_id = ?", {
+            replacements: [regionId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          region = _context17.sent;
+          _context17.next = 5;
+          return regeneratorRuntime.awrap(db.query("DELETE FROM regions WHERE region_id = ?", {
+            replacements: [regionId],
+            type: QueryTypes.DELETE
+          }));
+
+        case 5:
+          deleted = _context17.sent;
+          _region$ = region[0], region_id = _region$.region_id, firstname = _region$.firstname, lastname = _region$.lastname, email = _region$.email, perfil = _region$.perfil;
+          res.status(200).json(region);
+
+        case 8:
+        case "end":
+          return _context17.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   selectUserLogin: selectUserLogin,
   validateLoginQuery: validateLoginQuery,
@@ -529,5 +563,6 @@ module.exports = {
   validateRegionIdQuery: validateRegionIdQuery,
   getRegion: getRegion,
   validateRegionNamePutQuery: validateRegionNamePutQuery,
-  modifyRegion: modifyRegion
+  modifyRegion: modifyRegion,
+  deleteRegion: deleteRegion
 };

@@ -198,7 +198,20 @@ async function modifyRegion(regionId, req, res) {
     res.status(200).json(newRegion)
 }
 
+async function deleteRegion(regionId, req, res) {
+    const region = await db.query(`SELECT * FROM regions WHERE region_id = ?`, {
+        replacements: [regionId],
+        type: QueryTypes.SELECT 
+    })
+    const deleted = await db.query(`DELETE FROM regions WHERE region_id = ?`, {
+        replacements: [regionId],
+        type: QueryTypes.DELETE
+    })
+    const {region_id, firstname, lastname, email, perfil} = region[0]
+    res.status(200).json(region)
+}
+
 module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, 
     validateEmailQuery, validateUserIdQuery, getUser, modifyUser, deleteUser, 
     getRegions, createRegion, validateRegionNameQuery, validateRegionIdQuery, 
-    getRegion, validateRegionNamePutQuery, modifyRegion }
+    getRegion, validateRegionNamePutQuery, modifyRegion, deleteRegion }

@@ -18,7 +18,8 @@ var _require = require('./queries.js'),
     getRegions = _require.getRegions,
     createRegion = _require.createRegion,
     getRegion = _require.getRegion,
-    modifyRegion = _require.modifyRegion;
+    modifyRegion = _require.modifyRegion,
+    deleteRegion = _require.deleteRegion;
 
 var _require2 = require('./functions.js'),
     validateLogin = _require2.validateLogin,
@@ -205,6 +206,22 @@ app.put('/regions/:regionId', validateRegionId, validateRegionNamePut, function 
         case 2:
         case "end":
           return _context10.stop();
+      }
+    }
+  });
+});
+app["delete"]('/regions/:regionId', validateRegionId, function _callee11(req, res) {
+  var regionId;
+  return regeneratorRuntime.async(function _callee11$(_context11) {
+    while (1) {
+      switch (_context11.prev = _context11.next) {
+        case 0:
+          regionId = +req.params.regionId;
+          deleteRegion(regionId, req, res);
+
+        case 2:
+        case "end":
+          return _context11.stop();
       }
     }
   });
