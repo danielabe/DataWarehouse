@@ -684,6 +684,57 @@ function createCountry(country_name, region_id, req, res) {
   });
 }
 
+function validateCountryIdQuery(req, res, next) {
+  var countryId, countries, countriesArray;
+  return regeneratorRuntime.async(function validateCountryIdQuery$(_context23) {
+    while (1) {
+      switch (_context23.prev = _context23.next) {
+        case 0:
+          countryId = +req.params.countryId || req.body.country_id;
+          _context23.next = 3;
+          return regeneratorRuntime.awrap(db.query("SELECT country_id FROM countries", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 3:
+          countries = _context23.sent;
+          countriesArray = countries.map(function (id) {
+            return id.country_id;
+          });
+          if (countriesArray.includes(countryId)) next();else res.status(404).send("The country does not exist").end();
+
+        case 6:
+        case "end":
+          return _context23.stop();
+      }
+    }
+  });
+}
+
+function getCountry(countryId, req, res) {
+  var country;
+  return regeneratorRuntime.async(function getCountry$(_context24) {
+    while (1) {
+      switch (_context24.prev = _context24.next) {
+        case 0:
+          _context24.next = 2;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM countries WHERE country_id = ?\n    ", {
+            replacements: [countryId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          country = _context24.sent;
+          res.status(200).json(country[0]);
+
+        case 4:
+        case "end":
+          return _context24.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   selectUserLogin: selectUserLogin,
   validateLoginQuery: validateLoginQuery,
@@ -706,5 +757,7 @@ module.exports = {
   getCitiesRegion: getCitiesRegion,
   getCountries: getCountries,
   validateCountryNameQuery: validateCountryNameQuery,
-  createCountry: createCountry
+  createCountry: createCountry,
+  validateCountryIdQuery: validateCountryIdQuery,
+  getCountry: getCountry
 };

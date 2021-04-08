@@ -5,12 +5,12 @@ const jwt = require('jsonwebtoken')
 
 const { selectUserLogin, getUsers, createUser, getUser, modifyUser, deleteUser, getRegions,
     createRegion, getRegion, modifyRegion, deleteRegion, getCountriesRegion,
-    getCitiesRegion, getCountries, createCountry } = require('./queries.js')
+    getCitiesRegion, getCountries, createCountry, getCountry } = require('./queries.js')
 
 const { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
     validateEmail, validatePassword, validateUser, validateUserId, validateFirstnamePut,
     validateLastnamePut, validatePasswordPut, validateRegionName, validateRegionId, 
-    validateRegionNamePut, validateCountryName } = require('./functions.js')
+    validateRegionNamePut, validateCountryName, validateCountryId } = require('./functions.js')
 
 app.use(express.json())
 app.use(helmet())
@@ -102,5 +102,9 @@ app.post('/countries', validateCountryName, validateRegionId, async (req, res) =
     createCountry(country_name, region_id, req, res)
 })
 
+app.get('/countries/:countryId', validateCountryId, async (req, res) => {
+    const countryId = +req.params.countryId
+    getCountry(countryId, req, res)
+}) 
 /* express-rate-limit, .env, bcrypt
 */

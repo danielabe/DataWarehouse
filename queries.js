@@ -262,9 +262,29 @@ async function createCountry(country_name, region_id, req, res) {
     res.status(201).json(Object.assign({}, { country_id: inserted[0], region_id: region_id, country_name: country_name }))
 }
 
+async function validateCountryIdQuery(req, res, next) {
+    const countryId = +req.params.countryId || req.body.country_id
+    const countries = await db.query(`SELECT country_id FROM countries`, {
+        type: QueryTypes.SELECT
+    })
+    const countriesArray = countries.map(id => id.country_id)
+    if(countriesArray.includes(countryId)) next()
+    else res.status(404).send("The country does not exist").end()
+}
+
+async function getCountry(countryId, req, res) {
+    const country = await db.query(`
+    SELECT * FROM countries WHERE country_id = ?
+    `, { 
+        replacements: [countryId],
+        type: QueryTypes.SELECT 
+    })
+    res.status(200).json(country[0])
+}
+
 module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, 
     validateEmailQuery, validateUserIdQuery, getUser, modifyUser, deleteUser, 
     getRegions, createRegion, validateRegionNameQuery, validateRegionIdQuery, 
     getRegion, validateRegionNamePutQuery, modifyRegion, deleteRegion, 
     getCountriesRegion, getCitiesRegion, getCountries, validateCountryNameQuery,
-    createCountry }
+    createCountry, validateCountryIdQuery, getCountry }

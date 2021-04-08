@@ -11,7 +11,8 @@ var _require = require('./queries.js'),
     validateRegionNameQuery = _require.validateRegionNameQuery,
     validateRegionIdQuery = _require.validateRegionIdQuery,
     validateRegionNamePutQuery = _require.validateRegionNamePutQuery,
-    validateCountryNameQuery = _require.validateCountryNameQuery; //users
+    validateCountryNameQuery = _require.validateCountryNameQuery,
+    validateCountryIdQuery = _require.validateCountryIdQuery; //users
 
 
 function validateLogin(req, res, next) {
@@ -195,6 +196,22 @@ function validateCountryName(req, res, next) {
   });
 }
 
+function validateCountryId(req, res, next) {
+  return regeneratorRuntime.async(function validateCountryId$(_context8) {
+    while (1) {
+      switch (_context8.prev = _context8.next) {
+        case 0:
+          _context8.next = 2;
+          return regeneratorRuntime.awrap(validateCountryIdQuery(req, res, next));
+
+        case 2:
+        case "end":
+          return _context8.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   validateLogin: validateLogin,
   verifyToken: verifyToken,
@@ -211,5 +228,6 @@ module.exports = {
   validateRegionName: validateRegionName,
   validateRegionId: validateRegionId,
   validateRegionNamePut: validateRegionNamePut,
-  validateCountryName: validateCountryName
+  validateCountryName: validateCountryName,
+  validateCountryId: validateCountryId
 };
