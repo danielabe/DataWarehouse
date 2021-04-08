@@ -87,5 +87,14 @@ app.get('/regions/:regionId/countries', validateRegionId, async (req, res) => {
     getCountriesRegion(regionId, req, res)
 }) 
 
+app.get('/regions/:regionId/cities', validateRegionId, async (req, res) => {
+    const regionId = +req.params.regionId
+    getCitiesRegion(regionId, req, res)
+}) 
+
+app.get('/countries', async (req, res) => {    
+    getCountries(req, res)                                 
+})
+
 /* express-rate-limit, .env, bcrypt
 */
