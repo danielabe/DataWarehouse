@@ -9,7 +9,8 @@ var _require = require('./queries.js'),
     validateEmailQuery = _require.validateEmailQuery,
     validateUserIdQuery = _require.validateUserIdQuery,
     validateRegionNameQuery = _require.validateRegionNameQuery,
-    validateRegionIdQuery = _require.validateRegionIdQuery;
+    validateRegionIdQuery = _require.validateRegionIdQuery,
+    validateRegionNamePutQuery = _require.validateRegionNamePutQuery;
 
 function validateLogin(req, res, next) {
   return regeneratorRuntime.async(function validateLogin$(_context) {
@@ -158,6 +159,22 @@ function validateRegionId(req, res, next) {
   });
 }
 
+function validateRegionNamePut(req, res, next) {
+  return regeneratorRuntime.async(function validateRegionNamePut$(_context6) {
+    while (1) {
+      switch (_context6.prev = _context6.next) {
+        case 0:
+          _context6.next = 2;
+          return regeneratorRuntime.awrap(validateRegionNamePutQuery(req, res, next));
+
+        case 2:
+        case "end":
+          return _context6.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   validateLogin: validateLogin,
   verifyToken: verifyToken,
@@ -172,5 +189,6 @@ module.exports = {
   validateLastnamePut: validateLastnamePut,
   validatePasswordPut: validatePasswordPut,
   validateRegionName: validateRegionName,
-  validateRegionId: validateRegionId
+  validateRegionId: validateRegionId,
+  validateRegionNamePut: validateRegionNamePut
 };

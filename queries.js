@@ -166,7 +166,39 @@ async function getRegion(regionId, req, res) {
     res.status(200).json(region[0])
 }
 
+async function validateRegionNamePutQuery(req, res, next) {
+    if(req.body.region_name){
+        const region = req.body.region_name
+        const regions = await db.query(`SELECT region_name FROM regions`, {
+            type: QueryTypes.SELECT
+        })
+        const regionsArray = regions.map(region => region.region_name)
+        if(req.body.region_name.length >= 2 && req.body.region_name.length <= 64) {
+            if(regionsArray.every(name => name !== region)) next()
+            else res.status(400).send("The region already exists").end()
+        } else res.status(400).send("The region name length is wrong").end()
+    } else next()
+}
+
+async function modifyRegion(regionId, req, res) {
+    const region = await db.query(`SELECT * FROM regions WHERE region_id = ?`, {
+        replacements: [regionId],
+        type: QueryTypes.SELECT 
+    })
+    const newRegion = {
+        regionId: regionId,
+        regionName: req.body.region_name || region[0].region_name
+    }
+    const modified = await db.query(`
+    UPDATE regions SET region_name = :regionName WHERE region_id = :regionId
+    `, {
+        replacements:  newRegion /* Object.assign( {}, newRegion, {password: password} ) */,
+        type: QueryTypes.UPDATE
+    })
+    res.status(200).json(newRegion)
+}
+
 module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, 
     validateEmailQuery, validateUserIdQuery, getUser, modifyUser, deleteUser, 
     getRegions, createRegion, validateRegionNameQuery, validateRegionIdQuery, 
-    getRegion }
+    getRegion, validateRegionNamePutQuery, modifyRegion }

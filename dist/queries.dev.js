@@ -432,6 +432,87 @@ function getRegion(regionId, req, res) {
   });
 }
 
+function validateRegionNamePutQuery(req, res, next) {
+  var region, regions, regionsArray;
+  return regeneratorRuntime.async(function validateRegionNamePutQuery$(_context15) {
+    while (1) {
+      switch (_context15.prev = _context15.next) {
+        case 0:
+          if (!req.body.region_name) {
+            _context15.next = 9;
+            break;
+          }
+
+          region = req.body.region_name;
+          _context15.next = 4;
+          return regeneratorRuntime.awrap(db.query("SELECT region_name FROM regions", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 4:
+          regions = _context15.sent;
+          regionsArray = regions.map(function (region) {
+            return region.region_name;
+          });
+
+          if (req.body.region_name.length >= 2 && req.body.region_name.length <= 64) {
+            if (regionsArray.every(function (name) {
+              return name !== region;
+            })) next();else res.status(400).send("The region already exists").end();
+          } else res.status(400).send("The region name length is wrong").end();
+
+          _context15.next = 10;
+          break;
+
+        case 9:
+          next();
+
+        case 10:
+        case "end":
+          return _context15.stop();
+      }
+    }
+  });
+}
+
+function modifyRegion(regionId, req, res) {
+  var region, newRegion, modified;
+  return regeneratorRuntime.async(function modifyRegion$(_context16) {
+    while (1) {
+      switch (_context16.prev = _context16.next) {
+        case 0:
+          _context16.next = 2;
+          return regeneratorRuntime.awrap(db.query("SELECT * FROM regions WHERE region_id = ?", {
+            replacements: [regionId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          region = _context16.sent;
+          newRegion = {
+            regionId: regionId,
+            regionName: req.body.region_name || region[0].region_name
+          };
+          _context16.next = 6;
+          return regeneratorRuntime.awrap(db.query("\n    UPDATE regions SET region_name = :regionName WHERE region_id = :regionId\n    ", {
+            replacements: newRegion
+            /* Object.assign( {}, newRegion, {password: password} ) */
+            ,
+            type: QueryTypes.UPDATE
+          }));
+
+        case 6:
+          modified = _context16.sent;
+          res.status(200).json(newRegion);
+
+        case 8:
+        case "end":
+          return _context16.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   selectUserLogin: selectUserLogin,
   validateLoginQuery: validateLoginQuery,
@@ -446,5 +527,7 @@ module.exports = {
   createRegion: createRegion,
   validateRegionNameQuery: validateRegionNameQuery,
   validateRegionIdQuery: validateRegionIdQuery,
-  getRegion: getRegion
+  getRegion: getRegion,
+  validateRegionNamePutQuery: validateRegionNamePutQuery,
+  modifyRegion: modifyRegion
 };

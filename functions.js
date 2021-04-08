@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 const authorizationPassword = 'tmo$Q$bG5xR56'
 
 const { validateLoginQuery, validateEmailQuery, validateUserIdQuery, 
-    validateRegionNameQuery, validateRegionIdQuery } = require('./queries.js')
+    validateRegionNameQuery, validateRegionIdQuery, validateRegionNamePutQuery } = require('./queries.js')
 
 async function validateLogin(req, res, next) {
     await validateLoginQuery(req, res, next)
@@ -97,8 +97,13 @@ async function validateRegionId(req, res, next) {
     await validateRegionIdQuery(req, res, next)
 }
 
+async function validateRegionNamePut(req, res, next) {
+    await validateRegionNamePutQuery(req, res, next)
+}
+
 module.exports = { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
     validateEmail, validatePassword, validateUser, validateUserId, validateFirstnamePut, 
-    validateLastnamePut, validatePasswordPut, validateRegionName, validateRegionId
+    validateLastnamePut, validatePasswordPut, validateRegionName, validateRegionId, 
+    validateRegionNamePut
 }
 
