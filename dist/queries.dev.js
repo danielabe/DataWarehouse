@@ -572,6 +572,31 @@ function getCountriesRegion(regionId, req, res) {
   });
 }
 
+function getCitiesRegion(regionId, req, res) {
+  var cities;
+  return regeneratorRuntime.async(function getCitiesRegion$(_context19) {
+    while (1) {
+      switch (_context19.prev = _context19.next) {
+        case 0:
+          _context19.next = 2;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT city_id, co.country_id, re.region_id, city_name \n    FROM cities ci\n    JOIN countries co ON co.country_id = ci.country_id \n    JOIN regions re ON re.region_id = co.region_id \n    WHERE re.region_id = ?\n    ", {
+            replacements: [regionId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          cities = _context19.sent;
+          console.table(cities);
+          res.status(200).json(cities);
+
+        case 5:
+        case "end":
+          return _context19.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   selectUserLogin: selectUserLogin,
   validateLoginQuery: validateLoginQuery,
@@ -590,5 +615,6 @@ module.exports = {
   validateRegionNamePutQuery: validateRegionNamePutQuery,
   modifyRegion: modifyRegion,
   deleteRegion: deleteRegion,
-  getCountriesRegion: getCountriesRegion
+  getCountriesRegion: getCountriesRegion,
+  getCitiesRegion: getCitiesRegion
 };
