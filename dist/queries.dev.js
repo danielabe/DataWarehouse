@@ -735,6 +735,123 @@ function getCountry(countryId, req, res) {
   });
 }
 
+function validateCountryNamePutQuery(req, res, next) {
+  var country, countries, countriesArray;
+  return regeneratorRuntime.async(function validateCountryNamePutQuery$(_context25) {
+    while (1) {
+      switch (_context25.prev = _context25.next) {
+        case 0:
+          if (!req.body.country_name) {
+            _context25.next = 9;
+            break;
+          }
+
+          country = req.body.country_name;
+          _context25.next = 4;
+          return regeneratorRuntime.awrap(db.query("SELECT country_name FROM countries", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 4:
+          countries = _context25.sent;
+          countriesArray = countries.map(function (country) {
+            return country.country_name;
+          });
+
+          if (req.body.country_name.length >= 2 && req.body.country_name.length <= 64) {
+            if (countriesArray.every(function (name) {
+              return name !== country;
+            })) next();else res.status(400).send("The country already exists").end();
+          } else res.status(400).send("The country name length is wrong").end();
+
+          _context25.next = 10;
+          break;
+
+        case 9:
+          next();
+
+        case 10:
+        case "end":
+          return _context25.stop();
+      }
+    }
+  });
+}
+
+function modifyCountry(countryId, req, res) {
+  var country, newCountry, modified;
+  return regeneratorRuntime.async(function modifyCountry$(_context26) {
+    while (1) {
+      switch (_context26.prev = _context26.next) {
+        case 0:
+          _context26.next = 2;
+          return regeneratorRuntime.awrap(db.query("SELECT * FROM countries WHERE country_id = ?", {
+            replacements: [countryId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          country = _context26.sent;
+          newCountry = {
+            country_id: countryId,
+            region_id: req.body.region_id || country[0].region_id,
+            country_name: req.body.country_name || country[0].country_name
+          };
+          _context26.next = 6;
+          return regeneratorRuntime.awrap(db.query("\n    UPDATE countries SET country_name = :country_name, region_id = :region_id \n    WHERE country_id = :country_id\n    ", {
+            replacements: newCountry,
+            type: QueryTypes.UPDATE
+          }));
+
+        case 6:
+          modified = _context26.sent;
+          res.status(200).json(newCountry);
+
+        case 8:
+        case "end":
+          return _context26.stop();
+      }
+    }
+  });
+}
+
+function validateRegionIdCountryQuery(req, res, next) {
+  var regionId, regions, regionsArray;
+  return regeneratorRuntime.async(function validateRegionIdCountryQuery$(_context27) {
+    while (1) {
+      switch (_context27.prev = _context27.next) {
+        case 0:
+          if (!req.body.region_id) {
+            _context27.next = 9;
+            break;
+          }
+
+          regionId = req.body.region_id;
+          _context27.next = 4;
+          return regeneratorRuntime.awrap(db.query("SELECT region_id FROM regions", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 4:
+          regions = _context27.sent;
+          regionsArray = regions.map(function (id) {
+            return id.region_id;
+          });
+          if (regionsArray.includes(regionId)) next();else res.status(404).send("The region does not exist").end();
+          _context27.next = 10;
+          break;
+
+        case 9:
+          next();
+
+        case 10:
+        case "end":
+          return _context27.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   selectUserLogin: selectUserLogin,
   validateLoginQuery: validateLoginQuery,
@@ -759,5 +876,8 @@ module.exports = {
   validateCountryNameQuery: validateCountryNameQuery,
   createCountry: createCountry,
   validateCountryIdQuery: validateCountryIdQuery,
-  getCountry: getCountry
+  getCountry: getCountry,
+  validateCountryNamePutQuery: validateCountryNamePutQuery,
+  modifyCountry: modifyCountry,
+  validateRegionIdCountryQuery: validateRegionIdCountryQuery
 };

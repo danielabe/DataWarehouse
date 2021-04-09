@@ -282,9 +282,56 @@ async function getCountry(countryId, req, res) {
     res.status(200).json(country[0])
 }
 
+async function validateCountryNamePutQuery(req, res, next) {
+    if(req.body.country_name){
+        const country = req.body.country_name
+        const countries = await db.query(`SELECT country_name FROM countries`, {
+            type: QueryTypes.SELECT
+        })
+        const countriesArray = countries.map(country => country.country_name)
+        if(req.body.country_name.length >= 2 && req.body.country_name.length <= 64) {
+            if(countriesArray.every(name => name !== country)) next()
+            else res.status(400).send("The country already exists").end()
+        } else res.status(400).send("The country name length is wrong").end()
+    } else next()
+}
+
+async function modifyCountry(countryId, req, res) {
+    const country = await db.query(`SELECT * FROM countries WHERE country_id = ?`, {
+        replacements: [countryId],
+        type: QueryTypes.SELECT 
+    })
+    const newCountry = {
+        country_id: countryId,
+        region_id: req.body.region_id || country[0].region_id,
+        country_name: req.body.country_name || country[0].country_name
+    }
+    const modified = await db.query(`
+    UPDATE countries SET country_name = :country_name, region_id = :region_id 
+    WHERE country_id = :country_id
+    `, {
+        replacements: newCountry,
+        type: QueryTypes.UPDATE
+    })
+    res.status(200).json(newCountry)
+}
+
+async function validateRegionIdCountryQuery(req, res, next) {
+    if(req.body.region_id) {
+        const regionId = req.body.region_id
+        const regions = await db.query(`SELECT region_id FROM regions`, {
+            type: QueryTypes.SELECT
+        })
+        const regionsArray = regions.map(id => id.region_id)
+        if(regionsArray.includes(regionId)) next()
+        else res.status(404).send("The region does not exist").end()
+    } else next()
+}
+
 module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, 
     validateEmailQuery, validateUserIdQuery, getUser, modifyUser, deleteUser, 
     getRegions, createRegion, validateRegionNameQuery, validateRegionIdQuery, 
     getRegion, validateRegionNamePutQuery, modifyRegion, deleteRegion, 
     getCountriesRegion, getCitiesRegion, getCountries, validateCountryNameQuery,
-    createCountry, validateCountryIdQuery, getCountry }
+    createCountry, validateCountryIdQuery, getCountry, validateCountryNamePutQuery,
+    modifyCountry, validateRegionIdCountryQuery }

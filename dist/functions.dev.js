@@ -12,7 +12,9 @@ var _require = require('./queries.js'),
     validateRegionIdQuery = _require.validateRegionIdQuery,
     validateRegionNamePutQuery = _require.validateRegionNamePutQuery,
     validateCountryNameQuery = _require.validateCountryNameQuery,
-    validateCountryIdQuery = _require.validateCountryIdQuery; //users
+    validateCountryIdQuery = _require.validateCountryIdQuery,
+    validateCountryNamePutQuery = _require.validateCountryNamePutQuery,
+    validateRegionIdCountryQuery = _require.validateRegionIdCountryQuery; //users
 
 
 function validateLogin(req, res, next) {
@@ -212,6 +214,38 @@ function validateCountryId(req, res, next) {
   });
 }
 
+function validateCountryNamePut(req, res, next) {
+  return regeneratorRuntime.async(function validateCountryNamePut$(_context9) {
+    while (1) {
+      switch (_context9.prev = _context9.next) {
+        case 0:
+          _context9.next = 2;
+          return regeneratorRuntime.awrap(validateCountryNamePutQuery(req, res, next));
+
+        case 2:
+        case "end":
+          return _context9.stop();
+      }
+    }
+  });
+}
+
+function validateRegionIdCountry(req, res, next) {
+  return regeneratorRuntime.async(function validateRegionIdCountry$(_context10) {
+    while (1) {
+      switch (_context10.prev = _context10.next) {
+        case 0:
+          _context10.next = 2;
+          return regeneratorRuntime.awrap(validateRegionIdCountryQuery(req, res, next));
+
+        case 2:
+        case "end":
+          return _context10.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   validateLogin: validateLogin,
   verifyToken: verifyToken,
@@ -229,5 +263,7 @@ module.exports = {
   validateRegionId: validateRegionId,
   validateRegionNamePut: validateRegionNamePut,
   validateCountryName: validateCountryName,
-  validateCountryId: validateCountryId
+  validateCountryId: validateCountryId,
+  validateCountryNamePut: validateCountryNamePut,
+  validateRegionIdCountry: validateRegionIdCountry
 };
