@@ -121,6 +121,7 @@ async function validateCountryNamePut(req, res, next) {
 async function validateRegionIdCountry(req, res, next) {
     await validateRegionIdCountryQuery(req, res, next)
 }
+
 module.exports = { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
     validateEmail, validatePassword, validateUser, validateUserId, validateFirstnamePut, 
     validateLastnamePut, validatePasswordPut, validateRegionName, validateRegionId, 

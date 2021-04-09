@@ -339,10 +339,19 @@ async function deleteCountry(countryId, req, res) {
     res.status(200).json(country)
 }
 
+async function getCitiesCountry(countryId, req, res) {
+    const cities = await db.query(`
+    SELECT * FROM cities WHERE country_id = ?
+    `, { replacements: [countryId],
+        type: QueryTypes.SELECT })
+        console.table(cities)
+    res.status(200).json(cities)
+}
+
 module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, 
     validateEmailQuery, validateUserIdQuery, getUser, modifyUser, deleteUser, 
     getRegions, createRegion, validateRegionNameQuery, validateRegionIdQuery, 
     getRegion, validateRegionNamePutQuery, modifyRegion, deleteRegion, 
     getCountriesRegion, getCitiesRegion, getCountries, validateCountryNameQuery,
     createCountry, validateCountryIdQuery, getCountry, validateCountryNamePutQuery,
-    modifyCountry, validateRegionIdCountryQuery, deleteCountry }
+    modifyCountry, validateRegionIdCountryQuery, deleteCountry, getCitiesCountry }

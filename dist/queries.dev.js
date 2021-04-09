@@ -882,6 +882,31 @@ function deleteCountry(countryId, req, res) {
   });
 }
 
+function getCitiesCountry(countryId, req, res) {
+  var cities;
+  return regeneratorRuntime.async(function getCitiesCountry$(_context29) {
+    while (1) {
+      switch (_context29.prev = _context29.next) {
+        case 0:
+          _context29.next = 2;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM cities WHERE country_id = ?\n    ", {
+            replacements: [countryId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          cities = _context29.sent;
+          console.table(cities);
+          res.status(200).json(cities);
+
+        case 5:
+        case "end":
+          return _context29.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   selectUserLogin: selectUserLogin,
   validateLoginQuery: validateLoginQuery,
@@ -910,5 +935,6 @@ module.exports = {
   validateCountryNamePutQuery: validateCountryNamePutQuery,
   modifyCountry: modifyCountry,
   validateRegionIdCountryQuery: validateRegionIdCountryQuery,
-  deleteCountry: deleteCountry
+  deleteCountry: deleteCountry,
+  getCitiesCountry: getCitiesCountry
 };

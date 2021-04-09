@@ -26,7 +26,8 @@ var _require = require('./queries.js'),
     createCountry = _require.createCountry,
     getCountry = _require.getCountry,
     modifyCountry = _require.modifyCountry,
-    deleteCountry = _require.deleteCountry;
+    deleteCountry = _require.deleteCountry,
+    getCitiesCountry = _require.getCitiesCountry;
 
 var _require2 = require('./functions.js'),
     validateLogin = _require2.validateLogin,
@@ -347,6 +348,22 @@ app["delete"]('/countries/:countryId', validateCountryId, function _callee18(req
         case 2:
         case "end":
           return _context18.stop();
+      }
+    }
+  });
+});
+app.get('/countries/:countryId/cities', validateCountryId, function _callee19(req, res) {
+  var countryId;
+  return regeneratorRuntime.async(function _callee19$(_context19) {
+    while (1) {
+      switch (_context19.prev = _context19.next) {
+        case 0:
+          countryId = +req.params.countryId;
+          getCitiesCountry(countryId, req, res);
+
+        case 2:
+        case "end":
+          return _context19.stop();
       }
     }
   });
