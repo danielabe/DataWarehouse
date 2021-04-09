@@ -5,7 +5,8 @@ const jwt = require('jsonwebtoken')
 
 const { selectUserLogin, getUsers, createUser, getUser, modifyUser, deleteUser, getRegions,
     createRegion, getRegion, modifyRegion, deleteRegion, getCountriesRegion,
-    getCitiesRegion, getCountries, createCountry, getCountry, modifyCountry } = require('./queries.js')
+    getCitiesRegion, getCountries, createCountry, getCountry, modifyCountry,
+    deleteCountry } = require('./queries.js')
 
 const { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
     validateEmail, validatePassword, validateUser, validateUserId, validateFirstnamePut,
@@ -81,6 +82,8 @@ app.put('/regions/:regionId', validateRegionId, validateRegionNamePut, async (re
 app.delete('/regions/:regionId', validateRegionId, async (req, res) => {
     const regionId = +req.params.regionId
     deleteRegion(regionId, req, res)
+    //no puedo borrar una region si tengo países en ella o si borro una region 
+    //borro todos los paises que tiene
 })
 
 app.get('/regions/:regionId/countries', validateRegionId, async (req, res) => {
@@ -112,6 +115,13 @@ app.put('/countries/:countryId', validateCountryId, validateRegionIdCountry,
 validateCountryNamePut, async (req, res) => {
     const countryId = +req.params.countryId
     modifyCountry(countryId, req, res)
+})
+
+app.delete('/countries/:countryId', validateCountryId, async (req, res) => {
+    const countryId = +req.params.countryId
+    deleteCountry(countryId, req, res)
+     //no puedo borrar un país si tengo ciudades en el o si borro un país 
+    //borro todas las ciudades que tiene
 })
 
 /* express-rate-limit, .env, bcrypt

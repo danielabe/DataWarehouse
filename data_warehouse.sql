@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 07-04-2021 a las 18:38:27
+-- Tiempo de generación: 09-04-2021 a las 22:29:04
 -- Versión del servidor: 10.4.17-MariaDB
 -- Versión de PHP: 8.0.0
 
@@ -57,7 +57,8 @@ CREATE TABLE `cities` (
 --
 
 INSERT INTO `cities` (`city_id`, `country_id`, `city_name`) VALUES
-(1, 1, 'Rosario');
+(1, 1, 'Rosario'),
+(4, 1, 'Córdoba');
 
 -- --------------------------------------------------------
 
@@ -132,7 +133,9 @@ CREATE TABLE `countries` (
 --
 
 INSERT INTO `countries` (`country_id`, `region_id`, `country_name`) VALUES
-(1, 1, 'Argentina');
+(1, 1, 'Argentina'),
+(5, 1, 'Chile'),
+(7, 1, 'Bolivia');
 
 -- --------------------------------------------------------
 
@@ -174,16 +177,14 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`user_id`, `firstname`, `lastname`, `email`, `perfil`, `password`) VALUES
 (1, 'Daniela', 'Berardi', 'danielaberardi@live.com.ar', 'Admin', '1234'),
 (2, 'Olivia', 'Dichiara', 'olivia@hotmail.com', 'Básico', '5678'),
-(3, 'gustavo1', '', '', 'Admin', ''),
+(3, 'gus', 'elias', 'gu@google.com', 'Admin', '1aaa'),
 (4, 'gustavo2', 'gustavo2', '', 'Admin', ''),
 (5, 'gustavo2', 'elias', '', 'Admin', ''),
 (6, 'gustavo2', 'elias', 'g@yahoo.com.ar', 'Admin', ''),
-(7, 'gustavo2', 'elias', 'gus@yahoo.com', 'Admin', ''),
 (8, 'gustavo2', 'elias', 'gus@yahoo.com', 'Básico', ''),
 (9, 'gustavo2', 'elias', 'gust@yahoo.com', 'Básico', ''),
 (10, 'gustavo2', 'elias', 'gust@yahoo.co', 'Básico', ''),
-(11, 'gustavo2', 'elias', 'gusta@yahoo.com', 'Básico', ''),
-(12, 'gustavo2', 'elias', 'gustav@yahoo.com', 'Básico', '');
+(11, 'gustavo2', 'elias', 'gusta@yahoo.com', 'Básico', '');
 
 --
 -- Índices para tablas volcadas
@@ -200,7 +201,7 @@ ALTER TABLE `channels`
 --
 ALTER TABLE `cities`
   ADD PRIMARY KEY (`city_id`),
-  ADD KEY `country_id` (`country_id`);
+  ADD KEY `cities_ibfk_1` (`country_id`);
 
 --
 -- Indices de la tabla `companies`
@@ -229,7 +230,7 @@ ALTER TABLE `contacts_channels`
 --
 ALTER TABLE `countries`
   ADD PRIMARY KEY (`country_id`),
-  ADD KEY `region_id` (`region_id`);
+  ADD KEY `countries_ibfk_1` (`region_id`);
 
 --
 -- Indices de la tabla `regions`
@@ -257,7 +258,7 @@ ALTER TABLE `channels`
 -- AUTO_INCREMENT de la tabla `cities`
 --
 ALTER TABLE `cities`
-  MODIFY `city_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `city_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `companies`
@@ -275,19 +276,19 @@ ALTER TABLE `contacts`
 -- AUTO_INCREMENT de la tabla `countries`
 --
 ALTER TABLE `countries`
-  MODIFY `country_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `country_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `regions`
 --
 ALTER TABLE `regions`
-  MODIFY `region_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `region_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `user_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Restricciones para tablas volcadas
@@ -297,7 +298,7 @@ ALTER TABLE `users`
 -- Filtros para la tabla `cities`
 --
 ALTER TABLE `cities`
-  ADD CONSTRAINT `cities_ibfk_1` FOREIGN KEY (`country_id`) REFERENCES `countries` (`country_id`);
+  ADD CONSTRAINT `cities_ibfk_1` FOREIGN KEY (`country_id`) REFERENCES `countries` (`country_id`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `companies`
@@ -323,7 +324,7 @@ ALTER TABLE `contacts_channels`
 -- Filtros para la tabla `countries`
 --
 ALTER TABLE `countries`
-  ADD CONSTRAINT `countries_ibfk_1` FOREIGN KEY (`region_id`) REFERENCES `regions` (`region_id`);
+  ADD CONSTRAINT `countries_ibfk_1` FOREIGN KEY (`region_id`) REFERENCES `regions` (`region_id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

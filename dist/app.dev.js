@@ -25,7 +25,8 @@ var _require = require('./queries.js'),
     getCountries = _require.getCountries,
     createCountry = _require.createCountry,
     getCountry = _require.getCountry,
-    modifyCountry = _require.modifyCountry;
+    modifyCountry = _require.modifyCountry,
+    deleteCountry = _require.deleteCountry;
 
 var _require2 = require('./functions.js'),
     validateLogin = _require2.validateLogin,
@@ -227,7 +228,8 @@ app["delete"]('/regions/:regionId', validateRegionId, function _callee11(req, re
       switch (_context11.prev = _context11.next) {
         case 0:
           regionId = +req.params.regionId;
-          deleteRegion(regionId, req, res);
+          deleteRegion(regionId, req, res); //no puedo borrar una region si tengo países en ella o si borro una region 
+          //borro todos los paises que tiene
 
         case 2:
         case "end":
@@ -328,6 +330,23 @@ app.put('/countries/:countryId', validateCountryId, validateRegionIdCountry, val
         case 2:
         case "end":
           return _context17.stop();
+      }
+    }
+  });
+});
+app["delete"]('/countries/:countryId', validateCountryId, function _callee18(req, res) {
+  var countryId;
+  return regeneratorRuntime.async(function _callee18$(_context18) {
+    while (1) {
+      switch (_context18.prev = _context18.next) {
+        case 0:
+          countryId = +req.params.countryId;
+          deleteCountry(countryId, req, res); //no puedo borrar un país si tengo ciudades en el o si borro un país 
+          //borro todas las ciudades que tiene
+
+        case 2:
+        case "end":
+          return _context18.stop();
       }
     }
   });

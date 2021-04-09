@@ -514,8 +514,7 @@ function modifyRegion(regionId, req, res) {
 }
 
 function deleteRegion(regionId, req, res) {
-  var region, deleted, _region$, region_id, firstname, lastname, email, perfil;
-
+  var region, deleted;
   return regeneratorRuntime.async(function deleteRegion$(_context17) {
     while (1) {
       switch (_context17.prev = _context17.next) {
@@ -536,10 +535,9 @@ function deleteRegion(regionId, req, res) {
 
         case 5:
           deleted = _context17.sent;
-          _region$ = region[0], region_id = _region$.region_id, firstname = _region$.firstname, lastname = _region$.lastname, email = _region$.email, perfil = _region$.perfil;
           res.status(200).json(region);
 
-        case 8:
+        case 7:
         case "end":
           return _context17.stop();
       }
@@ -852,6 +850,38 @@ function validateRegionIdCountryQuery(req, res, next) {
   });
 }
 
+function deleteCountry(countryId, req, res) {
+  var country, deleted;
+  return regeneratorRuntime.async(function deleteCountry$(_context28) {
+    while (1) {
+      switch (_context28.prev = _context28.next) {
+        case 0:
+          _context28.next = 2;
+          return regeneratorRuntime.awrap(db.query("SELECT * FROM countries WHERE country_id = ?", {
+            replacements: [countryId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          country = _context28.sent;
+          _context28.next = 5;
+          return regeneratorRuntime.awrap(db.query("DELETE FROM countries WHERE country_id = ?", {
+            replacements: [countryId],
+            type: QueryTypes.DELETE
+          }));
+
+        case 5:
+          deleted = _context28.sent;
+          res.status(200).json(country);
+
+        case 7:
+        case "end":
+          return _context28.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   selectUserLogin: selectUserLogin,
   validateLoginQuery: validateLoginQuery,
@@ -879,5 +909,6 @@ module.exports = {
   getCountry: getCountry,
   validateCountryNamePutQuery: validateCountryNamePutQuery,
   modifyCountry: modifyCountry,
-  validateRegionIdCountryQuery: validateRegionIdCountryQuery
+  validateRegionIdCountryQuery: validateRegionIdCountryQuery,
+  deleteCountry: deleteCountry
 };

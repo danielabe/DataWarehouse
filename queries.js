@@ -207,7 +207,6 @@ async function deleteRegion(regionId, req, res) {
         replacements: [regionId],
         type: QueryTypes.DELETE
     })
-    const {region_id, firstname, lastname, email, perfil} = region[0]
     res.status(200).json(region)
 }
 
@@ -328,10 +327,22 @@ async function validateRegionIdCountryQuery(req, res, next) {
     } else next()
 }
 
+async function deleteCountry(countryId, req, res) {
+    const country = await db.query(`SELECT * FROM countries WHERE country_id = ?`, {
+        replacements: [countryId],
+        type: QueryTypes.SELECT 
+    })
+    const deleted = await db.query(`DELETE FROM countries WHERE country_id = ?`, {
+        replacements: [countryId],
+        type: QueryTypes.DELETE
+    })
+    res.status(200).json(country)
+}
+
 module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, 
     validateEmailQuery, validateUserIdQuery, getUser, modifyUser, deleteUser, 
     getRegions, createRegion, validateRegionNameQuery, validateRegionIdQuery, 
     getRegion, validateRegionNamePutQuery, modifyRegion, deleteRegion, 
     getCountriesRegion, getCitiesRegion, getCountries, validateCountryNameQuery,
     createCountry, validateCountryIdQuery, getCountry, validateCountryNamePutQuery,
-    modifyCountry, validateRegionIdCountryQuery }
+    modifyCountry, validateRegionIdCountryQuery, deleteCountry }
