@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken')
 const { selectUserLogin, getUsers, createUser, getUser, modifyUser, deleteUser, getRegions,
     createRegion, getRegion, modifyRegion, deleteRegion, getCountriesRegion,
     getCitiesRegion, getCountries, createCountry, getCountry, modifyCountry,
-    deleteCountry, getCitiesCountry } = require('./queries.js')
+    deleteCountry, getCitiesCountry, getCities } = require('./queries.js')
 
 const { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
     validateEmail, validatePassword, validateUser, validateUserId, validateFirstnamePut,
@@ -128,6 +128,11 @@ app.get('/countries/:countryId/cities', validateCountryId, async (req, res) => {
     const countryId = +req.params.countryId
     getCitiesCountry(countryId, req, res)
 }) 
+
+//cities 
+app.get('/cities', async (req, res) => {    
+    getCities(req, res)                                 
+})
 
 /* express-rate-limit, .env, bcrypt
 */

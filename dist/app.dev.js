@@ -27,7 +27,8 @@ var _require = require('./queries.js'),
     getCountry = _require.getCountry,
     modifyCountry = _require.modifyCountry,
     deleteCountry = _require.deleteCountry,
-    getCitiesCountry = _require.getCitiesCountry;
+    getCitiesCountry = _require.getCitiesCountry,
+    getCities = _require.getCities;
 
 var _require2 = require('./functions.js'),
     validateLogin = _require2.validateLogin,
@@ -364,6 +365,21 @@ app.get('/countries/:countryId/cities', validateCountryId, function _callee19(re
         case 2:
         case "end":
           return _context19.stop();
+      }
+    }
+  });
+}); //cities 
+
+app.get('/cities', function _callee20(req, res) {
+  return regeneratorRuntime.async(function _callee20$(_context20) {
+    while (1) {
+      switch (_context20.prev = _context20.next) {
+        case 0:
+          getCities(req, res);
+
+        case 1:
+        case "end":
+          return _context20.stop();
       }
     }
   });
