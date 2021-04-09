@@ -6,13 +6,13 @@ const jwt = require('jsonwebtoken')
 const { selectUserLogin, getUsers, createUser, getUser, modifyUser, deleteUser, getRegions,
     createRegion, getRegion, modifyRegion, deleteRegion, getCountriesRegion,
     getCitiesRegion, getCountries, createCountry, getCountry, modifyCountry,
-    deleteCountry, getCitiesCountry, getCities } = require('./queries.js')
+    deleteCountry, getCitiesCountry, getCities, createCity } = require('./queries.js')
 
 const { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
     validateEmail, validatePassword, validateUser, validateUserId, validateFirstnamePut,
     validateLastnamePut, validatePasswordPut, validateRegionName, validateRegionId, 
     validateRegionNamePut, validateCountryName, validateCountryId, validateCountryNamePut,
-    validateRegionIdCountry } = require('./functions.js')
+    validateRegionIdCountry, validateCityName } = require('./functions.js')
 
 app.use(express.json())
 app.use(helmet())
@@ -132,6 +132,11 @@ app.get('/countries/:countryId/cities', validateCountryId, async (req, res) => {
 //cities 
 app.get('/cities', async (req, res) => {    
     getCities(req, res)                                 
+})
+
+app.post('/cities', validateCityName, validateCountryId, async (req, res) => {
+    const { country_id, city_name } = req.body
+    createCity(country_id, city_name, req, res)
 })
 
 /* express-rate-limit, .env, bcrypt

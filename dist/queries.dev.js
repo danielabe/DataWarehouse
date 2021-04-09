@@ -905,7 +905,8 @@ function getCitiesCountry(countryId, req, res) {
       }
     }
   });
-}
+} //cities
+
 
 function getCities(req, res) {
   var cities;
@@ -925,6 +926,69 @@ function getCities(req, res) {
         case 4:
         case "end":
           return _context30.stop();
+      }
+    }
+  });
+}
+
+function validateCityNameQuery(req, res, next) {
+  var city, cities, citiesArray;
+  return regeneratorRuntime.async(function validateCityNameQuery$(_context31) {
+    while (1) {
+      switch (_context31.prev = _context31.next) {
+        case 0:
+          city = req.body.city_name;
+          _context31.next = 3;
+          return regeneratorRuntime.awrap(db.query("SELECT city_name FROM cities", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 3:
+          cities = _context31.sent;
+          citiesArray = cities.map(function (city) {
+            return city.city_name;
+          });
+
+          if (req.body.city_name.length >= 2 && req.body.city_name.length <= 64) {
+            if (citiesArray.every(function (name) {
+              return name !== city;
+            })) next();else res.status(400).send("The city already exists").end();
+          } else res.status(400).send("The city name length is wrong").end();
+
+        case 6:
+        case "end":
+          return _context31.stop();
+      }
+    }
+  });
+}
+
+function createCity(country_id, city_name, req, res) {
+  var inserted;
+  return regeneratorRuntime.async(function createCity$(_context32) {
+    while (1) {
+      switch (_context32.prev = _context32.next) {
+        case 0:
+          _context32.next = 2;
+          return regeneratorRuntime.awrap(db.query("\n    INSERT INTO cities (country_id, city_name)\n    VALUES (:country_id, :city_name)\n    ", {
+            replacements: {
+              country_id: country_id,
+              city_name: city_name
+            },
+            type: QueryTypes.INSERT
+          }));
+
+        case 2:
+          inserted = _context32.sent;
+          res.status(201).json(Object.assign({}, {
+            city_id: inserted[0],
+            country_id: country_id,
+            city_name: city_name
+          }));
+
+        case 4:
+        case "end":
+          return _context32.stop();
       }
     }
   });
@@ -960,5 +1024,7 @@ module.exports = {
   validateRegionIdCountryQuery: validateRegionIdCountryQuery,
   deleteCountry: deleteCountry,
   getCitiesCountry: getCitiesCountry,
-  getCities: getCities
+  getCities: getCities,
+  validateCityNameQuery: validateCityNameQuery,
+  createCity: createCity
 };

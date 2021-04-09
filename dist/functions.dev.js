@@ -14,7 +14,8 @@ var _require = require('./queries.js'),
     validateCountryNameQuery = _require.validateCountryNameQuery,
     validateCountryIdQuery = _require.validateCountryIdQuery,
     validateCountryNamePutQuery = _require.validateCountryNamePutQuery,
-    validateRegionIdCountryQuery = _require.validateRegionIdCountryQuery; //users
+    validateRegionIdCountryQuery = _require.validateRegionIdCountryQuery,
+    validateCityNameQuery = _require.validateCityNameQuery; //users
 
 
 function validateLogin(req, res, next) {
@@ -244,6 +245,23 @@ function validateRegionIdCountry(req, res, next) {
       }
     }
   });
+} //cities
+
+
+function validateCityName(req, res, next) {
+  return regeneratorRuntime.async(function validateCityName$(_context11) {
+    while (1) {
+      switch (_context11.prev = _context11.next) {
+        case 0:
+          _context11.next = 2;
+          return regeneratorRuntime.awrap(validateCityNameQuery(req, res, next));
+
+        case 2:
+        case "end":
+          return _context11.stop();
+      }
+    }
+  });
 }
 
 module.exports = {
@@ -265,5 +283,6 @@ module.exports = {
   validateCountryName: validateCountryName,
   validateCountryId: validateCountryId,
   validateCountryNamePut: validateCountryNamePut,
-  validateRegionIdCountry: validateRegionIdCountry
+  validateRegionIdCountry: validateRegionIdCountry,
+  validateCityName: validateCityName
 };

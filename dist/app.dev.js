@@ -28,7 +28,8 @@ var _require = require('./queries.js'),
     modifyCountry = _require.modifyCountry,
     deleteCountry = _require.deleteCountry,
     getCitiesCountry = _require.getCitiesCountry,
-    getCities = _require.getCities;
+    getCities = _require.getCities,
+    createCity = _require.createCity;
 
 var _require2 = require('./functions.js'),
     validateLogin = _require2.validateLogin,
@@ -49,7 +50,8 @@ var _require2 = require('./functions.js'),
     validateCountryName = _require2.validateCountryName,
     validateCountryId = _require2.validateCountryId,
     validateCountryNamePut = _require2.validateCountryNamePut,
-    validateRegionIdCountry = _require2.validateRegionIdCountry;
+    validateRegionIdCountry = _require2.validateRegionIdCountry,
+    validateCityName = _require2.validateCityName;
 
 app.use(express.json());
 app.use(helmet());
@@ -380,6 +382,23 @@ app.get('/cities', function _callee20(req, res) {
         case 1:
         case "end":
           return _context20.stop();
+      }
+    }
+  });
+});
+app.post('/cities', validateCityName, validateCountryId, function _callee21(req, res) {
+  var _req$body3, country_id, city_name;
+
+  return regeneratorRuntime.async(function _callee21$(_context21) {
+    while (1) {
+      switch (_context21.prev = _context21.next) {
+        case 0:
+          _req$body3 = req.body, country_id = _req$body3.country_id, city_name = _req$body3.city_name;
+          createCity(country_id, city_name, req, res);
+
+        case 2:
+        case "end":
+          return _context21.stop();
       }
     }
   });

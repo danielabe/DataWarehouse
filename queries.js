@@ -348,9 +348,33 @@ async function getCitiesCountry(countryId, req, res) {
     res.status(200).json(cities)
 }
 
+//cities
 async function getCities(req, res) {
     const cities = await db.query(`SELECT * FROM cities`, { type: QueryTypes.SELECT })
     res.status(200).json(cities)
+}
+
+async function validateCityNameQuery(req, res, next) {
+    const city = req.body.city_name
+    const cities = await db.query(`SELECT city_name FROM cities`, {
+        type: QueryTypes.SELECT
+    })
+    const citiesArray = cities.map(city => city.city_name)
+    if(req.body.city_name.length >= 2 && req.body.city_name.length <= 64) {
+        if(citiesArray.every(name => name !== city)) next()
+        else res.status(400).send("The city already exists").end()
+    } else res.status(400).send("The city name length is wrong").end()
+}
+
+async function createCity(country_id, city_name, req, res) {
+    const inserted = await db.query(`
+    INSERT INTO cities (country_id, city_name)
+    VALUES (:country_id, :city_name)
+    `, {
+        replacements: { country_id, city_name },
+        type: QueryTypes.INSERT
+    })
+    res.status(201).json(Object.assign({}, { city_id: inserted[0], country_id: country_id, city_name: city_name }))
 }
 
 module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, 
@@ -360,4 +384,4 @@ module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser,
     getCountriesRegion, getCitiesRegion, getCountries, validateCountryNameQuery,
     createCountry, validateCountryIdQuery, getCountry, validateCountryNamePutQuery,
     modifyCountry, validateRegionIdCountryQuery, deleteCountry, getCitiesCountry,
-    getCities }
+    getCities, validateCityNameQuery, createCity }
