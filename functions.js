@@ -5,7 +5,7 @@ const authorizationPassword = 'tmo$Q$bG5xR56'
 const { validateLoginQuery, validateEmailQuery, validateUserIdQuery, 
     validateRegionNameQuery, validateRegionIdQuery, validateRegionNamePutQuery,
     validateCountryNameQuery, validateCountryIdQuery, validateCountryNamePutQuery,
-    validateRegionIdCountryQuery, validateCityNameQuery } = require('./queries.js')
+    validateRegionIdCountryQuery, validateCityNameQuery, validateCityIdQuery } = require('./queries.js')
 
 //users
 async function validateLogin(req, res, next) {
@@ -127,10 +127,14 @@ async function validateCityName(req, res, next) {
     await validateCityNameQuery(req, res, next)
 }
 
+async function validateCityId(req, res, next) {
+    await validateCityIdQuery(req, res, next)
+}
+
 module.exports = { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
     validateEmail, validatePassword, validateUser, validateUserId, validateFirstnamePut, 
     validateLastnamePut, validatePasswordPut, validateRegionName, validateRegionId, 
     validateRegionNamePut, validateCountryName, validateCountryId, validateCountryNamePut,
-    validateRegionIdCountry, validateCityName
+    validateRegionIdCountry, validateCityName, validateCityId
 }
 

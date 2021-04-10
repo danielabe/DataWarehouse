@@ -377,6 +377,26 @@ async function createCity(country_id, city_name, req, res) {
     res.status(201).json(Object.assign({}, { city_id: inserted[0], country_id: country_id, city_name: city_name }))
 }
 
+async function validateCityIdQuery(req, res, next) {
+    const cityId = +req.params.cityId || req.body.city_id
+    const cities = await db.query(`SELECT city_id FROM cities`, {
+        type: QueryTypes.SELECT
+    })
+    const citiesArray = cities.map(id => id.city_id)
+    if(citiesArray.includes(cityId)) next()
+    else res.status(404).send("The city does not exist").end()
+}
+
+async function getCity(cityId, req, res) {
+    const city = await db.query(`
+    SELECT * FROM cities WHERE city_id = ?
+    `, { 
+        replacements: [cityId],
+        type: QueryTypes.SELECT 
+    })
+    res.status(200).json(city[0])
+}
+
 module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, 
     validateEmailQuery, validateUserIdQuery, getUser, modifyUser, deleteUser, 
     getRegions, createRegion, validateRegionNameQuery, validateRegionIdQuery, 
@@ -384,4 +404,4 @@ module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser,
     getCountriesRegion, getCitiesRegion, getCountries, validateCountryNameQuery,
     createCountry, validateCountryIdQuery, getCountry, validateCountryNamePutQuery,
     modifyCountry, validateRegionIdCountryQuery, deleteCountry, getCitiesCountry,
-    getCities, validateCityNameQuery, createCity }
+    getCities, validateCityNameQuery, createCity, validateCityIdQuery, getCity }

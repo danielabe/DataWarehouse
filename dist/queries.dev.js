@@ -994,6 +994,57 @@ function createCity(country_id, city_name, req, res) {
   });
 }
 
+function validateCityIdQuery(req, res, next) {
+  var cityId, cities, citiesArray;
+  return regeneratorRuntime.async(function validateCityIdQuery$(_context33) {
+    while (1) {
+      switch (_context33.prev = _context33.next) {
+        case 0:
+          cityId = +req.params.cityId || req.body.city_id;
+          _context33.next = 3;
+          return regeneratorRuntime.awrap(db.query("SELECT city_id FROM cities", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 3:
+          cities = _context33.sent;
+          citiesArray = cities.map(function (id) {
+            return id.city_id;
+          });
+          if (citiesArray.includes(cityId)) next();else res.status(404).send("The city does not exist").end();
+
+        case 6:
+        case "end":
+          return _context33.stop();
+      }
+    }
+  });
+}
+
+function getCity(cityId, req, res) {
+  var city;
+  return regeneratorRuntime.async(function getCity$(_context34) {
+    while (1) {
+      switch (_context34.prev = _context34.next) {
+        case 0:
+          _context34.next = 2;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM cities WHERE city_id = ?\n    ", {
+            replacements: [cityId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          city = _context34.sent;
+          res.status(200).json(city[0]);
+
+        case 4:
+        case "end":
+          return _context34.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   selectUserLogin: selectUserLogin,
   validateLoginQuery: validateLoginQuery,
@@ -1026,5 +1077,7 @@ module.exports = {
   getCitiesCountry: getCitiesCountry,
   getCities: getCities,
   validateCityNameQuery: validateCityNameQuery,
-  createCity: createCity
+  createCity: createCity,
+  validateCityIdQuery: validateCityIdQuery,
+  getCity: getCity
 };
