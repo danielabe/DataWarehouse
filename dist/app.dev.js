@@ -35,7 +35,8 @@ var _require = require('./queries.js'),
     deleteCity = _require.deleteCity,
     getCompanies = _require.getCompanies,
     createCompany = _require.createCompany,
-    getCompany = _require.getCompany;
+    getCompany = _require.getCompany,
+    modifyCompany = _require.modifyCompany;
 
 var _require2 = require('./functions.js'),
     validateLogin = _require2.validateLogin,
@@ -63,7 +64,10 @@ var _require2 = require('./functions.js'),
     validateCityNamePut = _require2.validateCityNamePut,
     validateCompanyName = _require2.validateCompanyName,
     validateAddress = _require2.validateAddress,
-    validateCompanyId = _require2.validateCompanyId;
+    validateCompanyId = _require2.validateCompanyId,
+    validateCompanyNamePut = _require2.validateCompanyNamePut,
+    validateCityIdPut = _require2.validateCityIdPut,
+    validateAddressPut = _require2.validateAddressPut;
 
 app.use(express.json());
 app.use(helmet());
@@ -510,6 +514,22 @@ app.get('/companies/:companyId', validateCompanyId, function _callee27(req, res)
         case 2:
         case "end":
           return _context27.stop();
+      }
+    }
+  });
+});
+app.put('/companies/:companyId', validateCompanyId, validateCompanyNamePut, validateCityIdPut, validateAddressPut, function _callee28(req, res) {
+  var companyId;
+  return regeneratorRuntime.async(function _callee28$(_context28) {
+    while (1) {
+      switch (_context28.prev = _context28.next) {
+        case 0:
+          companyId = +req.params.companyId;
+          modifyCompany(companyId, req, res);
+
+        case 2:
+        case "end":
+          return _context28.stop();
       }
     }
   });

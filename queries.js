@@ -521,6 +521,62 @@ async function getCompany(companyId, req, res) {
     res.status(200).json(company[0])
 }
 
+async function validateCompanyNamePutQuery(req, res, next) {
+    if(req.body.company_name){
+        const company = req.body.company_name
+        const companies = await db.query(`SELECT company_name FROM companies`, {
+            type: QueryTypes.SELECT
+        })
+        const companiesArray = companies.map(company => company.company_name)
+        if(req.body.company_name.length >= 2 && req.body.company_name.length <= 64) {
+            if(companiesArray.every(name => name !== company)) next()
+            else res.status(400).send("The company already exists").end()
+        } else res.status(400).send("The company name length is wrong").end()
+    } else next()
+}
+
+async function validateCityIdPutQuery(req, res, next) { 
+    if(req.body.city_id) {
+        const cityId = req.body.city_id
+        const cities = await db.query(`SELECT city_id FROM cities`, {
+            type: QueryTypes.SELECT
+        })
+        const citiesArray = cities.map(id => id.city_id)
+        if(citiesArray.includes(cityId)) next()
+        else res.status(404).send("The city does not exist").end()
+    } else next()
+}
+
+async function modifyCompany(companyId, req, res) {
+    const company = await db.query(`SELECT * FROM companies WHERE company_id = ?`, {
+        replacements: [companyId],
+        type: QueryTypes.SELECT 
+    })
+    const newcompany = {
+        company_id: companyId,
+        company_name: req.body.company_name || company[0].company_name,
+        city_id: req.body.city_id || company[0].city_id,
+        address: req.body.address || company[0].address
+    }
+    const modified = await db.query(`
+    UPDATE companies SET company_name = :company_name, city_id = :city_id, address = :address
+    WHERE company_id = :company_id
+    `, {
+        replacements: newcompany,
+        type: QueryTypes.UPDATE
+    })
+    const companyRes = await db.query(`
+    SELECT company_id, company_name, c.city_id, city_name, ci.country_id, country_name, 
+    co.region_id, region_name, address
+    FROM companies c
+    JOIN cities ci ON ci.city_id = c.city_id
+    JOIN countries co ON co.country_id = ci.country_id
+    JOIN regions re ON re.region_id = co.region_id
+    WHERE company_id = :company_id
+    `, { replacements: newcompany, type: QueryTypes.SELECT })
+    res.status(200).json(companyRes)
+}
+
 module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, 
     validateEmailQuery, validateUserIdQuery, getUser, modifyUser, deleteUser, 
     getRegions, createRegion, validateRegionNameQuery, validateRegionIdQuery, 
@@ -531,4 +587,4 @@ module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser,
     getCities, validateCityNameQuery, createCity, validateCityIdQuery, getCity,
     validateCountryIdCityQuery, validateCityNamePutQuery, modifyCity, deleteCity,
     getCompanies, validateCompanyNameQuery, createCompany,validateCompanyIdQuery, 
-    getCompany }
+    getCompany, validateCompanyNamePutQuery, modifyCompany, validateCityIdPutQuery }

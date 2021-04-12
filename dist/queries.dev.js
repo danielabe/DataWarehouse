@@ -1333,6 +1333,132 @@ function getCompany(companyId, req, res) {
   });
 }
 
+function validateCompanyNamePutQuery(req, res, next) {
+  var company, companies, companiesArray;
+  return regeneratorRuntime.async(function validateCompanyNamePutQuery$(_context44) {
+    while (1) {
+      switch (_context44.prev = _context44.next) {
+        case 0:
+          if (!req.body.company_name) {
+            _context44.next = 9;
+            break;
+          }
+
+          company = req.body.company_name;
+          _context44.next = 4;
+          return regeneratorRuntime.awrap(db.query("SELECT company_name FROM companies", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 4:
+          companies = _context44.sent;
+          companiesArray = companies.map(function (company) {
+            return company.company_name;
+          });
+
+          if (req.body.company_name.length >= 2 && req.body.company_name.length <= 64) {
+            if (companiesArray.every(function (name) {
+              return name !== company;
+            })) next();else res.status(400).send("The company already exists").end();
+          } else res.status(400).send("The company name length is wrong").end();
+
+          _context44.next = 10;
+          break;
+
+        case 9:
+          next();
+
+        case 10:
+        case "end":
+          return _context44.stop();
+      }
+    }
+  });
+}
+
+function validateCityIdPutQuery(req, res, next) {
+  var cityId, cities, citiesArray;
+  return regeneratorRuntime.async(function validateCityIdPutQuery$(_context45) {
+    while (1) {
+      switch (_context45.prev = _context45.next) {
+        case 0:
+          if (!req.body.city_id) {
+            _context45.next = 9;
+            break;
+          }
+
+          cityId = req.body.city_id;
+          _context45.next = 4;
+          return regeneratorRuntime.awrap(db.query("SELECT city_id FROM cities", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 4:
+          cities = _context45.sent;
+          citiesArray = cities.map(function (id) {
+            return id.city_id;
+          });
+          if (citiesArray.includes(cityId)) next();else res.status(404).send("The city does not exist").end();
+          _context45.next = 10;
+          break;
+
+        case 9:
+          next();
+
+        case 10:
+        case "end":
+          return _context45.stop();
+      }
+    }
+  });
+}
+
+function modifyCompany(companyId, req, res) {
+  var company, newcompany, modified, companyRes;
+  return regeneratorRuntime.async(function modifyCompany$(_context46) {
+    while (1) {
+      switch (_context46.prev = _context46.next) {
+        case 0:
+          _context46.next = 2;
+          return regeneratorRuntime.awrap(db.query("SELECT * FROM companies WHERE company_id = ?", {
+            replacements: [companyId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          company = _context46.sent;
+          newcompany = {
+            company_id: companyId,
+            company_name: req.body.company_name || company[0].company_name,
+            city_id: req.body.city_id || company[0].city_id,
+            address: req.body.address || company[0].address
+          };
+          _context46.next = 6;
+          return regeneratorRuntime.awrap(db.query("\n    UPDATE companies SET company_name = :company_name, city_id = :city_id, address = :address\n    WHERE company_id = :company_id\n    ", {
+            replacements: newcompany,
+            type: QueryTypes.UPDATE
+          }));
+
+        case 6:
+          modified = _context46.sent;
+          _context46.next = 9;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT company_id, company_name, c.city_id, city_name, ci.country_id, country_name, \n    co.region_id, region_name, address\n    FROM companies c\n    JOIN cities ci ON ci.city_id = c.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    WHERE company_id = :company_id\n    ", {
+            replacements: newcompany,
+            type: QueryTypes.SELECT
+          }));
+
+        case 9:
+          companyRes = _context46.sent;
+          res.status(200).json(companyRes);
+
+        case 11:
+        case "end":
+          return _context46.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   selectUserLogin: selectUserLogin,
   validateLoginQuery: validateLoginQuery,
@@ -1376,5 +1502,8 @@ module.exports = {
   validateCompanyNameQuery: validateCompanyNameQuery,
   createCompany: createCompany,
   validateCompanyIdQuery: validateCompanyIdQuery,
-  getCompany: getCompany
+  getCompany: getCompany,
+  validateCompanyNamePutQuery: validateCompanyNamePutQuery,
+  modifyCompany: modifyCompany,
+  validateCityIdPutQuery: validateCityIdPutQuery
 };

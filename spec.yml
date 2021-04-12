@@ -805,6 +805,8 @@ paths:
           description: "Bad request"
         "401":
           description: "Unauthorized"
+        "404":
+          description: "Company not found"
   /companies/{companyId}:
     get:
       tags:

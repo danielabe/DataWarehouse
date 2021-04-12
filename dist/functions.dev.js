@@ -20,7 +20,9 @@ var _require = require('./queries.js'),
     validateCountryIdCityQuery = _require.validateCountryIdCityQuery,
     validateCityNamePutQuery = _require.validateCityNamePutQuery,
     validateCompanyNameQuery = _require.validateCompanyNameQuery,
-    validateCompanyIdQuery = _require.validateCompanyIdQuery; //users
+    validateCompanyIdQuery = _require.validateCompanyIdQuery,
+    validateCompanyNamePutQuery = _require.validateCompanyNamePutQuery,
+    validateCityIdPutQuery = _require.validateCityIdPutQuery; //users
 
 
 function validateLogin(req, res, next) {
@@ -355,6 +357,57 @@ function validateCompanyId(req, res, next) {
   });
 }
 
+function validateCompanyNamePut(req, res, next) {
+  return regeneratorRuntime.async(function validateCompanyNamePut$(_context17) {
+    while (1) {
+      switch (_context17.prev = _context17.next) {
+        case 0:
+          _context17.next = 2;
+          return regeneratorRuntime.awrap(validateCompanyNamePutQuery(req, res, next));
+
+        case 2:
+        case "end":
+          return _context17.stop();
+      }
+    }
+  });
+}
+
+function validateCityIdPut(req, res, next) {
+  return regeneratorRuntime.async(function validateCityIdPut$(_context18) {
+    while (1) {
+      switch (_context18.prev = _context18.next) {
+        case 0:
+          _context18.next = 2;
+          return regeneratorRuntime.awrap(validateCityIdPutQuery(req, res, next));
+
+        case 2:
+        case "end":
+          return _context18.stop();
+      }
+    }
+  });
+}
+
+function validateAddressPut(req, res, next) {
+  var address;
+  return regeneratorRuntime.async(function validateAddressPut$(_context19) {
+    while (1) {
+      switch (_context19.prev = _context19.next) {
+        case 0:
+          if (req.body.address) {
+            address = req.body.address;
+            if (address.length >= 3 && address.length <= 64) next();else res.status(400).send("The address is wrong").end();
+          } else next();
+
+        case 1:
+        case "end":
+          return _context19.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   validateLogin: validateLogin,
   verifyToken: verifyToken,
@@ -381,5 +434,8 @@ module.exports = {
   validateCityNamePut: validateCityNamePut,
   validateCompanyName: validateCompanyName,
   validateAddress: validateAddress,
-  validateCompanyId: validateCompanyId
+  validateCompanyId: validateCompanyId,
+  validateCompanyNamePut: validateCompanyNamePut,
+  validateCityIdPut: validateCityIdPut,
+  validateAddressPut: validateAddressPut
 };

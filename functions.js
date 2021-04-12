@@ -7,7 +7,7 @@ const { validateLoginQuery, validateEmailQuery, validateUserIdQuery,
     validateCountryNameQuery, validateCountryIdQuery, validateCountryNamePutQuery,
     validateRegionIdCountryQuery, validateCityNameQuery, validateCityIdQuery,
     validateCountryIdCityQuery, validateCityNamePutQuery, validateCompanyNameQuery,
-    validateCompanyIdQuery } = require('./queries.js')
+    validateCompanyIdQuery, validateCompanyNamePutQuery, validateCityIdPutQuery } = require('./queries.js')
 
 //users
 async function validateLogin(req, res, next) {
@@ -156,11 +156,28 @@ async function validateCompanyId(req, res, next) {
     await validateCompanyIdQuery(req, res, next)
 }
 
+async function validateCompanyNamePut(req, res, next) {
+    await validateCompanyNamePutQuery(req, res, next)
+}
+
+async function validateCityIdPut(req, res, next) {
+    await validateCityIdPutQuery(req, res, next)
+}
+
+async function validateAddressPut(req, res, next) {
+    if(req.body.address) {
+        const address = req.body.address
+        if(address.length >= 3 && address.length <= 64) next()
+        else res.status(400).send("The address is wrong").end()
+    } else next()
+}
+
 module.exports = { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
     validateEmail, validatePassword, validateUser, validateUserId, validateFirstnamePut, 
     validateLastnamePut, validatePasswordPut, validateRegionName, validateRegionId, 
     validateRegionNamePut, validateCountryName, validateCountryId, validateCountryNamePut,
     validateRegionIdCountry, validateCityName, validateCityId, validateCountryIdCity,
-    validateCityNamePut, validateCompanyName, validateAddress,validateCompanyId
+    validateCityNamePut, validateCompanyName, validateAddress,validateCompanyId, 
+    validateCompanyNamePut, validateCityIdPut, validateAddressPut
 }
 
