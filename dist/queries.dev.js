@@ -1282,6 +1282,57 @@ function createCompany(newCompany, req, res) {
   });
 }
 
+function validateCompanyIdQuery(req, res, next) {
+  var companyId, companies, companiesArray;
+  return regeneratorRuntime.async(function validateCompanyIdQuery$(_context42) {
+    while (1) {
+      switch (_context42.prev = _context42.next) {
+        case 0:
+          companyId = +req.params.companyId || req.body.company_id;
+          _context42.next = 3;
+          return regeneratorRuntime.awrap(db.query("SELECT company_id FROM companies", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 3:
+          companies = _context42.sent;
+          companiesArray = companies.map(function (id) {
+            return id.company_id;
+          });
+          if (companiesArray.includes(companyId)) next();else res.status(404).send("The company does not exist").end();
+
+        case 6:
+        case "end":
+          return _context42.stop();
+      }
+    }
+  });
+}
+
+function getCompany(companyId, req, res) {
+  var company;
+  return regeneratorRuntime.async(function getCompany$(_context43) {
+    while (1) {
+      switch (_context43.prev = _context43.next) {
+        case 0:
+          _context43.next = 2;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM companies WHERE company_id = ?\n    ", {
+            replacements: [companyId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          company = _context43.sent;
+          res.status(200).json(company[0]);
+
+        case 4:
+        case "end":
+          return _context43.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   selectUserLogin: selectUserLogin,
   validateLoginQuery: validateLoginQuery,
@@ -1323,5 +1374,7 @@ module.exports = {
   deleteCity: deleteCity,
   getCompanies: getCompanies,
   validateCompanyNameQuery: validateCompanyNameQuery,
-  createCompany: createCompany
+  createCompany: createCompany,
+  validateCompanyIdQuery: validateCompanyIdQuery,
+  getCompany: getCompany
 };

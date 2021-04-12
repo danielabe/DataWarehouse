@@ -34,7 +34,8 @@ var _require = require('./queries.js'),
     modifyCity = _require.modifyCity,
     deleteCity = _require.deleteCity,
     getCompanies = _require.getCompanies,
-    createCompany = _require.createCompany;
+    createCompany = _require.createCompany,
+    getCompany = _require.getCompany;
 
 var _require2 = require('./functions.js'),
     validateLogin = _require2.validateLogin,
@@ -61,7 +62,8 @@ var _require2 = require('./functions.js'),
     validateCountryIdCity = _require2.validateCountryIdCity,
     validateCityNamePut = _require2.validateCityNamePut,
     validateCompanyName = _require2.validateCompanyName,
-    validateAddress = _require2.validateAddress;
+    validateAddress = _require2.validateAddress,
+    validateCompanyId = _require2.validateCompanyId;
 
 app.use(express.json());
 app.use(helmet());
@@ -492,6 +494,22 @@ app.post('/companies', validateCompanyName, validateCityId, validateAddress, fun
         case 2:
         case "end":
           return _context26.stop();
+      }
+    }
+  });
+});
+app.get('/companies/:companyId', validateCompanyId, function _callee27(req, res) {
+  var companyId;
+  return regeneratorRuntime.async(function _callee27$(_context27) {
+    while (1) {
+      switch (_context27.prev = _context27.next) {
+        case 0:
+          companyId = +req.params.companyId;
+          getCompany(companyId, req, res);
+
+        case 2:
+        case "end":
+          return _context27.stop();
       }
     }
   });

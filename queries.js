@@ -501,6 +501,26 @@ async function createCompany(newCompany, req, res) {
     res.status(201).json(company[0])
 }
 
+async function validateCompanyIdQuery(req, res, next) {
+    const companyId = +req.params.companyId || req.body.company_id
+    const companies = await db.query(`SELECT company_id FROM companies`, {
+        type: QueryTypes.SELECT
+    })
+    const companiesArray = companies.map(id => id.company_id)
+    if(companiesArray.includes(companyId)) next()
+    else res.status(404).send("The company does not exist").end()
+}
+
+async function getCompany(companyId, req, res) {
+    const company = await db.query(`
+    SELECT * FROM companies WHERE company_id = ?
+    `, { 
+        replacements: [companyId],
+        type: QueryTypes.SELECT 
+    })
+    res.status(200).json(company[0])
+}
+
 module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, 
     validateEmailQuery, validateUserIdQuery, getUser, modifyUser, deleteUser, 
     getRegions, createRegion, validateRegionNameQuery, validateRegionIdQuery, 
@@ -510,4 +530,5 @@ module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser,
     modifyCountry, validateRegionIdCountryQuery, deleteCountry, getCitiesCountry,
     getCities, validateCityNameQuery, createCity, validateCityIdQuery, getCity,
     validateCountryIdCityQuery, validateCityNamePutQuery, modifyCity, deleteCity,
-    getCompanies, validateCompanyNameQuery, createCompany }
+    getCompanies, validateCompanyNameQuery, createCompany,validateCompanyIdQuery, 
+    getCompany }
