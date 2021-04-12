@@ -32,7 +32,8 @@ var _require = require('./queries.js'),
     createCity = _require.createCity,
     getCity = _require.getCity,
     modifyCity = _require.modifyCity,
-    deleteCity = _require.deleteCity;
+    deleteCity = _require.deleteCity,
+    getCompanies = _require.getCompanies;
 
 var _require2 = require('./functions.js'),
     validateLogin = _require2.validateLogin,
@@ -454,6 +455,21 @@ app["delete"]('/cities/:cityId', validateCityId, function _callee24(req, res) {
         case 2:
         case "end":
           return _context24.stop();
+      }
+    }
+  });
+}); //companies
+
+app.get('/companies', function _callee25(req, res) {
+  return regeneratorRuntime.async(function _callee25$(_context25) {
+    while (1) {
+      switch (_context25.prev = _context25.next) {
+        case 0:
+          getCompanies(req, res);
+
+        case 1:
+        case "end":
+          return _context25.stop();
       }
     }
   });

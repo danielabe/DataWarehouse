@@ -1192,7 +1192,37 @@ function deleteCity(cityId, req, res) {
       }
     }
   });
+} //companies
+
+
+function getCompanies(req, res) {
+  var companies;
+  return regeneratorRuntime.async(function getCompanies$(_context39) {
+    while (1) {
+      switch (_context39.prev = _context39.next) {
+        case 0:
+          _context39.next = 2;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT company_id, company_name, c.city_id, city_name, ci.country_id, country_name, \n    co.region_id, region_name, address\n    FROM companies c\n    JOIN cities ci ON ci.city_id = c.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    ", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          companies = _context39.sent;
+          res.status(200).json(companies);
+
+        case 4:
+        case "end":
+          return _context39.stop();
+      }
+    }
+  });
 }
+/* SELECT city_id, co.country_id, re.region_id, city_name 
+    FROM cities ci
+    JOIN countries co ON co.country_id = ci.country_id 
+    JOIN regions re ON re.region_id = co.region_id 
+    WHERE re.region_id = ? */
+
 
 module.exports = {
   selectUserLogin: selectUserLogin,
@@ -1232,5 +1262,6 @@ module.exports = {
   validateCountryIdCityQuery: validateCountryIdCityQuery,
   validateCityNamePutQuery: validateCityNamePutQuery,
   modifyCity: modifyCity,
-  deleteCity: deleteCity
+  deleteCity: deleteCity,
+  getCompanies: getCompanies
 };

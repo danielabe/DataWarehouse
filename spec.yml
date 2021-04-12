@@ -1202,9 +1202,27 @@ definitions:
       company_name:
         type: "string"
         example: "Acámica"
-      country:
+      city_id: 
+        type: "integer"
+        format: "int64"
+        example: 1
+      city_name: 
+        type: "string"
+        example: "Rosario"
+      country_id: 
+        type: "integer"
+        format: "int64"
+        example: 1
+      country_name:
         type: "string"
         example: "Argentina"
+      region_id:
+        type: "integer"
+        format: "int64"
+        example: 3
+      region_name:
+        type: "string"
+        example: "Sudamérica"
       address:
         type: "string"
         example: "Humboldt 1967, Buenos Aires"
