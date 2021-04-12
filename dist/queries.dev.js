@@ -1162,6 +1162,38 @@ function modifyCity(cityId, req, res) {
   });
 }
 
+function deleteCity(cityId, req, res) {
+  var city, deleted;
+  return regeneratorRuntime.async(function deleteCity$(_context38) {
+    while (1) {
+      switch (_context38.prev = _context38.next) {
+        case 0:
+          _context38.next = 2;
+          return regeneratorRuntime.awrap(db.query("SELECT * FROM cities WHERE city_id = ?", {
+            replacements: [cityId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          city = _context38.sent;
+          _context38.next = 5;
+          return regeneratorRuntime.awrap(db.query("DELETE FROM cities WHERE city_id = ?", {
+            replacements: [cityId],
+            type: QueryTypes.DELETE
+          }));
+
+        case 5:
+          deleted = _context38.sent;
+          res.status(200).json(city);
+
+        case 7:
+        case "end":
+          return _context38.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   selectUserLogin: selectUserLogin,
   validateLoginQuery: validateLoginQuery,
@@ -1199,5 +1231,6 @@ module.exports = {
   getCity: getCity,
   validateCountryIdCityQuery: validateCountryIdCityQuery,
   validateCityNamePutQuery: validateCityNamePutQuery,
-  modifyCity: modifyCity
+  modifyCity: modifyCity,
+  deleteCity: deleteCity
 };

@@ -443,6 +443,19 @@ async function modifyCity(cityId, req, res) {
     res.status(200).json(newCity)
 }
 
+async function deleteCity(cityId, req, res) {
+    const city = await db.query(`SELECT * FROM cities WHERE city_id = ?`, {
+        replacements: [cityId],
+        type: QueryTypes.SELECT 
+    })
+    const deleted = await db.query(`DELETE FROM cities WHERE city_id = ?`, {
+        replacements: [cityId],
+        type: QueryTypes.DELETE
+    })
+    res.status(200).json(city)
+}
+
+
 module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, 
     validateEmailQuery, validateUserIdQuery, getUser, modifyUser, deleteUser, 
     getRegions, createRegion, validateRegionNameQuery, validateRegionIdQuery, 
@@ -451,4 +464,4 @@ module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser,
     createCountry, validateCountryIdQuery, getCountry, validateCountryNamePutQuery,
     modifyCountry, validateRegionIdCountryQuery, deleteCountry, getCitiesCountry,
     getCities, validateCityNameQuery, createCity, validateCityIdQuery, getCity,
-    validateCountryIdCityQuery, validateCityNamePutQuery, modifyCity }
+    validateCountryIdCityQuery, validateCityNamePutQuery, modifyCity, deleteCity }

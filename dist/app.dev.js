@@ -31,7 +31,8 @@ var _require = require('./queries.js'),
     getCities = _require.getCities,
     createCity = _require.createCity,
     getCity = _require.getCity,
-    modifyCity = _require.modifyCity;
+    modifyCity = _require.modifyCity,
+    deleteCity = _require.deleteCity;
 
 var _require2 = require('./functions.js'),
     validateLogin = _require2.validateLogin,
@@ -436,6 +437,23 @@ app.put('/cities/:cityId', validateCityId, validateCountryIdCity, validateCityNa
         case 2:
         case "end":
           return _context23.stop();
+      }
+    }
+  });
+});
+app["delete"]('/cities/:cityId', validateCityId, function _callee24(req, res) {
+  var cityId;
+  return regeneratorRuntime.async(function _callee24$(_context24) {
+    while (1) {
+      switch (_context24.prev = _context24.next) {
+        case 0:
+          cityId = +req.params.cityId;
+          deleteCity(cityId, req, res); //no puedo borrar una ciudad si tengo contactos o compañias en ella 
+          //o borro todos los contactos o compañias que tiene
+
+        case 2:
+        case "end":
+          return _context24.stop();
       }
     }
   });

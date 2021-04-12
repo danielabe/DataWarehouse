@@ -6,7 +6,8 @@ const jwt = require('jsonwebtoken')
 const { selectUserLogin, getUsers, createUser, getUser, modifyUser, deleteUser, getRegions,
     createRegion, getRegion, modifyRegion, deleteRegion, getCountriesRegion,
     getCitiesRegion, getCountries, createCountry, getCountry, modifyCountry,
-    deleteCountry, getCitiesCountry, getCities, createCity, getCity, modifyCity } = require('./queries.js')
+    deleteCountry, getCitiesCountry, getCities, createCity, getCity, modifyCity,
+    deleteCity } = require('./queries.js')
 
 const { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
     validateEmail, validatePassword, validateUser, validateUserId, validateFirstnamePut,
@@ -149,6 +150,13 @@ app.put('/cities/:cityId', validateCityId, validateCountryIdCity,
 validateCityNamePut, async (req, res) => {
     const cityId = +req.params.cityId
     modifyCity(cityId, req, res)
+})
+
+app.delete('/cities/:cityId', validateCityId, async (req, res) => {
+    const cityId = +req.params.cityId
+    deleteCity(cityId, req, res)
+    //no puedo borrar una ciudad si tengo contactos o compañias en ella 
+    //o borro todos los contactos o compañias que tiene
 })
 
 /* express-rate-limit, .env, bcrypt
