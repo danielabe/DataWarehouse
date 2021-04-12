@@ -7,7 +7,7 @@ const { selectUserLogin, getUsers, createUser, getUser, modifyUser, deleteUser, 
     createRegion, getRegion, modifyRegion, deleteRegion, getCountriesRegion,
     getCitiesRegion, getCountries, createCountry, getCountry, modifyCountry,
     deleteCountry, getCitiesCountry, getCities, createCity, getCity, modifyCity,
-    deleteCity, getCompanies, createCompany, getCompany, modifyCompany } = require('./queries.js')
+    deleteCity, getCompanies, createCompany, getCompany, modifyCompany, deleteCompany } = require('./queries.js')
 
 const { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
     validateEmail, validatePassword, validateUser, validateUserId, validateFirstnamePut,
@@ -183,6 +183,13 @@ app.put('/companies/:companyId', validateCompanyId, validateCompanyNamePut,
 validateCityIdPut, validateAddressPut, async (req, res) => {
     const companyId = +req.params.companyId
     modifyCompany(companyId, req, res)
+})
+
+app.delete('/companies/:companyId', validateCompanyId, async (req, res) => {
+    const companyId = +req.params.companyId
+    deleteCompany(companyId, req, res)
+    //no puedo borrar una ciudad si tengo contactos o compañias en ella 
+    //o borro todos los contactos o compañias que tiene
 })
 
 /* express-rate-limit, .env, bcrypt

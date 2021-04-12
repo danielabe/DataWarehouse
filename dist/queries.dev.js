@@ -1459,6 +1459,38 @@ function modifyCompany(companyId, req, res) {
   });
 }
 
+function deleteCompany(companyId, req, res) {
+  var company, deleted;
+  return regeneratorRuntime.async(function deleteCompany$(_context47) {
+    while (1) {
+      switch (_context47.prev = _context47.next) {
+        case 0:
+          _context47.next = 2;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT company_id, company_name, c.city_id, city_name, ci.country_id, country_name, \n    co.region_id, region_name, address\n    FROM companies c\n    JOIN cities ci ON ci.city_id = c.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    WHERE company_id = ?\n    ", {
+            replacements: [companyId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          company = _context47.sent;
+          _context47.next = 5;
+          return regeneratorRuntime.awrap(db.query("DELETE FROM companies WHERE company_id = ?", {
+            replacements: [companyId],
+            type: QueryTypes.DELETE
+          }));
+
+        case 5:
+          deleted = _context47.sent;
+          res.status(200).json(company[0]);
+
+        case 7:
+        case "end":
+          return _context47.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   selectUserLogin: selectUserLogin,
   validateLoginQuery: validateLoginQuery,
@@ -1505,5 +1537,6 @@ module.exports = {
   getCompany: getCompany,
   validateCompanyNamePutQuery: validateCompanyNamePutQuery,
   modifyCompany: modifyCompany,
-  validateCityIdPutQuery: validateCityIdPutQuery
+  validateCityIdPutQuery: validateCityIdPutQuery,
+  deleteCompany: deleteCompany
 };

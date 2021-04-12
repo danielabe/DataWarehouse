@@ -806,7 +806,7 @@ paths:
         "401":
           description: "Unauthorized"
         "404":
-          description: "Company not found"
+          description: "Company or city not found"
   /companies/{companyId}:
     get:
       tags:
@@ -873,7 +873,7 @@ paths:
         "401":
           description: "Unauthorized"
         "404":
-          description: "Company not found"
+          description: "Company or city not found"
     delete:
       tags:
       - "companies"
@@ -1305,4 +1305,3 @@ definitions:
         type: "integer"
         format: "int64"
         example: 100
-    

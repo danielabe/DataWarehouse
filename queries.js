@@ -577,6 +577,23 @@ async function modifyCompany(companyId, req, res) {
     res.status(200).json(companyRes)
 }
 
+async function deleteCompany(companyId, req, res) {
+    const company = await db.query(`
+    SELECT company_id, company_name, c.city_id, city_name, ci.country_id, country_name, 
+    co.region_id, region_name, address
+    FROM companies c
+    JOIN cities ci ON ci.city_id = c.city_id
+    JOIN countries co ON co.country_id = ci.country_id
+    JOIN regions re ON re.region_id = co.region_id
+    WHERE company_id = ?
+    `, { replacements: [companyId], type: QueryTypes.SELECT })
+    const deleted = await db.query(`DELETE FROM companies WHERE company_id = ?`, {
+        replacements: [companyId],
+        type: QueryTypes.DELETE
+    })
+    res.status(200).json(company[0])
+}
+
 module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, 
     validateEmailQuery, validateUserIdQuery, getUser, modifyUser, deleteUser, 
     getRegions, createRegion, validateRegionNameQuery, validateRegionIdQuery, 
@@ -587,4 +604,5 @@ module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser,
     getCities, validateCityNameQuery, createCity, validateCityIdQuery, getCity,
     validateCountryIdCityQuery, validateCityNamePutQuery, modifyCity, deleteCity,
     getCompanies, validateCompanyNameQuery, createCompany,validateCompanyIdQuery, 
-    getCompany, validateCompanyNamePutQuery, modifyCompany, validateCityIdPutQuery }
+    getCompany, validateCompanyNamePutQuery, modifyCompany, validateCityIdPutQuery,
+    deleteCompany }
