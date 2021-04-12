@@ -16,7 +16,9 @@ var _require = require('./queries.js'),
     validateCountryNamePutQuery = _require.validateCountryNamePutQuery,
     validateRegionIdCountryQuery = _require.validateRegionIdCountryQuery,
     validateCityNameQuery = _require.validateCityNameQuery,
-    validateCityIdQuery = _require.validateCityIdQuery; //users
+    validateCityIdQuery = _require.validateCityIdQuery,
+    validateCountryIdCityQuery = _require.validateCountryIdCityQuery,
+    validateCityNamePutQuery = _require.validateCityNamePutQuery; //users
 
 
 function validateLogin(req, res, next) {
@@ -281,6 +283,38 @@ function validateCityId(req, res, next) {
   });
 }
 
+function validateCountryIdCity(req, res, next) {
+  return regeneratorRuntime.async(function validateCountryIdCity$(_context13) {
+    while (1) {
+      switch (_context13.prev = _context13.next) {
+        case 0:
+          _context13.next = 2;
+          return regeneratorRuntime.awrap(validateCountryIdCityQuery(req, res, next));
+
+        case 2:
+        case "end":
+          return _context13.stop();
+      }
+    }
+  });
+}
+
+function validateCityNamePut(req, res, next) {
+  return regeneratorRuntime.async(function validateCityNamePut$(_context14) {
+    while (1) {
+      switch (_context14.prev = _context14.next) {
+        case 0:
+          _context14.next = 2;
+          return regeneratorRuntime.awrap(validateCityNamePutQuery(req, res, next));
+
+        case 2:
+        case "end":
+          return _context14.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   validateLogin: validateLogin,
   verifyToken: verifyToken,
@@ -302,5 +336,7 @@ module.exports = {
   validateCountryNamePut: validateCountryNamePut,
   validateRegionIdCountry: validateRegionIdCountry,
   validateCityName: validateCityName,
-  validateCityId: validateCityId
+  validateCityId: validateCityId,
+  validateCountryIdCity: validateCountryIdCity,
+  validateCityNamePut: validateCityNamePut
 };

@@ -1045,6 +1045,123 @@ function getCity(cityId, req, res) {
   });
 }
 
+function validateCountryIdCityQuery(req, res, next) {
+  var countryId, countries, countriesArray;
+  return regeneratorRuntime.async(function validateCountryIdCityQuery$(_context35) {
+    while (1) {
+      switch (_context35.prev = _context35.next) {
+        case 0:
+          if (!req.body.country_id) {
+            _context35.next = 9;
+            break;
+          }
+
+          countryId = req.body.country_id;
+          _context35.next = 4;
+          return regeneratorRuntime.awrap(db.query("SELECT country_id FROM countries", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 4:
+          countries = _context35.sent;
+          countriesArray = countries.map(function (id) {
+            return id.country_id;
+          });
+          if (countriesArray.includes(countryId)) next();else res.status(404).send("The country does not exist").end();
+          _context35.next = 10;
+          break;
+
+        case 9:
+          next();
+
+        case 10:
+        case "end":
+          return _context35.stop();
+      }
+    }
+  });
+}
+
+function validateCityNamePutQuery(req, res, next) {
+  var city, cities, citiesArray;
+  return regeneratorRuntime.async(function validateCityNamePutQuery$(_context36) {
+    while (1) {
+      switch (_context36.prev = _context36.next) {
+        case 0:
+          if (!req.body.city_name) {
+            _context36.next = 9;
+            break;
+          }
+
+          city = req.body.city_name;
+          _context36.next = 4;
+          return regeneratorRuntime.awrap(db.query("SELECT city_name FROM cities", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 4:
+          cities = _context36.sent;
+          citiesArray = cities.map(function (city) {
+            return city.city_name;
+          });
+
+          if (req.body.city_name.length >= 2 && req.body.city_name.length <= 64) {
+            if (citiesArray.every(function (name) {
+              return name !== city;
+            })) next();else res.status(400).send("The city already exists").end();
+          } else res.status(400).send("The city name length is wrong").end();
+
+          _context36.next = 10;
+          break;
+
+        case 9:
+          next();
+
+        case 10:
+        case "end":
+          return _context36.stop();
+      }
+    }
+  });
+}
+
+function modifyCity(cityId, req, res) {
+  var city, newCity, modified;
+  return regeneratorRuntime.async(function modifyCity$(_context37) {
+    while (1) {
+      switch (_context37.prev = _context37.next) {
+        case 0:
+          _context37.next = 2;
+          return regeneratorRuntime.awrap(db.query("SELECT * FROM cities WHERE city_id = ?", {
+            replacements: [cityId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          city = _context37.sent;
+          newCity = {
+            city_id: cityId,
+            country_id: req.body.country_id || city[0].country_id,
+            city_name: req.body.city_name || city[0].city_name
+          };
+          _context37.next = 6;
+          return regeneratorRuntime.awrap(db.query("\n    UPDATE cities SET city_name = :city_name, country_id = :country_id \n    WHERE city_id = :city_id\n    ", {
+            replacements: newCity,
+            type: QueryTypes.UPDATE
+          }));
+
+        case 6:
+          modified = _context37.sent;
+          res.status(200).json(newCity);
+
+        case 8:
+        case "end":
+          return _context37.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   selectUserLogin: selectUserLogin,
   validateLoginQuery: validateLoginQuery,
@@ -1079,5 +1196,8 @@ module.exports = {
   validateCityNameQuery: validateCityNameQuery,
   createCity: createCity,
   validateCityIdQuery: validateCityIdQuery,
-  getCity: getCity
+  getCity: getCity,
+  validateCountryIdCityQuery: validateCountryIdCityQuery,
+  validateCityNamePutQuery: validateCityNamePutQuery,
+  modifyCity: modifyCity
 };

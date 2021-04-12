@@ -538,7 +538,7 @@ paths:
         "401":
           description: "Unauthorized"
         "404":
-          description: "Country not found"
+          description: "Country or region not found"
     delete:
       tags:
       - "countries"
@@ -653,6 +653,8 @@ paths:
           description: "Bad request"
         "401":
           description: "Unauthorized"
+        "404":
+          description: "Country not found"
   /cities/{cityId}:
     get:
       tags:
@@ -719,7 +721,7 @@ paths:
         "401":
           description: "Unauthorized"
         "404":
-          description: "City not found"
+          description: "City or country not found"
     delete:
       tags:
       - "cities"

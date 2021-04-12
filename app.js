@@ -6,13 +6,14 @@ const jwt = require('jsonwebtoken')
 const { selectUserLogin, getUsers, createUser, getUser, modifyUser, deleteUser, getRegions,
     createRegion, getRegion, modifyRegion, deleteRegion, getCountriesRegion,
     getCitiesRegion, getCountries, createCountry, getCountry, modifyCountry,
-    deleteCountry, getCitiesCountry, getCities, createCity, getCity } = require('./queries.js')
+    deleteCountry, getCitiesCountry, getCities, createCity, getCity, modifyCity } = require('./queries.js')
 
 const { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
     validateEmail, validatePassword, validateUser, validateUserId, validateFirstnamePut,
     validateLastnamePut, validatePasswordPut, validateRegionName, validateRegionId, 
     validateRegionNamePut, validateCountryName, validateCountryId, validateCountryNamePut,
-    validateRegionIdCountry, validateCityName, validateCityId } = require('./functions.js')
+    validateRegionIdCountry, validateCityName, validateCityId, validateCountryIdCity,
+    validateCityNamePut } = require('./functions.js')
 
 app.use(express.json())
 app.use(helmet())
@@ -143,6 +144,12 @@ app.get('/cities/:cityId', validateCityId, async (req, res) => {
     const cityId = +req.params.cityId
     getCity(cityId, req, res)
 }) 
+
+app.put('/cities/:cityId', validateCityId, validateCountryIdCity, 
+validateCityNamePut, async (req, res) => {
+    const cityId = +req.params.cityId
+    modifyCity(cityId, req, res)
+})
 
 /* express-rate-limit, .env, bcrypt
 */

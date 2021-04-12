@@ -397,6 +397,52 @@ async function getCity(cityId, req, res) {
     res.status(200).json(city[0])
 }
 
+async function validateCountryIdCityQuery(req, res, next) {
+    if(req.body.country_id) {
+        const countryId = req.body.country_id
+        const countries = await db.query(`SELECT country_id FROM countries`, {
+            type: QueryTypes.SELECT
+        })
+        const countriesArray = countries.map(id => id.country_id)
+        if(countriesArray.includes(countryId)) next()
+        else res.status(404).send("The country does not exist").end()
+    } else next()
+}
+
+async function validateCityNamePutQuery(req, res, next) {
+    if(req.body.city_name){
+        const city = req.body.city_name
+        const cities = await db.query(`SELECT city_name FROM cities`, {
+            type: QueryTypes.SELECT
+        })
+        const citiesArray = cities.map(city => city.city_name)
+        if(req.body.city_name.length >= 2 && req.body.city_name.length <= 64) {
+            if(citiesArray.every(name => name !== city)) next()
+            else res.status(400).send("The city already exists").end()
+        } else res.status(400).send("The city name length is wrong").end()
+    } else next()
+}
+
+async function modifyCity(cityId, req, res) {
+    const city = await db.query(`SELECT * FROM cities WHERE city_id = ?`, {
+        replacements: [cityId],
+        type: QueryTypes.SELECT 
+    })
+    const newCity = {
+        city_id: cityId,
+        country_id: req.body.country_id || city[0].country_id,
+        city_name: req.body.city_name || city[0].city_name
+    }
+    const modified = await db.query(`
+    UPDATE cities SET city_name = :city_name, country_id = :country_id 
+    WHERE city_id = :city_id
+    `, {
+        replacements: newCity,
+        type: QueryTypes.UPDATE
+    })
+    res.status(200).json(newCity)
+}
+
 module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, 
     validateEmailQuery, validateUserIdQuery, getUser, modifyUser, deleteUser, 
     getRegions, createRegion, validateRegionNameQuery, validateRegionIdQuery, 
@@ -404,4 +450,5 @@ module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser,
     getCountriesRegion, getCitiesRegion, getCountries, validateCountryNameQuery,
     createCountry, validateCountryIdQuery, getCountry, validateCountryNamePutQuery,
     modifyCountry, validateRegionIdCountryQuery, deleteCountry, getCitiesCountry,
-    getCities, validateCityNameQuery, createCity, validateCityIdQuery, getCity }
+    getCities, validateCityNameQuery, createCity, validateCityIdQuery, getCity,
+    validateCountryIdCityQuery, validateCityNamePutQuery, modifyCity }
