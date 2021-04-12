@@ -7,14 +7,14 @@ const { selectUserLogin, getUsers, createUser, getUser, modifyUser, deleteUser, 
     createRegion, getRegion, modifyRegion, deleteRegion, getCountriesRegion,
     getCitiesRegion, getCountries, createCountry, getCountry, modifyCountry,
     deleteCountry, getCitiesCountry, getCities, createCity, getCity, modifyCity,
-    deleteCity, getCompanies } = require('./queries.js')
+    deleteCity, getCompanies, createCompany } = require('./queries.js')
 
 const { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
     validateEmail, validatePassword, validateUser, validateUserId, validateFirstnamePut,
     validateLastnamePut, validatePasswordPut, validateRegionName, validateRegionId, 
     validateRegionNamePut, validateCountryName, validateCountryId, validateCountryNamePut,
     validateRegionIdCountry, validateCityName, validateCityId, validateCountryIdCity,
-    validateCityNamePut } = require('./functions.js')
+    validateCityNamePut, validateCompanyName, validateAddress } = require('./functions.js')
 
 app.use(express.json())
 app.use(helmet())
@@ -162,6 +162,15 @@ app.delete('/cities/:cityId', validateCityId, async (req, res) => {
 //companies
 app.get('/companies', async (req, res) => {    
     getCompanies(req, res)                                 
+})
+
+app.post('/companies', validateCompanyName, validateCityId, validateAddress, async (req, res) => {
+    newCompany = {
+        company_name: req.body.company_name, 
+        city_id: req.body.city_id, 
+        address: req.body.address
+    }
+    createCompany(newCompany, req, res)
 })
 
 /* express-rate-limit, .env, bcrypt

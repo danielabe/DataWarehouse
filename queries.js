@@ -468,11 +468,38 @@ async function getCompanies(req, res) {
     res.status(200).json(companies)
 }
 
-/* SELECT city_id, co.country_id, re.region_id, city_name 
-    FROM cities ci
-    JOIN countries co ON co.country_id = ci.country_id 
-    JOIN regions re ON re.region_id = co.region_id 
-    WHERE re.region_id = ? */
+async function validateCompanyNameQuery(req, res, next) {
+    const company = req.body.company_name
+    const companies = await db.query(`SELECT company_name FROM companies`, {
+        type: QueryTypes.SELECT
+    })
+    const companiesArray = companies.map(company => company.company_name)
+    if(req.body.company_name.length >= 2 && req.body.company_name.length <= 64) {
+        if(companiesArray.every(name => name !== company)) next()
+        else res.status(400).send("The company already exists").end()
+    } else res.status(400).send("The company name length is wrong").end()
+}
+
+async function createCompany(newCompany, req, res) {
+    const inserted = await db.query(`
+    INSERT INTO companies (company_name, city_id, address)
+    VALUES (:company_name, :city_id, :address)
+    `, {
+        replacements: newCompany,
+        type: QueryTypes.INSERT
+    })
+    const company = await db.query(`
+    SELECT company_id, company_name, c.city_id, city_name, ci.country_id, country_name, 
+    co.region_id, region_name, address
+    FROM companies c
+    JOIN cities ci ON ci.city_id = c.city_id
+    JOIN countries co ON co.country_id = ci.country_id
+    JOIN regions re ON re.region_id = co.region_id
+    WHERE company_id = ?
+    `, { replacements: [inserted[0]], type: QueryTypes.SELECT })
+    
+    res.status(201).json(company[0])
+}
 
 module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, 
     validateEmailQuery, validateUserIdQuery, getUser, modifyUser, deleteUser, 
@@ -483,4 +510,4 @@ module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser,
     modifyCountry, validateRegionIdCountryQuery, deleteCountry, getCitiesCountry,
     getCities, validateCityNameQuery, createCity, validateCityIdQuery, getCity,
     validateCountryIdCityQuery, validateCityNamePutQuery, modifyCity, deleteCity,
-    getCompanies }
+    getCompanies, validateCompanyNameQuery, createCompany }

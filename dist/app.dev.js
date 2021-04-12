@@ -33,7 +33,8 @@ var _require = require('./queries.js'),
     getCity = _require.getCity,
     modifyCity = _require.modifyCity,
     deleteCity = _require.deleteCity,
-    getCompanies = _require.getCompanies;
+    getCompanies = _require.getCompanies,
+    createCompany = _require.createCompany;
 
 var _require2 = require('./functions.js'),
     validateLogin = _require2.validateLogin,
@@ -58,7 +59,9 @@ var _require2 = require('./functions.js'),
     validateCityName = _require2.validateCityName,
     validateCityId = _require2.validateCityId,
     validateCountryIdCity = _require2.validateCountryIdCity,
-    validateCityNamePut = _require2.validateCityNamePut;
+    validateCityNamePut = _require2.validateCityNamePut,
+    validateCompanyName = _require2.validateCompanyName,
+    validateAddress = _require2.validateAddress;
 
 app.use(express.json());
 app.use(helmet());
@@ -470,6 +473,25 @@ app.get('/companies', function _callee25(req, res) {
         case 1:
         case "end":
           return _context25.stop();
+      }
+    }
+  });
+});
+app.post('/companies', validateCompanyName, validateCityId, validateAddress, function _callee26(req, res) {
+  return regeneratorRuntime.async(function _callee26$(_context26) {
+    while (1) {
+      switch (_context26.prev = _context26.next) {
+        case 0:
+          newCompany = {
+            company_name: req.body.company_name,
+            city_id: req.body.city_id,
+            address: req.body.address
+          };
+          createCompany(newCompany, req, res);
+
+        case 2:
+        case "end":
+          return _context26.stop();
       }
     }
   });

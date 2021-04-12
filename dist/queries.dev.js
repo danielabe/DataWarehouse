@@ -1217,12 +1217,70 @@ function getCompanies(req, res) {
     }
   });
 }
-/* SELECT city_id, co.country_id, re.region_id, city_name 
-    FROM cities ci
-    JOIN countries co ON co.country_id = ci.country_id 
-    JOIN regions re ON re.region_id = co.region_id 
-    WHERE re.region_id = ? */
 
+function validateCompanyNameQuery(req, res, next) {
+  var company, companies, companiesArray;
+  return regeneratorRuntime.async(function validateCompanyNameQuery$(_context40) {
+    while (1) {
+      switch (_context40.prev = _context40.next) {
+        case 0:
+          company = req.body.company_name;
+          _context40.next = 3;
+          return regeneratorRuntime.awrap(db.query("SELECT company_name FROM companies", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 3:
+          companies = _context40.sent;
+          companiesArray = companies.map(function (company) {
+            return company.company_name;
+          });
+
+          if (req.body.company_name.length >= 2 && req.body.company_name.length <= 64) {
+            if (companiesArray.every(function (name) {
+              return name !== company;
+            })) next();else res.status(400).send("The company already exists").end();
+          } else res.status(400).send("The company name length is wrong").end();
+
+        case 6:
+        case "end":
+          return _context40.stop();
+      }
+    }
+  });
+}
+
+function createCompany(newCompany, req, res) {
+  var inserted, company;
+  return regeneratorRuntime.async(function createCompany$(_context41) {
+    while (1) {
+      switch (_context41.prev = _context41.next) {
+        case 0:
+          _context41.next = 2;
+          return regeneratorRuntime.awrap(db.query("\n    INSERT INTO companies (company_name, city_id, address)\n    VALUES (:company_name, :city_id, :address)\n    ", {
+            replacements: newCompany,
+            type: QueryTypes.INSERT
+          }));
+
+        case 2:
+          inserted = _context41.sent;
+          _context41.next = 5;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT company_id, company_name, c.city_id, city_name, ci.country_id, country_name, \n    co.region_id, region_name, address\n    FROM companies c\n    JOIN cities ci ON ci.city_id = c.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    WHERE company_id = ?\n    ", {
+            replacements: [inserted[0]],
+            type: QueryTypes.SELECT
+          }));
+
+        case 5:
+          company = _context41.sent;
+          res.status(201).json(company[0]);
+
+        case 7:
+        case "end":
+          return _context41.stop();
+      }
+    }
+  });
+}
 
 module.exports = {
   selectUserLogin: selectUserLogin,
@@ -1263,5 +1321,7 @@ module.exports = {
   validateCityNamePutQuery: validateCityNamePutQuery,
   modifyCity: modifyCity,
   deleteCity: deleteCity,
-  getCompanies: getCompanies
+  getCompanies: getCompanies,
+  validateCompanyNameQuery: validateCompanyNameQuery,
+  createCompany: createCompany
 };

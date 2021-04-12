@@ -18,7 +18,8 @@ var _require = require('./queries.js'),
     validateCityNameQuery = _require.validateCityNameQuery,
     validateCityIdQuery = _require.validateCityIdQuery,
     validateCountryIdCityQuery = _require.validateCountryIdCityQuery,
-    validateCityNamePutQuery = _require.validateCityNamePutQuery; //users
+    validateCityNamePutQuery = _require.validateCityNamePutQuery,
+    validateCompanyNameQuery = _require.validateCompanyNameQuery; //users
 
 
 function validateLogin(req, res, next) {
@@ -313,6 +314,28 @@ function validateCityNamePut(req, res, next) {
       }
     }
   });
+} //companies
+
+
+function validateCompanyName(req, res, next) {
+  return regeneratorRuntime.async(function validateCompanyName$(_context15) {
+    while (1) {
+      switch (_context15.prev = _context15.next) {
+        case 0:
+          _context15.next = 2;
+          return regeneratorRuntime.awrap(validateCompanyNameQuery(req, res, next));
+
+        case 2:
+        case "end":
+          return _context15.stop();
+      }
+    }
+  });
+}
+
+function validateAddress(req, res, next) {
+  var address = req.body.address;
+  if (address.length >= 3 && address.length <= 64) next();else res.status(400).send("The address is wrong").end();
 }
 
 module.exports = {
@@ -338,5 +361,7 @@ module.exports = {
   validateCityName: validateCityName,
   validateCityId: validateCityId,
   validateCountryIdCity: validateCountryIdCity,
-  validateCityNamePut: validateCityNamePut
+  validateCityNamePut: validateCityNamePut,
+  validateCompanyName: validateCompanyName,
+  validateAddress: validateAddress
 };

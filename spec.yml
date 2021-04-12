@@ -1208,7 +1208,7 @@ definitions:
         example: 1
       city_name: 
         type: "string"
-        example: "Rosario"
+        example: "Buenos Aires"
       country_id: 
         type: "integer"
         format: "int64"
@@ -1225,19 +1225,20 @@ definitions:
         example: "Sudamérica"
       address:
         type: "string"
-        example: "Humboldt 1967, Buenos Aires"
+        example: "Humboldt 1967"
   NewCompany:
     type: "object"
     properties:
       company_name:
         type: "string"
         example: "Acámica"
-      country:
-        type: "string"
-        example: "Argentina"
+      city_id:
+        type: "integer"
+        format: "int64"
+        example: 1
       address:
         type: "string"
-        example: "Humboldt 1967, Buenos Aires"
+        example: "Humboldt 1967"
   Contact:
     type: "object"
     properties:
