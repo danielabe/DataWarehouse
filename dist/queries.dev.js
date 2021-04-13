@@ -1664,6 +1664,70 @@ function createContact(newContact, req, res) {
   });
 }
 
+function validateContactIdQuery(req, res, next) {
+  var contactId, contacts, contactsArray;
+  return regeneratorRuntime.async(function validateContactIdQuery$(_context53) {
+    while (1) {
+      switch (_context53.prev = _context53.next) {
+        case 0:
+          contactId = +req.params.contactId;
+          /* || req.body.contact_id */
+
+          _context53.next = 3;
+          return regeneratorRuntime.awrap(db.query("SELECT contact_id FROM contacts", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 3:
+          contacts = _context53.sent;
+          contactsArray = contacts.map(function (id) {
+            return id.contact_id;
+          });
+          if (contactsArray.includes(contactId)) next();else res.status(404).send("The contact does not exist").end();
+
+        case 6:
+        case "end":
+          return _context53.stop();
+      }
+    }
+  });
+}
+
+function getContact(contactId, req, res) {
+  var contact, channels, contactAndChannels;
+  return regeneratorRuntime.async(function getContact$(_context54) {
+    while (1) {
+      switch (_context54.prev = _context54.next) {
+        case 0:
+          _context54.next = 2;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.company_id, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    WHERE contact_id = ?\n    ", {
+            replacements: [contactId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          contact = _context54.sent;
+          _context54.next = 5;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM contacts_channels cc \n    INNER JOIN channels ch ON cc.channel_id = ch.channel_id\n    WHERE contact_id = ?", {
+            replacements: [contactId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 5:
+          channels = _context54.sent;
+          contactAndChannels = Object.assign({}, contact[0], {
+            preferred_channels: channels
+          });
+          res.status(201).json(Object.assign(contactAndChannels));
+
+        case 8:
+        case "end":
+          return _context54.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   selectUserLogin: selectUserLogin,
   validateLoginQuery: validateLoginQuery,
@@ -1715,5 +1779,7 @@ module.exports = {
   getContacts: getContacts,
   validateEmailContactsQuery: validateEmailContactsQuery,
   validateChannelIdQuery: validateChannelIdQuery,
-  createContact: createContact
+  createContact: createContact,
+  validateContactIdQuery: validateContactIdQuery,
+  getContact: getContact
 };

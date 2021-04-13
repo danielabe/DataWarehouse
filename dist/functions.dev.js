@@ -24,7 +24,8 @@ var _require = require('./queries.js'),
     validateCompanyNamePutQuery = _require.validateCompanyNamePutQuery,
     validateCityIdPutQuery = _require.validateCityIdPutQuery,
     validateEmailContactsQuery = _require.validateEmailContactsQuery,
-    validateChannelIdQuery = _require.validateChannelIdQuery; //users
+    validateChannelIdQuery = _require.validateChannelIdQuery,
+    validateContactIdQuery = _require.validateContactIdQuery; //users
 
 
 function validateLogin(req, res, next) {
@@ -453,6 +454,22 @@ function validateChannelId(req, res, next) {
   });
 }
 
+function validateContactId(req, res, next) {
+  return regeneratorRuntime.async(function validateContactId$(_context22) {
+    while (1) {
+      switch (_context22.prev = _context22.next) {
+        case 0:
+          _context22.next = 2;
+          return regeneratorRuntime.awrap(validateContactIdQuery(req, res, next));
+
+        case 2:
+        case "end":
+          return _context22.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   validateLogin: validateLogin,
   verifyToken: verifyToken,
@@ -486,5 +503,6 @@ module.exports = {
   validateEmailContacts: validateEmailContacts,
   validatePosition: validatePosition,
   validateInterest: validateInterest,
-  validateChannelId: validateChannelId
+  validateChannelId: validateChannelId,
+  validateContactId: validateContactId
 };

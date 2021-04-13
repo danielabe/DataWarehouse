@@ -8,7 +8,7 @@ const { validateLoginQuery, validateEmailQuery, validateUserIdQuery,
     validateRegionIdCountryQuery, validateCityNameQuery, validateCityIdQuery,
     validateCountryIdCityQuery, validateCityNamePutQuery, validateCompanyNameQuery,
     validateCompanyIdQuery, validateCompanyNamePutQuery, validateCityIdPutQuery,
-    validateEmailContactsQuery, validateChannelIdQuery } = require('./queries.js')
+    validateEmailContactsQuery, validateChannelIdQuery, validateContactIdQuery } = require('./queries.js')
 
 //users
 async function validateLogin(req, res, next) {
@@ -194,6 +194,11 @@ async function validateChannelId(req, res, next) {
     await validateChannelIdQuery(req, res, next)
 }
 
+async function validateContactId(req, res, next) {
+    await validateContactIdQuery(req, res, next)
+}
+
+
 module.exports = { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
     validateEmail, validatePassword, validateUser, validateUserId, validateFirstnamePut, 
     validateLastnamePut, validatePasswordPut, validateRegionName, validateRegionId, 
@@ -201,6 +206,6 @@ module.exports = { validateLogin, verifyToken, filterAdmin, validateFirstname, v
     validateRegionIdCountry, validateCityName, validateCityId, validateCountryIdCity,
     validateCityNamePut, validateCompanyName, validateAddress,validateCompanyId, 
     validateCompanyNamePut, validateCityIdPut, validateAddressPut, validateEmailContacts,
-    validatePosition, validateInterest, validateChannelId
+    validatePosition, validateInterest, validateChannelId, validateContactId
 }
 

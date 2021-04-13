@@ -690,6 +690,43 @@ async function createContact(newContact, req, res) {
     res.status(201).json(Object.assign( contactAndChannels ))
 }
 
+async function validateContactIdQuery(req, res, next) {
+    const contactId = +req.params.contactId /* || req.body.contact_id */
+    const contacts = await db.query(`SELECT contact_id FROM contacts`, {
+        type: QueryTypes.SELECT
+    })
+    const contactsArray = contacts.map(id => id.contact_id)
+    if(contactsArray.includes(contactId)) next()
+    else res.status(404).send("The contact does not exist").end()
+}
+
+async function getContact(contactId, req, res) {
+    const contact = await db.query(`
+    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,
+    co.country_name, co.region_id, re.region_name, cont.company_id, comp.company_name,
+    position, interest
+    FROM contacts cont 
+    JOIN cities ci ON ci.city_id = cont.city_id
+    JOIN countries co ON co.country_id = ci.country_id
+    JOIN regions re ON re.region_id = co.region_id
+    JOIN companies comp ON comp.company_id = cont.company_id
+    WHERE contact_id = ?
+    `, {
+        replacements: [contactId],
+        type: QueryTypes.SELECT 
+    })
+    const channels = await db.query(`
+    SELECT * FROM contacts_channels cc 
+    INNER JOIN channels ch ON cc.channel_id = ch.channel_id
+    WHERE contact_id = ?`, { 
+        replacements: [contactId],
+        type: QueryTypes.SELECT 
+    })
+    const contactAndChannels = Object.assign( {} , contact[0], { preferred_channels: channels})
+    res.status(201).json(Object.assign( contactAndChannels ))
+}
+
+
 module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, 
     validateEmailQuery, validateUserIdQuery, getUser, modifyUser, deleteUser, 
     getRegions, createRegion, validateRegionNameQuery, validateRegionIdQuery, 
@@ -702,4 +739,4 @@ module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser,
     getCompanies, validateCompanyNameQuery, createCompany,validateCompanyIdQuery, 
     getCompany, validateCompanyNamePutQuery, modifyCompany, validateCityIdPutQuery,
     deleteCompany, getContacts, validateEmailContactsQuery, validateChannelIdQuery,
-    createContact }
+    createContact, validateContactIdQuery, getContact }

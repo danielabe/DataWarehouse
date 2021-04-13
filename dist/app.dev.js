@@ -39,7 +39,8 @@ var _require = require('./queries.js'),
     modifyCompany = _require.modifyCompany,
     deleteCompany = _require.deleteCompany,
     getContacts = _require.getContacts,
-    createContact = _require.createContact;
+    createContact = _require.createContact,
+    getContact = _require.getContact;
 
 var _require2 = require('./functions.js'),
     validateLogin = _require2.validateLogin,
@@ -74,7 +75,8 @@ var _require2 = require('./functions.js'),
     validateEmailContacts = _require2.validateEmailContacts,
     validatePosition = _require2.validatePosition,
     validateInterest = _require2.validateInterest,
-    validateChannelId = _require2.validateChannelId;
+    validateChannelId = _require2.validateChannelId,
+    validateContactId = _require2.validateContactId;
 
 app.use(express.json());
 app.use(helmet());
@@ -596,6 +598,22 @@ app.post('/contacts', validateFirstname, validateLastname, validateEmailContacts
         case 2:
         case "end":
           return _context31.stop();
+      }
+    }
+  });
+});
+app.get('/contacts/:contactId', validateContactId, function _callee32(req, res) {
+  var contactId;
+  return regeneratorRuntime.async(function _callee32$(_context32) {
+    while (1) {
+      switch (_context32.prev = _context32.next) {
+        case 0:
+          contactId = req.params.contactId;
+          getContact(contactId, req, res);
+
+        case 2:
+        case "end":
+          return _context32.stop();
       }
     }
   });

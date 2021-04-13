@@ -8,7 +8,7 @@ const { selectUserLogin, getUsers, createUser, getUser, modifyUser, deleteUser, 
     getCitiesRegion, getCountries, createCountry, getCountry, modifyCountry,
     deleteCountry, getCitiesCountry, getCities, createCity, getCity, modifyCity,
     deleteCity, getCompanies, createCompany, getCompany, modifyCompany, deleteCompany,
-    getContacts, createContact } = require('./queries.js')
+    getContacts, createContact, getContact } = require('./queries.js')
 
 const { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
     validateEmail, validatePassword, validateUser, validateUserId, validateFirstnamePut,
@@ -17,7 +17,7 @@ const { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLast
     validateRegionIdCountry, validateCityName, validateCityId, validateCountryIdCity,
     validateCityNamePut, validateCompanyName, validateAddress, validateCompanyId, 
     validateCompanyNamePut, validateCityIdPut, validateAddressPut, validateEmailContacts,
-    validatePosition, validateInterest, validateChannelId } = require('./functions.js')
+    validatePosition, validateInterest, validateChannelId, validateContactId } = require('./functions.js')
 
 app.use(express.json())
 app.use(helmet())
@@ -215,6 +215,10 @@ validateChannelId, async (req, res) => {
     createContact(newContact, req, res)
 })
 
+app.get('/contacts/:contactId', validateContactId, async (req, res) => {    
+    const contactId = req.params.contactId
+    getContact(contactId, req, res)                                 
+})
 
 /* express-rate-limit, .env, bcrypt
 */
