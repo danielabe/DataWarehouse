@@ -8,7 +8,7 @@ const { selectUserLogin, getUsers, createUser, getUser, modifyUser, deleteUser, 
     getCitiesRegion, getCountries, createCountry, getCountry, modifyCountry,
     deleteCountry, getCitiesCountry, getCities, createCity, getCity, modifyCity,
     deleteCity, getCompanies, createCompany, getCompany, modifyCompany, deleteCompany,
-    getContacts, createContact, getContact, modifycontact } = require('./queries.js')
+    getContacts, createContact, getContact, modifycontact, deleteContact } = require('./queries.js')
 
 const { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
     validateEmail, validatePassword, validateUser, validateUserId, validateFirstnamePut,
@@ -228,7 +228,10 @@ validateInterestPut, validateChannelIdPut, async (req, res) => {
     modifycontact(req, res)
 })
 
-
+app.delete('/contacts/:contactId', validateContactId, async (req, res) => {
+    const contactId = +req.params.contactId
+    deleteContact(contactId, req, res)
+})
 
 
 /* const newContact = {
@@ -242,6 +245,6 @@ validateInterestPut, validateChannelIdPut, async (req, res) => {
         interest: req.body.interest,
         preferred_channels: req.body.preferred_channels
     } */
-    
+
 /* express-rate-limit, .env, bcrypt
 */

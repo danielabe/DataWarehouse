@@ -1049,7 +1049,7 @@ paths:
         "200":
           description: "Contact successfully removed"
           schema:
-            $ref: "#/definitions/Contact"
+            $ref: "#/definitions/ContactDeleted"
         "401":
           description: "Unauthorized"
         "404":
@@ -1361,6 +1361,37 @@ definitions:
         type: "integer"
         format: "int64"
         example: 1
+      company_id:
+        type: "integer"
+        format: "int64"
+        example: 1
+      position:
+        type: "string"
+        example: "UI Designer"
+      interest:
+        type: "integer"
+        format: "int64"
+        example: 100
+  ContactDeleted:
+    type: "object"
+    properties:
+      contact_id:
+        type: "integer"
+        format: "int64"
+        example: 14
+      firstname:
+        type: "string"
+        example: "Agustín Emanuel"
+      lastname:
+        type: "string"
+        example: "Soria"
+      email: 
+        type: "string"
+        example: "agustinesoria96@gmail.com"
+      city_id:
+        type: "integer"
+        format: "int64"
+        example: 2
       company_id:
         type: "integer"
         format: "int64"

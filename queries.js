@@ -773,11 +773,7 @@ async function modifycontact(req, res) {
         replacements: [req.params.contactId],
         type: QueryTypes.SELECT
     })
-    /* const chan = await db.query(`SELECT * FROM contacts_channels WHERE contact_id = ?`, {
-        replacements: [req.params.contactId],
-        type: QueryTypes.SELECT
-    })
-    console.log(chan) */
+    
     const modifiedContact = {
         contact_id: req.params.contactId,
         firstname: req.body.firstname || contact[0].firstname,
@@ -797,27 +793,7 @@ async function modifycontact(req, res) {
         replacements: modifiedContact,
         type: QueryTypes.UPDATE
     })
-    /* console.log(modifiedContact.preferred_channels[0].channel_id) */
-    /* const contactId = req.params.contactId */
-    /* req.body.preferred_channels.forEach(async channel => {
-        console.log(channel.channel_id)
-        await db.query(`
-        UPDATE contacts_channels SET  channel_id = ${channel.channel_id}
-        WHERE contact_id = ${contactId}
-        `, {
-            replacements: req.body.preferred_channels,
-            type: QueryTypes.INSERT
-        })
-    }
-        ) */
-    /* const modifiedChan = await db.query(`
-    UPDATE contacts_channels SET contact_id = :, channel_id = :
-    WHERE contact_id = :contact_id
-    `, {
-        replacements: modifiedContact,
-        type: QueryTypes.UPDATE
-    }) */
-
+    
     const contactRes = await db.query(`
     SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,
     co.country_name, co.region_id, re.region_name, cont.company_id, comp.company_name,
@@ -843,6 +819,18 @@ async function modifycontact(req, res) {
     res.status(201).json(Object.assign( contactAndChannels ))
 }
 
+async function deleteContact(contactId, req, res) {
+    const contact = await db.query(`SELECT * FROM contacts WHERE contact_id = ?`, {
+        replacements: [contactId],
+        type: QueryTypes.SELECT 
+    })
+    const deleted = await db.query(`DELETE FROM contacts WHERE contact_id = ?`, {
+        replacements: [contactId],
+        type: QueryTypes.DELETE
+    })
+    res.status(200).json(contact)
+}
+
 module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, 
     validateEmailQuery, validateUserIdQuery, getUser, modifyUser, deleteUser, 
     getRegions, createRegion, validateRegionNameQuery, validateRegionIdQuery, 
@@ -856,4 +844,34 @@ module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser,
     getCompany, validateCompanyNamePutQuery, modifyCompany, validateCityIdPutQuery,
     deleteCompany, getContacts, validateEmailContactsQuery, validateChannelIdQuery,
     createContact, validateContactIdQuery, getContact, validateEmailContactsPutQuery,
-    validateCompanyIdPutQuery, validateChannelIdPutQuery, modifycontact }
+    validateCompanyIdPutQuery, validateChannelIdPutQuery, modifycontact, deleteContact }
+
+
+
+
+/* const chan = await db.query(`SELECT * FROM contacts_channels WHERE contact_id = ?`, {
+        replacements: [req.params.contactId],
+        type: QueryTypes.SELECT
+    })
+    console.log(chan) */
+
+    /* console.log(modifiedContact.preferred_channels[0].channel_id) */
+    /* const contactId = req.params.contactId */
+    /* req.body.preferred_channels.forEach(async channel => {
+        console.log(channel.channel_id)
+        await db.query(`
+        UPDATE contacts_channels SET  channel_id = ${channel.channel_id}
+        WHERE contact_id = ${contactId}
+        `, {
+            replacements: req.body.preferred_channels,
+            type: QueryTypes.INSERT
+        })
+    }
+        ) */
+    /* const modifiedChan = await db.query(`
+    UPDATE contacts_channels SET contact_id = :, channel_id = :
+    WHERE contact_id = :contact_id
+    `, {
+        replacements: modifiedContact,
+        type: QueryTypes.UPDATE
+    }) */

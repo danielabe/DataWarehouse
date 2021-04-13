@@ -1868,12 +1868,6 @@ function modifycontact(req, res) {
 
         case 2:
           contact = _context58.sent;
-
-          /* const chan = await db.query(`SELECT * FROM contacts_channels WHERE contact_id = ?`, {
-              replacements: [req.params.contactId],
-              type: QueryTypes.SELECT
-          })
-          console.log(chan) */
           modifiedContact = {
             contact_id: req.params.contactId,
             firstname: req.body.firstname || contact[0].firstname,
@@ -1920,6 +1914,38 @@ function modifycontact(req, res) {
         case 15:
         case "end":
           return _context58.stop();
+      }
+    }
+  });
+}
+
+function deleteContact(contactId, req, res) {
+  var contact, deleted;
+  return regeneratorRuntime.async(function deleteContact$(_context59) {
+    while (1) {
+      switch (_context59.prev = _context59.next) {
+        case 0:
+          _context59.next = 2;
+          return regeneratorRuntime.awrap(db.query("SELECT * FROM contacts WHERE contact_id = ?", {
+            replacements: [contactId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          contact = _context59.sent;
+          _context59.next = 5;
+          return regeneratorRuntime.awrap(db.query("DELETE FROM contacts WHERE contact_id = ?", {
+            replacements: [contactId],
+            type: QueryTypes.DELETE
+          }));
+
+        case 5:
+          deleted = _context59.sent;
+          res.status(200).json(contact);
+
+        case 7:
+        case "end":
+          return _context59.stop();
       }
     }
   });
@@ -1982,5 +2008,35 @@ module.exports = {
   validateEmailContactsPutQuery: validateEmailContactsPutQuery,
   validateCompanyIdPutQuery: validateCompanyIdPutQuery,
   validateChannelIdPutQuery: validateChannelIdPutQuery,
-  modifycontact: modifycontact
+  modifycontact: modifycontact,
+  deleteContact: deleteContact
 };
+/* const chan = await db.query(`SELECT * FROM contacts_channels WHERE contact_id = ?`, {
+        replacements: [req.params.contactId],
+        type: QueryTypes.SELECT
+    })
+    console.log(chan) */
+
+/* console.log(modifiedContact.preferred_channels[0].channel_id) */
+
+/* const contactId = req.params.contactId */
+
+/* req.body.preferred_channels.forEach(async channel => {
+    console.log(channel.channel_id)
+    await db.query(`
+    UPDATE contacts_channels SET  channel_id = ${channel.channel_id}
+    WHERE contact_id = ${contactId}
+    `, {
+        replacements: req.body.preferred_channels,
+        type: QueryTypes.INSERT
+    })
+}
+    ) */
+
+/* const modifiedChan = await db.query(`
+UPDATE contacts_channels SET contact_id = :, channel_id = :
+WHERE contact_id = :contact_id
+`, {
+    replacements: modifiedContact,
+    type: QueryTypes.UPDATE
+}) */

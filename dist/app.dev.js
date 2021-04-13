@@ -41,7 +41,8 @@ var _require = require('./queries.js'),
     getContacts = _require.getContacts,
     createContact = _require.createContact,
     getContact = _require.getContact,
-    modifycontact = _require.modifycontact;
+    modifycontact = _require.modifycontact,
+    deleteContact = _require.deleteContact;
 
 var _require2 = require('./functions.js'),
     validateLogin = _require2.validateLogin,
@@ -634,6 +635,22 @@ app.put('/contacts/:contactId', validateContactId, validateFirstnamePut, validat
         case 1:
         case "end":
           return _context33.stop();
+      }
+    }
+  });
+});
+app["delete"]('/contacts/:contactId', validateContactId, function _callee34(req, res) {
+  var contactId;
+  return regeneratorRuntime.async(function _callee34$(_context34) {
+    while (1) {
+      switch (_context34.prev = _context34.next) {
+        case 0:
+          contactId = +req.params.contactId;
+          deleteContact(contactId, req, res);
+
+        case 2:
+        case "end":
+          return _context34.stop();
       }
     }
   });
