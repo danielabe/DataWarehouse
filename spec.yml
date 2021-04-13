@@ -1260,21 +1260,52 @@ definitions:
       city_id:
         type: "integer"
         format: "int64"
+        example: 2
+      city_name:
+        type: "string"
+        example: "Córdoba"
+      country_id:
+        type: "integer"
+        format: "int64"
         example: 1
+      country_name:
+        type: "string"
+        example: "Argentina"
+      region_id:
+        type: "integer"
+        format: "int64"
+        example: 3
+      region_name:
+        type: "string"
+        example: "Sudamérica"
       company_id:
         type: "integer"
         format: "int64"
         example: 1
+      company_name:
+        type: "string"
+        example: "Acámica"
       position:
         type: "string"
         example: "UI Designer"
-      preferred channel:
-        type: "string"
-        example: ["Facebook", "Whatsapp"]
       interest:
         type: "integer"
         format: "int64"
         example: 100
+      preferred_channels:
+        type: "object"
+        example: [
+          {
+            contact_id: 14,
+            channel_id: 1,
+            channel: Whatsapp
+          },
+          {
+            contact_id: 14,
+            channel_id: 2,
+            channel: Facebook
+          }
+          ]
   NewContact:
     type: "object"
     properties:

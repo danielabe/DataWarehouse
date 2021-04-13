@@ -1491,6 +1491,43 @@ function deleteCompany(companyId, req, res) {
   });
 }
 
+function getContacts(req, res) {
+  var contacts, channels, contactsAndChannels;
+  return regeneratorRuntime.async(function getContacts$(_context48) {
+    while (1) {
+      switch (_context48.prev = _context48.next) {
+        case 0:
+          _context48.next = 2;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.company_id, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    ", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          contacts = _context48.sent;
+          _context48.next = 5;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM contacts_channels cc \n    INNER JOIN channels ch ON cc.channel_id = ch.channel_id", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 5:
+          channels = _context48.sent;
+          contactsAndChannels = contacts.map(function (contact) {
+            return Object.assign({}, contact, {
+              preferred_channels: channels.filter(function (channel) {
+                return channel.contact_id === contact.contact_id;
+              })
+            });
+          });
+          res.status(200).json(contactsAndChannels);
+
+        case 8:
+        case "end":
+          return _context48.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   selectUserLogin: selectUserLogin,
   validateLoginQuery: validateLoginQuery,
@@ -1538,5 +1575,6 @@ module.exports = {
   validateCompanyNamePutQuery: validateCompanyNamePutQuery,
   modifyCompany: modifyCompany,
   validateCityIdPutQuery: validateCityIdPutQuery,
-  deleteCompany: deleteCompany
+  deleteCompany: deleteCompany,
+  getContacts: getContacts
 };

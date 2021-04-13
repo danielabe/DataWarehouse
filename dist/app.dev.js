@@ -37,7 +37,8 @@ var _require = require('./queries.js'),
     createCompany = _require.createCompany,
     getCompany = _require.getCompany,
     modifyCompany = _require.modifyCompany,
-    deleteCompany = _require.deleteCompany;
+    deleteCompany = _require.deleteCompany,
+    getContacts = _require.getContacts;
 
 var _require2 = require('./functions.js'),
     validateLogin = _require2.validateLogin,
@@ -548,6 +549,21 @@ app["delete"]('/companies/:companyId', validateCompanyId, function _callee29(req
         case 2:
         case "end":
           return _context29.stop();
+      }
+    }
+  });
+}); //contacts
+
+app.get('/contacts', function _callee30(req, res) {
+  return regeneratorRuntime.async(function _callee30$(_context30) {
+    while (1) {
+      switch (_context30.prev = _context30.next) {
+        case 0:
+          getContacts(req, res);
+
+        case 1:
+        case "end":
+          return _context30.stop();
       }
     }
   });

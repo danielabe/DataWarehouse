@@ -594,6 +594,31 @@ async function deleteCompany(companyId, req, res) {
     res.status(200).json(company[0])
 }
 
+async function getContacts(req, res) {
+    const contacts = await db.query(`
+    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,
+    co.country_name, co.region_id, re.region_name, cont.company_id, comp.company_name,
+    position, interest
+    FROM contacts cont 
+    JOIN cities ci ON ci.city_id = cont.city_id
+    JOIN countries co ON co.country_id = ci.country_id
+    JOIN regions re ON re.region_id = co.region_id
+    JOIN companies comp ON comp.company_id = cont.company_id
+    `, {
+        type: QueryTypes.SELECT 
+    })
+    const channels = await db.query(`
+    SELECT * FROM contacts_channels cc 
+    INNER JOIN channels ch ON cc.channel_id = ch.channel_id`, { 
+        type: QueryTypes.SELECT 
+    })
+    const contactsAndChannels = contacts.map(contact => 
+        Object.assign( {} , contact, { preferred_channels: channels.filter(channel => 
+            channel.contact_id === contact.contact_id)}
+        ))
+    res.status(200).json(contactsAndChannels)
+}
+
 module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, 
     validateEmailQuery, validateUserIdQuery, getUser, modifyUser, deleteUser, 
     getRegions, createRegion, validateRegionNameQuery, validateRegionIdQuery, 
@@ -605,4 +630,4 @@ module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser,
     validateCountryIdCityQuery, validateCityNamePutQuery, modifyCity, deleteCity,
     getCompanies, validateCompanyNameQuery, createCompany,validateCompanyIdQuery, 
     getCompany, validateCompanyNamePutQuery, modifyCompany, validateCityIdPutQuery,
-    deleteCompany }
+    deleteCompany, getContacts }
