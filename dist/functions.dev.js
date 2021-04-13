@@ -22,7 +22,9 @@ var _require = require('./queries.js'),
     validateCompanyNameQuery = _require.validateCompanyNameQuery,
     validateCompanyIdQuery = _require.validateCompanyIdQuery,
     validateCompanyNamePutQuery = _require.validateCompanyNamePutQuery,
-    validateCityIdPutQuery = _require.validateCityIdPutQuery; //users
+    validateCityIdPutQuery = _require.validateCityIdPutQuery,
+    validateEmailContactsQuery = _require.validateEmailContactsQuery,
+    validateChannelIdQuery = _require.validateChannelIdQuery; //users
 
 
 function validateLogin(req, res, next) {
@@ -406,6 +408,49 @@ function validateAddressPut(req, res, next) {
       }
     }
   });
+} //contacts
+
+
+function validateEmailContacts(req, res, next) {
+  return regeneratorRuntime.async(function validateEmailContacts$(_context20) {
+    while (1) {
+      switch (_context20.prev = _context20.next) {
+        case 0:
+          _context20.next = 2;
+          return regeneratorRuntime.awrap(validateEmailContactsQuery(req, res, next));
+
+        case 2:
+        case "end":
+          return _context20.stop();
+      }
+    }
+  });
+}
+
+function validatePosition(req, res, next) {
+  var position = req.body.position;
+  if (position.length >= 2 && position.length <= 64) next();else res.status(400).send("The position is wrong").end();
+}
+
+function validateInterest(req, res, next) {
+  var interest = req.body.interest;
+  if (Number.isInteger(interest) && interest >= 0 && interest <= 100) next();else res.status(400).send("The interest is wrong").end();
+}
+
+function validateChannelId(req, res, next) {
+  return regeneratorRuntime.async(function validateChannelId$(_context21) {
+    while (1) {
+      switch (_context21.prev = _context21.next) {
+        case 0:
+          _context21.next = 2;
+          return regeneratorRuntime.awrap(validateChannelIdQuery(req, res, next));
+
+        case 2:
+        case "end":
+          return _context21.stop();
+      }
+    }
+  });
 }
 
 module.exports = {
@@ -437,5 +482,9 @@ module.exports = {
   validateCompanyId: validateCompanyId,
   validateCompanyNamePut: validateCompanyNamePut,
   validateCityIdPut: validateCityIdPut,
-  validateAddressPut: validateAddressPut
+  validateAddressPut: validateAddressPut,
+  validateEmailContacts: validateEmailContacts,
+  validatePosition: validatePosition,
+  validateInterest: validateInterest,
+  validateChannelId: validateChannelId
 };

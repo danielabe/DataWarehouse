@@ -594,6 +594,7 @@ async function deleteCompany(companyId, req, res) {
     res.status(200).json(company[0])
 }
 
+//contacts
 async function getContacts(req, res) {
     const contacts = await db.query(`
     SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,
@@ -619,6 +620,76 @@ async function getContacts(req, res) {
     res.status(200).json(contactsAndChannels)
 }
 
+async function validateEmailContactsQuery(req, res, next) {
+    const email = req.body.email
+    const emails = await db.query(`SELECT email FROM contacts`, {
+        type: QueryTypes.SELECT
+    })
+    const emailsArray = emails.map(contact => contact.email)
+    if(/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(email)) {
+        if(emailsArray.every(e => e != email)) next()
+        else res.status(400).send("The email already exists").end()
+    } else res.status(400).send("The email is wrong").end()
+}
+
+async function validateChannelIdQuery(req, res, next) {
+    const channelsBody = req.body.preferred_channels
+    const idsBody = channelsBody.map(channel => channel.channel_id)
+
+    const channelsIdDB = await db.query(`SELECT channel_id FROM channels`, {
+        type: QueryTypes.SELECT
+    })
+    const channelsArray = channelsIdDB.map(id => id.channel_id)
+    if(idsBody.every(id => typeof(id) === "number" && channelsArray.includes(id))) {
+        if(idsBody.every(different)) next()
+        else res.status(400).send("The channelId is wrong").end()
+    } else res.status(400).send("The channelId is wrong").end()
+}
+
+function different(value, index, list) {
+    return list.indexOf(value) === index
+}
+
+async function createContact(newContact, req, res) {
+    const contactInserted = await db.query(`
+    INSERT INTO contacts (firstname, lastname, email, city_id, company_id, position, interest)
+    VALUES (:firstname, :lastname, :email, :city_id, :company_id, :position, :interest)
+    `, {
+        replacements: newContact,
+        type: QueryTypes.INSERT
+    })
+    req.body.preferred_channels.forEach(async channel => await db.query(`
+        INSERT INTO contacts_channels (contact_id, channel_id)
+        VALUES (${contactInserted[0]}, ${channel.channel_id})
+        `, {
+            replacements: req.body.preferred_channels,
+            type: QueryTypes.INSERT
+    }))
+    const contact = await db.query(`
+    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,
+    co.country_name, co.region_id, re.region_name, cont.company_id, comp.company_name,
+    position, interest
+    FROM contacts cont 
+    JOIN cities ci ON ci.city_id = cont.city_id
+    JOIN countries co ON co.country_id = ci.country_id
+    JOIN regions re ON re.region_id = co.region_id
+    JOIN companies comp ON comp.company_id = cont.company_id
+    WHERE contact_id = ?
+    `, {
+        replacements: [contactInserted[0]],
+        type: QueryTypes.SELECT 
+    })
+    const channels = await db.query(`
+    SELECT * FROM contacts_channels cc 
+    INNER JOIN channels ch ON cc.channel_id = ch.channel_id
+    WHERE contact_id = ?`, { 
+        replacements: [contactInserted[0]],
+        type: QueryTypes.SELECT 
+    })
+    const contactAndChannels = Object.assign( {} , contact[0], { preferred_channels: channels})
+    res.status(201).json(Object.assign( contactAndChannels ))
+}
+
 module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, 
     validateEmailQuery, validateUserIdQuery, getUser, modifyUser, deleteUser, 
     getRegions, createRegion, validateRegionNameQuery, validateRegionIdQuery, 
@@ -630,4 +701,5 @@ module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser,
     validateCountryIdCityQuery, validateCityNamePutQuery, modifyCity, deleteCity,
     getCompanies, validateCompanyNameQuery, createCompany,validateCompanyIdQuery, 
     getCompany, validateCompanyNamePutQuery, modifyCompany, validateCityIdPutQuery,
-    deleteCompany, getContacts }
+    deleteCompany, getContacts, validateEmailContactsQuery, validateChannelIdQuery,
+    createContact }

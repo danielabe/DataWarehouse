@@ -8,7 +8,7 @@ const { selectUserLogin, getUsers, createUser, getUser, modifyUser, deleteUser, 
     getCitiesRegion, getCountries, createCountry, getCountry, modifyCountry,
     deleteCountry, getCitiesCountry, getCities, createCity, getCity, modifyCity,
     deleteCity, getCompanies, createCompany, getCompany, modifyCompany, deleteCompany,
-    getContacts } = require('./queries.js')
+    getContacts, createContact } = require('./queries.js')
 
 const { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
     validateEmail, validatePassword, validateUser, validateUserId, validateFirstnamePut,
@@ -16,7 +16,8 @@ const { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLast
     validateRegionNamePut, validateCountryName, validateCountryId, validateCountryNamePut,
     validateRegionIdCountry, validateCityName, validateCityId, validateCountryIdCity,
     validateCityNamePut, validateCompanyName, validateAddress, validateCompanyId, 
-    validateCompanyNamePut, validateCityIdPut, validateAddressPut } = require('./functions.js')
+    validateCompanyNamePut, validateCityIdPut, validateAddressPut, validateEmailContacts,
+    validatePosition, validateInterest, validateChannelId } = require('./functions.js')
 
 app.use(express.json())
 app.use(helmet())
@@ -167,7 +168,7 @@ app.get('/companies', async (req, res) => {
 })
 
 app.post('/companies', validateCompanyName, validateCityId, validateAddress, async (req, res) => {
-    newCompany = {
+    const newCompany = { //chequear si ahora funciona con el const
         company_name: req.body.company_name, 
         city_id: req.body.city_id, 
         address: req.body.address
@@ -197,6 +198,23 @@ app.delete('/companies/:companyId', validateCompanyId, async (req, res) => {
 app.get('/contacts', async (req, res) => {    
     getContacts(req, res)                                 
 })
+
+app.post('/contacts', validateFirstname, validateLastname, validateEmailContacts,
+validateCityId, validateCompanyId, validatePosition, validateInterest, 
+validateChannelId, async (req, res) => {
+    const newContact = {
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        email: req.body.email,
+        city_id: req.body.city_id,
+        company_id: req.body.company_id,
+        position: req.body.position,
+        interest: req.body.interest,
+        preferred_channels: req.body.preferred_channels
+    }
+    createContact(newContact, req, res)
+})
+
 
 /* express-rate-limit, .env, bcrypt
 */

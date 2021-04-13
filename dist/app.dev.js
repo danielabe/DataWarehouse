@@ -38,7 +38,8 @@ var _require = require('./queries.js'),
     getCompany = _require.getCompany,
     modifyCompany = _require.modifyCompany,
     deleteCompany = _require.deleteCompany,
-    getContacts = _require.getContacts;
+    getContacts = _require.getContacts,
+    createContact = _require.createContact;
 
 var _require2 = require('./functions.js'),
     validateLogin = _require2.validateLogin,
@@ -69,7 +70,11 @@ var _require2 = require('./functions.js'),
     validateCompanyId = _require2.validateCompanyId,
     validateCompanyNamePut = _require2.validateCompanyNamePut,
     validateCityIdPut = _require2.validateCityIdPut,
-    validateAddressPut = _require2.validateAddressPut;
+    validateAddressPut = _require2.validateAddressPut,
+    validateEmailContacts = _require2.validateEmailContacts,
+    validatePosition = _require2.validatePosition,
+    validateInterest = _require2.validateInterest,
+    validateChannelId = _require2.validateChannelId;
 
 app.use(express.json());
 app.use(helmet());
@@ -486,11 +491,13 @@ app.get('/companies', function _callee25(req, res) {
   });
 });
 app.post('/companies', validateCompanyName, validateCityId, validateAddress, function _callee26(req, res) {
+  var newCompany;
   return regeneratorRuntime.async(function _callee26$(_context26) {
     while (1) {
       switch (_context26.prev = _context26.next) {
         case 0:
           newCompany = {
+            //chequear si ahora funciona con el const
             company_name: req.body.company_name,
             city_id: req.body.city_id,
             address: req.body.address
@@ -564,6 +571,31 @@ app.get('/contacts', function _callee30(req, res) {
         case 1:
         case "end":
           return _context30.stop();
+      }
+    }
+  });
+});
+app.post('/contacts', validateFirstname, validateLastname, validateEmailContacts, validateCityId, validateCompanyId, validatePosition, validateInterest, validateChannelId, function _callee31(req, res) {
+  var newContact;
+  return regeneratorRuntime.async(function _callee31$(_context31) {
+    while (1) {
+      switch (_context31.prev = _context31.next) {
+        case 0:
+          newContact = {
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            email: req.body.email,
+            city_id: req.body.city_id,
+            company_id: req.body.company_id,
+            position: req.body.position,
+            interest: req.body.interest,
+            preferred_channels: req.body.preferred_channels
+          };
+          createContact(newContact, req, res);
+
+        case 2:
+        case "end":
+          return _context31.stop();
       }
     }
   });

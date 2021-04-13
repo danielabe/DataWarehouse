@@ -7,7 +7,8 @@ const { validateLoginQuery, validateEmailQuery, validateUserIdQuery,
     validateCountryNameQuery, validateCountryIdQuery, validateCountryNamePutQuery,
     validateRegionIdCountryQuery, validateCityNameQuery, validateCityIdQuery,
     validateCountryIdCityQuery, validateCityNamePutQuery, validateCompanyNameQuery,
-    validateCompanyIdQuery, validateCompanyNamePutQuery, validateCityIdPutQuery } = require('./queries.js')
+    validateCompanyIdQuery, validateCompanyNamePutQuery, validateCityIdPutQuery,
+    validateEmailContactsQuery, validateChannelIdQuery } = require('./queries.js')
 
 //users
 async function validateLogin(req, res, next) {
@@ -172,12 +173,34 @@ async function validateAddressPut(req, res, next) {
     } else next()
 }
 
+//contacts
+async function validateEmailContacts(req, res, next) {
+    await validateEmailContactsQuery(req, res, next)
+}
+
+function validatePosition(req, res, next) {
+    const position = req.body.position
+    if(position.length >= 2 && position.length <= 64) next()
+    else res.status(400).send("The position is wrong").end()
+}
+
+function validateInterest(req, res, next) {
+    const interest = req.body.interest
+    if(Number.isInteger(interest) && interest >= 0 && interest <= 100) next()
+    else res.status(400).send("The interest is wrong").end()
+}
+
+async function validateChannelId(req, res, next) {
+    await validateChannelIdQuery(req, res, next)
+}
+
 module.exports = { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
     validateEmail, validatePassword, validateUser, validateUserId, validateFirstnamePut, 
     validateLastnamePut, validatePasswordPut, validateRegionName, validateRegionId, 
     validateRegionNamePut, validateCountryName, validateCountryId, validateCountryNamePut,
     validateRegionIdCountry, validateCityName, validateCityId, validateCountryIdCity,
     validateCityNamePut, validateCompanyName, validateAddress,validateCompanyId, 
-    validateCompanyNamePut, validateCityIdPut, validateAddressPut
+    validateCompanyNamePut, validateCityIdPut, validateAddressPut, validateEmailContacts,
+    validatePosition, validateInterest, validateChannelId
 }
 

@@ -957,6 +957,8 @@ paths:
           description: "Bad request"
         "401":
           description: "Unauthorized"
+        "404":
+          description: "City or company not found"
   /contacts/{contactId}:
     get:
       tags:
@@ -1329,10 +1331,17 @@ definitions:
       position:
         type: "string"
         example: "UI Designer"
-      preferred channel:
-        type: "object"
-        example: ["Facebook", "Whatsapp"]
       interest:
         type: "integer"
         format: "int64"
         example: 100
+      preferred_channels:
+        type: "object"
+        example: [
+          {
+            channel_id: 1
+          },
+          {
+            channel_id: 2
+          }
+          ]

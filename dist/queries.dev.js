@@ -1489,7 +1489,8 @@ function deleteCompany(companyId, req, res) {
       }
     }
   });
-}
+} //contacts
+
 
 function getContacts(req, res) {
   var contacts, channels, contactsAndChannels;
@@ -1523,6 +1524,141 @@ function getContacts(req, res) {
         case 8:
         case "end":
           return _context48.stop();
+      }
+    }
+  });
+}
+
+function validateEmailContactsQuery(req, res, next) {
+  var email, emails, emailsArray;
+  return regeneratorRuntime.async(function validateEmailContactsQuery$(_context49) {
+    while (1) {
+      switch (_context49.prev = _context49.next) {
+        case 0:
+          email = req.body.email;
+          _context49.next = 3;
+          return regeneratorRuntime.awrap(db.query("SELECT email FROM contacts", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 3:
+          emails = _context49.sent;
+          emailsArray = emails.map(function (contact) {
+            return contact.email;
+          });
+
+          if (/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(email)) {
+            if (emailsArray.every(function (e) {
+              return e != email;
+            })) next();else res.status(400).send("The email already exists").end();
+          } else res.status(400).send("The email is wrong").end();
+
+        case 6:
+        case "end":
+          return _context49.stop();
+      }
+    }
+  });
+}
+
+function validateChannelIdQuery(req, res, next) {
+  var channelsBody, idsBody, channelsIdDB, channelsArray;
+  return regeneratorRuntime.async(function validateChannelIdQuery$(_context50) {
+    while (1) {
+      switch (_context50.prev = _context50.next) {
+        case 0:
+          channelsBody = req.body.preferred_channels;
+          idsBody = channelsBody.map(function (channel) {
+            return channel.channel_id;
+          });
+          _context50.next = 4;
+          return regeneratorRuntime.awrap(db.query("SELECT channel_id FROM channels", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 4:
+          channelsIdDB = _context50.sent;
+          channelsArray = channelsIdDB.map(function (id) {
+            return id.channel_id;
+          });
+
+          if (idsBody.every(function (id) {
+            return typeof id === "number" && channelsArray.includes(id);
+          })) {
+            if (idsBody.every(different)) next();else res.status(400).send("The channelId is wrong").end();
+          } else res.status(400).send("The channelId is wrong").end();
+
+        case 7:
+        case "end":
+          return _context50.stop();
+      }
+    }
+  });
+}
+
+function different(value, index, list) {
+  return list.indexOf(value) === index;
+}
+
+function createContact(newContact, req, res) {
+  var contactInserted, contact, channels, contactAndChannels;
+  return regeneratorRuntime.async(function createContact$(_context52) {
+    while (1) {
+      switch (_context52.prev = _context52.next) {
+        case 0:
+          _context52.next = 2;
+          return regeneratorRuntime.awrap(db.query("\n    INSERT INTO contacts (firstname, lastname, email, city_id, company_id, position, interest)\n    VALUES (:firstname, :lastname, :email, :city_id, :company_id, :position, :interest)\n    ", {
+            replacements: newContact,
+            type: QueryTypes.INSERT
+          }));
+
+        case 2:
+          contactInserted = _context52.sent;
+          req.body.preferred_channels.forEach(function _callee(channel) {
+            return regeneratorRuntime.async(function _callee$(_context51) {
+              while (1) {
+                switch (_context51.prev = _context51.next) {
+                  case 0:
+                    _context51.next = 2;
+                    return regeneratorRuntime.awrap(db.query("\n        INSERT INTO contacts_channels (contact_id, channel_id)\n        VALUES (".concat(contactInserted[0], ", ").concat(channel.channel_id, ")\n        "), {
+                      replacements: req.body.preferred_channels,
+                      type: QueryTypes.INSERT
+                    }));
+
+                  case 2:
+                    return _context51.abrupt("return", _context51.sent);
+
+                  case 3:
+                  case "end":
+                    return _context51.stop();
+                }
+              }
+            });
+          });
+          _context52.next = 6;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.company_id, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    WHERE contact_id = ?\n    ", {
+            replacements: [contactInserted[0]],
+            type: QueryTypes.SELECT
+          }));
+
+        case 6:
+          contact = _context52.sent;
+          _context52.next = 9;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM contacts_channels cc \n    INNER JOIN channels ch ON cc.channel_id = ch.channel_id\n    WHERE contact_id = ?", {
+            replacements: [contactInserted[0]],
+            type: QueryTypes.SELECT
+          }));
+
+        case 9:
+          channels = _context52.sent;
+          contactAndChannels = Object.assign({}, contact[0], {
+            preferred_channels: channels
+          });
+          res.status(201).json(Object.assign(contactAndChannels));
+
+        case 12:
+        case "end":
+          return _context52.stop();
       }
     }
   });
@@ -1576,5 +1712,8 @@ module.exports = {
   modifyCompany: modifyCompany,
   validateCityIdPutQuery: validateCityIdPutQuery,
   deleteCompany: deleteCompany,
-  getContacts: getContacts
+  getContacts: getContacts,
+  validateEmailContactsQuery: validateEmailContactsQuery,
+  validateChannelIdQuery: validateChannelIdQuery,
+  createContact: createContact
 };
