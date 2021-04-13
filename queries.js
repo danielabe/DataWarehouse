@@ -619,7 +619,7 @@ async function getContacts(req, res) {
         ))
     res.status(200).json(contactsAndChannels)
 }
-
+        
 async function validateEmailContactsQuery(req, res, next) {
     const email = req.body.email
     const emails = await db.query(`SELECT email FROM contacts`, {
@@ -631,11 +631,11 @@ async function validateEmailContactsQuery(req, res, next) {
         else res.status(400).send("The email already exists").end()
     } else res.status(400).send("The email is wrong").end()
 }
-
+        
 async function validateChannelIdQuery(req, res, next) {
     const channelsBody = req.body.preferred_channels
     const idsBody = channelsBody.map(channel => channel.channel_id)
-
+    
     const channelsIdDB = await db.query(`SELECT channel_id FROM channels`, {
         type: QueryTypes.SELECT
     })
@@ -659,11 +659,11 @@ async function createContact(newContact, req, res) {
         type: QueryTypes.INSERT
     })
     req.body.preferred_channels.forEach(async channel => await db.query(`
-        INSERT INTO contacts_channels (contact_id, channel_id)
-        VALUES (${contactInserted[0]}, ${channel.channel_id})
-        `, {
-            replacements: req.body.preferred_channels,
-            type: QueryTypes.INSERT
+    INSERT INTO contacts_channels (contact_id, channel_id)
+    VALUES (${contactInserted[0]}, ${channel.channel_id})
+    `, {
+        replacements: req.body.preferred_channels,
+        type: QueryTypes.INSERT
     }))
     const contact = await db.query(`
     SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,
@@ -726,6 +726,122 @@ async function getContact(contactId, req, res) {
     res.status(201).json(Object.assign( contactAndChannels ))
 }
 
+async function validateEmailContactsPutQuery(req, res, next) {
+    if(req.body.email) {
+        const email = req.body.email
+        const emails = await db.query(`SELECT email FROM contacts`, {
+            type: QueryTypes.SELECT
+        })
+        const emailsArray = emails.map(contact => contact.email)
+        if(/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(email)) {
+            if(emailsArray.every(e => e != email)) next()
+            else res.status(400).send("The email already exists").end()
+        } else res.status(400).send("The email is wrong").end()
+    } else next()
+}
+
+async function validateCompanyIdPutQuery(req, res, next) { 
+    if(req.body.company_id) {
+        const companyId = req.body.company_id
+        const companies = await db.query(`SELECT company_id FROM companies`, {
+            type: QueryTypes.SELECT
+        })
+        const companiesArray = companies.map(id => id.company_id)
+        if(companiesArray.includes(companyId)) next()
+        else res.status(404).send("The company does not exist").end()
+    } else next()
+}
+
+async function validateChannelIdPutQuery(req, res, next) {
+    if(req.body.preferred_channels) {
+        const channelsBody = req.body.preferred_channels
+        const idsBody = channelsBody.map(channel => channel.channel_id)
+        
+        const channelsIdDB = await db.query(`SELECT channel_id FROM channels`, {
+            type: QueryTypes.SELECT
+        })
+        const channelsArray = channelsIdDB.map(id => id.channel_id)
+        if(idsBody.every(id => typeof(id) === "number" && channelsArray.includes(id))) {
+            if(idsBody.every(different)) next()
+            else res.status(400).send("The channelId is wrong").end()
+        } else res.status(400).send("The channelId is wrong").end()
+    } else next()
+}
+
+async function modifycontact(req, res) {
+    const contact = await db.query(`SELECT * FROM contacts WHERE contact_id = ?`, {
+        replacements: [req.params.contactId],
+        type: QueryTypes.SELECT
+    })
+    /* const chan = await db.query(`SELECT * FROM contacts_channels WHERE contact_id = ?`, {
+        replacements: [req.params.contactId],
+        type: QueryTypes.SELECT
+    })
+    console.log(chan) */
+    const modifiedContact = {
+        contact_id: req.params.contactId,
+        firstname: req.body.firstname || contact[0].firstname,
+        lastname: req.body.lastname || contact[0].lastname,
+        email: req.body.email || contact[0].email,
+        city_id: req.body.city_id || contact[0].city_id ,
+        company_id: req.body.company_id || contact[0].company_id,
+        position: req.body.position || contact[0].position,
+        interest: req.body.interest || contact[0].interest,
+        /* preferred_channels: req.body.preferred_channels */ /* || chan[0].preferred_channels */
+    }
+    const modified = await db.query(`
+    UPDATE contacts SET firstname = :firstname, lastname = :lastname, email = :email, city_id = :city_id, 
+    company_id = :company_id, position = :position, interest = :interest
+    WHERE contact_id = :contact_id
+    `, {
+        replacements: modifiedContact,
+        type: QueryTypes.UPDATE
+    })
+    /* console.log(modifiedContact.preferred_channels[0].channel_id) */
+    /* const contactId = req.params.contactId */
+    /* req.body.preferred_channels.forEach(async channel => {
+        console.log(channel.channel_id)
+        await db.query(`
+        UPDATE contacts_channels SET  channel_id = ${channel.channel_id}
+        WHERE contact_id = ${contactId}
+        `, {
+            replacements: req.body.preferred_channels,
+            type: QueryTypes.INSERT
+        })
+    }
+        ) */
+    /* const modifiedChan = await db.query(`
+    UPDATE contacts_channels SET contact_id = :, channel_id = :
+    WHERE contact_id = :contact_id
+    `, {
+        replacements: modifiedContact,
+        type: QueryTypes.UPDATE
+    }) */
+
+    const contactRes = await db.query(`
+    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,
+    co.country_name, co.region_id, re.region_name, cont.company_id, comp.company_name,
+    position, interest
+    FROM contacts cont 
+    JOIN cities ci ON ci.city_id = cont.city_id
+    JOIN countries co ON co.country_id = ci.country_id
+    JOIN regions re ON re.region_id = co.region_id
+    JOIN companies comp ON comp.company_id = cont.company_id
+    WHERE contact_id = ?
+    `, {
+        replacements: [req.params.contactId],
+        type: QueryTypes.SELECT 
+    })
+    const channels = await db.query(`
+    SELECT * FROM contacts_channels cc 
+    INNER JOIN channels ch ON cc.channel_id = ch.channel_id
+    WHERE contact_id = ?`, { 
+        replacements: [req.params.contactId],
+        type: QueryTypes.SELECT 
+    })
+    const contactAndChannels = Object.assign( {} , contactRes[0], { preferred_channels: channels})
+    res.status(201).json(Object.assign( contactAndChannels ))
+}
 
 module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, 
     validateEmailQuery, validateUserIdQuery, getUser, modifyUser, deleteUser, 
@@ -739,4 +855,5 @@ module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser,
     getCompanies, validateCompanyNameQuery, createCompany,validateCompanyIdQuery, 
     getCompany, validateCompanyNamePutQuery, modifyCompany, validateCityIdPutQuery,
     deleteCompany, getContacts, validateEmailContactsQuery, validateChannelIdQuery,
-    createContact, validateContactIdQuery, getContact }
+    createContact, validateContactIdQuery, getContact, validateEmailContactsPutQuery,
+    validateCompanyIdPutQuery, validateChannelIdPutQuery, modifycontact }

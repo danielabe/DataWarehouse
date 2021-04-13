@@ -1014,7 +1014,7 @@ paths:
         description: "Contact modified"
         required: true
         schema:
-          $ref: "#/definitions/NewContact"
+          $ref: "#/definitions/NewContactPut"
       responses:
         "200":
           description: "Contact successfully modified"
@@ -1345,3 +1345,30 @@ definitions:
             channel_id: 2
           }
           ]
+  NewContactPut:
+    type: "object"
+    properties:
+      firstname:
+        type: "string"
+        example: "Agustín Emanuel"
+      lastname:
+        type: "string"
+        example: "Soria"
+      email: 
+        type: "string"
+        example: "agustinesoria96@gmail.com"
+      city_id:
+        type: "integer"
+        format: "int64"
+        example: 1
+      company_id:
+        type: "integer"
+        format: "int64"
+        example: 1
+      position:
+        type: "string"
+        example: "UI Designer"
+      interest:
+        type: "integer"
+        format: "int64"
+        example: 100

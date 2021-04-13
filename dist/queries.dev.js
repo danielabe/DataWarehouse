@@ -1620,7 +1620,7 @@ function createContact(newContact, req, res) {
                 switch (_context51.prev = _context51.next) {
                   case 0:
                     _context51.next = 2;
-                    return regeneratorRuntime.awrap(db.query("\n        INSERT INTO contacts_channels (contact_id, channel_id)\n        VALUES (".concat(contactInserted[0], ", ").concat(channel.channel_id, ")\n        "), {
+                    return regeneratorRuntime.awrap(db.query("\n    INSERT INTO contacts_channels (contact_id, channel_id)\n    VALUES (".concat(contactInserted[0], ", ").concat(channel.channel_id, ")\n    "), {
                       replacements: req.body.preferred_channels,
                       type: QueryTypes.INSERT
                     }));
@@ -1728,6 +1728,203 @@ function getContact(contactId, req, res) {
   });
 }
 
+function validateEmailContactsPutQuery(req, res, next) {
+  var email, emails, emailsArray;
+  return regeneratorRuntime.async(function validateEmailContactsPutQuery$(_context55) {
+    while (1) {
+      switch (_context55.prev = _context55.next) {
+        case 0:
+          if (!req.body.email) {
+            _context55.next = 9;
+            break;
+          }
+
+          email = req.body.email;
+          _context55.next = 4;
+          return regeneratorRuntime.awrap(db.query("SELECT email FROM contacts", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 4:
+          emails = _context55.sent;
+          emailsArray = emails.map(function (contact) {
+            return contact.email;
+          });
+
+          if (/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(email)) {
+            if (emailsArray.every(function (e) {
+              return e != email;
+            })) next();else res.status(400).send("The email already exists").end();
+          } else res.status(400).send("The email is wrong").end();
+
+          _context55.next = 10;
+          break;
+
+        case 9:
+          next();
+
+        case 10:
+        case "end":
+          return _context55.stop();
+      }
+    }
+  });
+}
+
+function validateCompanyIdPutQuery(req, res, next) {
+  var companyId, companies, companiesArray;
+  return regeneratorRuntime.async(function validateCompanyIdPutQuery$(_context56) {
+    while (1) {
+      switch (_context56.prev = _context56.next) {
+        case 0:
+          if (!req.body.company_id) {
+            _context56.next = 9;
+            break;
+          }
+
+          companyId = req.body.company_id;
+          _context56.next = 4;
+          return regeneratorRuntime.awrap(db.query("SELECT company_id FROM companies", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 4:
+          companies = _context56.sent;
+          companiesArray = companies.map(function (id) {
+            return id.company_id;
+          });
+          if (companiesArray.includes(companyId)) next();else res.status(404).send("The company does not exist").end();
+          _context56.next = 10;
+          break;
+
+        case 9:
+          next();
+
+        case 10:
+        case "end":
+          return _context56.stop();
+      }
+    }
+  });
+}
+
+function validateChannelIdPutQuery(req, res, next) {
+  var channelsBody, idsBody, channelsIdDB, channelsArray;
+  return regeneratorRuntime.async(function validateChannelIdPutQuery$(_context57) {
+    while (1) {
+      switch (_context57.prev = _context57.next) {
+        case 0:
+          if (!req.body.preferred_channels) {
+            _context57.next = 10;
+            break;
+          }
+
+          channelsBody = req.body.preferred_channels;
+          idsBody = channelsBody.map(function (channel) {
+            return channel.channel_id;
+          });
+          _context57.next = 5;
+          return regeneratorRuntime.awrap(db.query("SELECT channel_id FROM channels", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 5:
+          channelsIdDB = _context57.sent;
+          channelsArray = channelsIdDB.map(function (id) {
+            return id.channel_id;
+          });
+
+          if (idsBody.every(function (id) {
+            return typeof id === "number" && channelsArray.includes(id);
+          })) {
+            if (idsBody.every(different)) next();else res.status(400).send("The channelId is wrong").end();
+          } else res.status(400).send("The channelId is wrong").end();
+
+          _context57.next = 11;
+          break;
+
+        case 10:
+          next();
+
+        case 11:
+        case "end":
+          return _context57.stop();
+      }
+    }
+  });
+}
+
+function modifycontact(req, res) {
+  var contact, modifiedContact, modified, contactRes, channels, contactAndChannels;
+  return regeneratorRuntime.async(function modifycontact$(_context58) {
+    while (1) {
+      switch (_context58.prev = _context58.next) {
+        case 0:
+          _context58.next = 2;
+          return regeneratorRuntime.awrap(db.query("SELECT * FROM contacts WHERE contact_id = ?", {
+            replacements: [req.params.contactId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          contact = _context58.sent;
+
+          /* const chan = await db.query(`SELECT * FROM contacts_channels WHERE contact_id = ?`, {
+              replacements: [req.params.contactId],
+              type: QueryTypes.SELECT
+          })
+          console.log(chan) */
+          modifiedContact = {
+            contact_id: req.params.contactId,
+            firstname: req.body.firstname || contact[0].firstname,
+            lastname: req.body.lastname || contact[0].lastname,
+            email: req.body.email || contact[0].email,
+            city_id: req.body.city_id || contact[0].city_id,
+            company_id: req.body.company_id || contact[0].company_id,
+            position: req.body.position || contact[0].position,
+            interest: req.body.interest || contact[0].interest
+            /* preferred_channels: req.body.preferred_channels */
+
+            /* || chan[0].preferred_channels */
+
+          };
+          _context58.next = 6;
+          return regeneratorRuntime.awrap(db.query("\n    UPDATE contacts SET firstname = :firstname, lastname = :lastname, email = :email, city_id = :city_id, \n    company_id = :company_id, position = :position, interest = :interest\n    WHERE contact_id = :contact_id\n    ", {
+            replacements: modifiedContact,
+            type: QueryTypes.UPDATE
+          }));
+
+        case 6:
+          modified = _context58.sent;
+          _context58.next = 9;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.company_id, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    WHERE contact_id = ?\n    ", {
+            replacements: [req.params.contactId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 9:
+          contactRes = _context58.sent;
+          _context58.next = 12;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM contacts_channels cc \n    INNER JOIN channels ch ON cc.channel_id = ch.channel_id\n    WHERE contact_id = ?", {
+            replacements: [req.params.contactId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 12:
+          channels = _context58.sent;
+          contactAndChannels = Object.assign({}, contactRes[0], {
+            preferred_channels: channels
+          });
+          res.status(201).json(Object.assign(contactAndChannels));
+
+        case 15:
+        case "end":
+          return _context58.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   selectUserLogin: selectUserLogin,
   validateLoginQuery: validateLoginQuery,
@@ -1781,5 +1978,9 @@ module.exports = {
   validateChannelIdQuery: validateChannelIdQuery,
   createContact: createContact,
   validateContactIdQuery: validateContactIdQuery,
-  getContact: getContact
+  getContact: getContact,
+  validateEmailContactsPutQuery: validateEmailContactsPutQuery,
+  validateCompanyIdPutQuery: validateCompanyIdPutQuery,
+  validateChannelIdPutQuery: validateChannelIdPutQuery,
+  modifycontact: modifycontact
 };

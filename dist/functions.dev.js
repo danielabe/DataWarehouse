@@ -25,7 +25,10 @@ var _require = require('./queries.js'),
     validateCityIdPutQuery = _require.validateCityIdPutQuery,
     validateEmailContactsQuery = _require.validateEmailContactsQuery,
     validateChannelIdQuery = _require.validateChannelIdQuery,
-    validateContactIdQuery = _require.validateContactIdQuery; //users
+    validateContactIdQuery = _require.validateContactIdQuery,
+    validateEmailContactsPutQuery = _require.validateEmailContactsPutQuery,
+    validateCompanyIdPutQuery = _require.validateCompanyIdPutQuery,
+    validateChannelIdPutQuery = _require.validateChannelIdPutQuery; //users
 
 
 function validateLogin(req, res, next) {
@@ -470,6 +473,80 @@ function validateContactId(req, res, next) {
   });
 }
 
+function validateEmailContactsPut(req, res, next) {
+  return regeneratorRuntime.async(function validateEmailContactsPut$(_context23) {
+    while (1) {
+      switch (_context23.prev = _context23.next) {
+        case 0:
+          _context23.next = 2;
+          return regeneratorRuntime.awrap(validateEmailContactsPutQuery(req, res, next));
+
+        case 2:
+        case "end":
+          return _context23.stop();
+      }
+    }
+  });
+}
+
+function validateCompanyIdPut(req, res, next) {
+  return regeneratorRuntime.async(function validateCompanyIdPut$(_context24) {
+    while (1) {
+      switch (_context24.prev = _context24.next) {
+        case 0:
+          _context24.next = 2;
+          return regeneratorRuntime.awrap(validateCompanyIdPutQuery(req, res, next));
+
+        case 2:
+        case "end":
+          return _context24.stop();
+      }
+    }
+  });
+}
+
+function validatePositionPut(req, res, next) {
+  var position;
+  return regeneratorRuntime.async(function validatePositionPut$(_context25) {
+    while (1) {
+      switch (_context25.prev = _context25.next) {
+        case 0:
+          if (req.body.position) {
+            position = req.body.position;
+            if (position.length >= 2 && position.length <= 64) next();else res.status(400).send("The position is wrong").end();
+          } else next();
+
+        case 1:
+        case "end":
+          return _context25.stop();
+      }
+    }
+  });
+}
+
+function validateInterestPut(req, res, next) {
+  if (req.body.interest) {
+    var interest = req.body.interest;
+    if (Number.isInteger(interest) && interest >= 0 && interest <= 100) next();else res.status(400).send("The interest is wrong").end();
+  } else next();
+}
+
+function validateChannelIdPut(req, res, next) {
+  return regeneratorRuntime.async(function validateChannelIdPut$(_context26) {
+    while (1) {
+      switch (_context26.prev = _context26.next) {
+        case 0:
+          _context26.next = 2;
+          return regeneratorRuntime.awrap(validateChannelIdPutQuery(req, res, next));
+
+        case 2:
+        case "end":
+          return _context26.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   validateLogin: validateLogin,
   verifyToken: verifyToken,
@@ -504,5 +581,10 @@ module.exports = {
   validatePosition: validatePosition,
   validateInterest: validateInterest,
   validateChannelId: validateChannelId,
-  validateContactId: validateContactId
+  validateContactId: validateContactId,
+  validateEmailContactsPut: validateEmailContactsPut,
+  validateCompanyIdPut: validateCompanyIdPut,
+  validatePositionPut: validatePositionPut,
+  validateInterestPut: validateInterestPut,
+  validateChannelIdPut: validateChannelIdPut
 };

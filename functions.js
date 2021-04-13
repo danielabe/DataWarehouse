@@ -8,7 +8,8 @@ const { validateLoginQuery, validateEmailQuery, validateUserIdQuery,
     validateRegionIdCountryQuery, validateCityNameQuery, validateCityIdQuery,
     validateCountryIdCityQuery, validateCityNamePutQuery, validateCompanyNameQuery,
     validateCompanyIdQuery, validateCompanyNamePutQuery, validateCityIdPutQuery,
-    validateEmailContactsQuery, validateChannelIdQuery, validateContactIdQuery } = require('./queries.js')
+    validateEmailContactsQuery, validateChannelIdQuery, validateContactIdQuery,
+    validateEmailContactsPutQuery, validateCompanyIdPutQuery, validateChannelIdPutQuery } = require('./queries.js')
 
 //users
 async function validateLogin(req, res, next) {
@@ -198,6 +199,33 @@ async function validateContactId(req, res, next) {
     await validateContactIdQuery(req, res, next)
 }
 
+async function validateEmailContactsPut(req, res, next) {
+    await validateEmailContactsPutQuery(req, res, next)
+}
+
+async function validateCompanyIdPut(req, res, next) {
+    await validateCompanyIdPutQuery(req, res, next)
+}
+
+async function validatePositionPut(req, res, next) {
+    if(req.body.position) {
+        const position = req.body.position
+        if(position.length >= 2 && position.length <= 64) next()
+        else res.status(400).send("The position is wrong").end()
+    } else next()
+}
+
+function validateInterestPut(req, res, next) {
+    if(req.body.interest) {
+        const interest = req.body.interest
+        if(Number.isInteger(interest) && interest >= 0 && interest <= 100) next()
+        else res.status(400).send("The interest is wrong").end()
+    } else next()
+}
+
+async function validateChannelIdPut(req, res, next) {
+    await validateChannelIdPutQuery(req, res, next)
+}
 
 module.exports = { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
     validateEmail, validatePassword, validateUser, validateUserId, validateFirstnamePut, 
@@ -206,6 +234,7 @@ module.exports = { validateLogin, verifyToken, filterAdmin, validateFirstname, v
     validateRegionIdCountry, validateCityName, validateCityId, validateCountryIdCity,
     validateCityNamePut, validateCompanyName, validateAddress,validateCompanyId, 
     validateCompanyNamePut, validateCityIdPut, validateAddressPut, validateEmailContacts,
-    validatePosition, validateInterest, validateChannelId, validateContactId
+    validatePosition, validateInterest, validateChannelId, validateContactId, validateEmailContactsPut,
+    validateCompanyIdPut, validatePositionPut, validateInterestPut, validateChannelIdPut
 }
 

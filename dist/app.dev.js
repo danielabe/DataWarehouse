@@ -40,7 +40,8 @@ var _require = require('./queries.js'),
     deleteCompany = _require.deleteCompany,
     getContacts = _require.getContacts,
     createContact = _require.createContact,
-    getContact = _require.getContact;
+    getContact = _require.getContact,
+    modifycontact = _require.modifycontact;
 
 var _require2 = require('./functions.js'),
     validateLogin = _require2.validateLogin,
@@ -76,7 +77,12 @@ var _require2 = require('./functions.js'),
     validatePosition = _require2.validatePosition,
     validateInterest = _require2.validateInterest,
     validateChannelId = _require2.validateChannelId,
-    validateContactId = _require2.validateContactId;
+    validateContactId = _require2.validateContactId,
+    validateEmailContactsPut = _require2.validateEmailContactsPut,
+    validateCompanyIdPut = _require2.validateCompanyIdPut,
+    validatePositionPut = _require2.validatePositionPut,
+    validateInterestPut = _require2.validateInterestPut,
+    validateChannelIdPut = _require2.validateChannelIdPut;
 
 app.use(express.json());
 app.use(helmet());
@@ -618,5 +624,31 @@ app.get('/contacts/:contactId', validateContactId, function _callee32(req, res) 
     }
   });
 });
+app.put('/contacts/:contactId', validateContactId, validateFirstnamePut, validateLastnamePut, validateEmailContactsPut, validateCityIdPut, validateCompanyIdPut, validatePositionPut, validateInterestPut, validateChannelIdPut, function _callee33(req, res) {
+  return regeneratorRuntime.async(function _callee33$(_context33) {
+    while (1) {
+      switch (_context33.prev = _context33.next) {
+        case 0:
+          modifycontact(req, res);
+
+        case 1:
+        case "end":
+          return _context33.stop();
+      }
+    }
+  });
+});
+/* const newContact = {
+        contact_id: req.params.contactId,
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        email: req.body.email,
+        city_id: req.body.city_id,
+        company_id: req.body.company_id,
+        position: req.body.position,
+        interest: req.body.interest,
+        preferred_channels: req.body.preferred_channels
+    } */
+
 /* express-rate-limit, .env, bcrypt
 */

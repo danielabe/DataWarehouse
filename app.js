@@ -8,7 +8,7 @@ const { selectUserLogin, getUsers, createUser, getUser, modifyUser, deleteUser, 
     getCitiesRegion, getCountries, createCountry, getCountry, modifyCountry,
     deleteCountry, getCitiesCountry, getCities, createCity, getCity, modifyCity,
     deleteCity, getCompanies, createCompany, getCompany, modifyCompany, deleteCompany,
-    getContacts, createContact, getContact } = require('./queries.js')
+    getContacts, createContact, getContact, modifycontact } = require('./queries.js')
 
 const { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
     validateEmail, validatePassword, validateUser, validateUserId, validateFirstnamePut,
@@ -17,7 +17,9 @@ const { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLast
     validateRegionIdCountry, validateCityName, validateCityId, validateCountryIdCity,
     validateCityNamePut, validateCompanyName, validateAddress, validateCompanyId, 
     validateCompanyNamePut, validateCityIdPut, validateAddressPut, validateEmailContacts,
-    validatePosition, validateInterest, validateChannelId, validateContactId } = require('./functions.js')
+    validatePosition, validateInterest, validateChannelId, validateContactId, 
+    validateEmailContactsPut, validateCompanyIdPut, validatePositionPut, validateInterestPut, 
+    validateChannelIdPut } = require('./functions.js')
 
 app.use(express.json())
 app.use(helmet())
@@ -220,5 +222,26 @@ app.get('/contacts/:contactId', validateContactId, async (req, res) => {
     getContact(contactId, req, res)                                 
 })
 
+app.put('/contacts/:contactId', validateContactId, validateFirstnamePut, validateLastnamePut,
+validateEmailContactsPut, validateCityIdPut, validateCompanyIdPut, validatePositionPut, 
+validateInterestPut, validateChannelIdPut, async (req, res) => {
+    modifycontact(req, res)
+})
+
+
+
+
+/* const newContact = {
+        contact_id: req.params.contactId,
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        email: req.body.email,
+        city_id: req.body.city_id,
+        company_id: req.body.company_id,
+        position: req.body.position,
+        interest: req.body.interest,
+        preferred_channels: req.body.preferred_channels
+    } */
+    
 /* express-rate-limit, .env, bcrypt
 */
