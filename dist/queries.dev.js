@@ -2078,6 +2078,30 @@ function deleteChannelContact(newContChan, req, res) {
       }
     }
   });
+} //channels
+
+
+function getChannels(req, res) {
+  var channels;
+  return regeneratorRuntime.async(function getChannels$(_context64) {
+    while (1) {
+      switch (_context64.prev = _context64.next) {
+        case 0:
+          _context64.next = 2;
+          return regeneratorRuntime.awrap(db.query("SELECT * FROM channels", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          channels = _context64.sent;
+          res.status(200).json(channels);
+
+        case 4:
+        case "end":
+          return _context64.stop();
+      }
+    }
+  });
 }
 
 module.exports = {
@@ -2142,5 +2166,6 @@ module.exports = {
   validateChannelIdAddQuery: validateChannelIdAddQuery,
   addChannel: addChannel,
   deleteChannelContact: deleteChannelContact,
-  validateChannelIdDelQuery: validateChannelIdDelQuery
+  validateChannelIdDelQuery: validateChannelIdDelQuery,
+  getChannels: getChannels
 };

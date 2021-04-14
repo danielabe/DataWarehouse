@@ -44,7 +44,8 @@ var _require = require('./queries.js'),
     modifycontact = _require.modifycontact,
     deleteContact = _require.deleteContact,
     addChannel = _require.addChannel,
-    deleteChannelContact = _require.deleteChannelContact;
+    deleteChannelContact = _require.deleteChannelContact,
+    getChannels = _require.getChannels;
 
 var _require2 = require('./functions.js'),
     validateLogin = _require2.validateLogin,
@@ -693,6 +694,21 @@ app["delete"]('/contacts/:contactId/channels/:channelId', validateContactId, val
         case 2:
         case "end":
           return _context36.stop();
+      }
+    }
+  });
+}); //channels
+
+app.get('/channels', function _callee37(req, res) {
+  return regeneratorRuntime.async(function _callee37$(_context37) {
+    while (1) {
+      switch (_context37.prev = _context37.next) {
+        case 0:
+          getChannels(req, res);
+
+        case 1:
+        case "end":
+          return _context37.stop();
       }
     }
   });
