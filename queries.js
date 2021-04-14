@@ -947,6 +947,38 @@ async function getChannel(channelId, req, res) {
     res.status(200).json(channel[0])
 }
 
+async function validateChannelNamePutQuery(req, res, next) {
+    if(req.body.channel_name) {
+        const channel = req.body.channel_name
+        const channels = await db.query(`SELECT channel_name FROM channels`, {
+            type: QueryTypes.SELECT
+        })
+        const channelsArray = channels.map(channel => channel.channel_name)
+        if(req.body.channel_name.length >= 2 && req.body.channel_name.length <= 64) {
+            if(channelsArray.every(name => name !== channel)) next()
+            else res.status(400).send("The channel already exists").end()
+        } else res.status(400).send("The channel name length is wrong").end()
+    } else next()
+}
+
+async function modifyChannel(channelId, req, res) {
+    const channel = await db.query(`SELECT * FROM channels WHERE channel_id = ?`, {
+        replacements: [channelId],
+        type: QueryTypes.SELECT 
+    })
+    const newChannel = {
+        channelId: channelId,
+        channelName: req.body.channel_name || channel[0].channel_name
+    }
+    const modified = await db.query(`
+    UPDATE channels SET channel_name = :channelName WHERE channel_id = :channelId
+    `, {
+        replacements:  newChannel /* Object.assign( {}, newchannel, {password: password} ) */,
+        type: QueryTypes.UPDATE
+    })
+    res.status(200).json(newChannel)
+}
+
 module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, 
     validateEmailQuery, validateUserIdQuery, getUser, modifyUser, deleteUser, 
     getRegions, createRegion, validateRegionNameQuery, validateRegionIdQuery, 
@@ -963,4 +995,4 @@ module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser,
     validateCompanyIdPutQuery, validateChannelIdPutQuery, modifycontact, deleteContact,
     validateChannelIdAddQuery, addChannel, deleteChannelContact, validateChannelIdDelQuery,
     getChannels, validateChannelNameQuery, createChannel, validateChannelIdExQuery,
-    getChannel }
+    getChannel, validateChannelNamePutQuery, modifyChannel }

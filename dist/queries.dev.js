@@ -2217,6 +2217,87 @@ function getChannel(channelId, req, res) {
   });
 }
 
+function validateChannelNamePutQuery(req, res, next) {
+  var channel, channels, channelsArray;
+  return regeneratorRuntime.async(function validateChannelNamePutQuery$(_context69) {
+    while (1) {
+      switch (_context69.prev = _context69.next) {
+        case 0:
+          if (!req.body.channel_name) {
+            _context69.next = 9;
+            break;
+          }
+
+          channel = req.body.channel_name;
+          _context69.next = 4;
+          return regeneratorRuntime.awrap(db.query("SELECT channel_name FROM channels", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 4:
+          channels = _context69.sent;
+          channelsArray = channels.map(function (channel) {
+            return channel.channel_name;
+          });
+
+          if (req.body.channel_name.length >= 2 && req.body.channel_name.length <= 64) {
+            if (channelsArray.every(function (name) {
+              return name !== channel;
+            })) next();else res.status(400).send("The channel already exists").end();
+          } else res.status(400).send("The channel name length is wrong").end();
+
+          _context69.next = 10;
+          break;
+
+        case 9:
+          next();
+
+        case 10:
+        case "end":
+          return _context69.stop();
+      }
+    }
+  });
+}
+
+function modifyChannel(channelId, req, res) {
+  var channel, newChannel, modified;
+  return regeneratorRuntime.async(function modifyChannel$(_context70) {
+    while (1) {
+      switch (_context70.prev = _context70.next) {
+        case 0:
+          _context70.next = 2;
+          return regeneratorRuntime.awrap(db.query("SELECT * FROM channels WHERE channel_id = ?", {
+            replacements: [channelId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          channel = _context70.sent;
+          newChannel = {
+            channelId: channelId,
+            channelName: req.body.channel_name || channel[0].channel_name
+          };
+          _context70.next = 6;
+          return regeneratorRuntime.awrap(db.query("\n    UPDATE channels SET channel_name = :channelName WHERE channel_id = :channelId\n    ", {
+            replacements: newChannel
+            /* Object.assign( {}, newchannel, {password: password} ) */
+            ,
+            type: QueryTypes.UPDATE
+          }));
+
+        case 6:
+          modified = _context70.sent;
+          res.status(200).json(newChannel);
+
+        case 8:
+        case "end":
+          return _context70.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   selectUserLogin: selectUserLogin,
   validateLoginQuery: validateLoginQuery,
@@ -2284,5 +2365,7 @@ module.exports = {
   validateChannelNameQuery: validateChannelNameQuery,
   createChannel: createChannel,
   validateChannelIdExQuery: validateChannelIdExQuery,
-  getChannel: getChannel
+  getChannel: getChannel,
+  validateChannelNamePutQuery: validateChannelNamePutQuery,
+  modifyChannel: modifyChannel
 };

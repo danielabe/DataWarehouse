@@ -9,7 +9,7 @@ const { selectUserLogin, getUsers, createUser, getUser, modifyUser, deleteUser, 
     deleteCountry, getCitiesCountry, getCities, createCity, getCity, modifyCity,
     deleteCity, getCompanies, createCompany, getCompany, modifyCompany, deleteCompany,
     getContacts, createContact, getContact, modifycontact, deleteContact, addChannel,
-    deleteChannelContact, getChannels, createChannel, getChannel } = require('./queries.js')
+    deleteChannelContact, getChannels, createChannel, getChannel, modifyChannel } = require('./queries.js')
 
 const { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
     validateEmail, validatePassword, validateUser, validateUserId, validateFirstnamePut,
@@ -21,7 +21,7 @@ const { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLast
     validatePosition, validateInterest, validateChannelId, validateContactId, 
     validateEmailContactsPut, validateCompanyIdPut, validatePositionPut, validateInterestPut, 
     validateChannelIdPut, validateChannelIdAdd, validateChannelIdDel, validateChannelName,
-    validateChannelIdEx } = require('./functions.js')
+    validateChannelIdEx, validateChannelNamePut } = require('./functions.js')
 
 app.use(express.json())
 app.use(helmet())
@@ -265,6 +265,11 @@ app.get('/channels/:channelId', validateChannelIdEx, async (req, res) => {
     const channelId = +req.params.channelId
     getChannel(channelId, req, res)
 }) 
+
+app.put('/channels/:channelId', validateChannelIdEx, validateChannelNamePut, async (req, res) => {
+    const channelId = +req.params.channelId
+    modifyChannel(channelId, req, res)
+})
 
 /* express-rate-limit, .env, bcrypt
 */
