@@ -979,6 +979,18 @@ async function modifyChannel(channelId, req, res) {
     res.status(200).json(newChannel)
 }
 
+async function deleteChannel(channelId, req, res) {
+    const channel = await db.query(`SELECT * FROM channels WHERE channel_id = ?`, {
+        replacements: [channelId],
+        type: QueryTypes.SELECT 
+    })
+    const deleted = await db.query(`DELETE FROM channels WHERE channel_id = ?`, {
+        replacements: [channelId],
+        type: QueryTypes.DELETE
+    })
+    res.status(200).json(channel)
+}
+
 module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, 
     validateEmailQuery, validateUserIdQuery, getUser, modifyUser, deleteUser, 
     getRegions, createRegion, validateRegionNameQuery, validateRegionIdQuery, 
@@ -995,4 +1007,4 @@ module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser,
     validateCompanyIdPutQuery, validateChannelIdPutQuery, modifycontact, deleteContact,
     validateChannelIdAddQuery, addChannel, deleteChannelContact, validateChannelIdDelQuery,
     getChannels, validateChannelNameQuery, createChannel, validateChannelIdExQuery,
-    getChannel, validateChannelNamePutQuery, modifyChannel }
+    getChannel, validateChannelNamePutQuery, modifyChannel, deleteChannel }

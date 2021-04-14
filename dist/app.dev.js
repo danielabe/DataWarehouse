@@ -48,7 +48,8 @@ var _require = require('./queries.js'),
     getChannels = _require.getChannels,
     createChannel = _require.createChannel,
     getChannel = _require.getChannel,
-    modifyChannel = _require.modifyChannel;
+    modifyChannel = _require.modifyChannel,
+    deleteChannel = _require.deleteChannel;
 
 var _require2 = require('./functions.js'),
     validateLogin = _require2.validateLogin,
@@ -763,6 +764,23 @@ app.put('/channels/:channelId', validateChannelIdEx, validateChannelNamePut, fun
         case 2:
         case "end":
           return _context40.stop();
+      }
+    }
+  });
+});
+app["delete"]('/channels/:channelId', validateChannelIdEx, function _callee41(req, res) {
+  var channelId;
+  return regeneratorRuntime.async(function _callee41$(_context41) {
+    while (1) {
+      switch (_context41.prev = _context41.next) {
+        case 0:
+          channelId = +req.params.channelId;
+          deleteChannel(channelId, req, res); //no puedo borrar una region si tengo países en ella o si borro una region 
+          //borro todos los paises que tiene
+
+        case 2:
+        case "end":
+          return _context41.stop();
       }
     }
   });

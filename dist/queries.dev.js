@@ -2298,6 +2298,38 @@ function modifyChannel(channelId, req, res) {
   });
 }
 
+function deleteChannel(channelId, req, res) {
+  var channel, deleted;
+  return regeneratorRuntime.async(function deleteChannel$(_context71) {
+    while (1) {
+      switch (_context71.prev = _context71.next) {
+        case 0:
+          _context71.next = 2;
+          return regeneratorRuntime.awrap(db.query("SELECT * FROM channels WHERE channel_id = ?", {
+            replacements: [channelId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          channel = _context71.sent;
+          _context71.next = 5;
+          return regeneratorRuntime.awrap(db.query("DELETE FROM channels WHERE channel_id = ?", {
+            replacements: [channelId],
+            type: QueryTypes.DELETE
+          }));
+
+        case 5:
+          deleted = _context71.sent;
+          res.status(200).json(channel);
+
+        case 7:
+        case "end":
+          return _context71.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   selectUserLogin: selectUserLogin,
   validateLoginQuery: validateLoginQuery,
@@ -2367,5 +2399,6 @@ module.exports = {
   validateChannelIdExQuery: validateChannelIdExQuery,
   getChannel: getChannel,
   validateChannelNamePutQuery: validateChannelNamePutQuery,
-  modifyChannel: modifyChannel
+  modifyChannel: modifyChannel,
+  deleteChannel: deleteChannel
 };

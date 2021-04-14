@@ -9,7 +9,8 @@ const { selectUserLogin, getUsers, createUser, getUser, modifyUser, deleteUser, 
     deleteCountry, getCitiesCountry, getCities, createCity, getCity, modifyCity,
     deleteCity, getCompanies, createCompany, getCompany, modifyCompany, deleteCompany,
     getContacts, createContact, getContact, modifycontact, deleteContact, addChannel,
-    deleteChannelContact, getChannels, createChannel, getChannel, modifyChannel } = require('./queries.js')
+    deleteChannelContact, getChannels, createChannel, getChannel, modifyChannel,
+    deleteChannel } = require('./queries.js')
 
 const { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
     validateEmail, validatePassword, validateUser, validateUserId, validateFirstnamePut,
@@ -269,6 +270,13 @@ app.get('/channels/:channelId', validateChannelIdEx, async (req, res) => {
 app.put('/channels/:channelId', validateChannelIdEx, validateChannelNamePut, async (req, res) => {
     const channelId = +req.params.channelId
     modifyChannel(channelId, req, res)
+})
+
+app.delete('/channels/:channelId', validateChannelIdEx, async (req, res) => {
+    const channelId = +req.params.channelId
+    deleteChannel(channelId, req, res)
+    //no puedo borrar una region si tengo países en ella o si borro una region 
+    //borro todos los paises que tiene
 })
 
 /* express-rate-limit, .env, bcrypt
