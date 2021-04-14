@@ -927,6 +927,26 @@ async function createChannel(channel_name, req, res) {
     res.status(201).json(Object.assign({}, { channel_id: inserted[0] } , { channel_name }))
 }
 
+async function validateChannelIdExQuery(req, res, next) {
+    const channelId = +req.params.channelId
+    const channels = await db.query(`SELECT channel_id FROM channels`, {
+        type: QueryTypes.SELECT
+    })
+    const channelsArray = channels.map(id => id.channel_id)
+    if(channelsArray.includes(channelId)) next ()
+    else res.status(404).send("The channel does not exist").end()
+}
+
+async function getChannel(channelId, req, res) {
+    const channel = await db.query(`
+    SELECT * FROM channels WHERE channel_id = ?
+    `, { 
+        replacements: [channelId],
+        type: QueryTypes.SELECT 
+    })
+    res.status(200).json(channel[0])
+}
+
 module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, 
     validateEmailQuery, validateUserIdQuery, getUser, modifyUser, deleteUser, 
     getRegions, createRegion, validateRegionNameQuery, validateRegionIdQuery, 
@@ -942,4 +962,5 @@ module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser,
     createContact, validateContactIdQuery, getContact, validateEmailContactsPutQuery,
     validateCompanyIdPutQuery, validateChannelIdPutQuery, modifycontact, deleteContact,
     validateChannelIdAddQuery, addChannel, deleteChannelContact, validateChannelIdDelQuery,
-    getChannels, validateChannelNameQuery, createChannel }
+    getChannels, validateChannelNameQuery, createChannel, validateChannelIdExQuery,
+    getChannel }

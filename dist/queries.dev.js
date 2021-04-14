@@ -2166,6 +2166,57 @@ function createChannel(channel_name, req, res) {
   });
 }
 
+function validateChannelIdExQuery(req, res, next) {
+  var channelId, channels, channelsArray;
+  return regeneratorRuntime.async(function validateChannelIdExQuery$(_context67) {
+    while (1) {
+      switch (_context67.prev = _context67.next) {
+        case 0:
+          channelId = +req.params.channelId;
+          _context67.next = 3;
+          return regeneratorRuntime.awrap(db.query("SELECT channel_id FROM channels", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 3:
+          channels = _context67.sent;
+          channelsArray = channels.map(function (id) {
+            return id.channel_id;
+          });
+          if (channelsArray.includes(channelId)) next();else res.status(404).send("The channel does not exist").end();
+
+        case 6:
+        case "end":
+          return _context67.stop();
+      }
+    }
+  });
+}
+
+function getChannel(channelId, req, res) {
+  var channel;
+  return regeneratorRuntime.async(function getChannel$(_context68) {
+    while (1) {
+      switch (_context68.prev = _context68.next) {
+        case 0:
+          _context68.next = 2;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM channels WHERE channel_id = ?\n    ", {
+            replacements: [channelId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          channel = _context68.sent;
+          res.status(200).json(channel[0]);
+
+        case 4:
+        case "end":
+          return _context68.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   selectUserLogin: selectUserLogin,
   validateLoginQuery: validateLoginQuery,
@@ -2231,5 +2282,7 @@ module.exports = {
   validateChannelIdDelQuery: validateChannelIdDelQuery,
   getChannels: getChannels,
   validateChannelNameQuery: validateChannelNameQuery,
-  createChannel: createChannel
+  createChannel: createChannel,
+  validateChannelIdExQuery: validateChannelIdExQuery,
+  getChannel: getChannel
 };
