@@ -2104,6 +2104,68 @@ function getChannels(req, res) {
   });
 }
 
+function validateChannelNameQuery(req, res, next) {
+  var channel, channels, channelsArray;
+  return regeneratorRuntime.async(function validateChannelNameQuery$(_context65) {
+    while (1) {
+      switch (_context65.prev = _context65.next) {
+        case 0:
+          channel = req.body.channel_name;
+          _context65.next = 3;
+          return regeneratorRuntime.awrap(db.query("SELECT channel_name FROM channels", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 3:
+          channels = _context65.sent;
+          channelsArray = channels.map(function (channel) {
+            return channel.channel_name;
+          });
+
+          if (req.body.channel_name.length >= 2 && req.body.channel_name.length <= 64) {
+            if (channelsArray.every(function (name) {
+              return name !== channel;
+            })) next();else res.status(400).send("The channel already exists").end();
+          } else res.status(400).send("The channel name length is wrong").end();
+
+        case 6:
+        case "end":
+          return _context65.stop();
+      }
+    }
+  });
+}
+
+function createChannel(channel_name, req, res) {
+  var inserted;
+  return regeneratorRuntime.async(function createChannel$(_context66) {
+    while (1) {
+      switch (_context66.prev = _context66.next) {
+        case 0:
+          _context66.next = 2;
+          return regeneratorRuntime.awrap(db.query("\n    INSERT INTO channels (channel_name)\n    VALUES (:channel_name)\n    ", {
+            replacements: {
+              channel_name: channel_name
+            },
+            type: QueryTypes.INSERT
+          }));
+
+        case 2:
+          inserted = _context66.sent;
+          res.status(201).json(Object.assign({}, {
+            channel_id: inserted[0]
+          }, {
+            channel_name: channel_name
+          }));
+
+        case 4:
+        case "end":
+          return _context66.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   selectUserLogin: selectUserLogin,
   validateLoginQuery: validateLoginQuery,
@@ -2167,5 +2229,7 @@ module.exports = {
   addChannel: addChannel,
   deleteChannelContact: deleteChannelContact,
   validateChannelIdDelQuery: validateChannelIdDelQuery,
-  getChannels: getChannels
+  getChannels: getChannels,
+  validateChannelNameQuery: validateChannelNameQuery,
+  createChannel: createChannel
 };

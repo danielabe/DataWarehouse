@@ -1183,8 +1183,6 @@ paths:
           description: "Bad request"
         "401":
           description: "Unauthorized"
-        "404":
-          description: "Channel not found"
   /channels/{channelId}:
     get:
       tags:

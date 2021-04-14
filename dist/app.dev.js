@@ -45,7 +45,8 @@ var _require = require('./queries.js'),
     deleteContact = _require.deleteContact,
     addChannel = _require.addChannel,
     deleteChannelContact = _require.deleteChannelContact,
-    getChannels = _require.getChannels;
+    getChannels = _require.getChannels,
+    createChannel = _require.createChannel;
 
 var _require2 = require('./functions.js'),
     validateLogin = _require2.validateLogin,
@@ -88,7 +89,8 @@ var _require2 = require('./functions.js'),
     validateInterestPut = _require2.validateInterestPut,
     validateChannelIdPut = _require2.validateChannelIdPut,
     validateChannelIdAdd = _require2.validateChannelIdAdd,
-    validateChannelIdDel = _require2.validateChannelIdDel;
+    validateChannelIdDel = _require2.validateChannelIdDel,
+    validateChannelName = _require2.validateChannelName;
 
 app.use(express.json());
 app.use(helmet());
@@ -709,6 +711,22 @@ app.get('/channels', function _callee37(req, res) {
         case 1:
         case "end":
           return _context37.stop();
+      }
+    }
+  });
+});
+app.post('/channels', validateChannelName, function _callee38(req, res) {
+  var channel_name;
+  return regeneratorRuntime.async(function _callee38$(_context38) {
+    while (1) {
+      switch (_context38.prev = _context38.next) {
+        case 0:
+          channel_name = req.body.channel_name;
+          createChannel(channel_name, req, res);
+
+        case 2:
+        case "end":
+          return _context38.stop();
       }
     }
   });

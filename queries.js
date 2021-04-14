@@ -904,6 +904,28 @@ async function getChannels(req, res) {
     res.status(200).json(channels)
 }
 
+async function validateChannelNameQuery(req, res, next) {
+    const channel = req.body.channel_name
+    const channels = await db.query(`SELECT channel_name FROM channels`, {
+        type: QueryTypes.SELECT
+    })
+    const channelsArray = channels.map(channel => channel.channel_name)
+    if(req.body.channel_name.length >= 2 && req.body.channel_name.length <= 64) {
+        if(channelsArray.every(name => name !== channel)) next()
+        else res.status(400).send("The channel already exists").end()
+    } else res.status(400).send("The channel name length is wrong").end()
+}
+
+async function createChannel(channel_name, req, res) {
+    const inserted = await db.query(`
+    INSERT INTO channels (channel_name)
+    VALUES (:channel_name)
+    `, {
+        replacements: {channel_name},
+        type: QueryTypes.INSERT
+    })
+    res.status(201).json(Object.assign({}, { channel_id: inserted[0] } , { channel_name }))
+}
 
 module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, 
     validateEmailQuery, validateUserIdQuery, getUser, modifyUser, deleteUser, 
@@ -920,4 +942,4 @@ module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser,
     createContact, validateContactIdQuery, getContact, validateEmailContactsPutQuery,
     validateCompanyIdPutQuery, validateChannelIdPutQuery, modifycontact, deleteContact,
     validateChannelIdAddQuery, addChannel, deleteChannelContact, validateChannelIdDelQuery,
-    getChannels }
+    getChannels, validateChannelNameQuery, createChannel }
