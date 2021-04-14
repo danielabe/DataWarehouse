@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-04-2021 a las 22:29:04
+-- Tiempo de generación: 14-04-2021 a las 21:19:44
 -- Versión del servidor: 10.4.17-MariaDB
 -- Versión de PHP: 8.0.0
 
@@ -29,16 +29,18 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `channels` (
   `channel_id` int(3) NOT NULL,
-  `channel` varchar(64) NOT NULL
+  `channel_name` varchar(64) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `channels`
 --
 
-INSERT INTO `channels` (`channel_id`, `channel`) VALUES
+INSERT INTO `channels` (`channel_id`, `channel_name`) VALUES
 (1, 'Whatsapp'),
-(2, 'Facebook');
+(2, 'Facebook'),
+(3, 'Telegram'),
+(4, 'Discord');
 
 -- --------------------------------------------------------
 
@@ -58,7 +60,10 @@ CREATE TABLE `cities` (
 
 INSERT INTO `cities` (`city_id`, `country_id`, `city_name`) VALUES
 (1, 1, 'Rosario'),
-(4, 1, 'Córdoba');
+(4, 1, 'Córdoba'),
+(7, 7, 'La Paz'),
+(10, 8, 'Asunción'),
+(11, 9, 'NYC');
 
 -- --------------------------------------------------------
 
@@ -79,7 +84,14 @@ CREATE TABLE `companies` (
 
 INSERT INTO `companies` (`company_id`, `company_name`, `city_id`, `address`) VALUES
 (1, 'Acámica', 1, 'aaa'),
-(2, 'Globant', 1, 'bbb');
+(2, 'Globant', 1, 'bbb'),
+(3, 'LDC', 1, 'Paraguay 777'),
+(4, 'LDC2', 1, 'Paraguay 777'),
+(5, 'LDC3', 1, 'Paraguay 777'),
+(6, 'LDC4', 1, 'Paraguay 777'),
+(7, 'LDC5', 1, 'Paraguay 777'),
+(8, 'Neural Soft', 1, 'Roca'),
+(9, 'LDC7', 1, 'Paraguay 777');
 
 -- --------------------------------------------------------
 
@@ -94,7 +106,7 @@ CREATE TABLE `contacts` (
   `email` varchar(64) NOT NULL,
   `city_id` int(5) NOT NULL,
   `company_id` int(3) NOT NULL,
-  `position` varchar(5) NOT NULL,
+  `position` varchar(32) NOT NULL,
   `interest` int(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -103,7 +115,23 @@ CREATE TABLE `contacts` (
 --
 
 INSERT INTO `contacts` (`contact_id`, `firstname`, `lastname`, `email`, `city_id`, `company_id`, `position`, `interest`) VALUES
-(3, 'maria', 'dichiara', 'mari@google.com', 1, 2, 'comer', 75);
+(3, 'maria', 'dichiara', 'mari@google.com', 1, 2, 'comer', 75),
+(6, 'dan', 'nielsen', 'dan@google.com', 1, 2, 'developer', 100),
+(7, 'Agustín Emanuel', 'Soria', 'agustinesoria96@gmail.com', 1, 1, 'UI Designer', 100),
+(8, 'Agustín Emanuel', 'Soria', 'agustinesoria96@gmail.com', 1, 1, 'UI Designer', 100),
+(9, 'Agustín Emanuel', 'Soria', 'agustinesoria96@gmail.com', 1, 1, 'UI Designer', 100),
+(10, 'Agustín Emanuel', 'Soria', 'agustinesoria96@gmail.com', 1, 1, 'UI Designer', 100),
+(11, 'Agustín Emanuel', 'Soria', 'agustinesoria96@gmail.com', 1, 1, 'UI Designer', 100),
+(12, 'Agustín Emanuel', 'Soria', 'dani_agustinesoria96@gmail.com', 1, 1, 'UI Designer', 100),
+(13, 'Agustín Emanuel', 'Soria', 'dan_agustinesoria96@gmail.com', 1, 1, 'UI Designer', 100),
+(14, 'Agustín Emanuel', 'Soria', 'da_agustinesoria96@gmail.com', 1, 1, 'UI Designer', 100),
+(15, 'Agustín Emanuel', 'Soria', 'd_agustinesoria96@gmail.com', 1, 1, 'UI Designer', 100),
+(16, 'Agustín Emanuel', 'Soria', '_agustinesoria96@gmail.com', 1, 1, 'UI Designer', 100),
+(17, 'Agustín Emanuel', 'Soria', '__agustinesoria96@gmail.com', 1, 1, 'UI Designer', 100),
+(18, 'Agustín Emanuel', 'Soria', '__.agustinesoria96@gmail.com', 1, 1, 'UI Designer', 100),
+(19, 'Agustín Emanuel', 'Soria', '_.agustinesoria96@gmail.com', 1, 1, 'UI Designer', 100),
+(20, 'Agustín Emanuel', 'Soria', 'ma_agustinesoria96@gmail.com', 1, 1, 'UI Designer', 100),
+(22, 'Daniela', 'Berardi', 'danielaberardi@gmail.com', 4, 2, 'Fontend', 45);
 
 -- --------------------------------------------------------
 
@@ -115,6 +143,51 @@ CREATE TABLE `contacts_channels` (
   `contact_id` int(3) NOT NULL,
   `channel_id` int(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `contacts_channels`
+--
+
+INSERT INTO `contacts_channels` (`contact_id`, `channel_id`) VALUES
+(0, 0),
+(3, 1),
+(3, 2),
+(6, 1),
+(7, 1),
+(7, 2),
+(7, 3),
+(8, 1),
+(8, 2),
+(8, 3),
+(9, 1),
+(9, 2),
+(9, 3),
+(10, 1),
+(10, 2),
+(10, 3),
+(11, 1),
+(11, 2),
+(11, 3),
+(12, 1),
+(12, 2),
+(12, 3),
+(13, 1),
+(13, 2),
+(14, 1),
+(14, 2),
+(15, 1),
+(15, 2),
+(16, 1),
+(16, 2),
+(17, 1),
+(17, 2),
+(18, 1),
+(18, 2),
+(19, 1),
+(19, 2),
+(20, 1),
+(20, 2),
+(22, 2);
 
 -- --------------------------------------------------------
 
@@ -135,7 +208,9 @@ CREATE TABLE `countries` (
 INSERT INTO `countries` (`country_id`, `region_id`, `country_name`) VALUES
 (1, 1, 'Argentina'),
 (5, 1, 'Chile'),
-(7, 1, 'Bolivia');
+(7, 1, 'Bolivia'),
+(8, 1, 'Paraguay'),
+(9, 5, 'USA');
 
 -- --------------------------------------------------------
 
@@ -153,7 +228,8 @@ CREATE TABLE `regions` (
 --
 
 INSERT INTO `regions` (`region_id`, `region_name`) VALUES
-(1, 'Sudamérica');
+(1, 'Sudamérica'),
+(5, 'Norteamérica');
 
 -- --------------------------------------------------------
 
@@ -252,37 +328,37 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `channels`
 --
 ALTER TABLE `channels`
-  MODIFY `channel_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `channel_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `cities`
 --
 ALTER TABLE `cities`
-  MODIFY `city_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `city_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `companies`
 --
 ALTER TABLE `companies`
-  MODIFY `company_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `company_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `contacts`
 --
 ALTER TABLE `contacts`
-  MODIFY `contact_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `contact_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT de la tabla `countries`
 --
 ALTER TABLE `countries`
-  MODIFY `country_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `country_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `regions`
 --
 ALTER TABLE `regions`
-  MODIFY `region_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `region_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
@@ -293,12 +369,6 @@ ALTER TABLE `users`
 --
 -- Restricciones para tablas volcadas
 --
-
---
--- Filtros para la tabla `cities`
---
-ALTER TABLE `cities`
-  ADD CONSTRAINT `cities_ibfk_1` FOREIGN KEY (`country_id`) REFERENCES `countries` (`country_id`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `companies`
@@ -312,13 +382,6 @@ ALTER TABLE `companies`
 ALTER TABLE `contacts`
   ADD CONSTRAINT `contacts_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `cities` (`city_id`),
   ADD CONSTRAINT `contacts_ibfk_2` FOREIGN KEY (`company_id`) REFERENCES `companies` (`company_id`);
-
---
--- Filtros para la tabla `contacts_channels`
---
-ALTER TABLE `contacts_channels`
-  ADD CONSTRAINT `contacts_channels_ibfk_1` FOREIGN KEY (`contact_id`) REFERENCES `contacts` (`contact_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `contacts_channels_ibfk_2` FOREIGN KEY (`channel_id`) REFERENCES `channels` (`channel_id`);
 
 --
 -- Filtros para la tabla `countries`
