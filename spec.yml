@@ -22,7 +22,9 @@ tags:
 - name: "companies"
   description: "Access to companies"
 - name: "contacts"
-  description: "Access to contacts"
+  description: "Operations corresponding to contacts"
+- name: "channels"
+  description: "Access to channels"
 schemes:
 - "https"
 - "http"
@@ -1054,6 +1056,230 @@ paths:
           description: "Unauthorized"
         "404":
           description: "Contact not found"
+  /contacts/{contactId}/channels:
+    post:
+      tags:
+      - "contacts"
+      summary: "Add a channel to a contact"
+      description: ""
+      operationId: "addChannel"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authorization token obtained at logging"
+        required: true
+        type: "string"
+      - in: "path"
+        name: "contactId"
+        description: "Contact Id"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Channel object to add"
+        required: true
+        schema:
+          $ref: "#/definitions/AddChannel"
+      responses:
+        "201":
+          description: "Channel successfully added"
+          schema:
+            $ref: '#/definitions/ChannelsContact'
+        "400":
+          description: "Bad request"
+        "401":
+          description: "Unauthorized"
+        "404":
+          description: "Contact not found"
+  /contacts/{contactId}/channels/{channelId}:
+    delete:
+      tags:
+      - "contacts"
+      summary: "Delete a channel from a contact"
+      description: ""
+      operationId: "deleteChannelContact"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authorization token obtained at logging"
+        required: true
+        type: "string"
+      - in: "path"
+        name: "contactId"
+        description: "Contact Id"
+        required: true
+        type: "string"
+      - in: "path"
+        name: "channelId"
+        description: "channel Id to delete"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Channel successfully removed"
+
+        "401":
+          description: "Unauthorized"
+        "404":
+          description: "Contact or channel not found"
+  /channels:
+    get:
+      tags:
+      - "channels"
+      summary: "Return the list of all channels"
+      description: ""
+      operationId: "getChannels"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authorization token obtained at logging"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: '#/definitions/Channel'
+        "401":
+          description: "Unauthorized"
+    post:
+      tags:
+      - "channels"
+      summary: "Create a new channel"
+      description: ""
+      operationId: "createChannel"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authorization token obtained at logging"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Channel object to create"
+        required: true
+        schema:
+          $ref: "#/definitions/NewChannel"
+      responses:
+        "201":
+          description: "Channel successfully created"
+          schema:
+            $ref: '#/definitions/Channel'
+        "400":
+          description: "Bad request"
+        "401":
+          description: "Unauthorized"
+        "404":
+          description: "Channel not found"
+  /channels/{channelId}:
+    get:
+      tags:
+      - "channels"
+      summary: "Return a channel"
+      description: ""
+      operationId: "getChannel"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authorization token obtained at logging"
+        required: true
+        type: "string"
+      - in: "path"
+        name: "channelId"
+        description: "Channel Id"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: '#/definitions/Channel'
+        "401":
+          description: "Unauthorized"
+        "404":
+          description: "Channel not found"
+    put:
+      tags:
+      - "channels"
+      summary: "Modify a channel"
+      description: ""
+      operationId: "updateChannel"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authorization token obtained at logging"
+        required: true
+        type: "string"
+      - in: "path"
+        name: "channelId"
+        description: "Channel Id to modify"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Channel modified"
+        required: true
+        schema:
+          $ref: "#/definitions/NewChannel"
+      responses:
+        "200":
+          description: "Channel successfully modified"
+          schema:
+            $ref: "#/definitions/Channel"
+        "400":
+          description: "Bad request"
+        "401":
+          description: "Unauthorized"
+        "404":
+          description: "Channel or country not found"
+    delete:
+      tags:
+      - "channels"
+      summary: "Delete a channel"
+      description: ""
+      operationId: "deleteChannel"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authorization token obtained at logging"
+        required: true
+        type: "string"
+      - in: "path"
+        name: "channelId"
+        description: "Channel Id to delete"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Channel successfully removed"
+          schema:
+            $ref: "#/definitions/Channel"
+        "401":
+          description: "Unauthorized"
+        "404":
+          description: "Channel not found"
 definitions:
   User:
     type: "object"
@@ -1403,3 +1629,43 @@ definitions:
         type: "integer"
         format: "int64"
         example: 100
+  AddChannel:
+    type: "object"
+    properties:
+      channel_id:
+        type: "integer"
+        format: "int64"
+        example: 2
+  ChannelsContact:
+    type: "object"
+    properties:
+      preferred_channels:
+        type: "object"
+        example: [
+          {
+            contact_id: 14,
+            channel_id: 1,
+            channel: Whatsapp
+          },
+          {
+            contact_id: 14,
+            channel_id: 2,
+            channel: Facebook
+          }
+          ]
+  Channel:
+    type: "object"
+    properties:
+      channel_id:
+        type: "integer"
+        format: "int64"
+        example: 1
+      channel_name:
+        type: "string"
+        example: "Whatsapp"
+  NewChannel:
+    type: "object"
+    properties:
+      channel_name:
+        type: "string"
+        example: "Whatsapp"

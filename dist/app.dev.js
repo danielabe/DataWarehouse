@@ -42,7 +42,8 @@ var _require = require('./queries.js'),
     createContact = _require.createContact,
     getContact = _require.getContact,
     modifycontact = _require.modifycontact,
-    deleteContact = _require.deleteContact;
+    deleteContact = _require.deleteContact,
+    addChannel = _require.addChannel;
 
 var _require2 = require('./functions.js'),
     validateLogin = _require2.validateLogin,
@@ -83,7 +84,8 @@ var _require2 = require('./functions.js'),
     validateCompanyIdPut = _require2.validateCompanyIdPut,
     validatePositionPut = _require2.validatePositionPut,
     validateInterestPut = _require2.validateInterestPut,
-    validateChannelIdPut = _require2.validateChannelIdPut;
+    validateChannelIdPut = _require2.validateChannelIdPut,
+    validateChannelIdAdd = _require2.validateChannelIdAdd;
 
 app.use(express.json());
 app.use(helmet());
@@ -655,17 +657,24 @@ app["delete"]('/contacts/:contactId', validateContactId, function _callee34(req,
     }
   });
 });
-/* const newContact = {
-        contact_id: req.params.contactId,
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
-        email: req.body.email,
-        city_id: req.body.city_id,
-        company_id: req.body.company_id,
-        position: req.body.position,
-        interest: req.body.interest,
-        preferred_channels: req.body.preferred_channels
-    } */
+app.post('/contacts/:contactId/channels', validateContactId, validateChannelIdAdd, function _callee35(req, res) {
+  var newContChan;
+  return regeneratorRuntime.async(function _callee35$(_context35) {
+    while (1) {
+      switch (_context35.prev = _context35.next) {
+        case 0:
+          newContChan = {
+            contact_id: +req.params.contactId,
+            channel_id: req.body.channel_id
+          };
+          addChannel(newContChan, req, res);
 
+        case 2:
+        case "end":
+          return _context35.stop();
+      }
+    }
+  });
+});
 /* express-rate-limit, .env, bcrypt
 */

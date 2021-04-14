@@ -1951,6 +1951,82 @@ function deleteContact(contactId, req, res) {
   });
 }
 
+function validateChannelIdAddQuery(req, res, next) {
+  var channelId, channels, channelsArray, channelsContact, channelsContactArray;
+  return regeneratorRuntime.async(function validateChannelIdAddQuery$(_context60) {
+    while (1) {
+      switch (_context60.prev = _context60.next) {
+        case 0:
+          channelId = req.body.channel_id;
+          _context60.next = 3;
+          return regeneratorRuntime.awrap(db.query("SELECT channel_id FROM channels", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 3:
+          channels = _context60.sent;
+          channelsArray = channels.map(function (id) {
+            return id.channel_id;
+          });
+          _context60.next = 7;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM contacts_channels cc \n    INNER JOIN channels ch ON cc.channel_id = ch.channel_id\n    WHERE contact_id = ?", {
+            replacements: [req.params.contactId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 7:
+          channelsContact = _context60.sent;
+          channelsContactArray = channelsContact.map(function (cc) {
+            return cc.channel_id;
+          });
+          console.log(channelsContactArray);
+
+          if (channelsArray.includes(channelId)) {
+            if (channelsContactArray.includes(channelId)) {
+              res.status(400).send("The contact already has that channel").end();
+            } else next();
+          } else res.status(404).send("The channel does not exist").end();
+
+        case 11:
+        case "end":
+          return _context60.stop();
+      }
+    }
+  });
+}
+
+function addChannel(newContChan, req, res) {
+  var inserted, channels;
+  return regeneratorRuntime.async(function addChannel$(_context61) {
+    while (1) {
+      switch (_context61.prev = _context61.next) {
+        case 0:
+          _context61.next = 2;
+          return regeneratorRuntime.awrap(db.query("\n    INSERT INTO contacts_channels (contact_id, channel_id)\n    VALUES (:contact_id, :channel_id)\n    ", {
+            replacements: newContChan,
+            type: QueryTypes.INSERT
+          }));
+
+        case 2:
+          inserted = _context61.sent;
+          _context61.next = 5;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, cc.channel_id, channel_name FROM contacts_channels cc \n    JOIN channels ch ON cc.channel_id = ch.channel_id \n    WHERE contact_id = :contact_id\n    ", {
+            replacements: newContChan,
+            type: QueryTypes.SELECT
+          }));
+
+        case 5:
+          channels = _context61.sent;
+          res.status(201).json(channels);
+
+        case 7:
+        case "end":
+          return _context61.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   selectUserLogin: selectUserLogin,
   validateLoginQuery: validateLoginQuery,
@@ -2009,7 +2085,9 @@ module.exports = {
   validateCompanyIdPutQuery: validateCompanyIdPutQuery,
   validateChannelIdPutQuery: validateChannelIdPutQuery,
   modifycontact: modifycontact,
-  deleteContact: deleteContact
+  deleteContact: deleteContact,
+  validateChannelIdAddQuery: validateChannelIdAddQuery,
+  addChannel: addChannel
 };
 /* const chan = await db.query(`SELECT * FROM contacts_channels WHERE contact_id = ?`, {
         replacements: [req.params.contactId],

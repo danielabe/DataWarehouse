@@ -831,6 +831,51 @@ async function deleteContact(contactId, req, res) {
     res.status(200).json(contact)
 }
 
+async function validateChannelIdAddQuery(req, res, next) {
+    const channelId = req.body.channel_id
+    const channels = await db.query(`SELECT channel_id FROM channels`, {
+        type: QueryTypes.SELECT
+    })
+    const channelsArray = channels.map(id => id.channel_id)
+
+    const channelsContact = await db.query(`
+    SELECT * FROM contacts_channels cc 
+    INNER JOIN channels ch ON cc.channel_id = ch.channel_id
+    WHERE contact_id = ?`, { 
+        replacements: [req.params.contactId],
+        type: QueryTypes.SELECT 
+    })
+    const channelsContactArray = channelsContact.map(cc => cc.channel_id)
+    console.log(channelsContactArray)
+
+    if(channelsArray.includes(channelId)) {
+        if(channelsContactArray.includes(channelId)) {
+            res.status(400).send("The contact already has that channel").end()
+        } else next()
+    } else res.status(404).send("The channel does not exist").end()
+}
+
+
+async function addChannel(newContChan, req, res) {
+    const inserted = await db.query(`
+    INSERT INTO contacts_channels (contact_id, channel_id)
+    VALUES (:contact_id, :channel_id)
+    `, {
+        replacements: newContChan,
+        type: QueryTypes.INSERT
+    })
+    const channels = await db.query(`
+    SELECT contact_id, cc.channel_id, channel_name FROM contacts_channels cc 
+    JOIN channels ch ON cc.channel_id = ch.channel_id 
+    WHERE contact_id = :contact_id
+    `, {
+        replacements: newContChan,
+        type: QueryTypes.SELECT
+    })
+    res.status(201).json(channels)
+}
+
+
 module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, 
     validateEmailQuery, validateUserIdQuery, getUser, modifyUser, deleteUser, 
     getRegions, createRegion, validateRegionNameQuery, validateRegionIdQuery, 
@@ -844,7 +889,8 @@ module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser,
     getCompany, validateCompanyNamePutQuery, modifyCompany, validateCityIdPutQuery,
     deleteCompany, getContacts, validateEmailContactsQuery, validateChannelIdQuery,
     createContact, validateContactIdQuery, getContact, validateEmailContactsPutQuery,
-    validateCompanyIdPutQuery, validateChannelIdPutQuery, modifycontact, deleteContact }
+    validateCompanyIdPutQuery, validateChannelIdPutQuery, modifycontact, deleteContact,
+    validateChannelIdAddQuery, addChannel }
 
 
 

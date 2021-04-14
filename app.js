@@ -8,7 +8,7 @@ const { selectUserLogin, getUsers, createUser, getUser, modifyUser, deleteUser, 
     getCitiesRegion, getCountries, createCountry, getCountry, modifyCountry,
     deleteCountry, getCitiesCountry, getCities, createCity, getCity, modifyCity,
     deleteCity, getCompanies, createCompany, getCompany, modifyCompany, deleteCompany,
-    getContacts, createContact, getContact, modifycontact, deleteContact } = require('./queries.js')
+    getContacts, createContact, getContact, modifycontact, deleteContact, addChannel } = require('./queries.js')
 
 const { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
     validateEmail, validatePassword, validateUser, validateUserId, validateFirstnamePut,
@@ -19,7 +19,7 @@ const { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLast
     validateCompanyNamePut, validateCityIdPut, validateAddressPut, validateEmailContacts,
     validatePosition, validateInterest, validateChannelId, validateContactId, 
     validateEmailContactsPut, validateCompanyIdPut, validatePositionPut, validateInterestPut, 
-    validateChannelIdPut } = require('./functions.js')
+    validateChannelIdPut, validateChannelIdAdd } = require('./functions.js')
 
 app.use(express.json())
 app.use(helmet())
@@ -233,18 +233,13 @@ app.delete('/contacts/:contactId', validateContactId, async (req, res) => {
     deleteContact(contactId, req, res)
 })
 
-
-/* const newContact = {
-        contact_id: req.params.contactId,
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
-        email: req.body.email,
-        city_id: req.body.city_id,
-        company_id: req.body.company_id,
-        position: req.body.position,
-        interest: req.body.interest,
-        preferred_channels: req.body.preferred_channels
-    } */
+app.post('/contacts/:contactId/channels', validateContactId, validateChannelIdAdd, async (req, res) => {
+    const newContChan = {
+        contact_id: +req.params.contactId,
+        channel_id: req.body.channel_id
+    }
+    addChannel(newContChan, req, res)
+})
 
 /* express-rate-limit, .env, bcrypt
 */
