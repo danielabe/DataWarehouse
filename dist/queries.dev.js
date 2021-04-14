@@ -1995,33 +1995,86 @@ function validateChannelIdAddQuery(req, res, next) {
   });
 }
 
-function addChannel(newContChan, req, res) {
-  var inserted, channels;
-  return regeneratorRuntime.async(function addChannel$(_context61) {
+function validateChannelIdDelQuery(req, res, next) {
+  var channelId, channelsContact, channelsContactArray;
+  return regeneratorRuntime.async(function validateChannelIdDelQuery$(_context61) {
     while (1) {
       switch (_context61.prev = _context61.next) {
         case 0:
-          _context61.next = 2;
+          channelId = +req.params.channelId;
+          _context61.next = 3;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM contacts_channels cc \n    INNER JOIN channels ch ON cc.channel_id = ch.channel_id\n    WHERE contact_id = ?", {
+            replacements: [+req.params.contactId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 3:
+          channelsContact = _context61.sent;
+          channelsContactArray = channelsContact.map(function (cc) {
+            return cc.channel_id;
+          });
+          console.log(channelsContactArray);
+          if (channelsContactArray.includes(channelId)) next();else res.status(404).send("The contact does not have that channel").end();
+
+        case 7:
+        case "end":
+          return _context61.stop();
+      }
+    }
+  });
+}
+
+function addChannel(newContChan, req, res) {
+  var inserted, channels;
+  return regeneratorRuntime.async(function addChannel$(_context62) {
+    while (1) {
+      switch (_context62.prev = _context62.next) {
+        case 0:
+          _context62.next = 2;
           return regeneratorRuntime.awrap(db.query("\n    INSERT INTO contacts_channels (contact_id, channel_id)\n    VALUES (:contact_id, :channel_id)\n    ", {
             replacements: newContChan,
             type: QueryTypes.INSERT
           }));
 
         case 2:
-          inserted = _context61.sent;
-          _context61.next = 5;
+          inserted = _context62.sent;
+          _context62.next = 5;
           return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, cc.channel_id, channel_name FROM contacts_channels cc \n    JOIN channels ch ON cc.channel_id = ch.channel_id \n    WHERE contact_id = :contact_id\n    ", {
             replacements: newContChan,
             type: QueryTypes.SELECT
           }));
 
         case 5:
-          channels = _context61.sent;
+          channels = _context62.sent;
           res.status(201).json(channels);
 
         case 7:
         case "end":
-          return _context61.stop();
+          return _context62.stop();
+      }
+    }
+  });
+}
+
+function deleteChannelContact(newContChan, req, res) {
+  var deleted;
+  return regeneratorRuntime.async(function deleteChannelContact$(_context63) {
+    while (1) {
+      switch (_context63.prev = _context63.next) {
+        case 0:
+          _context63.next = 2;
+          return regeneratorRuntime.awrap(db.query("DELETE FROM contacts_channels \n    WHERE contact_id = :contact_id AND channel_id = :channel_id", {
+            replacements: newContChan,
+            type: QueryTypes.DELETE
+          }));
+
+        case 2:
+          deleted = _context63.sent;
+          res.status(200).send("Channel successfully removed").end();
+
+        case 4:
+        case "end":
+          return _context63.stop();
       }
     }
   });
@@ -2087,34 +2140,7 @@ module.exports = {
   modifycontact: modifycontact,
   deleteContact: deleteContact,
   validateChannelIdAddQuery: validateChannelIdAddQuery,
-  addChannel: addChannel
+  addChannel: addChannel,
+  deleteChannelContact: deleteChannelContact,
+  validateChannelIdDelQuery: validateChannelIdDelQuery
 };
-/* const chan = await db.query(`SELECT * FROM contacts_channels WHERE contact_id = ?`, {
-        replacements: [req.params.contactId],
-        type: QueryTypes.SELECT
-    })
-    console.log(chan) */
-
-/* console.log(modifiedContact.preferred_channels[0].channel_id) */
-
-/* const contactId = req.params.contactId */
-
-/* req.body.preferred_channels.forEach(async channel => {
-    console.log(channel.channel_id)
-    await db.query(`
-    UPDATE contacts_channels SET  channel_id = ${channel.channel_id}
-    WHERE contact_id = ${contactId}
-    `, {
-        replacements: req.body.preferred_channels,
-        type: QueryTypes.INSERT
-    })
-}
-    ) */
-
-/* const modifiedChan = await db.query(`
-UPDATE contacts_channels SET contact_id = :, channel_id = :
-WHERE contact_id = :contact_id
-`, {
-    replacements: modifiedContact,
-    type: QueryTypes.UPDATE
-}) */

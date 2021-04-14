@@ -1637,22 +1637,18 @@ definitions:
         format: "int64"
         example: 2
   ChannelsContact:
-    type: "object"
-    properties:
-      preferred_channels:
-        type: "object"
-        example: [
-          {
-            contact_id: 14,
-            channel_id: 1,
-            channel: Whatsapp
-          },
-          {
-            contact_id: 14,
-            channel_id: 2,
-            channel: Facebook
-          }
-          ]
+    example: [
+      {
+        contact_id: 14,
+        channel_id: 1,
+        channel: Whatsapp
+      },
+      {
+        contact_id: 14,
+        channel_id: 2,
+        channel: Facebook
+      }
+      ]
   Channel:
     type: "object"
     properties:

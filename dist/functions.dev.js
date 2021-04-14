@@ -29,7 +29,8 @@ var _require = require('./queries.js'),
     validateEmailContactsPutQuery = _require.validateEmailContactsPutQuery,
     validateCompanyIdPutQuery = _require.validateCompanyIdPutQuery,
     validateChannelIdPutQuery = _require.validateChannelIdPutQuery,
-    validateChannelIdAddQuery = _require.validateChannelIdAddQuery; //users
+    validateChannelIdAddQuery = _require.validateChannelIdAddQuery,
+    validateChannelIdDelQuery = _require.validateChannelIdDelQuery; //users
 
 
 function validateLogin(req, res, next) {
@@ -564,6 +565,22 @@ function validateChannelIdAdd(req, res, next) {
   });
 }
 
+function validateChannelIdDel(req, res, next) {
+  return regeneratorRuntime.async(function validateChannelIdDel$(_context28) {
+    while (1) {
+      switch (_context28.prev = _context28.next) {
+        case 0:
+          _context28.next = 2;
+          return regeneratorRuntime.awrap(validateChannelIdDelQuery(req, res, next));
+
+        case 2:
+        case "end":
+          return _context28.stop();
+      }
+    }
+  });
+}
+
 module.exports = {
   validateLogin: validateLogin,
   verifyToken: verifyToken,
@@ -604,5 +621,6 @@ module.exports = {
   validatePositionPut: validatePositionPut,
   validateInterestPut: validateInterestPut,
   validateChannelIdPut: validateChannelIdPut,
-  validateChannelIdAdd: validateChannelIdAdd
+  validateChannelIdAdd: validateChannelIdAdd,
+  validateChannelIdDel: validateChannelIdDel
 };

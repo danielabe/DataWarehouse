@@ -43,7 +43,8 @@ var _require = require('./queries.js'),
     getContact = _require.getContact,
     modifycontact = _require.modifycontact,
     deleteContact = _require.deleteContact,
-    addChannel = _require.addChannel;
+    addChannel = _require.addChannel,
+    deleteChannelContact = _require.deleteChannelContact;
 
 var _require2 = require('./functions.js'),
     validateLogin = _require2.validateLogin,
@@ -85,7 +86,8 @@ var _require2 = require('./functions.js'),
     validatePositionPut = _require2.validatePositionPut,
     validateInterestPut = _require2.validateInterestPut,
     validateChannelIdPut = _require2.validateChannelIdPut,
-    validateChannelIdAdd = _require2.validateChannelIdAdd;
+    validateChannelIdAdd = _require2.validateChannelIdAdd,
+    validateChannelIdDel = _require2.validateChannelIdDel;
 
 app.use(express.json());
 app.use(helmet());
@@ -672,6 +674,25 @@ app.post('/contacts/:contactId/channels', validateContactId, validateChannelIdAd
         case 2:
         case "end":
           return _context35.stop();
+      }
+    }
+  });
+});
+app["delete"]('/contacts/:contactId/channels/:channelId', validateContactId, validateChannelIdDel, function _callee36(req, res) {
+  var newContChan;
+  return regeneratorRuntime.async(function _callee36$(_context36) {
+    while (1) {
+      switch (_context36.prev = _context36.next) {
+        case 0:
+          newContChan = {
+            contact_id: +req.params.contactId,
+            channel_id: +req.params.channelId
+          };
+          deleteChannelContact(newContChan, req, res);
+
+        case 2:
+        case "end":
+          return _context36.stop();
       }
     }
   });
