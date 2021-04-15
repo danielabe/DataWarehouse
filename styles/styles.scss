@@ -1,20 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+
+$header-height: 64px;
 
 *, html, body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     width: 100%;
-    /* font-family: "Montserrat", sans-serif;
-    color: #572EE5; */
+    font-family: 'Open Sans', sans-serif;
+    /*color: #572EE5; */
 }
 
 .navigator {
     display: flex;
     align-items: center;
-    height: 64px;
-    background-color:rgb(4, 100, 188); //color detectado online
+    height: $header-height;
+    background-color: rgb(29, 114, 194);
 }
 
 .logo {
@@ -27,16 +28,12 @@
 .menu {
     display: flex;
     justify-content: flex-end;
-    /* align-items: center; */
     width: min-content;
     position: absolute;
     right: 30px;
 }
 
 .menu-item {
-    /* display: inline; */
-    /* display: flex;
-    align-items: center; */
     width: min-content;
     margin-left: 34.4px;
     list-style: none;
@@ -46,6 +43,70 @@
     text-decoration: none;
     font-size: 14px;
     font-weight: 400;
-    font-family: 'Open Sans', sans-serif;
     color: #FFFFFF;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - #{$header-height});
+}
+
+.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.box {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    width: 500px;
+    height: 300px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%);
+}
+
+.welcome {
+    width: auto;
+    padding: 30px 30px 0 30px;
+    font-size: 24px;
+}
+
+.log {
+    width: 200px;
+}
+
+.field {
+    height: 30px;
+    outline: none;
+    border: 1px solid #CCCCCC;
+    border-radius: 2px;
+}
+
+.field::-webkit-input-placeholder {
+    text-align: center;
+}
+
+.submit {
+    align-self: flex-end;
+    width: 100px;
+    height: 30px;
+    margin: 0 150px 35px 0;
+    outline: none;
+    border: none;
+    border-radius: 2px;
+    background: rgb(29, 114, 194);
+    color: white;
 }
