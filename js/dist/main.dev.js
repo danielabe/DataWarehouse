@@ -5,7 +5,7 @@ var username = document.getElementById('username');
 var password = document.getElementById('password');
 submit.addEventListener('click', function (event) {
   event.preventDefault();
-  loginFunction();
+  loginFunction(); //funcion nueva pantalla
 });
 
 function loginFunction() {
@@ -36,11 +36,25 @@ function loginFunction() {
         case 7:
           data = _context.sent;
           console.log(data);
+          saveToken(data);
 
-        case 9:
+        case 10:
         case "end":
           return _context.stop();
       }
     }
   });
 }
+
+function saveToken(data) {
+  localStorage.setItem('Token', JSON.stringify(data));
+}
+/* let usersInformation = JSON.parse(localStorage.getItem('UsersInformation')) || []
+const userInfo = {
+    name: response.name,
+    lastname: response.lastname,
+    email: response.email,
+    age: response.age
+}
+usersInformation = usersInformation.concat(userInfo)
+localStorage.setItem('UsersInformation', JSON.stringify(usersInformation)) */
