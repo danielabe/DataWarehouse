@@ -8,6 +8,8 @@ var helmet = require('helmet');
 
 var jwt = require('jsonwebtoken');
 
+var cors = require('cors');
+
 var _require = require('./queries.js'),
     selectUserLogin = _require.selectUserLogin,
     getUsers = _require.getUsers,
@@ -101,7 +103,13 @@ app.use(express.json());
 app.use(helmet());
 app.listen(process.env.PORT || 3000, function () {
   return console.log('server started');
-}); //login
+});
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+app.use(cors()); //login
 
 app.post('/users/login', validateLogin, function _callee(req, res) {
   var _req$body, username, password;

@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const helmet = require('helmet')
 const jwt = require('jsonwebtoken')
+const cors = require('cors')
 
 const { selectUserLogin, getUsers, createUser, getUser, modifyUser, deleteUser, getRegions,
     createRegion, getRegion, modifyRegion, deleteRegion, getCountriesRegion,
@@ -28,6 +29,13 @@ app.use(express.json())
 app.use(helmet())
 
 app.listen(process.env.PORT || 3000, () => console.log('server started'))
+
+app.use(function(req, res, next) {  
+    res.header('Access-Control-Allow-Origin', '*')
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+    next()
+})
+app.use(cors())
 
 //login
 app.post('/users/login', validateLogin, async (req, res) => {
