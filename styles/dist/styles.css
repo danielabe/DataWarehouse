@@ -57,7 +57,7 @@ main {
   height: 100%;
 }
 
-.form {
+.login-form {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -116,4 +116,8 @@ main {
 .submit:active {
   background: #afafaf;
   /* box-shadow: 0px 2px 4px 0px rgb(95, 94, 94); */
+}
+
+.none {
+  display: none;
 }
