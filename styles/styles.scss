@@ -137,14 +137,25 @@ main {
     display: grid;
     grid-template: repeat(1, 1fr)/32% 35% 18% 15%;
     width: 95.9%;
-    margin: 20px 0px 20px 0px;
+    margin: 20px 0px 0px 0px;
     border: 1px solid rgba(0, 0, 0, 0.1);
-    /* list-style: none; */
+   
 }
 
-.user-list {
+.users-list {
     width: 95.9%;
-    border: 1px solid rgba(0,0,0,0.10);
+    margin: 0px 0px 20px 0px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: hidden;
+}
+
+.row-user {
+    display: grid;
+    grid-template: repeat(1, 1fr)/32% 35% 18% 15%;
+    /* width: 95.9vw; */
+    &:hover {
+        background: rgba(0,0,0,0.05);
+    }
 }
 
 .u-item {
@@ -153,16 +164,17 @@ main {
     height: 56px;
     padding: 0 0 0 16px;
     font-size: 14px;
+    
 }
 
 .h-item {
 margin-top: 11.5px;
 }
 
-.line {
+/* .line {
     height: 1px;
     background-color: rgba(0,0,0,0.10);
-}
+} */
 
 .firstname {
     

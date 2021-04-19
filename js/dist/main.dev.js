@@ -61,7 +61,7 @@ function saveToken(data) {
 }
 
 function getUsers() {
-  var options, response, data;
+  var options, response, data, users;
   return regeneratorRuntime.async(function getUsers$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
@@ -84,6 +84,7 @@ function getUsers() {
         case 7:
           data = _context2.sent;
           console.log(data);
+          users = document.createElement('div');
           data.forEach(function (element) {
             var info = {
               userId: element.user_id,
@@ -93,6 +94,7 @@ function getUsers() {
               perfil: element.perfil
             };
             console.log(element);
+            var row = document.createElement('div');
             var user = document.createElement('div');
             var email = document.createElement('div');
             var perfil = document.createElement('div');
@@ -101,17 +103,21 @@ function getUsers() {
             email.innerText = info.email;
             perfil.innerText = info.perfil;
             accions.innerText = "eliminar";
+            users.classList.add('users-list');
+            row.classList.add('row-user');
             user.classList.add('u-item');
             email.classList.add('u-item');
             perfil.classList.add('u-item');
             accions.classList.add('u-item');
-            headUs.appendChild(user);
-            headUs.appendChild(email);
-            headUs.appendChild(perfil);
-            headUs.appendChild(accions);
+            users.appendChild(row);
+            row.appendChild(user);
+            row.appendChild(email);
+            row.appendChild(perfil);
+            row.appendChild(accions);
+            usersSection.appendChild(users);
           });
 
-        case 10:
+        case 11:
         case "end":
           return _context2.stop();
       }

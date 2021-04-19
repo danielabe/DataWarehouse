@@ -49,6 +49,7 @@ async function getUsers() {
     const response = await fetch('http://localhost:3000/users', options)
     const data = await response.json()
     console.log(data)
+    const users = document.createElement('div')
 
     data.forEach(element => {
         const info = {
@@ -59,6 +60,7 @@ async function getUsers() {
             perfil: element.perfil
         }
         console.log(element)
+        const row = document.createElement('div')
         const user = document.createElement('div')
         const email = document.createElement('div')
         const perfil = document.createElement('div')
@@ -69,14 +71,18 @@ async function getUsers() {
         perfil.innerText = info.perfil
         accions.innerText = "eliminar"
 
+        users.classList.add('users-list')
+        row.classList.add('row-user')
         user.classList.add('u-item')        
         email.classList.add('u-item')     
         perfil.classList.add('u-item') 
         accions.classList.add('u-item')
 
-        headUs.appendChild(user)
-        headUs.appendChild(email)
-        headUs.appendChild(perfil)
-        headUs.appendChild(accions)
+        users.appendChild(row)
+        row.appendChild(user)
+        row.appendChild(email)
+        row.appendChild(perfil)
+        row.appendChild(accions)
+        usersSection.appendChild(users)
     })
 }
