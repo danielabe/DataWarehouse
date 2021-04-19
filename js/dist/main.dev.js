@@ -3,8 +3,9 @@
 var submit = document.getElementById('submit');
 var username = document.getElementById('username');
 var password = document.getElementById('password');
-var loginForm = document.getElementById('loginForm');
+var login = document.getElementById('login');
 var usersSection = document.getElementById('usersSection');
+var headUs = document.getElementById('headUs');
 submit.addEventListener('click', function (event) {
   event.preventDefault();
   loginFunction(); //funcion nueva pantalla
@@ -41,7 +42,7 @@ function loginFunction() {
           if (response.status === 200) {
             console.log(data);
             saveToken(data);
-            loginForm.classList.add('none'); //section que aparece luego de login
+            login.classList.add('none'); //section que aparece luego de login
 
             usersSection.classList.remove('none');
             getUsers();
@@ -60,7 +61,7 @@ function saveToken(data) {
 }
 
 function getUsers() {
-  var options, response, data, ul;
+  var options, response, data;
   return regeneratorRuntime.async(function getUsers$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
@@ -83,31 +84,37 @@ function getUsers() {
         case 7:
           data = _context2.sent;
           console.log(data);
-          ul = document.createElement('ul');
-          /* const item = document.createElement('li')
-          ul.appendChild(item)
-          item.innerHTML = data[0].firstname */
-
-          usersSection.appendChild(ul);
           data.forEach(function (element) {
-            var item = document.createElement('li');
-            item.innerHTML = data[element].firstname;
-            ul.appendChild(item);
+            var info = {
+              userId: element.user_id,
+              firstname: element.firstname,
+              lastname: element.lastname,
+              email: element.email,
+              perfil: element.perfil
+            };
+            console.log(element);
+            var user = document.createElement('div');
+            var email = document.createElement('div');
+            var perfil = document.createElement('div');
+            var accions = document.createElement('div');
+            user.innerText = info.firstname + ' ' + info.lastname;
+            email.innerText = info.email;
+            perfil.innerText = info.perfil;
+            accions.innerText = "eliminar";
+            user.classList.add('u-item');
+            email.classList.add('u-item');
+            perfil.classList.add('u-item');
+            accions.classList.add('u-item');
+            headUs.appendChild(user);
+            headUs.appendChild(email);
+            headUs.appendChild(perfil);
+            headUs.appendChild(accions);
           });
 
-        case 12:
+        case 10:
         case "end":
           return _context2.stop();
       }
     }
   });
 }
-/* let usersInformation = JSON.parse(localStorage.getItem('UsersInformation')) || []
-const userInfo = {
-    name: response.name,
-    lastname: response.lastname,
-    email: response.email,
-    age: response.age
-}
-usersInformation = usersInformation.concat(userInfo)
-localStorage.setItem('UsersInformation', JSON.stringify(usersInformation)) */

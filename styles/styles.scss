@@ -47,17 +47,22 @@ $header-height: 64px;
 }
 
 main {
+    /* display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - #{$header-height}); */
+}
+
+.login {
+    /* display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; */
+
     display: flex;
     justify-content: center;
     align-items: center;
     height: calc(100vh - #{$header-height});
-}
-
-.login {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
 }
 
 .login-form {
@@ -123,9 +128,54 @@ main {
 }
 
 .users {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
+.head-us {
+    display: grid;
+    grid-template: repeat(1, 1fr)/32% 35% 18% 15%;
+    width: 95.9%;
+    margin: 20px 0px 20px 0px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    /* list-style: none; */
+}
 
+.user-list {
+    width: 95.9%;
+    border: 1px solid rgba(0,0,0,0.10);
+}
+
+.u-item {
+    display: flex;
+    align-items: center;
+    height: 56px;
+    padding: 0 0 0 16px;
+    font-size: 14px;
+}
+
+.h-item {
+margin-top: 11.5px;
+}
+
+.line {
+    height: 1px;
+    background-color: rgba(0,0,0,0.10);
+}
+
+.firstname {
+    
+}
+.lastname {
+    
+}
+.email {
+    
+}
+.perfil {
+    
+}
 
 
 

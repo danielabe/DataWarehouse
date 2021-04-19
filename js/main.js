@@ -1,8 +1,9 @@
 const submit = document.getElementById('submit')
 const username = document.getElementById('username')
 const password = document.getElementById('password')
-const loginForm = document.getElementById('loginForm')
+const login = document.getElementById('login')
 const usersSection = document.getElementById('usersSection')
+const headUs = document.getElementById('headUs')
 submit.addEventListener('click', (event) => {
     event.preventDefault()
     loginFunction()
@@ -26,7 +27,7 @@ async function loginFunction() {
     if (response.status === 200) {
         console.log(data)
         saveToken(data)
-        loginForm.classList.add('none')
+        login.classList.add('none')
         //section que aparece luego de login
         usersSection.classList.remove('none')
         getUsers()
@@ -48,25 +49,34 @@ async function getUsers() {
     const response = await fetch('http://localhost:3000/users', options)
     const data = await response.json()
     console.log(data)
-    const ul = document.createElement('ul')
-    /* const item = document.createElement('li')
-    ul.appendChild(item)
-    item.innerHTML = data[0].firstname */
-    usersSection.appendChild(ul)
 
     data.forEach(element => {
-        const item = document.createElement('li')
-        item.innerHTML = data[element].firstname
-        ul.appendChild(item)
+        const info = {
+            userId: element.user_id,
+            firstname: element.firstname,
+            lastname: element.lastname,
+            email: element.email,
+            perfil: element.perfil
+        }
+        console.log(element)
+        const user = document.createElement('div')
+        const email = document.createElement('div')
+        const perfil = document.createElement('div')
+        const accions = document.createElement('div')
+
+        user.innerText = info.firstname + ' ' + info.lastname
+        email.innerText = info.email
+        perfil.innerText = info.perfil
+        accions.innerText = "eliminar"
+
+        user.classList.add('u-item')        
+        email.classList.add('u-item')     
+        perfil.classList.add('u-item') 
+        accions.classList.add('u-item')
+
+        headUs.appendChild(user)
+        headUs.appendChild(email)
+        headUs.appendChild(perfil)
+        headUs.appendChild(accions)
     })
 }
-
-/* let usersInformation = JSON.parse(localStorage.getItem('UsersInformation')) || []
-const userInfo = {
-    name: response.name,
-    lastname: response.lastname,
-    email: response.email,
-    age: response.age
-}
-usersInformation = usersInformation.concat(userInfo)
-localStorage.setItem('UsersInformation', JSON.stringify(usersInformation)) */

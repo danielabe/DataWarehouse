@@ -28,16 +28,27 @@
         </nav>
     </header>
     <main>
-        <form id="loginForm" class="login-form" action="">
-            <fieldset class="box">
-                <p class="welcome">Bienvenido</p> 
-                <input id="username" class="field log" type="text" placeholder="Usuario">
-                <input id="password" class="field log" type="text" placeholder="Contraseña">
-                <input id="submit" class="submit" type="submit" value="Ingresar">
-            </fieldset>
-        </form>
+        <div id="login" class="login">
+            <form id="loginForm" class="login-form" action="">
+                <fieldset class="box">
+                    <p class="welcome">Bienvenido</p> 
+                    <input id="username" class="field log" type="text" placeholder="Usuario">
+                    <input id="password" class="field log" type="text" placeholder="Contraseña">
+                    <input id="submit" class="submit" type="submit" value="Ingresar">
+                </fieldset>
+            </form>
+        </div>
         <section id="usersSection" class="users none">
-            <p>Usuarios</p>
+            <div id="headUs" class="head-us">
+                <div class="u-item h-item">Usuario</div>
+                <div class="u-item h-item">Email</div>
+                <div class="u-item h-item">Perfil</div>
+                <div class="u-item h-item">Acciones</div>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
         </section>
     </main>
     <footer>
