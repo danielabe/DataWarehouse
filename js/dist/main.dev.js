@@ -116,6 +116,12 @@ function getUsers() {
             row.appendChild(perfil);
             row.appendChild(actions);
             usersSection.appendChild(users);
+            row.addEventListener('mouseover', function () {
+              return hoverRow(actions);
+            });
+            row.addEventListener('mouseout', function () {
+              return outRow(actions);
+            });
           });
 
         case 11:
@@ -124,4 +130,12 @@ function getUsers() {
       }
     }
   });
+}
+
+function hoverRow(actions) {
+  actions.innerHTML = "<i class=\"fas fa-trash\"></i><i class=\"fas fa-pen\"></i>";
+}
+
+function outRow(actions) {
+  actions.innerHTML = "<i class=\"fas fa-ellipsis-h\"></i>";
 }

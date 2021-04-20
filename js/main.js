@@ -4,6 +4,7 @@ const password = document.getElementById('password')
 const login = document.getElementById('login')
 const usersSection = document.getElementById('usersSection')
 const headUs = document.getElementById('headUs')
+
 submit.addEventListener('click', (event) => {
     event.preventDefault()
     loginFunction()
@@ -85,5 +86,17 @@ async function getUsers() {
         row.appendChild(perfil)
         row.appendChild(actions)
         usersSection.appendChild(users)
+
+        
+        row.addEventListener('mouseover', () => hoverRow(actions))
+        row.addEventListener('mouseout', () => outRow(actions))
     })
+}
+
+function hoverRow(actions) {
+    actions.innerHTML = `<i class="fas fa-trash"></i><i class="fas fa-pen"></i>`
+}
+
+function outRow(actions) {
+    actions.innerHTML = `<i class="fas fa-ellipsis-h"></i>`
 }
