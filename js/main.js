@@ -64,25 +64,26 @@ async function getUsers() {
         const user = document.createElement('div')
         const email = document.createElement('div')
         const perfil = document.createElement('div')
-        const accions = document.createElement('div')
+        const actions = document.createElement('div')
 
         user.innerText = info.firstname + ' ' + info.lastname
         email.innerText = info.email
         perfil.innerText = info.perfil
-        accions.innerText = "eliminar"
+        actions.innerHTML = `<i class="fas fa-ellipsis-h"></i>`
 
         users.classList.add('users-list')
         row.classList.add('row-user')
         user.classList.add('u-item')        
         email.classList.add('u-item')     
         perfil.classList.add('u-item') 
-        accions.classList.add('u-item')
+        actions.classList.add('u-item')
+        actions.classList.add('action')
 
         users.appendChild(row)
         row.appendChild(user)
         row.appendChild(email)
         row.appendChild(perfil)
-        row.appendChild(accions)
+        row.appendChild(actions)
         usersSection.appendChild(users)
     })
 }

@@ -98,22 +98,23 @@ function getUsers() {
             var user = document.createElement('div');
             var email = document.createElement('div');
             var perfil = document.createElement('div');
-            var accions = document.createElement('div');
+            var actions = document.createElement('div');
             user.innerText = info.firstname + ' ' + info.lastname;
             email.innerText = info.email;
             perfil.innerText = info.perfil;
-            accions.innerText = "eliminar";
+            actions.innerHTML = "<i class=\"fas fa-ellipsis-h\"></i>";
             users.classList.add('users-list');
             row.classList.add('row-user');
             user.classList.add('u-item');
             email.classList.add('u-item');
             perfil.classList.add('u-item');
-            accions.classList.add('u-item');
+            actions.classList.add('u-item');
+            actions.classList.add('action');
             users.appendChild(row);
             row.appendChild(user);
             row.appendChild(email);
             row.appendChild(perfil);
-            row.appendChild(accions);
+            row.appendChild(actions);
             usersSection.appendChild(users);
           });
 

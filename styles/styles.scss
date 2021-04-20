@@ -133,6 +133,12 @@ main {
     align-items: center;
 }
 
+.t2 {
+    padding: 39.6px 0 0 29.4px;
+    font-size: 24px;
+    color:  rgb(51, 51, 51);
+}
+
 .head-us {
     display: grid;
     grid-template: repeat(1, 1fr)/32% 35% 18% 15%;
@@ -148,6 +154,11 @@ main {
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-top: hidden;
 }
+
+.h-item {
+margin-top: 11.5px;
+}
+
 
 .row-user {
     display: grid;
@@ -167,8 +178,21 @@ main {
     
 }
 
-.h-item {
-margin-top: 11.5px;
+.h-act {
+    padding: 0;
+    width: min-content;
+    justify-self: center;
+}
+
+.action {
+    padding: 0;
+    width: min-content;
+    justify-self: center;
+}
+
+.fa-ellipsis-h {
+    color: rgba(0,0,0,0.50);
+    /* align-self: center; */
 }
 
 /* .line {
