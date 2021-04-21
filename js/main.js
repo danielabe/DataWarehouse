@@ -66,20 +66,27 @@ async function getUsers() {
         const email = document.createElement('div')
         const perfil = document.createElement('div')
         const actions = document.createElement('div')
+        const ellipsis = document.createElement('i')
+        const trash = document.createElement('i')
+        const pen = document.createElement('i')
 
         user.innerText = info.firstname + ' ' + info.lastname
         email.innerText = info.email
         perfil.innerText = info.perfil
-        actions.innerHTML = `<i class="fas fa-ellipsis-h"></i>`
-
+   
         users.classList.add('users-list')
         row.classList.add('row-user')
         user.classList.add('u-item')        
         email.classList.add('u-item')     
         perfil.classList.add('u-item') 
-        actions.classList.add('u-item')
-        actions.classList.add('action')
+        actions.classList = 'u-item action'
+        ellipsis.classList = 'fas fa-ellipsis-h'
+        trash.classList = 'fas fa-trash none'
+        pen.classList = 'fas fa-pen none'
 
+        actions.appendChild(ellipsis)
+        actions.appendChild(trash)
+        actions.appendChild(pen)
         users.appendChild(row)
         row.appendChild(user)
         row.appendChild(email)
@@ -87,16 +94,19 @@ async function getUsers() {
         row.appendChild(actions)
         usersSection.appendChild(users)
 
-        
-        row.addEventListener('mouseover', () => hoverRow(actions))
-        row.addEventListener('mouseout', () => outRow(actions))
+        row.addEventListener('mouseover', () => hoverRow(ellipsis, trash, pen))
+        row.addEventListener('mouseout', () => outRow(ellipsis, trash, pen))
     })
 }
 
-function hoverRow(actions) {
-    actions.innerHTML = `<i class="fas fa-trash"></i><i class="fas fa-pen"></i>`
+function hoverRow(ellipsis, trash, pen) {
+    ellipsis.classList.add('none')
+    trash.classList.remove('none')
+    pen.classList.remove('none')
 }
 
-function outRow(actions) {
-    actions.innerHTML = `<i class="fas fa-ellipsis-h"></i>`
+function outRow(ellipsis, trash, pen) {
+    ellipsis.classList.remove('none')
+    trash.classList.add('none')
+    pen.classList.add('none')
 }

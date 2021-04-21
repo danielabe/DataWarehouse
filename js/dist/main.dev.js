@@ -99,17 +99,24 @@ function getUsers() {
             var email = document.createElement('div');
             var perfil = document.createElement('div');
             var actions = document.createElement('div');
+            var ellipsis = document.createElement('i');
+            var trash = document.createElement('i');
+            var pen = document.createElement('i');
             user.innerText = info.firstname + ' ' + info.lastname;
             email.innerText = info.email;
             perfil.innerText = info.perfil;
-            actions.innerHTML = "<i class=\"fas fa-ellipsis-h\"></i>";
             users.classList.add('users-list');
             row.classList.add('row-user');
             user.classList.add('u-item');
             email.classList.add('u-item');
             perfil.classList.add('u-item');
-            actions.classList.add('u-item');
-            actions.classList.add('action');
+            actions.classList = 'u-item action';
+            ellipsis.classList = 'fas fa-ellipsis-h';
+            trash.classList = 'fas fa-trash none';
+            pen.classList = 'fas fa-pen none';
+            actions.appendChild(ellipsis);
+            actions.appendChild(trash);
+            actions.appendChild(pen);
             users.appendChild(row);
             row.appendChild(user);
             row.appendChild(email);
@@ -117,10 +124,10 @@ function getUsers() {
             row.appendChild(actions);
             usersSection.appendChild(users);
             row.addEventListener('mouseover', function () {
-              return hoverRow(actions);
+              return hoverRow(ellipsis, trash, pen);
             });
             row.addEventListener('mouseout', function () {
-              return outRow(actions);
+              return outRow(ellipsis, trash, pen);
             });
           });
 
@@ -132,10 +139,14 @@ function getUsers() {
   });
 }
 
-function hoverRow(actions) {
-  actions.innerHTML = "<i class=\"fas fa-trash\"></i><i class=\"fas fa-pen\"></i>";
+function hoverRow(ellipsis, trash, pen) {
+  ellipsis.classList.add('none');
+  trash.classList.remove('none');
+  pen.classList.remove('none');
 }
 
-function outRow(actions) {
-  actions.innerHTML = "<i class=\"fas fa-ellipsis-h\"></i>";
+function outRow(ellipsis, trash, pen) {
+  ellipsis.classList.remove('none');
+  trash.classList.add('none');
+  pen.classList.add('none');
 }
