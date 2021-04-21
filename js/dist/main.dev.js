@@ -22,7 +22,7 @@ function loginFunction() {
             password: password.value
           };
           options = {
-            method: 'post',
+            method: 'POST',
             body: JSON.stringify(user),
             headers: {
               "Content-Type": "application/json"
@@ -68,7 +68,7 @@ function getUsers() {
         case 0:
           console.log(JSON.parse(localStorage.getItem('Token')));
           options = {
-            method: 'get',
+            method: 'GET',
             headers: {
               Authorization: "token ".concat(JSON.parse(localStorage.getItem('Token')))
             }
@@ -129,6 +129,9 @@ function getUsers() {
             row.addEventListener('mouseout', function () {
               return outRow(ellipsis, trash, pen);
             });
+            trash.addEventListener('click', function () {
+              return deleteUser(info, users);
+            });
           });
 
         case 11:
@@ -149,4 +152,38 @@ function outRow(ellipsis, trash, pen) {
   ellipsis.classList.remove('none');
   trash.classList.add('none');
   pen.classList.add('none');
+}
+
+function deleteUser(info, users) {
+  var options, response, data;
+  return regeneratorRuntime.async(function deleteUser$(_context3) {
+    while (1) {
+      switch (_context3.prev = _context3.next) {
+        case 0:
+          options = {
+            method: 'DELETE',
+            headers: {
+              Authorization: "token ".concat(JSON.parse(localStorage.getItem('Token')))
+            }
+          };
+          _context3.next = 3;
+          return regeneratorRuntime.awrap(fetch("http://localhost:3000/users/".concat(info.userId), options));
+
+        case 3:
+          response = _context3.sent;
+          _context3.next = 6;
+          return regeneratorRuntime.awrap(response.json());
+
+        case 6:
+          data = _context3.sent;
+          console.log(data);
+          users.remove();
+          getUsers(); //ver si funciona 
+
+        case 10:
+        case "end":
+          return _context3.stop();
+      }
+    }
+  });
 }

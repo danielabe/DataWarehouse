@@ -17,7 +17,7 @@ async function loginFunction() {
         password: password.value,
     }
     const options = {
-        method: 'post',
+        method: 'POST',
         body: JSON.stringify(user),
         headers: {
             "Content-Type": "application/json"
@@ -42,7 +42,7 @@ function saveToken(data) {
 async function getUsers() {
     console.log(JSON.parse(localStorage.getItem('Token')))
     const options = {
-        method: 'get',
+        method: 'GET',
         headers: {
             Authorization: `token ${JSON.parse(localStorage.getItem('Token'))}`
         }
@@ -96,6 +96,8 @@ async function getUsers() {
 
         row.addEventListener('mouseover', () => hoverRow(ellipsis, trash, pen))
         row.addEventListener('mouseout', () => outRow(ellipsis, trash, pen))
+
+        trash.addEventListener('click', () => deleteUser(info, users))
     })
 }
 
@@ -109,4 +111,18 @@ function outRow(ellipsis, trash, pen) {
     ellipsis.classList.remove('none')
     trash.classList.add('none')
     pen.classList.add('none')
+}
+
+async function deleteUser(info, users) {
+    const options = {
+        method: 'DELETE',
+        headers: {
+            Authorization: `token ${JSON.parse(localStorage.getItem('Token'))}`
+        }
+    }
+    const response = await fetch(`http://localhost:3000/users/${info.userId}`, options)
+    const data = await response.json()
+    console.log(data)
+    users.remove()
+    getUsers()//ver si funciona 
 }
