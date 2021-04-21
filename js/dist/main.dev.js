@@ -132,6 +132,9 @@ function getUsers() {
             trash.addEventListener('click', function () {
               return deleteUser(info, users);
             });
+            pen.addEventListener('click', function () {
+              return editUser(info, users);
+            });
           });
 
         case 11:
@@ -183,6 +186,43 @@ function deleteUser(info, users) {
         case 10:
         case "end":
           return _context3.stop();
+      }
+    }
+  });
+}
+
+function editUser(info, users) {
+  var options, response, data;
+  return regeneratorRuntime.async(function editUser$(_context4) {
+    while (1) {
+      switch (_context4.prev = _context4.next) {
+        case 0:
+          //esta funcion la voy a hacer luego, para ver
+          options = {
+            //primero como se hace en contactos, hacer
+            method: 'PUT',
+            //diseño correspondiente y generar json para el body
+            headers: {
+              Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
+            }
+          };
+          _context4.next = 3;
+          return regeneratorRuntime.awrap(fetch("http://localhost:3000/users/".concat(info.userId), options));
+
+        case 3:
+          response = _context4.sent;
+          _context4.next = 6;
+          return regeneratorRuntime.awrap(response.json());
+
+        case 6:
+          data = _context4.sent;
+          console.log(data);
+          users.remove();
+          getUsers();
+
+        case 10:
+        case "end":
+          return _context4.stop();
       }
     }
   });

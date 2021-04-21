@@ -98,6 +98,7 @@ async function getUsers() {
         row.addEventListener('mouseout', () => outRow(ellipsis, trash, pen))
 
         trash.addEventListener('click', () => deleteUser(info, users))
+        pen.addEventListener('click', () => editUser(info, users))
     })
 }
 
@@ -116,6 +117,20 @@ function outRow(ellipsis, trash, pen) {
 async function deleteUser(info, users) {
     const options = {
         method: 'DELETE',
+        headers: {
+            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
+        }
+    }
+    const response = await fetch(`http://localhost:3000/users/${info.userId}`, options)
+    const data = await response.json()
+    console.log(data)
+    users.remove()
+    getUsers()
+}
+
+async function editUser(info, users) {  //esta funcion la voy a hacer luego, para ver
+    const options = {                   //primero como se hace en contactos, hacer
+        method: 'PUT',                  //diseño correspondiente y generar json para el body
         headers: {
             Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
         }
