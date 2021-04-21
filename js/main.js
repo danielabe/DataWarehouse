@@ -36,15 +36,15 @@ async function loginFunction() {
 }
 
 function saveToken(data) {
-    localStorage.setItem('Token', JSON.stringify(data))
+    sessionStorage.setItem('Token', JSON.stringify(data))
 }
 
 async function getUsers() {
-    console.log(JSON.parse(localStorage.getItem('Token')))
+    console.log(JSON.parse(sessionStorage.getItem('Token')))
     const options = {
         method: 'GET',
         headers: {
-            Authorization: `token ${JSON.parse(localStorage.getItem('Token'))}`
+            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
         }
     }
     const response = await fetch('http://localhost:3000/users', options)
@@ -117,12 +117,12 @@ async function deleteUser(info, users) {
     const options = {
         method: 'DELETE',
         headers: {
-            Authorization: `token ${JSON.parse(localStorage.getItem('Token'))}`
+            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
         }
     }
     const response = await fetch(`http://localhost:3000/users/${info.userId}`, options)
     const data = await response.json()
     console.log(data)
     users.remove()
-    getUsers()//ver si funciona 
+    getUsers()
 }

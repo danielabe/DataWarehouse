@@ -57,7 +57,7 @@ function loginFunction() {
 }
 
 function saveToken(data) {
-  localStorage.setItem('Token', JSON.stringify(data));
+  sessionStorage.setItem('Token', JSON.stringify(data));
 }
 
 function getUsers() {
@@ -66,11 +66,11 @@ function getUsers() {
     while (1) {
       switch (_context2.prev = _context2.next) {
         case 0:
-          console.log(JSON.parse(localStorage.getItem('Token')));
+          console.log(JSON.parse(sessionStorage.getItem('Token')));
           options = {
             method: 'GET',
             headers: {
-              Authorization: "token ".concat(JSON.parse(localStorage.getItem('Token')))
+              Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
             }
           };
           _context2.next = 4;
@@ -163,7 +163,7 @@ function deleteUser(info, users) {
           options = {
             method: 'DELETE',
             headers: {
-              Authorization: "token ".concat(JSON.parse(localStorage.getItem('Token')))
+              Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
             }
           };
           _context3.next = 3;
@@ -178,7 +178,7 @@ function deleteUser(info, users) {
           data = _context3.sent;
           console.log(data);
           users.remove();
-          getUsers(); //ver si funciona 
+          getUsers();
 
         case 10:
         case "end":
