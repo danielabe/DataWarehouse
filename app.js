@@ -6,7 +6,7 @@ const cors = require('cors')
 
 const { selectUserLogin, getUsers, createUser, getUser, modifyUser, deleteUser, getRegions,
     createRegion, getRegion, modifyRegion, deleteRegion, getCountriesRegion,
-    getCitiesRegion, getCountries, createCountry, getCountry, modifyCountry,
+    getCitiesRegion, getRegionsCountriesCities, getCountries, createCountry, getCountry, modifyCountry,
     deleteCountry, getCitiesCountry, getCities, createCity, getCity, modifyCity,
     deleteCity, getCompanies, createCompany, getCompany, modifyCompany, deleteCompany,
     getContacts, createContact, getContact, modifycontact, deleteContact, addChannel,
@@ -112,6 +112,10 @@ app.get('/regions/:regionId/countries', validateRegionId, async (req, res) => {
 app.get('/regions/:regionId/cities', validateRegionId, async (req, res) => {
     const regionId = +req.params.regionId
     getCitiesRegion(regionId, req, res)
+}) 
+
+app.get('/regionsCountriesCities', async (req, res) => {
+    getRegionsCountriesCities(req, res)
 }) 
 
 //countries

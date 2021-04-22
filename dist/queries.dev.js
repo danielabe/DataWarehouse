@@ -593,27 +593,51 @@ function getCitiesRegion(regionId, req, res) {
       }
     }
   });
+}
+
+function getRegionsCountriesCities(req, res) {
+  var regionsCountriesCities;
+  return regeneratorRuntime.async(function getRegionsCountriesCities$(_context20) {
+    while (1) {
+      switch (_context20.prev = _context20.next) {
+        case 0:
+          _context20.next = 2;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT re.region_id, region_name, co.country_id, country_name, ci.city_id, city_name \n    FROM regions re \n    JOIN countries co on re.region_id = co.region_id \n    JOIN cities ci on co.country_id = ci.country_id\n    ", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          regionsCountriesCities = _context20.sent;
+          console.table(regionsCountriesCities);
+          res.status(200).json(regionsCountriesCities);
+
+        case 5:
+        case "end":
+          return _context20.stop();
+      }
+    }
+  });
 } //countries
 
 
 function getCountries(req, res) {
   var countries;
-  return regeneratorRuntime.async(function getCountries$(_context20) {
+  return regeneratorRuntime.async(function getCountries$(_context21) {
     while (1) {
-      switch (_context20.prev = _context20.next) {
+      switch (_context21.prev = _context21.next) {
         case 0:
-          _context20.next = 2;
+          _context21.next = 2;
           return regeneratorRuntime.awrap(db.query("SELECT * FROM countries", {
             type: QueryTypes.SELECT
           }));
 
         case 2:
-          countries = _context20.sent;
+          countries = _context21.sent;
           res.status(200).json(countries);
 
         case 4:
         case "end":
-          return _context20.stop();
+          return _context21.stop();
       }
     }
   });
@@ -621,18 +645,18 @@ function getCountries(req, res) {
 
 function validateCountryNameQuery(req, res, next) {
   var country, countries, countriesArray;
-  return regeneratorRuntime.async(function validateCountryNameQuery$(_context21) {
+  return regeneratorRuntime.async(function validateCountryNameQuery$(_context22) {
     while (1) {
-      switch (_context21.prev = _context21.next) {
+      switch (_context22.prev = _context22.next) {
         case 0:
           country = req.body.country_name;
-          _context21.next = 3;
+          _context22.next = 3;
           return regeneratorRuntime.awrap(db.query("SELECT country_name FROM countries", {
             type: QueryTypes.SELECT
           }));
 
         case 3:
-          countries = _context21.sent;
+          countries = _context22.sent;
           countriesArray = countries.map(function (country) {
             return country.country_name;
           });
@@ -645,7 +669,7 @@ function validateCountryNameQuery(req, res, next) {
 
         case 6:
         case "end":
-          return _context21.stop();
+          return _context22.stop();
       }
     }
   });
@@ -653,11 +677,11 @@ function validateCountryNameQuery(req, res, next) {
 
 function createCountry(country_name, region_id, req, res) {
   var inserted;
-  return regeneratorRuntime.async(function createCountry$(_context22) {
+  return regeneratorRuntime.async(function createCountry$(_context23) {
     while (1) {
-      switch (_context22.prev = _context22.next) {
+      switch (_context23.prev = _context23.next) {
         case 0:
-          _context22.next = 2;
+          _context23.next = 2;
           return regeneratorRuntime.awrap(db.query("\n    INSERT INTO countries (region_id, country_name)\n    VALUES (:region_id, :country_name)\n    ", {
             replacements: {
               country_name: country_name,
@@ -667,7 +691,7 @@ function createCountry(country_name, region_id, req, res) {
           }));
 
         case 2:
-          inserted = _context22.sent;
+          inserted = _context23.sent;
           res.status(201).json(Object.assign({}, {
             country_id: inserted[0],
             region_id: region_id,
@@ -676,7 +700,7 @@ function createCountry(country_name, region_id, req, res) {
 
         case 4:
         case "end":
-          return _context22.stop();
+          return _context23.stop();
       }
     }
   });
@@ -684,18 +708,18 @@ function createCountry(country_name, region_id, req, res) {
 
 function validateCountryIdQuery(req, res, next) {
   var countryId, countries, countriesArray;
-  return regeneratorRuntime.async(function validateCountryIdQuery$(_context23) {
+  return regeneratorRuntime.async(function validateCountryIdQuery$(_context24) {
     while (1) {
-      switch (_context23.prev = _context23.next) {
+      switch (_context24.prev = _context24.next) {
         case 0:
           countryId = +req.params.countryId || req.body.country_id;
-          _context23.next = 3;
+          _context24.next = 3;
           return regeneratorRuntime.awrap(db.query("SELECT country_id FROM countries", {
             type: QueryTypes.SELECT
           }));
 
         case 3:
-          countries = _context23.sent;
+          countries = _context24.sent;
           countriesArray = countries.map(function (id) {
             return id.country_id;
           });
@@ -703,7 +727,7 @@ function validateCountryIdQuery(req, res, next) {
 
         case 6:
         case "end":
-          return _context23.stop();
+          return _context24.stop();
       }
     }
   });
@@ -711,23 +735,23 @@ function validateCountryIdQuery(req, res, next) {
 
 function getCountry(countryId, req, res) {
   var country;
-  return regeneratorRuntime.async(function getCountry$(_context24) {
+  return regeneratorRuntime.async(function getCountry$(_context25) {
     while (1) {
-      switch (_context24.prev = _context24.next) {
+      switch (_context25.prev = _context25.next) {
         case 0:
-          _context24.next = 2;
+          _context25.next = 2;
           return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM countries WHERE country_id = ?\n    ", {
             replacements: [countryId],
             type: QueryTypes.SELECT
           }));
 
         case 2:
-          country = _context24.sent;
+          country = _context25.sent;
           res.status(200).json(country[0]);
 
         case 4:
         case "end":
-          return _context24.stop();
+          return _context25.stop();
       }
     }
   });
@@ -735,23 +759,23 @@ function getCountry(countryId, req, res) {
 
 function validateCountryNamePutQuery(req, res, next) {
   var country, countries, countriesArray;
-  return regeneratorRuntime.async(function validateCountryNamePutQuery$(_context25) {
+  return regeneratorRuntime.async(function validateCountryNamePutQuery$(_context26) {
     while (1) {
-      switch (_context25.prev = _context25.next) {
+      switch (_context26.prev = _context26.next) {
         case 0:
           if (!req.body.country_name) {
-            _context25.next = 9;
+            _context26.next = 9;
             break;
           }
 
           country = req.body.country_name;
-          _context25.next = 4;
+          _context26.next = 4;
           return regeneratorRuntime.awrap(db.query("SELECT country_name FROM countries", {
             type: QueryTypes.SELECT
           }));
 
         case 4:
-          countries = _context25.sent;
+          countries = _context26.sent;
           countriesArray = countries.map(function (country) {
             return country.country_name;
           });
@@ -762,50 +786,13 @@ function validateCountryNamePutQuery(req, res, next) {
             })) next();else res.status(400).send("The country already exists").end();
           } else res.status(400).send("The country name length is wrong").end();
 
-          _context25.next = 10;
+          _context26.next = 10;
           break;
 
         case 9:
           next();
 
         case 10:
-        case "end":
-          return _context25.stop();
-      }
-    }
-  });
-}
-
-function modifyCountry(countryId, req, res) {
-  var country, newCountry, modified;
-  return regeneratorRuntime.async(function modifyCountry$(_context26) {
-    while (1) {
-      switch (_context26.prev = _context26.next) {
-        case 0:
-          _context26.next = 2;
-          return regeneratorRuntime.awrap(db.query("SELECT * FROM countries WHERE country_id = ?", {
-            replacements: [countryId],
-            type: QueryTypes.SELECT
-          }));
-
-        case 2:
-          country = _context26.sent;
-          newCountry = {
-            country_id: countryId,
-            region_id: req.body.region_id || country[0].region_id,
-            country_name: req.body.country_name || country[0].country_name
-          };
-          _context26.next = 6;
-          return regeneratorRuntime.awrap(db.query("\n    UPDATE countries SET country_name = :country_name, region_id = :region_id \n    WHERE country_id = :country_id\n    ", {
-            replacements: newCountry,
-            type: QueryTypes.UPDATE
-          }));
-
-        case 6:
-          modified = _context26.sent;
-          res.status(200).json(newCountry);
-
-        case 8:
         case "end":
           return _context26.stop();
       }
@@ -813,36 +800,36 @@ function modifyCountry(countryId, req, res) {
   });
 }
 
-function validateRegionIdCountryQuery(req, res, next) {
-  var regionId, regions, regionsArray;
-  return regeneratorRuntime.async(function validateRegionIdCountryQuery$(_context27) {
+function modifyCountry(countryId, req, res) {
+  var country, newCountry, modified;
+  return regeneratorRuntime.async(function modifyCountry$(_context27) {
     while (1) {
       switch (_context27.prev = _context27.next) {
         case 0:
-          if (!req.body.region_id) {
-            _context27.next = 9;
-            break;
-          }
-
-          regionId = req.body.region_id;
-          _context27.next = 4;
-          return regeneratorRuntime.awrap(db.query("SELECT region_id FROM regions", {
+          _context27.next = 2;
+          return regeneratorRuntime.awrap(db.query("SELECT * FROM countries WHERE country_id = ?", {
+            replacements: [countryId],
             type: QueryTypes.SELECT
           }));
 
-        case 4:
-          regions = _context27.sent;
-          regionsArray = regions.map(function (id) {
-            return id.region_id;
-          });
-          if (regionsArray.includes(regionId)) next();else res.status(404).send("The region does not exist").end();
-          _context27.next = 10;
-          break;
+        case 2:
+          country = _context27.sent;
+          newCountry = {
+            country_id: countryId,
+            region_id: req.body.region_id || country[0].region_id,
+            country_name: req.body.country_name || country[0].country_name
+          };
+          _context27.next = 6;
+          return regeneratorRuntime.awrap(db.query("\n    UPDATE countries SET country_name = :country_name, region_id = :region_id \n    WHERE country_id = :country_id\n    ", {
+            replacements: newCountry,
+            type: QueryTypes.UPDATE
+          }));
 
-        case 9:
-          next();
+        case 6:
+          modified = _context27.sent;
+          res.status(200).json(newCountry);
 
-        case 10:
+        case 8:
         case "end":
           return _context27.stop();
       }
@@ -850,31 +837,36 @@ function validateRegionIdCountryQuery(req, res, next) {
   });
 }
 
-function deleteCountry(countryId, req, res) {
-  var country, deleted;
-  return regeneratorRuntime.async(function deleteCountry$(_context28) {
+function validateRegionIdCountryQuery(req, res, next) {
+  var regionId, regions, regionsArray;
+  return regeneratorRuntime.async(function validateRegionIdCountryQuery$(_context28) {
     while (1) {
       switch (_context28.prev = _context28.next) {
         case 0:
-          _context28.next = 2;
-          return regeneratorRuntime.awrap(db.query("SELECT * FROM countries WHERE country_id = ?", {
-            replacements: [countryId],
+          if (!req.body.region_id) {
+            _context28.next = 9;
+            break;
+          }
+
+          regionId = req.body.region_id;
+          _context28.next = 4;
+          return regeneratorRuntime.awrap(db.query("SELECT region_id FROM regions", {
             type: QueryTypes.SELECT
           }));
 
-        case 2:
-          country = _context28.sent;
-          _context28.next = 5;
-          return regeneratorRuntime.awrap(db.query("DELETE FROM countries WHERE country_id = ?", {
-            replacements: [countryId],
-            type: QueryTypes.DELETE
-          }));
+        case 4:
+          regions = _context28.sent;
+          regionsArray = regions.map(function (id) {
+            return id.region_id;
+          });
+          if (regionsArray.includes(regionId)) next();else res.status(404).send("The region does not exist").end();
+          _context28.next = 10;
+          break;
 
-        case 5:
-          deleted = _context28.sent;
-          res.status(200).json(country);
+        case 9:
+          next();
 
-        case 7:
+        case 10:
         case "end":
           return _context28.stop();
       }
@@ -882,26 +874,58 @@ function deleteCountry(countryId, req, res) {
   });
 }
 
-function getCitiesCountry(countryId, req, res) {
-  var cities;
-  return regeneratorRuntime.async(function getCitiesCountry$(_context29) {
+function deleteCountry(countryId, req, res) {
+  var country, deleted;
+  return regeneratorRuntime.async(function deleteCountry$(_context29) {
     while (1) {
       switch (_context29.prev = _context29.next) {
         case 0:
           _context29.next = 2;
+          return regeneratorRuntime.awrap(db.query("SELECT * FROM countries WHERE country_id = ?", {
+            replacements: [countryId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          country = _context29.sent;
+          _context29.next = 5;
+          return regeneratorRuntime.awrap(db.query("DELETE FROM countries WHERE country_id = ?", {
+            replacements: [countryId],
+            type: QueryTypes.DELETE
+          }));
+
+        case 5:
+          deleted = _context29.sent;
+          res.status(200).json(country);
+
+        case 7:
+        case "end":
+          return _context29.stop();
+      }
+    }
+  });
+}
+
+function getCitiesCountry(countryId, req, res) {
+  var cities;
+  return regeneratorRuntime.async(function getCitiesCountry$(_context30) {
+    while (1) {
+      switch (_context30.prev = _context30.next) {
+        case 0:
+          _context30.next = 2;
           return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM cities WHERE country_id = ?\n    ", {
             replacements: [countryId],
             type: QueryTypes.SELECT
           }));
 
         case 2:
-          cities = _context29.sent;
+          cities = _context30.sent;
           console.table(cities);
           res.status(200).json(cities);
 
         case 5:
         case "end":
-          return _context29.stop();
+          return _context30.stop();
       }
     }
   });
@@ -910,22 +934,22 @@ function getCitiesCountry(countryId, req, res) {
 
 function getCities(req, res) {
   var cities;
-  return regeneratorRuntime.async(function getCities$(_context30) {
+  return regeneratorRuntime.async(function getCities$(_context31) {
     while (1) {
-      switch (_context30.prev = _context30.next) {
+      switch (_context31.prev = _context31.next) {
         case 0:
-          _context30.next = 2;
+          _context31.next = 2;
           return regeneratorRuntime.awrap(db.query("SELECT * FROM cities", {
             type: QueryTypes.SELECT
           }));
 
         case 2:
-          cities = _context30.sent;
+          cities = _context31.sent;
           res.status(200).json(cities);
 
         case 4:
         case "end":
-          return _context30.stop();
+          return _context31.stop();
       }
     }
   });
@@ -933,18 +957,18 @@ function getCities(req, res) {
 
 function validateCityNameQuery(req, res, next) {
   var city, cities, citiesArray;
-  return regeneratorRuntime.async(function validateCityNameQuery$(_context31) {
+  return regeneratorRuntime.async(function validateCityNameQuery$(_context32) {
     while (1) {
-      switch (_context31.prev = _context31.next) {
+      switch (_context32.prev = _context32.next) {
         case 0:
           city = req.body.city_name;
-          _context31.next = 3;
+          _context32.next = 3;
           return regeneratorRuntime.awrap(db.query("SELECT city_name FROM cities", {
             type: QueryTypes.SELECT
           }));
 
         case 3:
-          cities = _context31.sent;
+          cities = _context32.sent;
           citiesArray = cities.map(function (city) {
             return city.city_name;
           });
@@ -957,7 +981,7 @@ function validateCityNameQuery(req, res, next) {
 
         case 6:
         case "end":
-          return _context31.stop();
+          return _context32.stop();
       }
     }
   });
@@ -965,11 +989,11 @@ function validateCityNameQuery(req, res, next) {
 
 function createCity(country_id, city_name, req, res) {
   var inserted;
-  return regeneratorRuntime.async(function createCity$(_context32) {
+  return regeneratorRuntime.async(function createCity$(_context33) {
     while (1) {
-      switch (_context32.prev = _context32.next) {
+      switch (_context33.prev = _context33.next) {
         case 0:
-          _context32.next = 2;
+          _context33.next = 2;
           return regeneratorRuntime.awrap(db.query("\n    INSERT INTO cities (country_id, city_name)\n    VALUES (:country_id, :city_name)\n    ", {
             replacements: {
               country_id: country_id,
@@ -979,7 +1003,7 @@ function createCity(country_id, city_name, req, res) {
           }));
 
         case 2:
-          inserted = _context32.sent;
+          inserted = _context33.sent;
           res.status(201).json(Object.assign({}, {
             city_id: inserted[0],
             country_id: country_id,
@@ -988,7 +1012,7 @@ function createCity(country_id, city_name, req, res) {
 
         case 4:
         case "end":
-          return _context32.stop();
+          return _context33.stop();
       }
     }
   });
@@ -996,18 +1020,18 @@ function createCity(country_id, city_name, req, res) {
 
 function validateCityIdQuery(req, res, next) {
   var cityId, cities, citiesArray;
-  return regeneratorRuntime.async(function validateCityIdQuery$(_context33) {
+  return regeneratorRuntime.async(function validateCityIdQuery$(_context34) {
     while (1) {
-      switch (_context33.prev = _context33.next) {
+      switch (_context34.prev = _context34.next) {
         case 0:
           cityId = +req.params.cityId || req.body.city_id;
-          _context33.next = 3;
+          _context34.next = 3;
           return regeneratorRuntime.awrap(db.query("SELECT city_id FROM cities", {
             type: QueryTypes.SELECT
           }));
 
         case 3:
-          cities = _context33.sent;
+          cities = _context34.sent;
           citiesArray = cities.map(function (id) {
             return id.city_id;
           });
@@ -1015,7 +1039,7 @@ function validateCityIdQuery(req, res, next) {
 
         case 6:
         case "end":
-          return _context33.stop();
+          return _context34.stop();
       }
     }
   });
@@ -1023,58 +1047,21 @@ function validateCityIdQuery(req, res, next) {
 
 function getCity(cityId, req, res) {
   var city;
-  return regeneratorRuntime.async(function getCity$(_context34) {
+  return regeneratorRuntime.async(function getCity$(_context35) {
     while (1) {
-      switch (_context34.prev = _context34.next) {
+      switch (_context35.prev = _context35.next) {
         case 0:
-          _context34.next = 2;
+          _context35.next = 2;
           return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM cities WHERE city_id = ?\n    ", {
             replacements: [cityId],
             type: QueryTypes.SELECT
           }));
 
         case 2:
-          city = _context34.sent;
+          city = _context35.sent;
           res.status(200).json(city[0]);
 
         case 4:
-        case "end":
-          return _context34.stop();
-      }
-    }
-  });
-}
-
-function validateCountryIdCityQuery(req, res, next) {
-  var countryId, countries, countriesArray;
-  return regeneratorRuntime.async(function validateCountryIdCityQuery$(_context35) {
-    while (1) {
-      switch (_context35.prev = _context35.next) {
-        case 0:
-          if (!req.body.country_id) {
-            _context35.next = 9;
-            break;
-          }
-
-          countryId = req.body.country_id;
-          _context35.next = 4;
-          return regeneratorRuntime.awrap(db.query("SELECT country_id FROM countries", {
-            type: QueryTypes.SELECT
-          }));
-
-        case 4:
-          countries = _context35.sent;
-          countriesArray = countries.map(function (id) {
-            return id.country_id;
-          });
-          if (countriesArray.includes(countryId)) next();else res.status(404).send("The country does not exist").end();
-          _context35.next = 10;
-          break;
-
-        case 9:
-          next();
-
-        case 10:
         case "end":
           return _context35.stop();
       }
@@ -1082,35 +1069,29 @@ function validateCountryIdCityQuery(req, res, next) {
   });
 }
 
-function validateCityNamePutQuery(req, res, next) {
-  var city, cities, citiesArray;
-  return regeneratorRuntime.async(function validateCityNamePutQuery$(_context36) {
+function validateCountryIdCityQuery(req, res, next) {
+  var countryId, countries, countriesArray;
+  return regeneratorRuntime.async(function validateCountryIdCityQuery$(_context36) {
     while (1) {
       switch (_context36.prev = _context36.next) {
         case 0:
-          if (!req.body.city_name) {
+          if (!req.body.country_id) {
             _context36.next = 9;
             break;
           }
 
-          city = req.body.city_name;
+          countryId = req.body.country_id;
           _context36.next = 4;
-          return regeneratorRuntime.awrap(db.query("SELECT city_name FROM cities", {
+          return regeneratorRuntime.awrap(db.query("SELECT country_id FROM countries", {
             type: QueryTypes.SELECT
           }));
 
         case 4:
-          cities = _context36.sent;
-          citiesArray = cities.map(function (city) {
-            return city.city_name;
+          countries = _context36.sent;
+          countriesArray = countries.map(function (id) {
+            return id.country_id;
           });
-
-          if (req.body.city_name.length >= 2 && req.body.city_name.length <= 64) {
-            if (citiesArray.every(function (name) {
-              return name !== city;
-            })) next();else res.status(400).send("The city already exists").end();
-          } else res.status(400).send("The city name length is wrong").end();
-
+          if (countriesArray.includes(countryId)) next();else res.status(404).send("The country does not exist").end();
           _context36.next = 10;
           break;
 
@@ -1125,36 +1106,42 @@ function validateCityNamePutQuery(req, res, next) {
   });
 }
 
-function modifyCity(cityId, req, res) {
-  var city, newCity, modified;
-  return regeneratorRuntime.async(function modifyCity$(_context37) {
+function validateCityNamePutQuery(req, res, next) {
+  var city, cities, citiesArray;
+  return regeneratorRuntime.async(function validateCityNamePutQuery$(_context37) {
     while (1) {
       switch (_context37.prev = _context37.next) {
         case 0:
-          _context37.next = 2;
-          return regeneratorRuntime.awrap(db.query("SELECT * FROM cities WHERE city_id = ?", {
-            replacements: [cityId],
+          if (!req.body.city_name) {
+            _context37.next = 9;
+            break;
+          }
+
+          city = req.body.city_name;
+          _context37.next = 4;
+          return regeneratorRuntime.awrap(db.query("SELECT city_name FROM cities", {
             type: QueryTypes.SELECT
           }));
 
-        case 2:
-          city = _context37.sent;
-          newCity = {
-            city_id: cityId,
-            country_id: req.body.country_id || city[0].country_id,
-            city_name: req.body.city_name || city[0].city_name
-          };
-          _context37.next = 6;
-          return regeneratorRuntime.awrap(db.query("\n    UPDATE cities SET city_name = :city_name, country_id = :country_id \n    WHERE city_id = :city_id\n    ", {
-            replacements: newCity,
-            type: QueryTypes.UPDATE
-          }));
+        case 4:
+          cities = _context37.sent;
+          citiesArray = cities.map(function (city) {
+            return city.city_name;
+          });
 
-        case 6:
-          modified = _context37.sent;
-          res.status(200).json(newCity);
+          if (req.body.city_name.length >= 2 && req.body.city_name.length <= 64) {
+            if (citiesArray.every(function (name) {
+              return name !== city;
+            })) next();else res.status(400).send("The city already exists").end();
+          } else res.status(400).send("The city name length is wrong").end();
 
-        case 8:
+          _context37.next = 10;
+          break;
+
+        case 9:
+          next();
+
+        case 10:
         case "end":
           return _context37.stop();
       }
@@ -1162,9 +1149,9 @@ function modifyCity(cityId, req, res) {
   });
 }
 
-function deleteCity(cityId, req, res) {
-  var city, deleted;
-  return regeneratorRuntime.async(function deleteCity$(_context38) {
+function modifyCity(cityId, req, res) {
+  var city, newCity, modified;
+  return regeneratorRuntime.async(function modifyCity$(_context38) {
     while (1) {
       switch (_context38.prev = _context38.next) {
         case 0:
@@ -1176,19 +1163,56 @@ function deleteCity(cityId, req, res) {
 
         case 2:
           city = _context38.sent;
-          _context38.next = 5;
+          newCity = {
+            city_id: cityId,
+            country_id: req.body.country_id || city[0].country_id,
+            city_name: req.body.city_name || city[0].city_name
+          };
+          _context38.next = 6;
+          return regeneratorRuntime.awrap(db.query("\n    UPDATE cities SET city_name = :city_name, country_id = :country_id \n    WHERE city_id = :city_id\n    ", {
+            replacements: newCity,
+            type: QueryTypes.UPDATE
+          }));
+
+        case 6:
+          modified = _context38.sent;
+          res.status(200).json(newCity);
+
+        case 8:
+        case "end":
+          return _context38.stop();
+      }
+    }
+  });
+}
+
+function deleteCity(cityId, req, res) {
+  var city, deleted;
+  return regeneratorRuntime.async(function deleteCity$(_context39) {
+    while (1) {
+      switch (_context39.prev = _context39.next) {
+        case 0:
+          _context39.next = 2;
+          return regeneratorRuntime.awrap(db.query("SELECT * FROM cities WHERE city_id = ?", {
+            replacements: [cityId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          city = _context39.sent;
+          _context39.next = 5;
           return regeneratorRuntime.awrap(db.query("DELETE FROM cities WHERE city_id = ?", {
             replacements: [cityId],
             type: QueryTypes.DELETE
           }));
 
         case 5:
-          deleted = _context38.sent;
+          deleted = _context39.sent;
           res.status(200).json(city);
 
         case 7:
         case "end":
-          return _context38.stop();
+          return _context39.stop();
       }
     }
   });
@@ -1197,52 +1221,20 @@ function deleteCity(cityId, req, res) {
 
 function getCompanies(req, res) {
   var companies;
-  return regeneratorRuntime.async(function getCompanies$(_context39) {
+  return regeneratorRuntime.async(function getCompanies$(_context40) {
     while (1) {
-      switch (_context39.prev = _context39.next) {
+      switch (_context40.prev = _context40.next) {
         case 0:
-          _context39.next = 2;
+          _context40.next = 2;
           return regeneratorRuntime.awrap(db.query("\n    SELECT company_id, company_name, c.city_id, city_name, ci.country_id, country_name, \n    co.region_id, region_name, address\n    FROM companies c\n    JOIN cities ci ON ci.city_id = c.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    ", {
             type: QueryTypes.SELECT
           }));
 
         case 2:
-          companies = _context39.sent;
+          companies = _context40.sent;
           res.status(200).json(companies);
 
         case 4:
-        case "end":
-          return _context39.stop();
-      }
-    }
-  });
-}
-
-function validateCompanyNameQuery(req, res, next) {
-  var company, companies, companiesArray;
-  return regeneratorRuntime.async(function validateCompanyNameQuery$(_context40) {
-    while (1) {
-      switch (_context40.prev = _context40.next) {
-        case 0:
-          company = req.body.company_name;
-          _context40.next = 3;
-          return regeneratorRuntime.awrap(db.query("SELECT company_name FROM companies", {
-            type: QueryTypes.SELECT
-          }));
-
-        case 3:
-          companies = _context40.sent;
-          companiesArray = companies.map(function (company) {
-            return company.company_name;
-          });
-
-          if (req.body.company_name.length >= 2 && req.body.company_name.length <= 64) {
-            if (companiesArray.every(function (name) {
-              return name !== company;
-            })) next();else res.status(400).send("The company already exists").end();
-          } else res.status(400).send("The company name length is wrong").end();
-
-        case 6:
         case "end":
           return _context40.stop();
       }
@@ -1250,108 +1242,20 @@ function validateCompanyNameQuery(req, res, next) {
   });
 }
 
-function createCompany(newCompany, req, res) {
-  var inserted, company;
-  return regeneratorRuntime.async(function createCompany$(_context41) {
+function validateCompanyNameQuery(req, res, next) {
+  var company, companies, companiesArray;
+  return regeneratorRuntime.async(function validateCompanyNameQuery$(_context41) {
     while (1) {
       switch (_context41.prev = _context41.next) {
         case 0:
-          _context41.next = 2;
-          return regeneratorRuntime.awrap(db.query("\n    INSERT INTO companies (company_name, city_id, address)\n    VALUES (:company_name, :city_id, :address)\n    ", {
-            replacements: newCompany,
-            type: QueryTypes.INSERT
-          }));
-
-        case 2:
-          inserted = _context41.sent;
-          _context41.next = 5;
-          return regeneratorRuntime.awrap(db.query("\n    SELECT company_id, company_name, c.city_id, city_name, ci.country_id, country_name, \n    co.region_id, region_name, address\n    FROM companies c\n    JOIN cities ci ON ci.city_id = c.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    WHERE company_id = ?\n    ", {
-            replacements: [inserted[0]],
-            type: QueryTypes.SELECT
-          }));
-
-        case 5:
-          company = _context41.sent;
-          res.status(201).json(company[0]);
-
-        case 7:
-        case "end":
-          return _context41.stop();
-      }
-    }
-  });
-}
-
-function validateCompanyIdQuery(req, res, next) {
-  var companyId, companies, companiesArray;
-  return regeneratorRuntime.async(function validateCompanyIdQuery$(_context42) {
-    while (1) {
-      switch (_context42.prev = _context42.next) {
-        case 0:
-          companyId = +req.params.companyId || req.body.company_id;
-          _context42.next = 3;
-          return regeneratorRuntime.awrap(db.query("SELECT company_id FROM companies", {
-            type: QueryTypes.SELECT
-          }));
-
-        case 3:
-          companies = _context42.sent;
-          companiesArray = companies.map(function (id) {
-            return id.company_id;
-          });
-          if (companiesArray.includes(companyId)) next();else res.status(404).send("The company does not exist").end();
-
-        case 6:
-        case "end":
-          return _context42.stop();
-      }
-    }
-  });
-}
-
-function getCompany(companyId, req, res) {
-  var company;
-  return regeneratorRuntime.async(function getCompany$(_context43) {
-    while (1) {
-      switch (_context43.prev = _context43.next) {
-        case 0:
-          _context43.next = 2;
-          return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM companies WHERE company_id = ?\n    ", {
-            replacements: [companyId],
-            type: QueryTypes.SELECT
-          }));
-
-        case 2:
-          company = _context43.sent;
-          res.status(200).json(company[0]);
-
-        case 4:
-        case "end":
-          return _context43.stop();
-      }
-    }
-  });
-}
-
-function validateCompanyNamePutQuery(req, res, next) {
-  var company, companies, companiesArray;
-  return regeneratorRuntime.async(function validateCompanyNamePutQuery$(_context44) {
-    while (1) {
-      switch (_context44.prev = _context44.next) {
-        case 0:
-          if (!req.body.company_name) {
-            _context44.next = 9;
-            break;
-          }
-
           company = req.body.company_name;
-          _context44.next = 4;
+          _context41.next = 3;
           return regeneratorRuntime.awrap(db.query("SELECT company_name FROM companies", {
             type: QueryTypes.SELECT
           }));
 
-        case 4:
-          companies = _context44.sent;
+        case 3:
+          companies = _context41.sent;
           companiesArray = companies.map(function (company) {
             return company.company_name;
           });
@@ -1362,13 +1266,90 @@ function validateCompanyNamePutQuery(req, res, next) {
             })) next();else res.status(400).send("The company already exists").end();
           } else res.status(400).send("The company name length is wrong").end();
 
-          _context44.next = 10;
-          break;
+        case 6:
+        case "end":
+          return _context41.stop();
+      }
+    }
+  });
+}
 
-        case 9:
-          next();
+function createCompany(newCompany, req, res) {
+  var inserted, company;
+  return regeneratorRuntime.async(function createCompany$(_context42) {
+    while (1) {
+      switch (_context42.prev = _context42.next) {
+        case 0:
+          _context42.next = 2;
+          return regeneratorRuntime.awrap(db.query("\n    INSERT INTO companies (company_name, city_id, address)\n    VALUES (:company_name, :city_id, :address)\n    ", {
+            replacements: newCompany,
+            type: QueryTypes.INSERT
+          }));
 
-        case 10:
+        case 2:
+          inserted = _context42.sent;
+          _context42.next = 5;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT company_id, company_name, c.city_id, city_name, ci.country_id, country_name, \n    co.region_id, region_name, address\n    FROM companies c\n    JOIN cities ci ON ci.city_id = c.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    WHERE company_id = ?\n    ", {
+            replacements: [inserted[0]],
+            type: QueryTypes.SELECT
+          }));
+
+        case 5:
+          company = _context42.sent;
+          res.status(201).json(company[0]);
+
+        case 7:
+        case "end":
+          return _context42.stop();
+      }
+    }
+  });
+}
+
+function validateCompanyIdQuery(req, res, next) {
+  var companyId, companies, companiesArray;
+  return regeneratorRuntime.async(function validateCompanyIdQuery$(_context43) {
+    while (1) {
+      switch (_context43.prev = _context43.next) {
+        case 0:
+          companyId = +req.params.companyId || req.body.company_id;
+          _context43.next = 3;
+          return regeneratorRuntime.awrap(db.query("SELECT company_id FROM companies", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 3:
+          companies = _context43.sent;
+          companiesArray = companies.map(function (id) {
+            return id.company_id;
+          });
+          if (companiesArray.includes(companyId)) next();else res.status(404).send("The company does not exist").end();
+
+        case 6:
+        case "end":
+          return _context43.stop();
+      }
+    }
+  });
+}
+
+function getCompany(companyId, req, res) {
+  var company;
+  return regeneratorRuntime.async(function getCompany$(_context44) {
+    while (1) {
+      switch (_context44.prev = _context44.next) {
+        case 0:
+          _context44.next = 2;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM companies WHERE company_id = ?\n    ", {
+            replacements: [companyId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          company = _context44.sent;
+          res.status(200).json(company[0]);
+
+        case 4:
         case "end":
           return _context44.stop();
       }
@@ -1376,29 +1357,35 @@ function validateCompanyNamePutQuery(req, res, next) {
   });
 }
 
-function validateCityIdPutQuery(req, res, next) {
-  var cityId, cities, citiesArray;
-  return regeneratorRuntime.async(function validateCityIdPutQuery$(_context45) {
+function validateCompanyNamePutQuery(req, res, next) {
+  var company, companies, companiesArray;
+  return regeneratorRuntime.async(function validateCompanyNamePutQuery$(_context45) {
     while (1) {
       switch (_context45.prev = _context45.next) {
         case 0:
-          if (!req.body.city_id) {
+          if (!req.body.company_name) {
             _context45.next = 9;
             break;
           }
 
-          cityId = req.body.city_id;
+          company = req.body.company_name;
           _context45.next = 4;
-          return regeneratorRuntime.awrap(db.query("SELECT city_id FROM cities", {
+          return regeneratorRuntime.awrap(db.query("SELECT company_name FROM companies", {
             type: QueryTypes.SELECT
           }));
 
         case 4:
-          cities = _context45.sent;
-          citiesArray = cities.map(function (id) {
-            return id.city_id;
+          companies = _context45.sent;
+          companiesArray = companies.map(function (company) {
+            return company.company_name;
           });
-          if (citiesArray.includes(cityId)) next();else res.status(404).send("The city does not exist").end();
+
+          if (req.body.company_name.length >= 2 && req.body.company_name.length <= 64) {
+            if (companiesArray.every(function (name) {
+              return name !== company;
+            })) next();else res.status(400).send("The company already exists").end();
+          } else res.status(400).send("The company name length is wrong").end();
+
           _context45.next = 10;
           break;
 
@@ -1413,45 +1400,36 @@ function validateCityIdPutQuery(req, res, next) {
   });
 }
 
-function modifyCompany(companyId, req, res) {
-  var company, newcompany, modified, companyRes;
-  return regeneratorRuntime.async(function modifyCompany$(_context46) {
+function validateCityIdPutQuery(req, res, next) {
+  var cityId, cities, citiesArray;
+  return regeneratorRuntime.async(function validateCityIdPutQuery$(_context46) {
     while (1) {
       switch (_context46.prev = _context46.next) {
         case 0:
-          _context46.next = 2;
-          return regeneratorRuntime.awrap(db.query("SELECT * FROM companies WHERE company_id = ?", {
-            replacements: [companyId],
+          if (!req.body.city_id) {
+            _context46.next = 9;
+            break;
+          }
+
+          cityId = req.body.city_id;
+          _context46.next = 4;
+          return regeneratorRuntime.awrap(db.query("SELECT city_id FROM cities", {
             type: QueryTypes.SELECT
           }));
 
-        case 2:
-          company = _context46.sent;
-          newcompany = {
-            company_id: companyId,
-            company_name: req.body.company_name || company[0].company_name,
-            city_id: req.body.city_id || company[0].city_id,
-            address: req.body.address || company[0].address
-          };
-          _context46.next = 6;
-          return regeneratorRuntime.awrap(db.query("\n    UPDATE companies SET company_name = :company_name, city_id = :city_id, address = :address\n    WHERE company_id = :company_id\n    ", {
-            replacements: newcompany,
-            type: QueryTypes.UPDATE
-          }));
-
-        case 6:
-          modified = _context46.sent;
-          _context46.next = 9;
-          return regeneratorRuntime.awrap(db.query("\n    SELECT company_id, company_name, c.city_id, city_name, ci.country_id, country_name, \n    co.region_id, region_name, address\n    FROM companies c\n    JOIN cities ci ON ci.city_id = c.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    WHERE company_id = :company_id\n    ", {
-            replacements: newcompany,
-            type: QueryTypes.SELECT
-          }));
+        case 4:
+          cities = _context46.sent;
+          citiesArray = cities.map(function (id) {
+            return id.city_id;
+          });
+          if (citiesArray.includes(cityId)) next();else res.status(404).send("The city does not exist").end();
+          _context46.next = 10;
+          break;
 
         case 9:
-          companyRes = _context46.sent;
-          res.status(200).json(companyRes);
+          next();
 
-        case 11:
+        case 10:
         case "end":
           return _context46.stop();
       }
@@ -1459,33 +1437,79 @@ function modifyCompany(companyId, req, res) {
   });
 }
 
-function deleteCompany(companyId, req, res) {
-  var company, deleted;
-  return regeneratorRuntime.async(function deleteCompany$(_context47) {
+function modifyCompany(companyId, req, res) {
+  var company, newcompany, modified, companyRes;
+  return regeneratorRuntime.async(function modifyCompany$(_context47) {
     while (1) {
       switch (_context47.prev = _context47.next) {
         case 0:
           _context47.next = 2;
-          return regeneratorRuntime.awrap(db.query("\n    SELECT company_id, company_name, c.city_id, city_name, ci.country_id, country_name, \n    co.region_id, region_name, address\n    FROM companies c\n    JOIN cities ci ON ci.city_id = c.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    WHERE company_id = ?\n    ", {
+          return regeneratorRuntime.awrap(db.query("SELECT * FROM companies WHERE company_id = ?", {
             replacements: [companyId],
             type: QueryTypes.SELECT
           }));
 
         case 2:
           company = _context47.sent;
-          _context47.next = 5;
+          newcompany = {
+            company_id: companyId,
+            company_name: req.body.company_name || company[0].company_name,
+            city_id: req.body.city_id || company[0].city_id,
+            address: req.body.address || company[0].address
+          };
+          _context47.next = 6;
+          return regeneratorRuntime.awrap(db.query("\n    UPDATE companies SET company_name = :company_name, city_id = :city_id, address = :address\n    WHERE company_id = :company_id\n    ", {
+            replacements: newcompany,
+            type: QueryTypes.UPDATE
+          }));
+
+        case 6:
+          modified = _context47.sent;
+          _context47.next = 9;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT company_id, company_name, c.city_id, city_name, ci.country_id, country_name, \n    co.region_id, region_name, address\n    FROM companies c\n    JOIN cities ci ON ci.city_id = c.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    WHERE company_id = :company_id\n    ", {
+            replacements: newcompany,
+            type: QueryTypes.SELECT
+          }));
+
+        case 9:
+          companyRes = _context47.sent;
+          res.status(200).json(companyRes);
+
+        case 11:
+        case "end":
+          return _context47.stop();
+      }
+    }
+  });
+}
+
+function deleteCompany(companyId, req, res) {
+  var company, deleted;
+  return regeneratorRuntime.async(function deleteCompany$(_context48) {
+    while (1) {
+      switch (_context48.prev = _context48.next) {
+        case 0:
+          _context48.next = 2;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT company_id, company_name, c.city_id, city_name, ci.country_id, country_name, \n    co.region_id, region_name, address\n    FROM companies c\n    JOIN cities ci ON ci.city_id = c.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    WHERE company_id = ?\n    ", {
+            replacements: [companyId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          company = _context48.sent;
+          _context48.next = 5;
           return regeneratorRuntime.awrap(db.query("DELETE FROM companies WHERE company_id = ?", {
             replacements: [companyId],
             type: QueryTypes.DELETE
           }));
 
         case 5:
-          deleted = _context47.sent;
+          deleted = _context48.sent;
           res.status(200).json(company[0]);
 
         case 7:
         case "end":
-          return _context47.stop();
+          return _context48.stop();
       }
     }
   });
@@ -1494,24 +1518,24 @@ function deleteCompany(companyId, req, res) {
 
 function getContacts(req, res) {
   var contacts, channels, contactsAndChannels;
-  return regeneratorRuntime.async(function getContacts$(_context48) {
+  return regeneratorRuntime.async(function getContacts$(_context49) {
     while (1) {
-      switch (_context48.prev = _context48.next) {
+      switch (_context49.prev = _context49.next) {
         case 0:
-          _context48.next = 2;
+          _context49.next = 2;
           return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.company_id, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    ", {
             type: QueryTypes.SELECT
           }));
 
         case 2:
-          contacts = _context48.sent;
-          _context48.next = 5;
+          contacts = _context49.sent;
+          _context49.next = 5;
           return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM contacts_channels cc \n    INNER JOIN channels ch ON cc.channel_id = ch.channel_id", {
             type: QueryTypes.SELECT
           }));
 
         case 5:
-          channels = _context48.sent;
+          channels = _context49.sent;
           contactsAndChannels = contacts.map(function (contact) {
             return Object.assign({}, contact, {
               preferred_channels: channels.filter(function (channel) {
@@ -1523,7 +1547,7 @@ function getContacts(req, res) {
 
         case 8:
         case "end":
-          return _context48.stop();
+          return _context49.stop();
       }
     }
   });
@@ -1531,18 +1555,18 @@ function getContacts(req, res) {
 
 function validateEmailContactsQuery(req, res, next) {
   var email, emails, emailsArray;
-  return regeneratorRuntime.async(function validateEmailContactsQuery$(_context49) {
+  return regeneratorRuntime.async(function validateEmailContactsQuery$(_context50) {
     while (1) {
-      switch (_context49.prev = _context49.next) {
+      switch (_context50.prev = _context50.next) {
         case 0:
           email = req.body.email;
-          _context49.next = 3;
+          _context50.next = 3;
           return regeneratorRuntime.awrap(db.query("SELECT email FROM contacts", {
             type: QueryTypes.SELECT
           }));
 
         case 3:
-          emails = _context49.sent;
+          emails = _context50.sent;
           emailsArray = emails.map(function (contact) {
             return contact.email;
           });
@@ -1555,7 +1579,7 @@ function validateEmailContactsQuery(req, res, next) {
 
         case 6:
         case "end":
-          return _context49.stop();
+          return _context50.stop();
       }
     }
   });
@@ -1563,21 +1587,21 @@ function validateEmailContactsQuery(req, res, next) {
 
 function validateChannelIdQuery(req, res, next) {
   var channelsBody, idsBody, channelsIdDB, channelsArray;
-  return regeneratorRuntime.async(function validateChannelIdQuery$(_context50) {
+  return regeneratorRuntime.async(function validateChannelIdQuery$(_context51) {
     while (1) {
-      switch (_context50.prev = _context50.next) {
+      switch (_context51.prev = _context51.next) {
         case 0:
           channelsBody = req.body.preferred_channels;
           idsBody = channelsBody.map(function (channel) {
             return channel.channel_id;
           });
-          _context50.next = 4;
+          _context51.next = 4;
           return regeneratorRuntime.awrap(db.query("SELECT channel_id FROM channels", {
             type: QueryTypes.SELECT
           }));
 
         case 4:
-          channelsIdDB = _context50.sent;
+          channelsIdDB = _context51.sent;
           channelsArray = channelsIdDB.map(function (id) {
             return id.channel_id;
           });
@@ -1590,7 +1614,7 @@ function validateChannelIdQuery(req, res, next) {
 
         case 7:
         case "end":
-          return _context50.stop();
+          return _context51.stop();
       }
     }
   });
@@ -1602,55 +1626,55 @@ function different(value, index, list) {
 
 function createContact(newContact, req, res) {
   var contactInserted, contact, channels, contactAndChannels;
-  return regeneratorRuntime.async(function createContact$(_context52) {
+  return regeneratorRuntime.async(function createContact$(_context53) {
     while (1) {
-      switch (_context52.prev = _context52.next) {
+      switch (_context53.prev = _context53.next) {
         case 0:
-          _context52.next = 2;
+          _context53.next = 2;
           return regeneratorRuntime.awrap(db.query("\n    INSERT INTO contacts (firstname, lastname, email, city_id, company_id, position, interest)\n    VALUES (:firstname, :lastname, :email, :city_id, :company_id, :position, :interest)\n    ", {
             replacements: newContact,
             type: QueryTypes.INSERT
           }));
 
         case 2:
-          contactInserted = _context52.sent;
+          contactInserted = _context53.sent;
           req.body.preferred_channels.forEach(function _callee(channel) {
-            return regeneratorRuntime.async(function _callee$(_context51) {
+            return regeneratorRuntime.async(function _callee$(_context52) {
               while (1) {
-                switch (_context51.prev = _context51.next) {
+                switch (_context52.prev = _context52.next) {
                   case 0:
-                    _context51.next = 2;
+                    _context52.next = 2;
                     return regeneratorRuntime.awrap(db.query("\n    INSERT INTO contacts_channels (contact_id, channel_id)\n    VALUES (".concat(contactInserted[0], ", ").concat(channel.channel_id, ")\n    "), {
                       replacements: req.body.preferred_channels,
                       type: QueryTypes.INSERT
                     }));
 
                   case 2:
-                    return _context51.abrupt("return", _context51.sent);
+                    return _context52.abrupt("return", _context52.sent);
 
                   case 3:
                   case "end":
-                    return _context51.stop();
+                    return _context52.stop();
                 }
               }
             });
           });
-          _context52.next = 6;
+          _context53.next = 6;
           return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.company_id, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    WHERE contact_id = ?\n    ", {
             replacements: [contactInserted[0]],
             type: QueryTypes.SELECT
           }));
 
         case 6:
-          contact = _context52.sent;
-          _context52.next = 9;
+          contact = _context53.sent;
+          _context53.next = 9;
           return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM contacts_channels cc \n    INNER JOIN channels ch ON cc.channel_id = ch.channel_id\n    WHERE contact_id = ?", {
             replacements: [contactInserted[0]],
             type: QueryTypes.SELECT
           }));
 
         case 9:
-          channels = _context52.sent;
+          channels = _context53.sent;
           contactAndChannels = Object.assign({}, contact[0], {
             preferred_channels: channels
           });
@@ -1658,7 +1682,7 @@ function createContact(newContact, req, res) {
 
         case 12:
         case "end":
-          return _context52.stop();
+          return _context53.stop();
       }
     }
   });
@@ -1666,20 +1690,20 @@ function createContact(newContact, req, res) {
 
 function validateContactIdQuery(req, res, next) {
   var contactId, contacts, contactsArray;
-  return regeneratorRuntime.async(function validateContactIdQuery$(_context53) {
+  return regeneratorRuntime.async(function validateContactIdQuery$(_context54) {
     while (1) {
-      switch (_context53.prev = _context53.next) {
+      switch (_context54.prev = _context54.next) {
         case 0:
           contactId = +req.params.contactId;
           /* || req.body.contact_id */
 
-          _context53.next = 3;
+          _context54.next = 3;
           return regeneratorRuntime.awrap(db.query("SELECT contact_id FROM contacts", {
             type: QueryTypes.SELECT
           }));
 
         case 3:
-          contacts = _context53.sent;
+          contacts = _context54.sent;
           contactsArray = contacts.map(function (id) {
             return id.contact_id;
           });
@@ -1687,7 +1711,7 @@ function validateContactIdQuery(req, res, next) {
 
         case 6:
         case "end":
-          return _context53.stop();
+          return _context54.stop();
       }
     }
   });
@@ -1695,26 +1719,26 @@ function validateContactIdQuery(req, res, next) {
 
 function getContact(contactId, req, res) {
   var contact, channels, contactAndChannels;
-  return regeneratorRuntime.async(function getContact$(_context54) {
+  return regeneratorRuntime.async(function getContact$(_context55) {
     while (1) {
-      switch (_context54.prev = _context54.next) {
+      switch (_context55.prev = _context55.next) {
         case 0:
-          _context54.next = 2;
+          _context55.next = 2;
           return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.company_id, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    WHERE contact_id = ?\n    ", {
             replacements: [contactId],
             type: QueryTypes.SELECT
           }));
 
         case 2:
-          contact = _context54.sent;
-          _context54.next = 5;
+          contact = _context55.sent;
+          _context55.next = 5;
           return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM contacts_channels cc \n    INNER JOIN channels ch ON cc.channel_id = ch.channel_id\n    WHERE contact_id = ?", {
             replacements: [contactId],
             type: QueryTypes.SELECT
           }));
 
         case 5:
-          channels = _context54.sent;
+          channels = _context55.sent;
           contactAndChannels = Object.assign({}, contact[0], {
             preferred_channels: channels
           });
@@ -1722,7 +1746,7 @@ function getContact(contactId, req, res) {
 
         case 8:
         case "end":
-          return _context54.stop();
+          return _context55.stop();
       }
     }
   });
@@ -1730,23 +1754,23 @@ function getContact(contactId, req, res) {
 
 function validateEmailContactsPutQuery(req, res, next) {
   var email, emails, emailsArray;
-  return regeneratorRuntime.async(function validateEmailContactsPutQuery$(_context55) {
+  return regeneratorRuntime.async(function validateEmailContactsPutQuery$(_context56) {
     while (1) {
-      switch (_context55.prev = _context55.next) {
+      switch (_context56.prev = _context56.next) {
         case 0:
           if (!req.body.email) {
-            _context55.next = 9;
+            _context56.next = 9;
             break;
           }
 
           email = req.body.email;
-          _context55.next = 4;
+          _context56.next = 4;
           return regeneratorRuntime.awrap(db.query("SELECT email FROM contacts", {
             type: QueryTypes.SELECT
           }));
 
         case 4:
-          emails = _context55.sent;
+          emails = _context56.sent;
           emailsArray = emails.map(function (contact) {
             return contact.email;
           });
@@ -1757,43 +1781,6 @@ function validateEmailContactsPutQuery(req, res, next) {
             })) next();else res.status(400).send("The email already exists").end();
           } else res.status(400).send("The email is wrong").end();
 
-          _context55.next = 10;
-          break;
-
-        case 9:
-          next();
-
-        case 10:
-        case "end":
-          return _context55.stop();
-      }
-    }
-  });
-}
-
-function validateCompanyIdPutQuery(req, res, next) {
-  var companyId, companies, companiesArray;
-  return regeneratorRuntime.async(function validateCompanyIdPutQuery$(_context56) {
-    while (1) {
-      switch (_context56.prev = _context56.next) {
-        case 0:
-          if (!req.body.company_id) {
-            _context56.next = 9;
-            break;
-          }
-
-          companyId = req.body.company_id;
-          _context56.next = 4;
-          return regeneratorRuntime.awrap(db.query("SELECT company_id FROM companies", {
-            type: QueryTypes.SELECT
-          }));
-
-        case 4:
-          companies = _context56.sent;
-          companiesArray = companies.map(function (id) {
-            return id.company_id;
-          });
-          if (companiesArray.includes(companyId)) next();else res.status(404).send("The company does not exist").end();
           _context56.next = 10;
           break;
 
@@ -1808,14 +1795,51 @@ function validateCompanyIdPutQuery(req, res, next) {
   });
 }
 
-function validateChannelIdPutQuery(req, res, next) {
-  var channelsBody, idsBody, channelsIdDB, channelsArray;
-  return regeneratorRuntime.async(function validateChannelIdPutQuery$(_context57) {
+function validateCompanyIdPutQuery(req, res, next) {
+  var companyId, companies, companiesArray;
+  return regeneratorRuntime.async(function validateCompanyIdPutQuery$(_context57) {
     while (1) {
       switch (_context57.prev = _context57.next) {
         case 0:
+          if (!req.body.company_id) {
+            _context57.next = 9;
+            break;
+          }
+
+          companyId = req.body.company_id;
+          _context57.next = 4;
+          return regeneratorRuntime.awrap(db.query("SELECT company_id FROM companies", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 4:
+          companies = _context57.sent;
+          companiesArray = companies.map(function (id) {
+            return id.company_id;
+          });
+          if (companiesArray.includes(companyId)) next();else res.status(404).send("The company does not exist").end();
+          _context57.next = 10;
+          break;
+
+        case 9:
+          next();
+
+        case 10:
+        case "end":
+          return _context57.stop();
+      }
+    }
+  });
+}
+
+function validateChannelIdPutQuery(req, res, next) {
+  var channelsBody, idsBody, channelsIdDB, channelsArray;
+  return regeneratorRuntime.async(function validateChannelIdPutQuery$(_context58) {
+    while (1) {
+      switch (_context58.prev = _context58.next) {
+        case 0:
           if (!req.body.preferred_channels) {
-            _context57.next = 10;
+            _context58.next = 10;
             break;
           }
 
@@ -1823,13 +1847,13 @@ function validateChannelIdPutQuery(req, res, next) {
           idsBody = channelsBody.map(function (channel) {
             return channel.channel_id;
           });
-          _context57.next = 5;
+          _context58.next = 5;
           return regeneratorRuntime.awrap(db.query("SELECT channel_id FROM channels", {
             type: QueryTypes.SELECT
           }));
 
         case 5:
-          channelsIdDB = _context57.sent;
+          channelsIdDB = _context58.sent;
           channelsArray = channelsIdDB.map(function (id) {
             return id.channel_id;
           });
@@ -1840,7 +1864,7 @@ function validateChannelIdPutQuery(req, res, next) {
             if (idsBody.every(different)) next();else res.status(400).send("The channelId is wrong").end();
           } else res.status(400).send("The channelId is wrong").end();
 
-          _context57.next = 11;
+          _context58.next = 11;
           break;
 
         case 10:
@@ -1848,7 +1872,7 @@ function validateChannelIdPutQuery(req, res, next) {
 
         case 11:
         case "end":
-          return _context57.stop();
+          return _context58.stop();
       }
     }
   });
@@ -1856,18 +1880,18 @@ function validateChannelIdPutQuery(req, res, next) {
 
 function modifycontact(req, res) {
   var contact, modifiedContact, modified, contactRes, channels, contactAndChannels;
-  return regeneratorRuntime.async(function modifycontact$(_context58) {
+  return regeneratorRuntime.async(function modifycontact$(_context59) {
     while (1) {
-      switch (_context58.prev = _context58.next) {
+      switch (_context59.prev = _context59.next) {
         case 0:
-          _context58.next = 2;
+          _context59.next = 2;
           return regeneratorRuntime.awrap(db.query("SELECT * FROM contacts WHERE contact_id = ?", {
             replacements: [req.params.contactId],
             type: QueryTypes.SELECT
           }));
 
         case 2:
-          contact = _context58.sent;
+          contact = _context59.sent;
           modifiedContact = {
             contact_id: req.params.contactId,
             firstname: req.body.firstname || contact[0].firstname,
@@ -1882,30 +1906,30 @@ function modifycontact(req, res) {
             /* || chan[0].preferred_channels */
 
           };
-          _context58.next = 6;
+          _context59.next = 6;
           return regeneratorRuntime.awrap(db.query("\n    UPDATE contacts SET firstname = :firstname, lastname = :lastname, email = :email, city_id = :city_id, \n    company_id = :company_id, position = :position, interest = :interest\n    WHERE contact_id = :contact_id\n    ", {
             replacements: modifiedContact,
             type: QueryTypes.UPDATE
           }));
 
         case 6:
-          modified = _context58.sent;
-          _context58.next = 9;
+          modified = _context59.sent;
+          _context59.next = 9;
           return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.company_id, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    WHERE contact_id = ?\n    ", {
             replacements: [req.params.contactId],
             type: QueryTypes.SELECT
           }));
 
         case 9:
-          contactRes = _context58.sent;
-          _context58.next = 12;
+          contactRes = _context59.sent;
+          _context59.next = 12;
           return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM contacts_channels cc \n    INNER JOIN channels ch ON cc.channel_id = ch.channel_id\n    WHERE contact_id = ?", {
             replacements: [req.params.contactId],
             type: QueryTypes.SELECT
           }));
 
         case 12:
-          channels = _context58.sent;
+          channels = _context59.sent;
           contactAndChannels = Object.assign({}, contactRes[0], {
             preferred_channels: channels
           });
@@ -1913,7 +1937,7 @@ function modifycontact(req, res) {
 
         case 15:
         case "end":
-          return _context58.stop();
+          return _context59.stop();
       }
     }
   });
@@ -1921,31 +1945,31 @@ function modifycontact(req, res) {
 
 function deleteContact(contactId, req, res) {
   var contact, deleted;
-  return regeneratorRuntime.async(function deleteContact$(_context59) {
+  return regeneratorRuntime.async(function deleteContact$(_context60) {
     while (1) {
-      switch (_context59.prev = _context59.next) {
+      switch (_context60.prev = _context60.next) {
         case 0:
-          _context59.next = 2;
+          _context60.next = 2;
           return regeneratorRuntime.awrap(db.query("SELECT * FROM contacts WHERE contact_id = ?", {
             replacements: [contactId],
             type: QueryTypes.SELECT
           }));
 
         case 2:
-          contact = _context59.sent;
-          _context59.next = 5;
+          contact = _context60.sent;
+          _context60.next = 5;
           return regeneratorRuntime.awrap(db.query("DELETE FROM contacts WHERE contact_id = ?", {
             replacements: [contactId],
             type: QueryTypes.DELETE
           }));
 
         case 5:
-          deleted = _context59.sent;
+          deleted = _context60.sent;
           res.status(200).json(contact);
 
         case 7:
         case "end":
-          return _context59.stop();
+          return _context60.stop();
       }
     }
   });
@@ -1953,29 +1977,29 @@ function deleteContact(contactId, req, res) {
 
 function validateChannelIdAddQuery(req, res, next) {
   var channelId, channels, channelsArray, channelsContact, channelsContactArray;
-  return regeneratorRuntime.async(function validateChannelIdAddQuery$(_context60) {
+  return regeneratorRuntime.async(function validateChannelIdAddQuery$(_context61) {
     while (1) {
-      switch (_context60.prev = _context60.next) {
+      switch (_context61.prev = _context61.next) {
         case 0:
           channelId = req.body.channel_id;
-          _context60.next = 3;
+          _context61.next = 3;
           return regeneratorRuntime.awrap(db.query("SELECT channel_id FROM channels", {
             type: QueryTypes.SELECT
           }));
 
         case 3:
-          channels = _context60.sent;
+          channels = _context61.sent;
           channelsArray = channels.map(function (id) {
             return id.channel_id;
           });
-          _context60.next = 7;
+          _context61.next = 7;
           return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM contacts_channels cc \n    INNER JOIN channels ch ON cc.channel_id = ch.channel_id\n    WHERE contact_id = ?", {
             replacements: [req.params.contactId],
             type: QueryTypes.SELECT
           }));
 
         case 7:
-          channelsContact = _context60.sent;
+          channelsContact = _context61.sent;
           channelsContactArray = channelsContact.map(function (cc) {
             return cc.channel_id;
           });
@@ -1989,7 +2013,7 @@ function validateChannelIdAddQuery(req, res, next) {
 
         case 11:
         case "end":
-          return _context60.stop();
+          return _context61.stop();
       }
     }
   });
@@ -1997,56 +2021,24 @@ function validateChannelIdAddQuery(req, res, next) {
 
 function validateChannelIdDelQuery(req, res, next) {
   var channelId, channelsContact, channelsContactArray;
-  return regeneratorRuntime.async(function validateChannelIdDelQuery$(_context61) {
+  return regeneratorRuntime.async(function validateChannelIdDelQuery$(_context62) {
     while (1) {
-      switch (_context61.prev = _context61.next) {
+      switch (_context62.prev = _context62.next) {
         case 0:
           channelId = +req.params.channelId;
-          _context61.next = 3;
+          _context62.next = 3;
           return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM contacts_channels cc \n    INNER JOIN channels ch ON cc.channel_id = ch.channel_id\n    WHERE contact_id = ?", {
             replacements: [+req.params.contactId],
             type: QueryTypes.SELECT
           }));
 
         case 3:
-          channelsContact = _context61.sent;
+          channelsContact = _context62.sent;
           channelsContactArray = channelsContact.map(function (cc) {
             return cc.channel_id;
           });
           console.log(channelsContactArray);
           if (channelsContactArray.includes(channelId)) next();else res.status(404).send("The contact does not have that channel").end();
-
-        case 7:
-        case "end":
-          return _context61.stop();
-      }
-    }
-  });
-}
-
-function addChannel(newContChan, req, res) {
-  var inserted, channels;
-  return regeneratorRuntime.async(function addChannel$(_context62) {
-    while (1) {
-      switch (_context62.prev = _context62.next) {
-        case 0:
-          _context62.next = 2;
-          return regeneratorRuntime.awrap(db.query("\n    INSERT INTO contacts_channels (contact_id, channel_id)\n    VALUES (:contact_id, :channel_id)\n    ", {
-            replacements: newContChan,
-            type: QueryTypes.INSERT
-          }));
-
-        case 2:
-          inserted = _context62.sent;
-          _context62.next = 5;
-          return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, cc.channel_id, channel_name FROM contacts_channels cc \n    JOIN channels ch ON cc.channel_id = ch.channel_id \n    WHERE contact_id = :contact_id\n    ", {
-            replacements: newContChan,
-            type: QueryTypes.SELECT
-          }));
-
-        case 5:
-          channels = _context62.sent;
-          res.status(201).json(channels);
 
         case 7:
         case "end":
@@ -2056,25 +2048,57 @@ function addChannel(newContChan, req, res) {
   });
 }
 
-function deleteChannelContact(newContChan, req, res) {
-  var deleted;
-  return regeneratorRuntime.async(function deleteChannelContact$(_context63) {
+function addChannel(newContChan, req, res) {
+  var inserted, channels;
+  return regeneratorRuntime.async(function addChannel$(_context63) {
     while (1) {
       switch (_context63.prev = _context63.next) {
         case 0:
           _context63.next = 2;
+          return regeneratorRuntime.awrap(db.query("\n    INSERT INTO contacts_channels (contact_id, channel_id)\n    VALUES (:contact_id, :channel_id)\n    ", {
+            replacements: newContChan,
+            type: QueryTypes.INSERT
+          }));
+
+        case 2:
+          inserted = _context63.sent;
+          _context63.next = 5;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, cc.channel_id, channel_name FROM contacts_channels cc \n    JOIN channels ch ON cc.channel_id = ch.channel_id \n    WHERE contact_id = :contact_id\n    ", {
+            replacements: newContChan,
+            type: QueryTypes.SELECT
+          }));
+
+        case 5:
+          channels = _context63.sent;
+          res.status(201).json(channels);
+
+        case 7:
+        case "end":
+          return _context63.stop();
+      }
+    }
+  });
+}
+
+function deleteChannelContact(newContChan, req, res) {
+  var deleted;
+  return regeneratorRuntime.async(function deleteChannelContact$(_context64) {
+    while (1) {
+      switch (_context64.prev = _context64.next) {
+        case 0:
+          _context64.next = 2;
           return regeneratorRuntime.awrap(db.query("DELETE FROM contacts_channels \n    WHERE contact_id = :contact_id AND channel_id = :channel_id", {
             replacements: newContChan,
             type: QueryTypes.DELETE
           }));
 
         case 2:
-          deleted = _context63.sent;
+          deleted = _context64.sent;
           res.status(200).send("Channel successfully removed").end();
 
         case 4:
         case "end":
-          return _context63.stop();
+          return _context64.stop();
       }
     }
   });
@@ -2083,22 +2107,22 @@ function deleteChannelContact(newContChan, req, res) {
 
 function getChannels(req, res) {
   var channels;
-  return regeneratorRuntime.async(function getChannels$(_context64) {
+  return regeneratorRuntime.async(function getChannels$(_context65) {
     while (1) {
-      switch (_context64.prev = _context64.next) {
+      switch (_context65.prev = _context65.next) {
         case 0:
-          _context64.next = 2;
+          _context65.next = 2;
           return regeneratorRuntime.awrap(db.query("SELECT * FROM channels", {
             type: QueryTypes.SELECT
           }));
 
         case 2:
-          channels = _context64.sent;
+          channels = _context65.sent;
           res.status(200).json(channels);
 
         case 4:
         case "end":
-          return _context64.stop();
+          return _context65.stop();
       }
     }
   });
@@ -2106,18 +2130,18 @@ function getChannels(req, res) {
 
 function validateChannelNameQuery(req, res, next) {
   var channel, channels, channelsArray;
-  return regeneratorRuntime.async(function validateChannelNameQuery$(_context65) {
+  return regeneratorRuntime.async(function validateChannelNameQuery$(_context66) {
     while (1) {
-      switch (_context65.prev = _context65.next) {
+      switch (_context66.prev = _context66.next) {
         case 0:
           channel = req.body.channel_name;
-          _context65.next = 3;
+          _context66.next = 3;
           return regeneratorRuntime.awrap(db.query("SELECT channel_name FROM channels", {
             type: QueryTypes.SELECT
           }));
 
         case 3:
-          channels = _context65.sent;
+          channels = _context66.sent;
           channelsArray = channels.map(function (channel) {
             return channel.channel_name;
           });
@@ -2130,7 +2154,7 @@ function validateChannelNameQuery(req, res, next) {
 
         case 6:
         case "end":
-          return _context65.stop();
+          return _context66.stop();
       }
     }
   });
@@ -2138,11 +2162,11 @@ function validateChannelNameQuery(req, res, next) {
 
 function createChannel(channel_name, req, res) {
   var inserted;
-  return regeneratorRuntime.async(function createChannel$(_context66) {
+  return regeneratorRuntime.async(function createChannel$(_context67) {
     while (1) {
-      switch (_context66.prev = _context66.next) {
+      switch (_context67.prev = _context67.next) {
         case 0:
-          _context66.next = 2;
+          _context67.next = 2;
           return regeneratorRuntime.awrap(db.query("\n    INSERT INTO channels (channel_name)\n    VALUES (:channel_name)\n    ", {
             replacements: {
               channel_name: channel_name
@@ -2151,7 +2175,7 @@ function createChannel(channel_name, req, res) {
           }));
 
         case 2:
-          inserted = _context66.sent;
+          inserted = _context67.sent;
           res.status(201).json(Object.assign({}, {
             channel_id: inserted[0]
           }, {
@@ -2160,7 +2184,7 @@ function createChannel(channel_name, req, res) {
 
         case 4:
         case "end":
-          return _context66.stop();
+          return _context67.stop();
       }
     }
   });
@@ -2168,18 +2192,18 @@ function createChannel(channel_name, req, res) {
 
 function validateChannelIdExQuery(req, res, next) {
   var channelId, channels, channelsArray;
-  return regeneratorRuntime.async(function validateChannelIdExQuery$(_context67) {
+  return regeneratorRuntime.async(function validateChannelIdExQuery$(_context68) {
     while (1) {
-      switch (_context67.prev = _context67.next) {
+      switch (_context68.prev = _context68.next) {
         case 0:
           channelId = +req.params.channelId;
-          _context67.next = 3;
+          _context68.next = 3;
           return regeneratorRuntime.awrap(db.query("SELECT channel_id FROM channels", {
             type: QueryTypes.SELECT
           }));
 
         case 3:
-          channels = _context67.sent;
+          channels = _context68.sent;
           channelsArray = channels.map(function (id) {
             return id.channel_id;
           });
@@ -2187,7 +2211,7 @@ function validateChannelIdExQuery(req, res, next) {
 
         case 6:
         case "end":
-          return _context67.stop();
+          return _context68.stop();
       }
     }
   });
@@ -2195,23 +2219,23 @@ function validateChannelIdExQuery(req, res, next) {
 
 function getChannel(channelId, req, res) {
   var channel;
-  return regeneratorRuntime.async(function getChannel$(_context68) {
+  return regeneratorRuntime.async(function getChannel$(_context69) {
     while (1) {
-      switch (_context68.prev = _context68.next) {
+      switch (_context69.prev = _context69.next) {
         case 0:
-          _context68.next = 2;
+          _context69.next = 2;
           return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM channels WHERE channel_id = ?\n    ", {
             replacements: [channelId],
             type: QueryTypes.SELECT
           }));
 
         case 2:
-          channel = _context68.sent;
+          channel = _context69.sent;
           res.status(200).json(channel[0]);
 
         case 4:
         case "end":
-          return _context68.stop();
+          return _context69.stop();
       }
     }
   });
@@ -2219,23 +2243,23 @@ function getChannel(channelId, req, res) {
 
 function validateChannelNamePutQuery(req, res, next) {
   var channel, channels, channelsArray;
-  return regeneratorRuntime.async(function validateChannelNamePutQuery$(_context69) {
+  return regeneratorRuntime.async(function validateChannelNamePutQuery$(_context70) {
     while (1) {
-      switch (_context69.prev = _context69.next) {
+      switch (_context70.prev = _context70.next) {
         case 0:
           if (!req.body.channel_name) {
-            _context69.next = 9;
+            _context70.next = 9;
             break;
           }
 
           channel = req.body.channel_name;
-          _context69.next = 4;
+          _context70.next = 4;
           return regeneratorRuntime.awrap(db.query("SELECT channel_name FROM channels", {
             type: QueryTypes.SELECT
           }));
 
         case 4:
-          channels = _context69.sent;
+          channels = _context70.sent;
           channelsArray = channels.map(function (channel) {
             return channel.channel_name;
           });
@@ -2246,7 +2270,7 @@ function validateChannelNamePutQuery(req, res, next) {
             })) next();else res.status(400).send("The channel already exists").end();
           } else res.status(400).send("The channel name length is wrong").end();
 
-          _context69.next = 10;
+          _context70.next = 10;
           break;
 
         case 9:
@@ -2254,7 +2278,7 @@ function validateChannelNamePutQuery(req, res, next) {
 
         case 10:
         case "end":
-          return _context69.stop();
+          return _context70.stop();
       }
     }
   });
@@ -2262,45 +2286,7 @@ function validateChannelNamePutQuery(req, res, next) {
 
 function modifyChannel(channelId, req, res) {
   var channel, newChannel, modified;
-  return regeneratorRuntime.async(function modifyChannel$(_context70) {
-    while (1) {
-      switch (_context70.prev = _context70.next) {
-        case 0:
-          _context70.next = 2;
-          return regeneratorRuntime.awrap(db.query("SELECT * FROM channels WHERE channel_id = ?", {
-            replacements: [channelId],
-            type: QueryTypes.SELECT
-          }));
-
-        case 2:
-          channel = _context70.sent;
-          newChannel = {
-            channelId: channelId,
-            channelName: req.body.channel_name || channel[0].channel_name
-          };
-          _context70.next = 6;
-          return regeneratorRuntime.awrap(db.query("\n    UPDATE channels SET channel_name = :channelName WHERE channel_id = :channelId\n    ", {
-            replacements: newChannel
-            /* Object.assign( {}, newchannel, {password: password} ) */
-            ,
-            type: QueryTypes.UPDATE
-          }));
-
-        case 6:
-          modified = _context70.sent;
-          res.status(200).json(newChannel);
-
-        case 8:
-        case "end":
-          return _context70.stop();
-      }
-    }
-  });
-}
-
-function deleteChannel(channelId, req, res) {
-  var channel, deleted;
-  return regeneratorRuntime.async(function deleteChannel$(_context71) {
+  return regeneratorRuntime.async(function modifyChannel$(_context71) {
     while (1) {
       switch (_context71.prev = _context71.next) {
         case 0:
@@ -2312,19 +2298,57 @@ function deleteChannel(channelId, req, res) {
 
         case 2:
           channel = _context71.sent;
-          _context71.next = 5;
+          newChannel = {
+            channelId: channelId,
+            channelName: req.body.channel_name || channel[0].channel_name
+          };
+          _context71.next = 6;
+          return regeneratorRuntime.awrap(db.query("\n    UPDATE channels SET channel_name = :channelName WHERE channel_id = :channelId\n    ", {
+            replacements: newChannel
+            /* Object.assign( {}, newchannel, {password: password} ) */
+            ,
+            type: QueryTypes.UPDATE
+          }));
+
+        case 6:
+          modified = _context71.sent;
+          res.status(200).json(newChannel);
+
+        case 8:
+        case "end":
+          return _context71.stop();
+      }
+    }
+  });
+}
+
+function deleteChannel(channelId, req, res) {
+  var channel, deleted;
+  return regeneratorRuntime.async(function deleteChannel$(_context72) {
+    while (1) {
+      switch (_context72.prev = _context72.next) {
+        case 0:
+          _context72.next = 2;
+          return regeneratorRuntime.awrap(db.query("SELECT * FROM channels WHERE channel_id = ?", {
+            replacements: [channelId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          channel = _context72.sent;
+          _context72.next = 5;
           return regeneratorRuntime.awrap(db.query("DELETE FROM channels WHERE channel_id = ?", {
             replacements: [channelId],
             type: QueryTypes.DELETE
           }));
 
         case 5:
-          deleted = _context71.sent;
+          deleted = _context72.sent;
           res.status(200).json(channel);
 
         case 7:
         case "end":
-          return _context71.stop();
+          return _context72.stop();
       }
     }
   });
@@ -2350,6 +2374,7 @@ module.exports = {
   deleteRegion: deleteRegion,
   getCountriesRegion: getCountriesRegion,
   getCitiesRegion: getCitiesRegion,
+  getRegionsCountriesCities: getRegionsCountriesCities,
   getCountries: getCountries,
   validateCountryNameQuery: validateCountryNameQuery,
   createCountry: createCountry,

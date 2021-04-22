@@ -208,5 +208,19 @@ locations.addEventListener('click', () => {
         companiesSection.classList.add('none')
         usersSection.classList.add('none')
         locationSection.classList.remove('none')
+
+        getLocations()
     }
 })
+
+async function getLocations() {
+    const options = {
+        method: 'GET',
+        headers: {
+            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
+        }
+    }
+    const response = await fetch('http://localhost:3000/users', options)
+    const data = await response.json()
+    console.log(data)
+}

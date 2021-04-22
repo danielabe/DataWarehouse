@@ -232,6 +232,17 @@ async function getCitiesRegion(regionId, req, res) {
     res.status(200).json(cities)
 }
 
+async function getRegionsCountriesCities(req, res) {
+    const regionsCountriesCities = await db.query(`
+    SELECT re.region_id, region_name, co.country_id, country_name, ci.city_id, city_name 
+    FROM regions re 
+    JOIN countries co on re.region_id = co.region_id 
+    JOIN cities ci on co.country_id = ci.country_id
+    `, { type: QueryTypes.SELECT })
+        console.table(regionsCountriesCities)
+    res.status(200).json(regionsCountriesCities)
+}
+
 //countries
 async function getCountries(req, res) {
     const countries = await db.query(`SELECT * FROM countries`, { type: QueryTypes.SELECT })
@@ -995,7 +1006,7 @@ module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser,
     validateEmailQuery, validateUserIdQuery, getUser, modifyUser, deleteUser, 
     getRegions, createRegion, validateRegionNameQuery, validateRegionIdQuery, 
     getRegion, validateRegionNamePutQuery, modifyRegion, deleteRegion, 
-    getCountriesRegion, getCitiesRegion, getCountries, validateCountryNameQuery,
+    getCountriesRegion, getCitiesRegion, getRegionsCountriesCities, getCountries, validateCountryNameQuery,
     createCountry, validateCountryIdQuery, getCountry, validateCountryNamePutQuery,
     modifyCountry, validateRegionIdCountryQuery, deleteCountry, getCitiesCountry,
     getCities, validateCityNameQuery, createCity, validateCityIdQuery, getCity,

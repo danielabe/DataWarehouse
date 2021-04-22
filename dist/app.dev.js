@@ -24,6 +24,7 @@ var _require = require('./queries.js'),
     deleteRegion = _require.deleteRegion,
     getCountriesRegion = _require.getCountriesRegion,
     getCitiesRegion = _require.getCitiesRegion,
+    getRegionsCountriesCities = _require.getRegionsCountriesCities,
     getCountries = _require.getCountries,
     createCountry = _require.createCountry,
     getCountry = _require.getCountry,
@@ -325,14 +326,13 @@ app.get('/regions/:regionId/cities', validateRegionId, function _callee13(req, r
       }
     }
   });
-}); //countries
-
-app.get('/countries', function _callee14(req, res) {
+});
+app.get('/regionsCountriesCities', function _callee14(req, res) {
   return regeneratorRuntime.async(function _callee14$(_context14) {
     while (1) {
       switch (_context14.prev = _context14.next) {
         case 0:
-          getCountries(req, res);
+          getRegionsCountriesCities(req, res);
 
         case 1:
         case "end":
@@ -340,32 +340,31 @@ app.get('/countries', function _callee14(req, res) {
       }
     }
   });
-});
-app.post('/countries', validateCountryName, validateRegionId, function _callee15(req, res) {
-  var _req$body2, region_id, country_name;
+}); //countries
 
+app.get('/countries', function _callee15(req, res) {
   return regeneratorRuntime.async(function _callee15$(_context15) {
     while (1) {
       switch (_context15.prev = _context15.next) {
         case 0:
-          _req$body2 = req.body, region_id = _req$body2.region_id, country_name = _req$body2.country_name;
-          createCountry(country_name, region_id, req, res);
+          getCountries(req, res);
 
-        case 2:
+        case 1:
         case "end":
           return _context15.stop();
       }
     }
   });
 });
-app.get('/countries/:countryId', validateCountryId, function _callee16(req, res) {
-  var countryId;
+app.post('/countries', validateCountryName, validateRegionId, function _callee16(req, res) {
+  var _req$body2, region_id, country_name;
+
   return regeneratorRuntime.async(function _callee16$(_context16) {
     while (1) {
       switch (_context16.prev = _context16.next) {
         case 0:
-          countryId = +req.params.countryId;
-          getCountry(countryId, req, res);
+          _req$body2 = req.body, region_id = _req$body2.region_id, country_name = _req$body2.country_name;
+          createCountry(country_name, region_id, req, res);
 
         case 2:
         case "end":
@@ -374,14 +373,14 @@ app.get('/countries/:countryId', validateCountryId, function _callee16(req, res)
     }
   });
 });
-app.put('/countries/:countryId', validateCountryId, validateRegionIdCountry, validateCountryNamePut, function _callee17(req, res) {
+app.get('/countries/:countryId', validateCountryId, function _callee17(req, res) {
   var countryId;
   return regeneratorRuntime.async(function _callee17$(_context17) {
     while (1) {
       switch (_context17.prev = _context17.next) {
         case 0:
           countryId = +req.params.countryId;
-          modifyCountry(countryId, req, res);
+          getCountry(countryId, req, res);
 
         case 2:
         case "end":
@@ -390,15 +389,14 @@ app.put('/countries/:countryId', validateCountryId, validateRegionIdCountry, val
     }
   });
 });
-app["delete"]('/countries/:countryId', validateCountryId, function _callee18(req, res) {
+app.put('/countries/:countryId', validateCountryId, validateRegionIdCountry, validateCountryNamePut, function _callee18(req, res) {
   var countryId;
   return regeneratorRuntime.async(function _callee18$(_context18) {
     while (1) {
       switch (_context18.prev = _context18.next) {
         case 0:
           countryId = +req.params.countryId;
-          deleteCountry(countryId, req, res); //no puedo borrar un país si tengo ciudades en el o si borro un país 
-          //borro todas las ciudades que tiene
+          modifyCountry(countryId, req, res);
 
         case 2:
         case "end":
@@ -407,14 +405,15 @@ app["delete"]('/countries/:countryId', validateCountryId, function _callee18(req
     }
   });
 });
-app.get('/countries/:countryId/cities', validateCountryId, function _callee19(req, res) {
+app["delete"]('/countries/:countryId', validateCountryId, function _callee19(req, res) {
   var countryId;
   return regeneratorRuntime.async(function _callee19$(_context19) {
     while (1) {
       switch (_context19.prev = _context19.next) {
         case 0:
           countryId = +req.params.countryId;
-          getCitiesCountry(countryId, req, res);
+          deleteCountry(countryId, req, res); //no puedo borrar un país si tengo ciudades en el o si borro un país 
+          //borro todas las ciudades que tiene
 
         case 2:
         case "end":
@@ -422,47 +421,47 @@ app.get('/countries/:countryId/cities', validateCountryId, function _callee19(re
       }
     }
   });
-}); //cities 
-
-app.get('/cities', function _callee20(req, res) {
+});
+app.get('/countries/:countryId/cities', validateCountryId, function _callee20(req, res) {
+  var countryId;
   return regeneratorRuntime.async(function _callee20$(_context20) {
     while (1) {
       switch (_context20.prev = _context20.next) {
         case 0:
-          getCities(req, res);
+          countryId = +req.params.countryId;
+          getCitiesCountry(countryId, req, res);
 
-        case 1:
+        case 2:
         case "end":
           return _context20.stop();
       }
     }
   });
-});
-app.post('/cities', validateCityName, validateCountryId, function _callee21(req, res) {
-  var _req$body3, country_id, city_name;
+}); //cities 
 
+app.get('/cities', function _callee21(req, res) {
   return regeneratorRuntime.async(function _callee21$(_context21) {
     while (1) {
       switch (_context21.prev = _context21.next) {
         case 0:
-          _req$body3 = req.body, country_id = _req$body3.country_id, city_name = _req$body3.city_name;
-          createCity(country_id, city_name, req, res);
+          getCities(req, res);
 
-        case 2:
+        case 1:
         case "end":
           return _context21.stop();
       }
     }
   });
 });
-app.get('/cities/:cityId', validateCityId, function _callee22(req, res) {
-  var cityId;
+app.post('/cities', validateCityName, validateCountryId, function _callee22(req, res) {
+  var _req$body3, country_id, city_name;
+
   return regeneratorRuntime.async(function _callee22$(_context22) {
     while (1) {
       switch (_context22.prev = _context22.next) {
         case 0:
-          cityId = +req.params.cityId;
-          getCity(cityId, req, res);
+          _req$body3 = req.body, country_id = _req$body3.country_id, city_name = _req$body3.city_name;
+          createCity(country_id, city_name, req, res);
 
         case 2:
         case "end":
@@ -471,14 +470,14 @@ app.get('/cities/:cityId', validateCityId, function _callee22(req, res) {
     }
   });
 });
-app.put('/cities/:cityId', validateCityId, validateCountryIdCity, validateCityNamePut, function _callee23(req, res) {
+app.get('/cities/:cityId', validateCityId, function _callee23(req, res) {
   var cityId;
   return regeneratorRuntime.async(function _callee23$(_context23) {
     while (1) {
       switch (_context23.prev = _context23.next) {
         case 0:
           cityId = +req.params.cityId;
-          modifyCity(cityId, req, res);
+          getCity(cityId, req, res);
 
         case 2:
         case "end":
@@ -487,15 +486,14 @@ app.put('/cities/:cityId', validateCityId, validateCountryIdCity, validateCityNa
     }
   });
 });
-app["delete"]('/cities/:cityId', validateCityId, function _callee24(req, res) {
+app.put('/cities/:cityId', validateCityId, validateCountryIdCity, validateCityNamePut, function _callee24(req, res) {
   var cityId;
   return regeneratorRuntime.async(function _callee24$(_context24) {
     while (1) {
       switch (_context24.prev = _context24.next) {
         case 0:
           cityId = +req.params.cityId;
-          deleteCity(cityId, req, res); //no puedo borrar una ciudad si tengo contactos o compañias en ella 
-          //o borro todos los contactos o compañias que tiene
+          modifyCity(cityId, req, res);
 
         case 2:
         case "end":
@@ -503,27 +501,44 @@ app["delete"]('/cities/:cityId', validateCityId, function _callee24(req, res) {
       }
     }
   });
-}); //companies
-
-app.get('/companies', function _callee25(req, res) {
+});
+app["delete"]('/cities/:cityId', validateCityId, function _callee25(req, res) {
+  var cityId;
   return regeneratorRuntime.async(function _callee25$(_context25) {
     while (1) {
       switch (_context25.prev = _context25.next) {
         case 0:
-          getCompanies(req, res);
+          cityId = +req.params.cityId;
+          deleteCity(cityId, req, res); //no puedo borrar una ciudad si tengo contactos o compañias en ella 
+          //o borro todos los contactos o compañias que tiene
 
-        case 1:
+        case 2:
         case "end":
           return _context25.stop();
       }
     }
   });
-});
-app.post('/companies', validateCompanyName, validateCityId, validateAddress, function _callee26(req, res) {
-  var newCompany;
+}); //companies
+
+app.get('/companies', function _callee26(req, res) {
   return regeneratorRuntime.async(function _callee26$(_context26) {
     while (1) {
       switch (_context26.prev = _context26.next) {
+        case 0:
+          getCompanies(req, res);
+
+        case 1:
+        case "end":
+          return _context26.stop();
+      }
+    }
+  });
+});
+app.post('/companies', validateCompanyName, validateCityId, validateAddress, function _callee27(req, res) {
+  var newCompany;
+  return regeneratorRuntime.async(function _callee27$(_context27) {
+    while (1) {
+      switch (_context27.prev = _context27.next) {
         case 0:
           newCompany = {
             //chequear si ahora funciona con el const
@@ -535,35 +550,19 @@ app.post('/companies', validateCompanyName, validateCityId, validateAddress, fun
 
         case 2:
         case "end":
-          return _context26.stop();
-      }
-    }
-  });
-});
-app.get('/companies/:companyId', validateCompanyId, function _callee27(req, res) {
-  var companyId;
-  return regeneratorRuntime.async(function _callee27$(_context27) {
-    while (1) {
-      switch (_context27.prev = _context27.next) {
-        case 0:
-          companyId = +req.params.companyId;
-          getCompany(companyId, req, res);
-
-        case 2:
-        case "end":
           return _context27.stop();
       }
     }
   });
 });
-app.put('/companies/:companyId', validateCompanyId, validateCompanyNamePut, validateCityIdPut, validateAddressPut, function _callee28(req, res) {
+app.get('/companies/:companyId', validateCompanyId, function _callee28(req, res) {
   var companyId;
   return regeneratorRuntime.async(function _callee28$(_context28) {
     while (1) {
       switch (_context28.prev = _context28.next) {
         case 0:
           companyId = +req.params.companyId;
-          modifyCompany(companyId, req, res);
+          getCompany(companyId, req, res);
 
         case 2:
         case "end":
@@ -572,15 +571,14 @@ app.put('/companies/:companyId', validateCompanyId, validateCompanyNamePut, vali
     }
   });
 });
-app["delete"]('/companies/:companyId', validateCompanyId, function _callee29(req, res) {
+app.put('/companies/:companyId', validateCompanyId, validateCompanyNamePut, validateCityIdPut, validateAddressPut, function _callee29(req, res) {
   var companyId;
   return regeneratorRuntime.async(function _callee29$(_context29) {
     while (1) {
       switch (_context29.prev = _context29.next) {
         case 0:
           companyId = +req.params.companyId;
-          deleteCompany(companyId, req, res); //no puedo borrar una ciudad si tengo contactos o compañias en ella 
-          //o borro todos los contactos o compañias que tiene
+          modifyCompany(companyId, req, res);
 
         case 2:
         case "end":
@@ -588,27 +586,44 @@ app["delete"]('/companies/:companyId', validateCompanyId, function _callee29(req
       }
     }
   });
-}); //contacts
-
-app.get('/contacts', function _callee30(req, res) {
+});
+app["delete"]('/companies/:companyId', validateCompanyId, function _callee30(req, res) {
+  var companyId;
   return regeneratorRuntime.async(function _callee30$(_context30) {
     while (1) {
       switch (_context30.prev = _context30.next) {
         case 0:
-          getContacts(req, res);
+          companyId = +req.params.companyId;
+          deleteCompany(companyId, req, res); //no puedo borrar una ciudad si tengo contactos o compañias en ella 
+          //o borro todos los contactos o compañias que tiene
 
-        case 1:
+        case 2:
         case "end":
           return _context30.stop();
       }
     }
   });
-});
-app.post('/contacts', validateFirstname, validateLastname, validateEmailContacts, validateCityId, validateCompanyId, validatePosition, validateInterest, validateChannelId, function _callee31(req, res) {
-  var newContact;
+}); //contacts
+
+app.get('/contacts', function _callee31(req, res) {
   return regeneratorRuntime.async(function _callee31$(_context31) {
     while (1) {
       switch (_context31.prev = _context31.next) {
+        case 0:
+          getContacts(req, res);
+
+        case 1:
+        case "end":
+          return _context31.stop();
+      }
+    }
+  });
+});
+app.post('/contacts', validateFirstname, validateLastname, validateEmailContacts, validateCityId, validateCompanyId, validatePosition, validateInterest, validateChannelId, function _callee32(req, res) {
+  var newContact;
+  return regeneratorRuntime.async(function _callee32$(_context32) {
+    while (1) {
+      switch (_context32.prev = _context32.next) {
         case 0:
           newContact = {
             firstname: req.body.firstname,
@@ -624,62 +639,62 @@ app.post('/contacts', validateFirstname, validateLastname, validateEmailContacts
 
         case 2:
         case "end":
-          return _context31.stop();
+          return _context32.stop();
       }
     }
   });
 });
-app.get('/contacts/:contactId', validateContactId, function _callee32(req, res) {
+app.get('/contacts/:contactId', validateContactId, function _callee33(req, res) {
   var contactId;
-  return regeneratorRuntime.async(function _callee32$(_context32) {
+  return regeneratorRuntime.async(function _callee33$(_context33) {
     while (1) {
-      switch (_context32.prev = _context32.next) {
+      switch (_context33.prev = _context33.next) {
         case 0:
           contactId = req.params.contactId;
           getContact(contactId, req, res);
 
         case 2:
         case "end":
-          return _context32.stop();
-      }
-    }
-  });
-});
-app.put('/contacts/:contactId', validateContactId, validateFirstnamePut, validateLastnamePut, validateEmailContactsPut, validateCityIdPut, validateCompanyIdPut, validatePositionPut, validateInterestPut, validateChannelIdPut, function _callee33(req, res) {
-  return regeneratorRuntime.async(function _callee33$(_context33) {
-    while (1) {
-      switch (_context33.prev = _context33.next) {
-        case 0:
-          modifycontact(req, res);
-
-        case 1:
-        case "end":
           return _context33.stop();
       }
     }
   });
 });
-app["delete"]('/contacts/:contactId', validateContactId, function _callee34(req, res) {
-  var contactId;
+app.put('/contacts/:contactId', validateContactId, validateFirstnamePut, validateLastnamePut, validateEmailContactsPut, validateCityIdPut, validateCompanyIdPut, validatePositionPut, validateInterestPut, validateChannelIdPut, function _callee34(req, res) {
   return regeneratorRuntime.async(function _callee34$(_context34) {
     while (1) {
       switch (_context34.prev = _context34.next) {
         case 0:
-          contactId = +req.params.contactId;
-          deleteContact(contactId, req, res);
+          modifycontact(req, res);
 
-        case 2:
+        case 1:
         case "end":
           return _context34.stop();
       }
     }
   });
 });
-app.post('/contacts/:contactId/channels', validateContactId, validateChannelIdAdd, function _callee35(req, res) {
-  var newContChan;
+app["delete"]('/contacts/:contactId', validateContactId, function _callee35(req, res) {
+  var contactId;
   return regeneratorRuntime.async(function _callee35$(_context35) {
     while (1) {
       switch (_context35.prev = _context35.next) {
+        case 0:
+          contactId = +req.params.contactId;
+          deleteContact(contactId, req, res);
+
+        case 2:
+        case "end":
+          return _context35.stop();
+      }
+    }
+  });
+});
+app.post('/contacts/:contactId/channels', validateContactId, validateChannelIdAdd, function _callee36(req, res) {
+  var newContChan;
+  return regeneratorRuntime.async(function _callee36$(_context36) {
+    while (1) {
+      switch (_context36.prev = _context36.next) {
         case 0:
           newContChan = {
             contact_id: +req.params.contactId,
@@ -689,16 +704,16 @@ app.post('/contacts/:contactId/channels', validateContactId, validateChannelIdAd
 
         case 2:
         case "end":
-          return _context35.stop();
+          return _context36.stop();
       }
     }
   });
 });
-app["delete"]('/contacts/:contactId/channels/:channelId', validateContactId, validateChannelIdDel, function _callee36(req, res) {
+app["delete"]('/contacts/:contactId/channels/:channelId', validateContactId, validateChannelIdDel, function _callee37(req, res) {
   var newContChan;
-  return regeneratorRuntime.async(function _callee36$(_context36) {
+  return regeneratorRuntime.async(function _callee37$(_context37) {
     while (1) {
-      switch (_context36.prev = _context36.next) {
+      switch (_context37.prev = _context37.next) {
         case 0:
           newContChan = {
             contact_id: +req.params.contactId,
@@ -708,50 +723,34 @@ app["delete"]('/contacts/:contactId/channels/:channelId', validateContactId, val
 
         case 2:
         case "end":
-          return _context36.stop();
+          return _context37.stop();
       }
     }
   });
 }); //channels
 
-app.get('/channels', function _callee37(req, res) {
-  return regeneratorRuntime.async(function _callee37$(_context37) {
-    while (1) {
-      switch (_context37.prev = _context37.next) {
-        case 0:
-          getChannels(req, res);
-
-        case 1:
-        case "end":
-          return _context37.stop();
-      }
-    }
-  });
-});
-app.post('/channels', validateChannelName, function _callee38(req, res) {
-  var channel_name;
+app.get('/channels', function _callee38(req, res) {
   return regeneratorRuntime.async(function _callee38$(_context38) {
     while (1) {
       switch (_context38.prev = _context38.next) {
         case 0:
-          channel_name = req.body.channel_name;
-          createChannel(channel_name, req, res);
+          getChannels(req, res);
 
-        case 2:
+        case 1:
         case "end":
           return _context38.stop();
       }
     }
   });
 });
-app.get('/channels/:channelId', validateChannelIdEx, function _callee39(req, res) {
-  var channelId;
+app.post('/channels', validateChannelName, function _callee39(req, res) {
+  var channel_name;
   return regeneratorRuntime.async(function _callee39$(_context39) {
     while (1) {
       switch (_context39.prev = _context39.next) {
         case 0:
-          channelId = +req.params.channelId;
-          getChannel(channelId, req, res);
+          channel_name = req.body.channel_name;
+          createChannel(channel_name, req, res);
 
         case 2:
         case "end":
@@ -760,14 +759,14 @@ app.get('/channels/:channelId', validateChannelIdEx, function _callee39(req, res
     }
   });
 });
-app.put('/channels/:channelId', validateChannelIdEx, validateChannelNamePut, function _callee40(req, res) {
+app.get('/channels/:channelId', validateChannelIdEx, function _callee40(req, res) {
   var channelId;
   return regeneratorRuntime.async(function _callee40$(_context40) {
     while (1) {
       switch (_context40.prev = _context40.next) {
         case 0:
           channelId = +req.params.channelId;
-          modifyChannel(channelId, req, res);
+          getChannel(channelId, req, res);
 
         case 2:
         case "end":
@@ -776,11 +775,27 @@ app.put('/channels/:channelId', validateChannelIdEx, validateChannelNamePut, fun
     }
   });
 });
-app["delete"]('/channels/:channelId', validateChannelIdEx, function _callee41(req, res) {
+app.put('/channels/:channelId', validateChannelIdEx, validateChannelNamePut, function _callee41(req, res) {
   var channelId;
   return regeneratorRuntime.async(function _callee41$(_context41) {
     while (1) {
       switch (_context41.prev = _context41.next) {
+        case 0:
+          channelId = +req.params.channelId;
+          modifyChannel(channelId, req, res);
+
+        case 2:
+        case "end":
+          return _context41.stop();
+      }
+    }
+  });
+});
+app["delete"]('/channels/:channelId', validateChannelIdEx, function _callee42(req, res) {
+  var channelId;
+  return regeneratorRuntime.async(function _callee42$(_context42) {
+    while (1) {
+      switch (_context42.prev = _context42.next) {
         case 0:
           channelId = +req.params.channelId;
           deleteChannel(channelId, req, res); //no puedo borrar una region si tengo países en ella o si borro una region 
@@ -788,7 +803,7 @@ app["delete"]('/channels/:channelId', validateChannelIdEx, function _callee41(re
 
         case 2:
         case "end":
-          return _context41.stop();
+          return _context42.stop();
       }
     }
   });

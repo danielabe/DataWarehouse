@@ -33,7 +33,7 @@ paths:
     get:
       tags:
       - "users"
-      summary: "Return the list of all users"
+      summary: "Returns the list of all users"
       description: ""
       operationId: "getUsers"
       produces:
@@ -82,7 +82,7 @@ paths:
     post:
       tags:
       - "users"
-      summary: "Create a new user"
+      summary: "Creates a new user"
       description: ""
       operationId: "createUser"
       consumes:
@@ -114,7 +114,7 @@ paths:
     get:
       tags:
       - "users"
-      summary: "Return user information"
+      summary: "Returns user information"
       description: ""
       operationId: "getInfoUser"
       produces:
@@ -142,7 +142,7 @@ paths:
     put:
       tags:
       - "users"
-      summary: "Modify an user"
+      summary: "Modifies an user"
       description: ""
       operationId: "updateUser"
       consumes:
@@ -180,7 +180,7 @@ paths:
     delete:
       tags:
       - "users"
-      summary: "Delete an user"
+      summary: "Deletes an user"
       description: ""
       operationId: "deleteUser"
       produces:
@@ -209,7 +209,7 @@ paths:
     get:
       tags:
       - "regions"
-      summary: "Return the list of all regions"
+      summary: "Returns the list of all regions"
       description: ""
       operationId: "getRegions"
       produces:
@@ -232,7 +232,7 @@ paths:
     post:
       tags:
       - "regions"
-      summary: "Create a new region"
+      summary: "Creates a new region"
       description: ""
       operationId: "createRegion"
       consumes:
@@ -264,7 +264,7 @@ paths:
     get:
       tags:
       - "regions"
-      summary: "Return a region"
+      summary: "Returns a region"
       description: ""
       operationId: "getRegion"
       produces:
@@ -292,7 +292,7 @@ paths:
     put:
       tags:
       - "regions"
-      summary: "Modify a region"
+      summary: "Modifies a region"
       description: ""
       operationId: "updateRegion"
       consumes:
@@ -330,7 +330,7 @@ paths:
     delete:
       tags:
       - "regions"
-      summary: "Delete a region"
+      summary: "Deletes a region"
       description: ""
       operationId: "deleteRegion"
       produces:
@@ -359,7 +359,7 @@ paths:
     get:
       tags:
       - "regions"
-      summary: "Return countries of a region"
+      summary: "Returns countries of a region"
       description: ""
       operationId: "getCountriesRegion"
       produces:
@@ -390,7 +390,7 @@ paths:
     get:
       tags:
       - "regions"
-      summary: "Return cities of a region"
+      summary: "Returns cities of a region"
       description: ""
       operationId: "getCitiesRegion"
       produces:
@@ -417,11 +417,35 @@ paths:
           description: "Unauthorized"
         "404":
           description: "Region not found"
+  /regionsCountriesCities:
+    get:
+      tags:
+      - "regions"
+      summary: "Returns the complete list of regions, countries and cities"
+      description: ""
+      operationId: "getReCoCi"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authorization token obtained at logging"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: '#/definitions/Regions'
+        "401":
+          description: "Unauthorized"
   /countries:
     get:
       tags:
       - "countries"
-      summary: "Return the list of all countries"
+      summary: "Returns the list of all countries"
       description: ""
       operationId: "getCountries"
       produces:
@@ -444,7 +468,7 @@ paths:
     post:
       tags:
       - "countries"
-      summary: "Create a new country"
+      summary: "Creates a new country"
       description: ""
       operationId: "createCountry"
       consumes:
@@ -478,7 +502,7 @@ paths:
     get:
       tags:
       - "countries"
-      summary: "Return a country"
+      summary: "Returns a country"
       description: ""
       operationId: "getCountry"
       produces:
@@ -506,7 +530,7 @@ paths:
     put:
       tags:
       - "countries"
-      summary: "Modify a country"
+      summary: "Modifies a country"
       description: ""
       operationId: "updateCountry"
       consumes:
@@ -544,7 +568,7 @@ paths:
     delete:
       tags:
       - "countries"
-      summary: "Delete a country"
+      summary: "Deletes a country"
       description: ""
       operationId: "deleteCountry"
       produces:
@@ -573,7 +597,7 @@ paths:
     get:
       tags:
       - "countries"
-      summary: "Return cities of a country"
+      summary: "Returns cities of a country"
       description: ""
       operationId: "getCitiesCountry"
       produces:
@@ -604,7 +628,7 @@ paths:
     get:
       tags:
       - "cities"
-      summary: "Return the list of all cities"
+      summary: "Returns the list of all cities"
       description: ""
       operationId: "getCities"
       produces:
@@ -627,7 +651,7 @@ paths:
     post:
       tags:
       - "cities"
-      summary: "Create a new city"
+      summary: "Creates a new city"
       description: ""
       operationId: "createCity"
       consumes:
@@ -661,7 +685,7 @@ paths:
     get:
       tags:
       - "cities"
-      summary: "Return a city"
+      summary: "Returns a city"
       description: ""
       operationId: "getCity"
       produces:
@@ -689,7 +713,7 @@ paths:
     put:
       tags:
       - "cities"
-      summary: "Modify a city"
+      summary: "Modifies a city"
       description: ""
       operationId: "updateCity"
       consumes:
@@ -727,7 +751,7 @@ paths:
     delete:
       tags:
       - "cities"
-      summary: "Delete a city"
+      summary: "Deletes a city"
       description: ""
       operationId: "deleteCity"
       produces:
@@ -756,7 +780,7 @@ paths:
     get:
       tags:
       - "companies"
-      summary: "Return the list of all companies"
+      summary: "Returns the list of all companies"
       description: ""
       operationId: "getCompanies"
       produces:
@@ -779,7 +803,7 @@ paths:
     post:
       tags:
       - "companies"
-      summary: "Create a new company"
+      summary: "Creates a new company"
       description: ""
       operationId: "createCompany"
       consumes:
@@ -813,7 +837,7 @@ paths:
     get:
       tags:
       - "companies"
-      summary: "Return a company"
+      summary: "Returns a company"
       description: ""
       operationId: "getCompany"
       produces:
@@ -841,7 +865,7 @@ paths:
     put:
       tags:
       - "companies"
-      summary: "Modify a company"
+      summary: "Modifies a company"
       description: ""
       operationId: "updateCompany"
       consumes:
@@ -879,7 +903,7 @@ paths:
     delete:
       tags:
       - "companies"
-      summary: "Delete a company"
+      summary: "Deletes a company"
       description: ""
       operationId: "deleteCompany"
       produces:
@@ -908,7 +932,7 @@ paths:
     get:
       tags:
       - "contacts"
-      summary: "Return the list of all contacts"
+      summary: "Returns the list of all contacts"
       description: ""
       operationId: "getContacts"
       produces:
@@ -931,7 +955,7 @@ paths:
     post:
       tags:
       - "contacts"
-      summary: "Create a new contact"
+      summary: "Creates a new contact"
       description: ""
       operationId: "createContact"
       consumes:
@@ -965,7 +989,7 @@ paths:
     get:
       tags:
       - "contacts"
-      summary: "Return a contact"
+      summary: "Returns a contact"
       description: ""
       operationId: "getContact"
       produces:
@@ -993,7 +1017,7 @@ paths:
     put:
       tags:
       - "contacts"
-      summary: "Modify a contact"
+      summary: "Modifies a contact"
       description: ""
       operationId: "updateContact"
       consumes:
@@ -1031,7 +1055,7 @@ paths:
     delete:
       tags:
       - "contacts"
-      summary: "Delete a contact"
+      summary: "Deletes a contact"
       description: ""
       operationId: "deleteContact"
       produces:
@@ -1060,7 +1084,7 @@ paths:
     post:
       tags:
       - "contacts"
-      summary: "Add a channel to a contact"
+      summary: "Adds a channel to a contact"
       description: ""
       operationId: "addChannel"
       consumes:
@@ -1099,7 +1123,7 @@ paths:
     delete:
       tags:
       - "contacts"
-      summary: "Delete a channel from a contact"
+      summary: "Deletes a channel from a contact"
       description: ""
       operationId: "deleteChannelContact"
       produces:
@@ -1132,7 +1156,7 @@ paths:
     get:
       tags:
       - "channels"
-      summary: "Return the list of all channels"
+      summary: "Returns the list of all channels"
       description: ""
       operationId: "getChannels"
       produces:
@@ -1155,7 +1179,7 @@ paths:
     post:
       tags:
       - "channels"
-      summary: "Create a new channel"
+      summary: "Creates a new channel"
       description: ""
       operationId: "createChannel"
       consumes:
@@ -1187,7 +1211,7 @@ paths:
     get:
       tags:
       - "channels"
-      summary: "Return a channel"
+      summary: "Returns a channel"
       description: ""
       operationId: "getChannel"
       produces:
@@ -1215,7 +1239,7 @@ paths:
     put:
       tags:
       - "channels"
-      summary: "Modify a channel"
+      summary: "Modifies a channel"
       description: ""
       operationId: "updateChannel"
       consumes:
@@ -1253,7 +1277,7 @@ paths:
     delete:
       tags:
       - "channels"
-      summary: "Delete a channel"
+      summary: "Deletes a channel"
       description: ""
       operationId: "deleteChannel"
       produces:
@@ -1420,6 +1444,30 @@ definitions:
       city_name:
         type: "string"
         example: "Córdoba"
+  Regions:
+    type: "object"
+    properties:
+      region_id:
+        type: "integer"
+        format: "int64"
+        example: 1
+      region_name:
+        type: "string"
+        example: "Sudamérica"
+      country_id:
+        type: "integer"
+        format: "int64"
+        example: 1
+      country_name:
+        type: "string"
+        example: "Argentina"
+      city_id:
+        type: "integer"
+        format: "int64"
+        example: 1
+      city_name:
+        type: "string"
+        example: "Rosario"
   Company:
     type: "object"
     properties:

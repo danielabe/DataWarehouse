@@ -286,5 +286,38 @@ locations.addEventListener('click', function () {
     companiesSection.classList.add('none');
     usersSection.classList.add('none');
     locationSection.classList.remove('none');
+    getLocations();
   }
 });
+
+function getLocations() {
+  var options, response, data;
+  return regeneratorRuntime.async(function getLocations$(_context5) {
+    while (1) {
+      switch (_context5.prev = _context5.next) {
+        case 0:
+          options = {
+            method: 'GET',
+            headers: {
+              Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
+            }
+          };
+          _context5.next = 3;
+          return regeneratorRuntime.awrap(fetch('http://localhost:3000/users', options));
+
+        case 3:
+          response = _context5.sent;
+          _context5.next = 6;
+          return regeneratorRuntime.awrap(response.json());
+
+        case 6:
+          data = _context5.sent;
+          console.log(data);
+
+        case 8:
+        case "end":
+          return _context5.stop();
+      }
+    }
+  });
+}
