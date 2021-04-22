@@ -15,6 +15,7 @@ var locations = document.getElementById('location');
 var locationSection = document.getElementById('locationSection');
 var companiesSection = document.getElementById('companiesSection');
 var contactsSection = document.getElementById('contactsSection');
+var regionList = document.getElementById('regionList');
 submit.addEventListener('click', function (event) {
   event.preventDefault();
   loginFunction(); //funcion nueva pantalla
@@ -291,30 +292,75 @@ locations.addEventListener('click', function () {
 });
 
 function getLocations() {
-  var options, response, data;
+  var options, response, data, regionsArray, uniqueRegions, countriesArray, uniqueCountries;
   return regeneratorRuntime.async(function getLocations$(_context5) {
     while (1) {
       switch (_context5.prev = _context5.next) {
         case 0:
+          regionList.innerHTML = '';
           options = {
             method: 'GET',
             headers: {
               Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
             }
           };
-          _context5.next = 3;
-          return regeneratorRuntime.awrap(fetch('http://localhost:3000/users', options));
+          _context5.next = 4;
+          return regeneratorRuntime.awrap(fetch('http://localhost:3000/regionsCountriesCities', options));
 
-        case 3:
+        case 4:
           response = _context5.sent;
-          _context5.next = 6;
+          _context5.next = 7;
           return regeneratorRuntime.awrap(response.json());
 
-        case 6:
+        case 7:
           data = _context5.sent;
           console.log(data);
+          data.forEach(function (element) {
+            var info = {
+              regionId: element.region_id,
+              regionName: element.region_name,
+              countryId: element.country_id,
+              countryName: element.country_name,
+              cityId: element.city_id,
+              cityName: element.city_name
+            };
+            console.log(element);
+            /* const regions = createElement('ul') */
+          });
+          regionsArray = [];
+          data.map(function (element) {
+            regionsArray = regionsArray.concat(element.region_name);
+          });
+          console.log(regionsArray);
+          uniqueRegions = [];
+          regionsArray.forEach(function (element) {
+            if (!uniqueRegions.includes(element)) {
+              uniqueRegions = uniqueRegions.concat(element);
+            }
+          });
+          console.log(uniqueRegions);
+          uniqueRegions.forEach(function (element) {
+            var region = document.createElement('li');
+            var countryList = document.createElement('ul');
+            region.innerText = element;
+            countryList.classList = 'country-item';
+            region.appendChild(countryList);
+            regionList.appendChild(region);
+          });
+          countriesArray = [];
+          data.map(function (element) {
+            countriesArray = countriesArray.concat(element.country_name);
+          });
+          console.log(countriesArray);
+          uniqueCountries = [];
+          countriesArray.forEach(function (element) {
+            if (!uniqueCountries.includes(element)) {
+              uniqueCountries = uniqueCountries.concat(element);
+            }
+          });
+          console.log(uniqueCountries);
 
-        case 8:
+        case 23:
         case "end":
           return _context5.stop();
       }

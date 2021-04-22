@@ -13,6 +13,7 @@ const locations = document.getElementById('location')
 const locationSection = document.getElementById('locationSection')
 const companiesSection = document.getElementById('companiesSection')
 const contactsSection = document.getElementById('contactsSection')
+const regionList = document.getElementById('regionList')
 
 submit.addEventListener('click', (event) => {
     event.preventDefault()
@@ -214,13 +215,67 @@ locations.addEventListener('click', () => {
 })
 
 async function getLocations() {
+    regionList.innerHTML = ''
     const options = {
         method: 'GET',
         headers: {
             Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
         }
     }
-    const response = await fetch('http://localhost:3000/users', options)
+    const response = await fetch('http://localhost:3000/regionsCountriesCities', options)
     const data = await response.json()
     console.log(data)
+
+    data.forEach(element => {
+        const info = {
+            regionId: element.region_id,
+            regionName: element.region_name,
+            countryId: element.country_id,
+            countryName: element.country_name,
+            cityId: element.city_id,
+            cityName: element.city_name
+        }
+        console.log(element)
+        /* const regions = createElement('ul') */
+    })
+
+    let regionsArray = []
+    data.map(element => {
+            regionsArray = regionsArray.concat(element.region_name)
+    })
+    console.log(regionsArray)
+    
+    let uniqueRegions = []
+    regionsArray.forEach( element => {
+        if(!uniqueRegions.includes(element)) {
+            uniqueRegions = uniqueRegions.concat(element)
+        }
+    })
+    console.log(uniqueRegions)
+
+    uniqueRegions.forEach(element => {
+        const region = document.createElement('li')
+        const countryList = document.createElement('ul')
+
+        region.innerText = element
+
+        countryList.classList = 'country-item'
+        
+        region.appendChild(countryList)
+        regionList.appendChild(region)
+    })
+
+    let countriesArray = []
+    data.map(element => {
+        countriesArray = countriesArray.concat(element.country_name)
+    })
+    console.log(countriesArray)
+
+    let uniqueCountries = []
+    countriesArray.forEach( element => {
+        if(!uniqueCountries.includes(element)) {
+            uniqueCountries = uniqueCountries.concat(element)
+        }
+    })
+    console.log(uniqueCountries)
 }
