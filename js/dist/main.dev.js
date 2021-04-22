@@ -1,11 +1,20 @@
 "use strict";
 
+sessionStorage.clear();
+var varSect = 'log';
 var submit = document.getElementById('submit');
 var username = document.getElementById('username');
 var password = document.getElementById('password');
 var login = document.getElementById('login');
 var usersSection = document.getElementById('usersSection');
 var headUs = document.getElementById('headUs');
+var contacts = document.getElementById('contacts');
+var companies = document.getElementById('companies');
+var users = document.getElementById('users');
+var locations = document.getElementById('location');
+var locationSection = document.getElementById('locationSection');
+var companiesSection = document.getElementById('companiesSection');
+var contactsSection = document.getElementById('contactsSection');
 submit.addEventListener('click', function (event) {
   event.preventDefault();
   loginFunction(); //funcion nueva pantalla
@@ -42,7 +51,8 @@ function loginFunction() {
           if (response.status === 200) {
             console.log(data);
             saveToken(data);
-            login.classList.add('none'); //section que aparece luego de login
+            login.classList.add('none');
+            varSect = 'noLog'; //section que aparece luego de login
 
             usersSection.classList.remove('none');
             getUsers();
@@ -61,7 +71,7 @@ function saveToken(data) {
 }
 
 function getUsers() {
-  var options, response, data, users;
+  var options, response, data, usersList;
   return regeneratorRuntime.async(function getUsers$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
@@ -84,7 +94,7 @@ function getUsers() {
         case 7:
           data = _context2.sent;
           console.log(data);
-          users = document.createElement('div');
+          usersList = document.createElement('div');
           data.forEach(function (element) {
             var info = {
               userId: element.user_id,
@@ -105,7 +115,7 @@ function getUsers() {
             user.innerText = info.firstname + ' ' + info.lastname;
             email.innerText = info.email;
             perfil.innerText = info.perfil;
-            users.classList.add('users-list');
+            usersList.classList.add('users-list');
             row.classList.add('row-user');
             user.classList.add('u-item');
             email.classList.add('u-item');
@@ -117,12 +127,12 @@ function getUsers() {
             actions.appendChild(ellipsis);
             actions.appendChild(trash);
             actions.appendChild(pen);
-            users.appendChild(row);
+            usersList.appendChild(row);
             row.appendChild(user);
             row.appendChild(email);
             row.appendChild(perfil);
             row.appendChild(actions);
-            usersSection.appendChild(users);
+            usersSection.appendChild(usersList);
             row.addEventListener('mouseover', function () {
               return hoverRow(ellipsis, trash, pen);
             });
@@ -130,10 +140,10 @@ function getUsers() {
               return outRow(ellipsis, trash, pen);
             });
             trash.addEventListener('click', function () {
-              return deleteUser(info, users);
+              return deleteUser(info, usersList);
             });
             pen.addEventListener('click', function () {
-              return editUser(info, users);
+              return editUser(info, usersList);
             });
           });
 
@@ -157,7 +167,7 @@ function outRow(ellipsis, trash, pen) {
   pen.classList.add('none');
 }
 
-function deleteUser(info, users) {
+function deleteUser(info, usersList) {
   var options, response, data;
   return regeneratorRuntime.async(function deleteUser$(_context3) {
     while (1) {
@@ -180,7 +190,7 @@ function deleteUser(info, users) {
         case 6:
           data = _context3.sent;
           console.log(data);
-          users.remove();
+          usersList.remove();
           getUsers();
 
         case 10:
@@ -191,7 +201,7 @@ function deleteUser(info, users) {
   });
 }
 
-function editUser(info, users) {
+function editUser(info, usersList) {
   var options, response, data;
   return regeneratorRuntime.async(function editUser$(_context4) {
     while (1) {
@@ -217,7 +227,7 @@ function editUser(info, users) {
         case 6:
           data = _context4.sent;
           console.log(data);
-          users.remove();
+          usersList.remove();
           getUsers();
 
         case 10:
@@ -227,3 +237,54 @@ function editUser(info, users) {
     }
   });
 }
+
+contacts.addEventListener('click', function () {
+  if (varSect !== 'log') {
+    contacts.classList.add('bold');
+    companies.classList.remove('bold');
+    users.classList.remove('bold');
+    locations.classList.remove('bold');
+    contactsSection.classList.remove('none');
+    companiesSection.classList.add('none');
+    usersSection.classList.add('none');
+    locationSection.classList.add('none');
+  }
+});
+companies.addEventListener('click', function () {
+  if (varSect !== 'log') {
+    contacts.classList.remove('bold');
+    companies.classList.add('bold');
+    users.classList.remove('bold');
+    locations.classList.remove('bold');
+    contactsSection.classList.add('none');
+    companiesSection.classList.remove('none');
+    usersSection.classList.add('none');
+    locationSection.classList.add('none');
+  }
+});
+users.addEventListener('click', function () {
+  if (varSect !== 'log') {
+    contacts.classList.remove('bold');
+    companies.classList.remove('bold');
+    users.classList.add('bold');
+    locations.classList.remove('bold');
+    contactsSection.classList.add('none');
+    companiesSection.classList.add('none');
+    usersSection.classList.remove('none');
+    locationSection.classList.add('none');
+    usersList.remove();
+    getUsers();
+  }
+});
+locations.addEventListener('click', function () {
+  if (varSect !== 'log') {
+    contacts.classList.remove('bold');
+    companies.classList.remove('bold');
+    users.classList.remove('bold');
+    locations.classList.add('bold');
+    contactsSection.classList.add('none');
+    companiesSection.classList.add('none');
+    usersSection.classList.add('none');
+    locationSection.classList.remove('none');
+  }
+});

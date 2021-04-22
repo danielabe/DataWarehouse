@@ -1,9 +1,18 @@
+sessionStorage.clear()
+let varSect = 'log'
 const submit = document.getElementById('submit')
 const username = document.getElementById('username')
 const password = document.getElementById('password')
 const login = document.getElementById('login')
 const usersSection = document.getElementById('usersSection')
 const headUs = document.getElementById('headUs')
+const contacts = document.getElementById('contacts')
+const companies = document.getElementById('companies')
+const users = document.getElementById('users')
+const locations = document.getElementById('location')
+const locationSection = document.getElementById('locationSection')
+const companiesSection = document.getElementById('companiesSection')
+const contactsSection = document.getElementById('contactsSection')
 
 submit.addEventListener('click', (event) => {
     event.preventDefault()
@@ -29,6 +38,7 @@ async function loginFunction() {
         console.log(data)
         saveToken(data)
         login.classList.add('none')
+        varSect = 'noLog'
         //section que aparece luego de login
         usersSection.classList.remove('none')
         getUsers()
@@ -50,7 +60,7 @@ async function getUsers() {
     const response = await fetch('http://localhost:3000/users', options)
     const data = await response.json()
     console.log(data)
-    const users = document.createElement('div')
+    const usersList = document.createElement('div')
 
     data.forEach(element => {
         const info = {
@@ -74,7 +84,7 @@ async function getUsers() {
         email.innerText = info.email
         perfil.innerText = info.perfil
    
-        users.classList.add('users-list')
+        usersList.classList.add('users-list')
         row.classList.add('row-user')
         user.classList.add('u-item')        
         email.classList.add('u-item')     
@@ -87,18 +97,18 @@ async function getUsers() {
         actions.appendChild(ellipsis)
         actions.appendChild(trash)
         actions.appendChild(pen)
-        users.appendChild(row)
+        usersList.appendChild(row)
         row.appendChild(user)
         row.appendChild(email)
         row.appendChild(perfil)
         row.appendChild(actions)
-        usersSection.appendChild(users)
+        usersSection.appendChild(usersList)
 
         row.addEventListener('mouseover', () => hoverRow(ellipsis, trash, pen))
         row.addEventListener('mouseout', () => outRow(ellipsis, trash, pen))
 
-        trash.addEventListener('click', () => deleteUser(info, users))
-        pen.addEventListener('click', () => editUser(info, users))
+        trash.addEventListener('click', () => deleteUser(info, usersList))
+        pen.addEventListener('click', () => editUser(info, usersList))
     })
 }
 
@@ -114,7 +124,7 @@ function outRow(ellipsis, trash, pen) {
     pen.classList.add('none')
 }
 
-async function deleteUser(info, users) {
+async function deleteUser(info, usersList) {
     const options = {
         method: 'DELETE',
         headers: {
@@ -124,11 +134,11 @@ async function deleteUser(info, users) {
     const response = await fetch(`http://localhost:3000/users/${info.userId}`, options)
     const data = await response.json()
     console.log(data)
-    users.remove()
+    usersList.remove()
     getUsers()
 }
 
-async function editUser(info, users) {  //esta funcion la voy a hacer luego, para ver
+async function editUser(info, usersList) {  //esta funcion la voy a hacer luego, para ver
     const options = {                   //primero como se hace en contactos, hacer
         method: 'PUT',                  //diseño correspondiente y generar json para el body
         headers: {
@@ -138,6 +148,65 @@ async function editUser(info, users) {  //esta funcion la voy a hacer luego, par
     const response = await fetch(`http://localhost:3000/users/${info.userId}`, options)
     const data = await response.json()
     console.log(data)
-    users.remove()
+    usersList.remove()
     getUsers()
 }
+
+contacts.addEventListener('click', () => {
+    if(varSect !== 'log') {
+        contacts.classList.add('bold')
+        companies.classList.remove('bold')
+        users.classList.remove('bold')
+        locations.classList.remove('bold')
+
+        contactsSection.classList.remove('none')
+        companiesSection.classList.add('none')
+        usersSection.classList.add('none')
+        locationSection.classList.add('none')
+    }
+})
+
+companies.addEventListener('click', () => {
+    if(varSect !== 'log') {
+        contacts.classList.remove('bold')
+        companies.classList.add('bold')
+        users.classList.remove('bold')
+        locations.classList.remove('bold')
+
+        contactsSection.classList.add('none')
+        companiesSection.classList.remove('none')
+        usersSection.classList.add('none')
+        locationSection.classList.add('none')
+    }
+})
+
+users.addEventListener('click', () => {
+    if(varSect !== 'log') {
+        contacts.classList.remove('bold')
+        companies.classList.remove('bold')
+        users.classList.add('bold')
+        locations.classList.remove('bold')
+
+        contactsSection.classList.add('none')
+        companiesSection.classList.add('none')
+        usersSection.classList.remove('none')
+        locationSection.classList.add('none')
+
+        usersList.remove()
+        getUsers()
+    }
+})
+
+locations.addEventListener('click', () => {
+    if(varSect !== 'log') {
+        contacts.classList.remove('bold')
+        companies.classList.remove('bold')
+        users.classList.remove('bold')
+        locations.classList.add('bold')
+    
+        contactsSection.classList.add('none')
+        companiesSection.classList.add('none')
+        usersSection.classList.add('none')
+        locationSection.classList.remove('none')
+    }
+})
