@@ -318,18 +318,31 @@ function getLocations() {
           data.forEach(function (reg) {
             var region = document.createElement('li');
             var countryList = document.createElement('ul');
-            region.innerText = reg.region_name;
+            var btnAddCountry = document.createElement('button');
+            var regContainer = document.createElement('div');
+            var regTitle = document.createElement('h4');
+            regTitle.innerText = reg.region_name;
+            btnAddCountry.innerText = 'Add country';
+            region.classList.add('l-item');
+            btnAddCountry.classList.add('btn-add-country');
+            regContainer.classList.add('reg-container');
+            regTitle.classList.add('reg-title');
+            regContainer.appendChild(regTitle);
+            regContainer.appendChild(btnAddCountry);
+            region.appendChild(regContainer);
             region.appendChild(countryList);
             regionList.appendChild(region);
             reg.countries.forEach(function (count) {
               var country = document.createElement('li');
               var cityList = document.createElement('ul');
               country.innerText = count.country_name;
+              country.classList.add('l-item');
               country.appendChild(cityList);
               countryList.appendChild(country);
               count.cities.forEach(function (cit) {
                 var city = document.createElement('li');
                 city.innerText = cit.city_name;
+                city.classList.add('l-item');
                 cityList.appendChild(city);
               });
             });

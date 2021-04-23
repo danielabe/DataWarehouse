@@ -229,9 +229,21 @@ async function getLocations() {
     data.forEach(reg => {
         const region = document.createElement('li')
         const countryList = document.createElement('ul')
+        const btnAddCountry = document.createElement('button')
+        const regContainer = document.createElement('div')
+        const regTitle = document.createElement('h4')
 
-        region.innerText = reg.region_name
+        regTitle.innerText = reg.region_name
+        btnAddCountry.innerText = 'Add country'
 
+        region.classList.add('l-item')
+        btnAddCountry.classList.add('btn-add-country')
+        regContainer.classList.add('reg-container')
+        regTitle.classList.add('reg-title')
+
+        regContainer.appendChild(regTitle)
+        regContainer.appendChild(btnAddCountry)
+        region.appendChild(regContainer)
         region.appendChild(countryList)
         regionList.appendChild(region)
 
@@ -240,6 +252,7 @@ async function getLocations() {
             const cityList = document.createElement('ul')
 
             country.innerText = count.country_name
+            country.classList.add('l-item')
 
             country.appendChild(cityList)
             countryList.appendChild(country)
@@ -248,6 +261,7 @@ async function getLocations() {
                 const city = document.createElement('li')
 
                 city.innerText = cit.city_name
+                city.classList.add('l-item')
 
                 cityList.appendChild(city)
             })

@@ -209,6 +209,33 @@ margin-top: 11.5px;
     border-bottom: 2px solid white;
 }
 
+.btn-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn {
+    width: 100px;
+}
+
+.l-item {
+    list-style: none;
+}
+
+.reg-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.reg-title {
+    width: 100px;
+}
+
+.btn-add-country {
+    width: 56px;
+}
+
 .firstname {
     
 }
