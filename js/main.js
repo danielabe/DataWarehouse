@@ -225,57 +225,32 @@ async function getLocations() {
     const response = await fetch('http://localhost:3000/regionsCountriesCities', options)
     const data = await response.json()
     console.log(data)
-
-    data.forEach(element => {
-        const info = {
-            regionId: element.region_id,
-            regionName: element.region_name,
-            countryId: element.country_id,
-            countryName: element.country_name,
-            cityId: element.city_id,
-            cityName: element.city_name
-        }
-        console.log(element)
-        /* const regions = createElement('ul') */
-    })
-
-    let regionsArray = []
-    data.map(element => {
-            regionsArray = regionsArray.concat(element.region_name)
-    })
-    console.log(regionsArray)
     
-    let uniqueRegions = []
-    regionsArray.forEach( element => {
-        if(!uniqueRegions.includes(element)) {
-            uniqueRegions = uniqueRegions.concat(element)
-        }
-    })
-    console.log(uniqueRegions)
-
-    uniqueRegions.forEach(element => {
+    data.forEach(reg => {
         const region = document.createElement('li')
         const countryList = document.createElement('ul')
 
-        region.innerText = element
+        region.innerText = reg.region_name
 
-        countryList.classList = 'country-item'
-        
         region.appendChild(countryList)
         regionList.appendChild(region)
-    })
 
-    let countriesArray = []
-    data.map(element => {
-        countriesArray = countriesArray.concat(element.country_name)
-    })
-    console.log(countriesArray)
+        reg.countries.forEach(count => {
+            const country = document.createElement('li')
+            const cityList = document.createElement('ul')
 
-    let uniqueCountries = []
-    countriesArray.forEach( element => {
-        if(!uniqueCountries.includes(element)) {
-            uniqueCountries = uniqueCountries.concat(element)
-        }
+            country.innerText = count.country_name
+
+            country.appendChild(cityList)
+            countryList.appendChild(country)
+
+            count.cities.forEach(cit => {
+                const city = document.createElement('li')
+
+                city.innerText = cit.city_name
+
+                cityList.appendChild(city)
+            })
+        })
     })
-    console.log(uniqueCountries)
 }

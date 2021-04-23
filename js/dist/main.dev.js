@@ -292,7 +292,7 @@ locations.addEventListener('click', function () {
 });
 
 function getLocations() {
-  var options, response, data, regionsArray, uniqueRegions, countriesArray, uniqueCountries;
+  var options, response, data;
   return regeneratorRuntime.async(function getLocations$(_context5) {
     while (1) {
       switch (_context5.prev = _context5.next) {
@@ -315,52 +315,27 @@ function getLocations() {
         case 7:
           data = _context5.sent;
           console.log(data);
-          data.forEach(function (element) {
-            var info = {
-              regionId: element.region_id,
-              regionName: element.region_name,
-              countryId: element.country_id,
-              countryName: element.country_name,
-              cityId: element.city_id,
-              cityName: element.city_name
-            };
-            console.log(element);
-            /* const regions = createElement('ul') */
-          });
-          regionsArray = [];
-          data.map(function (element) {
-            regionsArray = regionsArray.concat(element.region_name);
-          });
-          console.log(regionsArray);
-          uniqueRegions = [];
-          regionsArray.forEach(function (element) {
-            if (!uniqueRegions.includes(element)) {
-              uniqueRegions = uniqueRegions.concat(element);
-            }
-          });
-          console.log(uniqueRegions);
-          uniqueRegions.forEach(function (element) {
+          data.forEach(function (reg) {
             var region = document.createElement('li');
             var countryList = document.createElement('ul');
-            region.innerText = element;
-            countryList.classList = 'country-item';
+            region.innerText = reg.region_name;
             region.appendChild(countryList);
             regionList.appendChild(region);
+            reg.countries.forEach(function (count) {
+              var country = document.createElement('li');
+              var cityList = document.createElement('ul');
+              country.innerText = count.country_name;
+              country.appendChild(cityList);
+              countryList.appendChild(country);
+              count.cities.forEach(function (cit) {
+                var city = document.createElement('li');
+                city.innerText = cit.city_name;
+                cityList.appendChild(city);
+              });
+            });
           });
-          countriesArray = [];
-          data.map(function (element) {
-            countriesArray = countriesArray.concat(element.country_name);
-          });
-          console.log(countriesArray);
-          uniqueCountries = [];
-          countriesArray.forEach(function (element) {
-            if (!uniqueCountries.includes(element)) {
-              uniqueCountries = uniqueCountries.concat(element);
-            }
-          });
-          console.log(uniqueCountries);
 
-        case 23:
+        case 10:
         case "end":
           return _context5.stop();
       }
