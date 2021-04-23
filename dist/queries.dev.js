@@ -596,22 +596,49 @@ function getCitiesRegion(regionId, req, res) {
 }
 
 function getRegionsCountriesCities(req, res) {
-  var regionsCountriesCities;
+  var regions, countries, cities, countriesAndCities, regionsCountriesAndCities;
   return regeneratorRuntime.async(function getRegionsCountriesCities$(_context20) {
     while (1) {
       switch (_context20.prev = _context20.next) {
         case 0:
           _context20.next = 2;
-          return regeneratorRuntime.awrap(db.query("\n    SELECT re.region_id, region_name, co.country_id, country_name, ci.city_id, city_name \n    FROM regions re \n    JOIN countries co on re.region_id = co.region_id \n    JOIN cities ci on co.country_id = ci.country_id\n    ", {
+          return regeneratorRuntime.awrap(db.query("SELECT * FROM regions", {
             type: QueryTypes.SELECT
           }));
 
         case 2:
-          regionsCountriesCities = _context20.sent;
-          console.table(regionsCountriesCities);
-          res.status(200).json(regionsCountriesCities);
+          regions = _context20.sent;
+          _context20.next = 5;
+          return regeneratorRuntime.awrap(db.query("SELECT * FROM countries", {
+            type: QueryTypes.SELECT
+          }));
 
         case 5:
+          countries = _context20.sent;
+          _context20.next = 8;
+          return regeneratorRuntime.awrap(db.query("SELECT * FROM cities", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 8:
+          cities = _context20.sent;
+          countriesAndCities = countries.map(function (country) {
+            return Object.assign({}, country, {
+              cities: cities.filter(function (city) {
+                return city.country_id === country.country_id;
+              })
+            });
+          });
+          regionsCountriesAndCities = regions.map(function (region) {
+            return Object.assign({}, region, {
+              countries: countriesAndCities.filter(function (country) {
+                return country.region_id === region.region_id;
+              })
+            });
+          });
+          res.status(200).json(regionsCountriesAndCities);
+
+        case 12:
         case "end":
           return _context20.stop();
       }

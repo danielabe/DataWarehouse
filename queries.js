@@ -233,14 +233,20 @@ async function getCitiesRegion(regionId, req, res) {
 }
 
 async function getRegionsCountriesCities(req, res) {
-    const regionsCountriesCities = await db.query(`
-    SELECT re.region_id, region_name, co.country_id, country_name, ci.city_id, city_name 
-    FROM regions re 
-    JOIN countries co on re.region_id = co.region_id 
-    JOIN cities ci on co.country_id = ci.country_id
-    `, { type: QueryTypes.SELECT })
-        console.table(regionsCountriesCities)
-    res.status(200).json(regionsCountriesCities)
+    const regions = await db.query(`SELECT * FROM regions`, { type: QueryTypes.SELECT })
+    const countries = await db.query(`SELECT * FROM countries`, { type: QueryTypes.SELECT })
+    const cities = await db.query(`SELECT * FROM cities`, { type: QueryTypes.SELECT })
+    
+    const countriesAndCities = countries.map(country => 
+        Object.assign( {} , country, { cities: cities.filter(city => 
+            city.country_id === country.country_id)}
+        ))
+
+    const regionsCountriesAndCities = regions.map(region => 
+        Object.assign( {} , region, { countries: countriesAndCities.filter(country => 
+            country.region_id === region.region_id)}
+        ))
+    res.status(200).json(regionsCountriesAndCities)
 }
 
 //countries
