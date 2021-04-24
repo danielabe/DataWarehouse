@@ -225,8 +225,36 @@ main {
   width: 100px;
 }
 
-.btn-add-country {
+.count-container {
+  display: flex;
+}
+
+.count-btn {
+  display: flex;
+}
+
+.count-title {
+  width: 100px;
+}
+
+.add {
   width: 56px;
+}
+
+.edit {
+  width: 50px;
+}
+
+.delete {
+  width: 60px;
+}
+
+.city-container {
+  display: flex;
+}
+
+.city-title {
+  width: 100px;
 }
 
 .none {

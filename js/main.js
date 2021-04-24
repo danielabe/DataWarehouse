@@ -237,7 +237,7 @@ async function getLocations() {
         btnAddCountry.innerText = 'Add country'
 
         region.classList.add('l-item')
-        btnAddCountry.classList.add('btn-add-country')
+        btnAddCountry.classList.add('add')
         regContainer.classList.add('reg-container')
         regTitle.classList.add('reg-title')
 
@@ -249,20 +249,54 @@ async function getLocations() {
 
         reg.countries.forEach(count => {
             const country = document.createElement('li')
+            const countContainer = document.createElement('div')
+            const countryAndBtn = document.createElement('div')
+            const countTitle = document.createElement('h5')
+            const btnEditCountry = document.createElement('button')
+            const btnDeleteCountry = document.createElement('button')
+            const btnAddCity = document.createElement('button')
             const cityList = document.createElement('ul')
 
-            country.innerText = count.country_name
-            country.classList.add('l-item')
+            countTitle.innerText = count.country_name
+            btnEditCountry.innerText = 'Edit'
+            btnDeleteCountry.innerText = 'Delete'
+            btnAddCity.innerText = 'Add city'
 
+            country.classList.add('l-item')
+            btnEditCountry.classList.add('edit')
+            btnDeleteCountry.classList.add('delete')
+            btnAddCity.classList.add('add')
+            countTitle.classList.add('count-title')
+            countContainer.classList.add('count-container')
+            countryAndBtn.classList.add('count-btn')
+
+            countryAndBtn.appendChild(countTitle)
+            countryAndBtn.appendChild(btnEditCountry)
+            countryAndBtn.appendChild(btnDeleteCountry)
+            countContainer.appendChild(countryAndBtn)
+            countContainer.appendChild(btnAddCity)
+            country.appendChild(countContainer)
             country.appendChild(cityList)
             countryList.appendChild(country)
 
             count.cities.forEach(cit => {
                 const city = document.createElement('li')
+                const cityTitle = document.createElement('h6')
+                const btnEditCity = document.createElement('button')
+                const btnDeleteCity = document.createElement('button')
 
-                city.innerText = cit.city_name
-                city.classList.add('l-item')
+                cityTitle.innerText = cit.city_name
+                btnEditCity.innerText = 'Edit'
+                btnDeleteCity.innerText = 'Delete'
 
+                city.classList = 'l-item city-container'
+                cityTitle.classList.add('city-title')
+                btnEditCity.classList.add('edit')
+                btnDeleteCity.classList.add('delete')
+
+                city.appendChild(cityTitle)
+                city.appendChild(btnEditCity)
+                city.appendChild(btnDeleteCity)
                 cityList.appendChild(city)
             })
         })
