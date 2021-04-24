@@ -212,10 +212,16 @@ margin-top: 11.5px;
 .btn-container {
     display: flex;
     justify-content: flex-end;
+    margin-bottom: 20px;
 }
 
 .btn {
     width: 100px;
+}
+
+.add-reg {
+    width: 120px;
+    height: 42px;
 }
 
 .l-item {
@@ -242,6 +248,17 @@ margin-top: 11.5px;
 
 .count-title {
     width: 100px;
+}
+
+.btn {
+    /* outline: none; */
+    border: none;
+    border-radius: 2px;
+    background: rgb(29, 114, 194);
+    color: white;
+    &:hover {
+        background: #0683f9;
+    }
 }
 
 .add {

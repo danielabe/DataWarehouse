@@ -205,10 +205,16 @@ main {
 .btn-container {
   display: flex;
   justify-content: flex-end;
+  margin-bottom: 20px;
 }
 
 .btn {
   width: 100px;
+}
+
+.add-reg {
+  width: 120px;
+  height: 42px;
 }
 
 .l-item {
@@ -235,6 +241,17 @@ main {
 
 .count-title {
   width: 100px;
+}
+
+.btn {
+  /* outline: none; */
+  border: none;
+  border-radius: 2px;
+  background: #1d72c2;
+  color: white;
+}
+.btn:hover {
+  background: #0683f9;
 }
 
 .add {

@@ -324,7 +324,7 @@ function getLocations() {
             regTitle.innerText = reg.region_name;
             btnAddCountry.innerText = 'Add country';
             region.classList.add('l-item');
-            btnAddCountry.classList.add('add');
+            btnAddCountry.classList = 'btn add';
             regContainer.classList.add('reg-container');
             regTitle.classList.add('reg-title');
             regContainer.appendChild(regTitle);
@@ -346,9 +346,9 @@ function getLocations() {
               btnDeleteCountry.innerText = 'Delete';
               btnAddCity.innerText = 'Add city';
               country.classList.add('l-item');
-              btnEditCountry.classList.add('edit');
-              btnDeleteCountry.classList.add('delete');
-              btnAddCity.classList.add('add');
+              btnEditCountry.classList = 'btn edit';
+              btnDeleteCountry.classList = 'btn delete';
+              btnAddCity.classList = 'btn add';
               countTitle.classList.add('count-title');
               countContainer.classList.add('count-container');
               countryAndBtn.classList.add('count-btn');
@@ -370,8 +370,8 @@ function getLocations() {
                 btnDeleteCity.innerText = 'Delete';
                 city.classList = 'l-item city-container';
                 cityTitle.classList.add('city-title');
-                btnEditCity.classList.add('edit');
-                btnDeleteCity.classList.add('delete');
+                btnEditCity.classList = 'btn edit';
+                btnDeleteCity.classList = 'btn delete';
                 city.appendChild(cityTitle);
                 city.appendChild(btnEditCity);
                 city.appendChild(btnDeleteCity);
