@@ -209,6 +209,11 @@ margin-top: 11.5px;
     border-bottom: 2px solid white;
 }
 
+.loc-container {
+    width: 600px;
+    margin-left: 100px;
+}
+
 .btn-container {
     display: flex;
     justify-content: flex-end;
@@ -235,7 +240,9 @@ margin-top: 11.5px;
 }
 
 .reg-title {
-    width: 100px;
+    width: min-content;
+    font-size: 20px;
+    font-weight: 400;
 }
 
 .count-container {
@@ -244,10 +251,13 @@ margin-top: 11.5px;
 
 .count-btn {
     display: flex;
+    margin: 10px 0 10px 30px;
 }
 
 .count-title {
-    width: 100px;
+    width: min-content;
+    font-size: 20px;
+    font-weight: 400;
 }
 
 .btn {
@@ -278,7 +288,9 @@ margin-top: 11.5px;
 }
 
 .city-title {
-    width: 100px;
+    width: min-content;
+    font-size: 20px;
+    font-weight: 400;
 }
 
 .firstname {
