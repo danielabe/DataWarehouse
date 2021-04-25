@@ -111,15 +111,11 @@ main {
   background: #1d72c2;
   color: white;
 }
-
 .submit:hover {
-  /* box-shadow: 1px 0px 0px rgb(0, 105, 202); */
   background: #0683f9;
 }
-
 .submit:active {
   background: #afafaf;
-  /* box-shadow: 0px 2px 4px 0px rgb(95, 94, 94); */
 }
 
 .users {
@@ -203,8 +199,9 @@ main {
 }
 
 .loc-container {
-  width: 600px;
+  width: 50vw;
   margin-left: 100px;
+  padding: 0 0 40px 0;
 }
 
 .btn-container {
@@ -230,25 +227,28 @@ main {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin: 60px 0 10px 0;
 }
 
 .reg-title {
-  width: min-content;
+  width: 400px;
   font-size: 20px;
   font-weight: 400;
 }
 
 .count-container {
   display: flex;
+  justify-content: space-between;
 }
 
 .count-btn {
   display: flex;
+  width: min-content;
   margin: 10px 0 10px 30px;
 }
 
 .count-title {
-  width: min-content;
+  width: 130px;
   font-size: 20px;
   font-weight: 400;
 }
@@ -263,25 +263,34 @@ main {
 .btn:hover {
   background: #0683f9;
 }
+.btn:active {
+  background: #afafaf;
+}
 
 .add {
-  width: 56px;
+  align-self: center;
+  width: 60px;
+  height: 40px;
 }
 
 .edit {
   width: 50px;
+  margin: 0 5px 0 5px;
 }
 
 .delete {
   width: 60px;
+  margin: 0 5px 0 5px;
 }
 
 .city-container {
   display: flex;
+  width: min-content;
+  margin: 10px 0 10px 90px;
 }
 
 .city-title {
-  width: min-content;
+  width: 130px;
   font-size: 20px;
   font-weight: 400;
 }
