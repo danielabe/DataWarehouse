@@ -16,6 +16,10 @@ var locationSection = document.getElementById('locationSection');
 var companiesSection = document.getElementById('companiesSection');
 var contactsSection = document.getElementById('contactsSection');
 var regionList = document.getElementById('regionList');
+var addRegBtn = document.getElementById('addRegBtn');
+var locContainer = document.getElementById('locContainer');
+var body = document.querySelector('body');
+var darkImage = document.getElementById('darkImage');
 submit.addEventListener('click', function (event) {
   event.preventDefault();
   loginFunction(); //funcion nueva pantalla
@@ -383,6 +387,25 @@ function getLocations() {
         case 10:
         case "end":
           return _context5.stop();
+      }
+    }
+  });
+}
+
+addRegBtn.addEventListener('click', function () {
+  window.scrollTo(0, 0);
+  body.classList.add('modal');
+  darkImage.classList.remove('none');
+  addRegion();
+});
+
+function addRegion() {
+  return regeneratorRuntime.async(function addRegion$(_context6) {
+    while (1) {
+      switch (_context6.prev = _context6.next) {
+        case 0:
+        case "end":
+          return _context6.stop();
       }
     }
   });

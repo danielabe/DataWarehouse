@@ -14,6 +14,10 @@ const locationSection = document.getElementById('locationSection')
 const companiesSection = document.getElementById('companiesSection')
 const contactsSection = document.getElementById('contactsSection')
 const regionList = document.getElementById('regionList')
+const addRegBtn = document.getElementById('addRegBtn')
+const locContainer = document.getElementById('locContainer')
+const body = document.querySelector('body')
+const darkImage = document.getElementById('darkImage')
 
 submit.addEventListener('click', (event) => {
     event.preventDefault()
@@ -302,3 +306,44 @@ async function getLocations() {
         })
     })
 }
+
+addRegBtn.addEventListener('click', () => {
+    window.scrollTo(0, 0)
+    body.classList.add('modal')
+    darkImage.classList.remove('none')
+    addRegion()
+})
+
+async function addRegion() {
+    /* const windowAddRegion = document.createElement('div')
+
+    windowAddRegion.classList.add('window-add-reg')
+
+    locationSection.appendChild(windowAddRegion) */
+
+
+}
+
+
+/* const user = {
+    username: username.value,
+    password: password.value,
+}
+const options = {
+    method: 'POST',
+    body: JSON.stringify(user),
+    headers: {
+        "Content-Type": "application/json"
+    }
+}
+const response = await fetch('http://localhost:3000/users/login', options)
+const data = await response.json()
+if (response.status === 200) {
+    console.log(data)
+    saveToken(data)
+    login.classList.add('none')
+    varSect = 'noLog'
+    //section que aparece luego de login
+    usersSection.classList.remove('none')
+    getUsers()
+} */
