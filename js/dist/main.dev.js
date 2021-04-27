@@ -22,6 +22,7 @@ var body = document.querySelector('body');
 var darkImage = document.getElementById('darkImage');
 var newRegion = document.getElementById('newRegion');
 var saveRegion = document.getElementById('saveRegion');
+var cancelRegion = document.getElementById('cancelRegion');
 submit.addEventListener('click', function (event) {
   event.preventDefault();
   loginFunction(); //funcion nueva pantalla
@@ -401,22 +402,60 @@ addRegBtn.addEventListener('click', function () {
   newRegion.addEventListener('keyup', function () {
     return disabledBtn();
   });
-  addRegion();
 });
 
 function disabledBtn() {
-  if (newRegion.value !== '') saveRegion.classList.add('blue');
+  if (newRegion.value !== '') {
+    saveRegion.classList.add('blue');
+  }
+
   if (newRegion.value === '') saveRegion.classList.remove('blue');
 }
+
+saveRegion.addEventListener('click', function () {
+  return addRegion();
+});
+cancelRegion.addEventListener('click', function () {
+  body.classList.remove('modal');
+  darkImage.classList.add('none');
+});
 
 function addRegion() {
   return regeneratorRuntime.async(function addRegion$(_context6) {
     while (1) {
       switch (_context6.prev = _context6.next) {
         case 0:
+          console.log('1');
+          /* const windowAddRegion = document.createElement('div')
+            windowAddRegion.classList.add('window-add-reg')
+            locationSection.appendChild(windowAddRegion) */
+
+        case 1:
         case "end":
           return _context6.stop();
       }
     }
   });
 }
+/* const user = {
+    username: username.value,
+    password: password.value,
+}
+const options = {
+    method: 'POST',
+    body: JSON.stringify(user),
+    headers: {
+        "Content-Type": "application/json"
+    }
+}
+const response = await fetch('http://localhost:3000/users/login', options)
+const data = await response.json()
+if (response.status === 200) {
+    console.log(data)
+    saveToken(data)
+    login.classList.add('none')
+    varSect = 'noLog'
+    //section que aparece luego de login
+    usersSection.classList.remove('none')
+    getUsers()
+} */

@@ -20,6 +20,7 @@ const body = document.querySelector('body')
 const darkImage = document.getElementById('darkImage')
 const newRegion = document.getElementById('newRegion')
 const saveRegion = document.getElementById('saveRegion')
+const cancelRegion = document.getElementById('cancelRegion')
 
 submit.addEventListener('click', (event) => {
     event.preventDefault()
@@ -315,17 +316,25 @@ addRegBtn.addEventListener('click', () => {
     darkImage.classList.remove('none')
     
     newRegion.addEventListener('keyup', () => disabledBtn())
-    addRegion()
+    
 })
 
 function disabledBtn() {
-    if(newRegion.value !== '')
+    if(newRegion.value !== '') {
         saveRegion.classList.add('blue')
+    }
     if(newRegion.value === '')
         saveRegion.classList.remove('blue')
 }
 
+saveRegion.addEventListener('click', () => addRegion())
+
+cancelRegion.addEventListener('click', () => {
+    body.classList.remove('modal')
+    darkImage.classList.add('none')
+})
 async function addRegion() {
+    console.log('1')
     /* const windowAddRegion = document.createElement('div')
 
     windowAddRegion.classList.add('window-add-reg')
