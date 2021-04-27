@@ -18,6 +18,8 @@ const addRegBtn = document.getElementById('addRegBtn')
 const locContainer = document.getElementById('locContainer')
 const body = document.querySelector('body')
 const darkImage = document.getElementById('darkImage')
+const newRegion = document.getElementById('newRegion')
+const saveRegion = document.getElementById('saveRegion')
 
 submit.addEventListener('click', (event) => {
     event.preventDefault()
@@ -311,8 +313,17 @@ addRegBtn.addEventListener('click', () => {
     window.scrollTo(0, 0)
     body.classList.add('modal')
     darkImage.classList.remove('none')
+    
+    newRegion.addEventListener('keyup', () => disabledBtn())
     addRegion()
 })
+
+function disabledBtn() {
+    if(newRegion.value !== '')
+        saveRegion.classList.add('blue')
+    if(newRegion.value === '')
+        saveRegion.classList.remove('blue')
+}
 
 async function addRegion() {
     /* const windowAddRegion = document.createElement('div')

@@ -309,7 +309,8 @@ margin-top: 11.5px;
 
 .dark-image {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     position: absolute;
     top: 0;
     height: 100vh;
@@ -318,12 +319,99 @@ margin-top: 11.5px;
 
 .window-add-reg {
     width: 90vw;
-    height: 200px;
+    height: 140px;
     position: relative;
     top: 96px;
+    background-color: rgb(29, 114, 194);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 0px;
+    font-weight: bold;
+    color: white;
+    /* box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%); */
+}
+
+.wind-title {
+    position: relative;
+    top: 26.7px;
+    left: 31.8px;
+}
+
+.window-add-reg-white {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    position: relative;
+    top: 96px;
+    width: 90vw;
+    height: 243px;
     background-color: white;
     border: 1px solid rgba(0, 0, 0, 0.1);
-    /* box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%); */
+    border-top: 0px;
+}
+
+.new-reg-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 85.8vw;
+    height: 131px;
+    position: relative;
+    top: -212px;
+    background: white;
+    border: 3px solid rgb(6, 131, 249);
+    border-radius: 6.5px;
+}
+
+.nr-lb {
+    width: 50%;
+    color: rgb(51, 51, 51);
+}
+
+.nr-input {
+    width: 50%;
+}
+
+.red-asterisk {
+    color: rgb(240, 55, 56);
+}
+
+.btn-white {
+    width: 100px;
+    height: 42px;
+    margin: 0 30px 30px 0;
+    background-color: white;
+    border: none;
+    border-radius: 2px;
+    font-weight: bold;
+    color: rgb(232, 232, 232);
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.btn-grey {
+    width: 173px;
+    height: 42px;
+    margin: 0 30px 30px 0;
+    background-color:  rgb(232, 232, 232);
+    border: none;
+    border-radius: 2px;
+    font-weight: bold;
+    color: white;
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.blue {
+    background-color: rgb(29, 114, 194);
+    &:hover {
+        background: #0683f9;
+    }
+    &:active {
+        background: #afafaf;
+    }
 }
 
 .firstname {

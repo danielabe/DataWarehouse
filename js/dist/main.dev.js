@@ -20,6 +20,8 @@ var addRegBtn = document.getElementById('addRegBtn');
 var locContainer = document.getElementById('locContainer');
 var body = document.querySelector('body');
 var darkImage = document.getElementById('darkImage');
+var newRegion = document.getElementById('newRegion');
+var saveRegion = document.getElementById('saveRegion');
 submit.addEventListener('click', function (event) {
   event.preventDefault();
   loginFunction(); //funcion nueva pantalla
@@ -396,8 +398,16 @@ addRegBtn.addEventListener('click', function () {
   window.scrollTo(0, 0);
   body.classList.add('modal');
   darkImage.classList.remove('none');
+  newRegion.addEventListener('keyup', function () {
+    return disabledBtn();
+  });
   addRegion();
 });
+
+function disabledBtn() {
+  if (newRegion.value !== '') saveRegion.classList.add('blue');
+  if (newRegion.value === '') saveRegion.classList.remove('blue');
+}
 
 function addRegion() {
   return regeneratorRuntime.async(function addRegion$(_context6) {

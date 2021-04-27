@@ -63,7 +63,17 @@
                 <ul id="regionList"></ul>
             </div>
             <div id="darkImage" class="dark-image none">
-                <div class="window-add-reg"></div>
+                <div class="window-add-reg">
+                    <p class="wind-title">Nueva región</p>
+                </div>
+                <div class="window-add-reg-white">
+                    <button class="btn-white">Cancelar</button>
+                    <button id="saveRegion" class="btn-grey">Guardar región</button>
+                </div>
+                <form class="new-reg-form" action="">
+                    <label class="nr-lb" for="newRegion">Nombre de la región<span class="red-asterisk">*</span></label>
+                    <input id="newRegion" class="field nr-input" type="text">
+                </form>
             </div>
         </section>
     </main>
