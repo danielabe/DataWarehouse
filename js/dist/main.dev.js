@@ -23,6 +23,8 @@ var darkImage = document.getElementById('darkImage');
 var newRegion = document.getElementById('newRegion');
 var saveRegion = document.getElementById('saveRegion');
 var cancelRegion = document.getElementById('cancelRegion');
+var newRegForm = document.getElementById('newRegForm');
+var msgContainer = document.getElementById('msgContainer');
 submit.addEventListener('click', function (event) {
   event.preventDefault();
   loginFunction(); //funcion nueva pantalla
@@ -421,41 +423,65 @@ cancelRegion.addEventListener('click', function () {
 });
 
 function addRegion() {
+  var region, options, response, msgError, data;
   return regeneratorRuntime.async(function addRegion$(_context6) {
     while (1) {
       switch (_context6.prev = _context6.next) {
         case 0:
-          console.log('1');
-          /* const windowAddRegion = document.createElement('div')
-            windowAddRegion.classList.add('window-add-reg')
-            locationSection.appendChild(windowAddRegion) */
+          region = {
+            region_name: newRegion.value
+          };
+          options = {
+            method: 'POST',
+            body: JSON.stringify(region),
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
+            }
+          };
+          _context6.prev = 2;
+          _context6.next = 5;
+          return regeneratorRuntime.awrap(fetch('http://localhost:3000/regions', options));
 
-        case 1:
+        case 5:
+          response = _context6.sent;
+
+          if (response.status === 400) {
+            msgContainer.innerHTML = '';
+            msgError = document.createElement('p');
+            msgContainer.appendChild(msgError);
+
+            if (newRegion.value.length < 2 || newRegion.value.length > 64) {
+              msgError.innerText = 'Nombre incorrecto';
+            } else {
+              msgError.innerText = 'La región ya existe';
+            }
+          }
+
+          if (response.status === 201) {
+            body.classList.remove('modal');
+            darkImage.classList.add('none');
+            getLocations();
+          }
+
+          _context6.next = 10;
+          return regeneratorRuntime.awrap(response.json());
+
+        case 10:
+          data = _context6.sent;
+          console.log(data);
+          _context6.next = 17;
+          break;
+
+        case 14:
+          _context6.prev = 14;
+          _context6.t0 = _context6["catch"](2);
+          return _context6.abrupt("return", _context6.t0);
+
+        case 17:
         case "end":
           return _context6.stop();
       }
     }
-  });
+  }, null, null, [[2, 14]]);
 }
-/* const user = {
-    username: username.value,
-    password: password.value,
-}
-const options = {
-    method: 'POST',
-    body: JSON.stringify(user),
-    headers: {
-        "Content-Type": "application/json"
-    }
-}
-const response = await fetch('http://localhost:3000/users/login', options)
-const data = await response.json()
-if (response.status === 200) {
-    console.log(data)
-    saveToken(data)
-    login.classList.add('none')
-    varSect = 'noLog'
-    //section que aparece luego de login
-    usersSection.classList.remove('none')
-    getUsers()
-} */

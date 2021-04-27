@@ -365,11 +365,14 @@ margin-top: 11.5px;
 
 .nr-lb {
     width: 50%;
+    padding: 0 0 10.6px 0;
+    font-size: 14px;
     color: rgb(51, 51, 51);
 }
 
 .nr-input {
     width: 50%;
+    font-size: 14px;
 }
 
 .red-asterisk {
@@ -412,6 +415,13 @@ margin-top: 11.5px;
     &:active {
         background: #afafaf;
     }
+}
+
+.msg-container {
+    width: 50%;
+    font-size: 12px;
+    font-style: italic;
+    color: red;
 }
 
 .firstname {

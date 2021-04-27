@@ -21,6 +21,8 @@ const darkImage = document.getElementById('darkImage')
 const newRegion = document.getElementById('newRegion')
 const saveRegion = document.getElementById('saveRegion')
 const cancelRegion = document.getElementById('cancelRegion')
+const newRegForm = document.getElementById('newRegForm')
+const msgContainer = document.getElementById('msgContainer')
 
 submit.addEventListener('click', (event) => {
     event.preventDefault()
@@ -334,36 +336,36 @@ cancelRegion.addEventListener('click', () => {
     darkImage.classList.add('none')
 })
 async function addRegion() {
-    console.log('1')
-    /* const windowAddRegion = document.createElement('div')
+    const region = { region_name: newRegion.value }
 
-    windowAddRegion.classList.add('window-add-reg')
-
-    locationSection.appendChild(windowAddRegion) */
-
-
-}
-
-
-/* const user = {
-    username: username.value,
-    password: password.value,
-}
-const options = {
-    method: 'POST',
-    body: JSON.stringify(user),
-    headers: {
-        "Content-Type": "application/json"
+    const options = {
+        method: 'POST',
+        body: JSON.stringify(region),
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
+        }
+    }
+    try {
+        const response = await fetch('http://localhost:3000/regions', options)
+        if(response.status === 400) {
+            msgContainer.innerHTML = ''
+            const msgError = document.createElement('p')
+            msgContainer.appendChild(msgError)
+            if(newRegion.value.length < 2 || newRegion.value.length > 64) {
+                msgError.innerText = 'Nombre incorrecto'
+            } else {
+                msgError.innerText = 'La región ya existe'
+            }
+        }
+        if(response.status === 201) {
+            body.classList.remove('modal')
+            darkImage.classList.add('none')
+            getLocations()
+        }
+        const data = await response.json()
+        console.log(data)
+    } catch(reason) {
+        return reason
     }
 }
-const response = await fetch('http://localhost:3000/users/login', options)
-const data = await response.json()
-if (response.status === 200) {
-    console.log(data)
-    saveToken(data)
-    login.classList.add('none')
-    varSect = 'noLog'
-    //section que aparece luego de login
-    usersSection.classList.remove('none')
-    getUsers()
-} */
