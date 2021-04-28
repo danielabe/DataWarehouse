@@ -201,6 +201,23 @@ async function validateContactId(req, res, next) {
     await validateContactIdQuery(req, res, next)
 }
 
+function validateUserAccount(req, res, next) {
+    const channelsBody = req.body.preferred_channels
+    channelsBody.every(element => { 
+        if(element.user_account.length >= 2 && element.user_account.length <= 64) next()
+        else res.status(400).send("The userAccount length is wrong").end()
+    })
+}
+
+async function validatePreference(req, res, next) {
+    const channelsBody = req.body.preferred_channels
+    channelsBody.every(element => { 
+        if(element.preference === 'Sin preferencia' || element.preference === 'Canal favorito' 
+        || element.preference === 'No molestar') next()
+        else res.status(400).send("The preference is wrong").end()
+    })
+}
+
 async function validateEmailContactsPut(req, res, next) {
     await validateEmailContactsPutQuery(req, res, next)
 }
@@ -209,7 +226,7 @@ async function validateCompanyIdPut(req, res, next) {
     await validateCompanyIdPutQuery(req, res, next)
 }
 
-async function validatePositionPut(req, res, next) {
+function validatePositionPut(req, res, next) {
     if(req.body.position) {
         const position = req.body.position
         if(position.length >= 2 && position.length <= 64) next()
@@ -258,9 +275,9 @@ module.exports = { validateLogin, verifyToken, filterAdmin, validateFirstname, v
     validateRegionIdCountry, validateCityName, validateCityId, validateCountryIdCity,
     validateCityNamePut, validateCompanyName, validateAddress,validateCompanyId, 
     validateCompanyNamePut, validateCityIdPut, validateAddressPut, validateEmailContacts,
-    validatePosition, validateInterest, validateChannelId, validateContactId, validateEmailContactsPut,
-    validateCompanyIdPut, validatePositionPut, validateInterestPut, validateChannelIdPut,
-    validateChannelIdAdd, validateChannelIdDel, validateChannelName, validateChannelIdEx,
-    validateChannelNamePut
+    validatePosition, validateInterest, validateChannelId, validateUserAccount, validatePreference, 
+    validateContactId, validateEmailContactsPut, validateCompanyIdPut, validatePositionPut, 
+    validateInterestPut, validateChannelIdPut, validateChannelIdAdd, validateChannelIdDel, 
+    validateChannelName, validateChannelIdEx, validateChannelNamePut
 }
 

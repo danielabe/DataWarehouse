@@ -20,10 +20,10 @@ const { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLast
     validateRegionIdCountry, validateCityName, validateCityId, validateCountryIdCity,
     validateCityNamePut, validateCompanyName, validateAddress, validateCompanyId, 
     validateCompanyNamePut, validateCityIdPut, validateAddressPut, validateEmailContacts,
-    validatePosition, validateInterest, validateChannelId, validateContactId, 
-    validateEmailContactsPut, validateCompanyIdPut, validatePositionPut, validateInterestPut, 
-    validateChannelIdPut, validateChannelIdAdd, validateChannelIdDel, validateChannelName,
-    validateChannelIdEx, validateChannelNamePut } = require('./functions.js')
+    validatePosition, validateInterest, validateChannelId, validateContactId, validateUserAccount, 
+    validatePreference, validateEmailContactsPut, validateCompanyIdPut, validatePositionPut, 
+    validateInterestPut, validateChannelIdPut, validateChannelIdAdd, validateChannelIdDel, 
+    validateChannelName, validateChannelIdEx, validateChannelNamePut } = require('./functions.js')
 
 app.use(express.json())
 app.use(helmet())
@@ -218,7 +218,7 @@ app.get('/contacts', async (req, res) => {
 
 app.post('/contacts', validateFirstname, validateLastname, validateEmailContacts,
 validateCityId, validateAddress, validateCompanyId, validatePosition, validateInterest, 
-validateChannelId, async (req, res) => {
+validateChannelId, validateUserAccount, validatePreference, async (req, res) => {
     const newContact = {
         firstname: req.body.firstname,
         lastname: req.body.lastname,

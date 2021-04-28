@@ -478,13 +478,23 @@ function validateContactId(req, res, next) {
   });
 }
 
-function validateEmailContactsPut(req, res, next) {
-  return regeneratorRuntime.async(function validateEmailContactsPut$(_context23) {
+function validateUserAccount(req, res, next) {
+  var channelsBody = req.body.preferred_channels;
+  channelsBody.every(function (element) {
+    if (element.user_account.length >= 2 && element.user_account.length <= 64) next();else res.status(400).send("The userAccount length is wrong").end();
+  });
+}
+
+function validatePreference(req, res, next) {
+  var channelsBody;
+  return regeneratorRuntime.async(function validatePreference$(_context23) {
     while (1) {
       switch (_context23.prev = _context23.next) {
         case 0:
-          _context23.next = 2;
-          return regeneratorRuntime.awrap(validateEmailContactsPutQuery(req, res, next));
+          channelsBody = req.body.preferred_channels;
+          channelsBody.every(function (element) {
+            if (element.preference === 'Sin preferencia' || element.preference === 'Canal favorito' || element.preference === 'No molestar') next();else res.status(400).send("The preference is wrong").end();
+          });
 
         case 2:
         case "end":
@@ -494,13 +504,13 @@ function validateEmailContactsPut(req, res, next) {
   });
 }
 
-function validateCompanyIdPut(req, res, next) {
-  return regeneratorRuntime.async(function validateCompanyIdPut$(_context24) {
+function validateEmailContactsPut(req, res, next) {
+  return regeneratorRuntime.async(function validateEmailContactsPut$(_context24) {
     while (1) {
       switch (_context24.prev = _context24.next) {
         case 0:
           _context24.next = 2;
-          return regeneratorRuntime.awrap(validateCompanyIdPutQuery(req, res, next));
+          return regeneratorRuntime.awrap(validateEmailContactsPutQuery(req, res, next));
 
         case 2:
         case "end":
@@ -510,23 +520,27 @@ function validateCompanyIdPut(req, res, next) {
   });
 }
 
-function validatePositionPut(req, res, next) {
-  var position;
-  return regeneratorRuntime.async(function validatePositionPut$(_context25) {
+function validateCompanyIdPut(req, res, next) {
+  return regeneratorRuntime.async(function validateCompanyIdPut$(_context25) {
     while (1) {
       switch (_context25.prev = _context25.next) {
         case 0:
-          if (req.body.position) {
-            position = req.body.position;
-            if (position.length >= 2 && position.length <= 64) next();else res.status(400).send("The position is wrong").end();
-          } else next();
+          _context25.next = 2;
+          return regeneratorRuntime.awrap(validateCompanyIdPutQuery(req, res, next));
 
-        case 1:
+        case 2:
         case "end":
           return _context25.stop();
       }
     }
   });
+}
+
+function validatePositionPut(req, res, next) {
+  if (req.body.position) {
+    var position = req.body.position;
+    if (position.length >= 2 && position.length <= 64) next();else res.status(400).send("The position is wrong").end();
+  } else next();
 }
 
 function validateInterestPut(req, res, next) {
@@ -666,6 +680,8 @@ module.exports = {
   validatePosition: validatePosition,
   validateInterest: validateInterest,
   validateChannelId: validateChannelId,
+  validateUserAccount: validateUserAccount,
+  validatePreference: validatePreference,
   validateContactId: validateContactId,
   validateEmailContactsPut: validateEmailContactsPut,
   validateCompanyIdPut: validateCompanyIdPut,

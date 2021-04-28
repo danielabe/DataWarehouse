@@ -89,6 +89,8 @@ var _require2 = require('./functions.js'),
     validateInterest = _require2.validateInterest,
     validateChannelId = _require2.validateChannelId,
     validateContactId = _require2.validateContactId,
+    validateUserAccount = _require2.validateUserAccount,
+    validatePreference = _require2.validatePreference,
     validateEmailContactsPut = _require2.validateEmailContactsPut,
     validateCompanyIdPut = _require2.validateCompanyIdPut,
     validatePositionPut = _require2.validatePositionPut,
@@ -619,7 +621,7 @@ app.get('/contacts', function _callee31(req, res) {
     }
   });
 });
-app.post('/contacts', validateFirstname, validateLastname, validateEmailContacts, validateCityId, validateAddress, validateCompanyId, validatePosition, validateInterest, validateChannelId, function _callee32(req, res) {
+app.post('/contacts', validateFirstname, validateLastname, validateEmailContacts, validateCityId, validateAddress, validateCompanyId, validatePosition, validateInterest, validateChannelId, validateUserAccount, validatePreference, function _callee32(req, res) {
   var newContact;
   return regeneratorRuntime.async(function _callee32$(_context32) {
     while (1) {
