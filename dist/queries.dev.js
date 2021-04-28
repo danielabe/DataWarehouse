@@ -1658,7 +1658,7 @@ function createContact(newContact, req, res) {
       switch (_context53.prev = _context53.next) {
         case 0:
           _context53.next = 2;
-          return regeneratorRuntime.awrap(db.query("\n    INSERT INTO contacts (firstname, lastname, email, city_id, company_id, position, interest)\n    VALUES (:firstname, :lastname, :email, :city_id, :company_id, :position, :interest)\n    ", {
+          return regeneratorRuntime.awrap(db.query("\n    INSERT INTO contacts (firstname, lastname, email, city_id, address, company_id, position, interest)\n    VALUES (:firstname, :lastname, :email, :city_id, :address, :company_id, :position, :interest)\n    ", {
             replacements: newContact,
             type: QueryTypes.INSERT
           }));
@@ -1687,7 +1687,7 @@ function createContact(newContact, req, res) {
             });
           });
           _context53.next = 6;
-          return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.company_id, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    WHERE contact_id = ?\n    ", {
+          return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.address, cont.company_id, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    WHERE contact_id = ?\n    ", {
             replacements: [contactInserted[0]],
             type: QueryTypes.SELECT
           }));
@@ -1751,7 +1751,7 @@ function getContact(contactId, req, res) {
       switch (_context55.prev = _context55.next) {
         case 0:
           _context55.next = 2;
-          return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.company_id, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    WHERE contact_id = ?\n    ", {
+          return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.address, cont.company_id, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    WHERE contact_id = ?\n    ", {
             replacements: [contactId],
             type: QueryTypes.SELECT
           }));
@@ -1925,6 +1925,7 @@ function modifycontact(req, res) {
             lastname: req.body.lastname || contact[0].lastname,
             email: req.body.email || contact[0].email,
             city_id: req.body.city_id || contact[0].city_id,
+            address: req.body.address || contact[0].address,
             company_id: req.body.company_id || contact[0].company_id,
             position: req.body.position || contact[0].position,
             interest: req.body.interest || contact[0].interest
@@ -1934,7 +1935,7 @@ function modifycontact(req, res) {
 
           };
           _context59.next = 6;
-          return regeneratorRuntime.awrap(db.query("\n    UPDATE contacts SET firstname = :firstname, lastname = :lastname, email = :email, city_id = :city_id, \n    company_id = :company_id, position = :position, interest = :interest\n    WHERE contact_id = :contact_id\n    ", {
+          return regeneratorRuntime.awrap(db.query("\n    UPDATE contacts SET firstname = :firstname, lastname = :lastname, email = :email, city_id = :city_id, \n    address = :address, company_id = :company_id, position = :position, interest = :interest\n    WHERE contact_id = :contact_id\n    ", {
             replacements: modifiedContact,
             type: QueryTypes.UPDATE
           }));
@@ -1942,7 +1943,7 @@ function modifycontact(req, res) {
         case 6:
           modified = _context59.sent;
           _context59.next = 9;
-          return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.company_id, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    WHERE contact_id = ?\n    ", {
+          return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.company_id, cont.address, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    WHERE contact_id = ?\n    ", {
             replacements: [req.params.contactId],
             type: QueryTypes.SELECT
           }));

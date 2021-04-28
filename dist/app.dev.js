@@ -619,7 +619,7 @@ app.get('/contacts', function _callee31(req, res) {
     }
   });
 });
-app.post('/contacts', validateFirstname, validateLastname, validateEmailContacts, validateCityId, validateCompanyId, validatePosition, validateInterest, validateChannelId, function _callee32(req, res) {
+app.post('/contacts', validateFirstname, validateLastname, validateEmailContacts, validateCityId, validateAddress, validateCompanyId, validatePosition, validateInterest, validateChannelId, function _callee32(req, res) {
   var newContact;
   return regeneratorRuntime.async(function _callee32$(_context32) {
     while (1) {
@@ -630,6 +630,7 @@ app.post('/contacts', validateFirstname, validateLastname, validateEmailContacts
             lastname: req.body.lastname,
             email: req.body.email,
             city_id: req.body.city_id,
+            address: req.body.address,
             company_id: req.body.company_id,
             position: req.body.position,
             interest: req.body.interest,
@@ -660,7 +661,7 @@ app.get('/contacts/:contactId', validateContactId, function _callee33(req, res) 
     }
   });
 });
-app.put('/contacts/:contactId', validateContactId, validateFirstnamePut, validateLastnamePut, validateEmailContactsPut, validateCityIdPut, validateCompanyIdPut, validatePositionPut, validateInterestPut, validateChannelIdPut, function _callee34(req, res) {
+app.put('/contacts/:contactId', validateContactId, validateFirstnamePut, validateLastnamePut, validateEmailContactsPut, validateCityIdPut, validateAddressPut, validateCompanyIdPut, validatePositionPut, validateInterestPut, validateChannelIdPut, function _callee34(req, res) {
   return regeneratorRuntime.async(function _callee34$(_context34) {
     while (1) {
       switch (_context34.prev = _context34.next) {

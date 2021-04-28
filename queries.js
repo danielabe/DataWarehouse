@@ -667,10 +667,10 @@ function different(value, index, list) {
     return list.indexOf(value) === index
 }
 
-async function createContact(newContact, req, res) {
+async function createContact(newContact, req, res) { //arreglar la asincronia, a veces no me devuelve el dato que se inserto
     const contactInserted = await db.query(`
-    INSERT INTO contacts (firstname, lastname, email, city_id, company_id, position, interest)
-    VALUES (:firstname, :lastname, :email, :city_id, :company_id, :position, :interest)
+    INSERT INTO contacts (firstname, lastname, email, city_id, address, company_id, position, interest)
+    VALUES (:firstname, :lastname, :email, :city_id, :address, :company_id, :position, :interest)
     `, {
         replacements: newContact,
         type: QueryTypes.INSERT
@@ -684,7 +684,7 @@ async function createContact(newContact, req, res) {
     }))
     const contact = await db.query(`
     SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,
-    co.country_name, co.region_id, re.region_name, cont.company_id, comp.company_name,
+    co.country_name, co.region_id, re.region_name, cont.address, cont.company_id, comp.company_name,
     position, interest
     FROM contacts cont 
     JOIN cities ci ON ci.city_id = cont.city_id
@@ -720,7 +720,7 @@ async function validateContactIdQuery(req, res, next) {
 async function getContact(contactId, req, res) {
     const contact = await db.query(`
     SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,
-    co.country_name, co.region_id, re.region_name, cont.company_id, comp.company_name,
+    co.country_name, co.region_id, re.region_name, cont.address, cont.company_id, comp.company_name,
     position, interest
     FROM contacts cont 
     JOIN cities ci ON ci.city_id = cont.city_id
@@ -796,7 +796,8 @@ async function modifycontact(req, res) {
         firstname: req.body.firstname || contact[0].firstname,
         lastname: req.body.lastname || contact[0].lastname,
         email: req.body.email || contact[0].email,
-        city_id: req.body.city_id || contact[0].city_id ,
+        city_id: req.body.city_id || contact[0].city_id,
+        address: req.body.address || contact[0].address,
         company_id: req.body.company_id || contact[0].company_id,
         position: req.body.position || contact[0].position,
         interest: req.body.interest || contact[0].interest,
@@ -804,7 +805,7 @@ async function modifycontact(req, res) {
     }
     const modified = await db.query(`
     UPDATE contacts SET firstname = :firstname, lastname = :lastname, email = :email, city_id = :city_id, 
-    company_id = :company_id, position = :position, interest = :interest
+    address = :address, company_id = :company_id, position = :position, interest = :interest
     WHERE contact_id = :contact_id
     `, {
         replacements: modifiedContact,
@@ -813,7 +814,7 @@ async function modifycontact(req, res) {
     
     const contactRes = await db.query(`
     SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,
-    co.country_name, co.region_id, re.region_name, cont.company_id, comp.company_name,
+    co.country_name, co.region_id, re.region_name, cont.company_id, cont.address, comp.company_name,
     position, interest
     FROM contacts cont 
     JOIN cities ci ON ci.city_id = cont.city_id

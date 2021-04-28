@@ -217,13 +217,14 @@ app.get('/contacts', async (req, res) => {
 })
 
 app.post('/contacts', validateFirstname, validateLastname, validateEmailContacts,
-validateCityId, validateCompanyId, validatePosition, validateInterest, 
+validateCityId, validateAddress, validateCompanyId, validatePosition, validateInterest, 
 validateChannelId, async (req, res) => {
     const newContact = {
         firstname: req.body.firstname,
         lastname: req.body.lastname,
         email: req.body.email,
         city_id: req.body.city_id,
+        address: req.body.address,
         company_id: req.body.company_id,
         position: req.body.position,
         interest: req.body.interest,
@@ -238,7 +239,7 @@ app.get('/contacts/:contactId', validateContactId, async (req, res) => {
 })
 
 app.put('/contacts/:contactId', validateContactId, validateFirstnamePut, validateLastnamePut,
-validateEmailContactsPut, validateCityIdPut, validateCompanyIdPut, validatePositionPut, 
+validateEmailContactsPut, validateCityIdPut, validateAddressPut,validateCompanyIdPut, validatePositionPut, 
 validateInterestPut, validateChannelIdPut, async (req, res) => {
     modifycontact(req, res)
 })
