@@ -1550,7 +1550,7 @@ function getContacts(req, res) {
       switch (_context49.prev = _context49.next) {
         case 0:
           _context49.next = 2;
-          return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.company_id, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    ", {
+          return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.address, cont.company_id, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    ", {
             type: QueryTypes.SELECT
           }));
 
@@ -1671,7 +1671,7 @@ function createContact(newContact, req, res) {
                 switch (_context52.prev = _context52.next) {
                   case 0:
                     _context52.next = 2;
-                    return regeneratorRuntime.awrap(db.query("\n    INSERT INTO contacts_channels (contact_id, channel_id)\n    VALUES (".concat(contactInserted[0], ", ").concat(channel.channel_id, ")\n    "), {
+                    return regeneratorRuntime.awrap(db.query("\n    INSERT INTO contacts_channels (contact_id, channel_id, user_account, preference)\n    VALUES (".concat(contactInserted[0], ", ").concat(channel.channel_id, ", '").concat(channel.user_account, "', '").concat(channel.preference, "')\n    "), {
                       replacements: req.body.preferred_channels,
                       type: QueryTypes.INSERT
                     }));
@@ -2082,7 +2082,7 @@ function addChannel(newContChan, req, res) {
       switch (_context63.prev = _context63.next) {
         case 0:
           _context63.next = 2;
-          return regeneratorRuntime.awrap(db.query("\n    INSERT INTO contacts_channels (contact_id, channel_id)\n    VALUES (:contact_id, :channel_id)\n    ", {
+          return regeneratorRuntime.awrap(db.query("\n    INSERT INTO contacts_channels (contact_id, channel_id, user_account, preference)\n    VALUES (:contact_id, :channel_id, :user_account, :preference)\n    ", {
             replacements: newContChan,
             type: QueryTypes.INSERT
           }));
@@ -2090,7 +2090,7 @@ function addChannel(newContChan, req, res) {
         case 2:
           inserted = _context63.sent;
           _context63.next = 5;
-          return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, cc.channel_id, channel_name FROM contacts_channels cc \n    JOIN channels ch ON cc.channel_id = ch.channel_id \n    WHERE contact_id = :contact_id\n    ", {
+          return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, cc.channel_id, channel_name, user_account, preference\n    FROM contacts_channels cc \n    JOIN channels ch ON cc.channel_id = ch.channel_id \n    WHERE contact_id = :contact_id\n    ", {
             replacements: newContChan,
             type: QueryTypes.SELECT
           }));

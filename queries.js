@@ -615,7 +615,7 @@ async function deleteCompany(companyId, req, res) {
 async function getContacts(req, res) {
     const contacts = await db.query(`
     SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,
-    co.country_name, co.region_id, re.region_name, cont.company_id, comp.company_name,
+    co.country_name, co.region_id, re.region_name, cont.address, cont.company_id, comp.company_name,
     position, interest
     FROM contacts cont 
     JOIN cities ci ON ci.city_id = cont.city_id
@@ -676,8 +676,8 @@ async function createContact(newContact, req, res) {
         type: QueryTypes.INSERT
     })
     req.body.preferred_channels.forEach(async channel => await db.query(`
-    INSERT INTO contacts_channels (contact_id, channel_id)
-    VALUES (${contactInserted[0]}, ${channel.channel_id})
+    INSERT INTO contacts_channels (contact_id, channel_id, user_account, preference)
+    VALUES (${contactInserted[0]}, ${channel.channel_id}, '${channel.user_account}', '${channel.preference}')
     `, {
         replacements: req.body.preferred_channels,
         type: QueryTypes.INSERT
@@ -889,14 +889,15 @@ async function validateChannelIdDelQuery(req, res, next) {
 
 async function addChannel(newContChan, req, res) {
     const inserted = await db.query(`
-    INSERT INTO contacts_channels (contact_id, channel_id)
-    VALUES (:contact_id, :channel_id)
+    INSERT INTO contacts_channels (contact_id, channel_id, user_account, preference)
+    VALUES (:contact_id, :channel_id, :user_account, :preference)
     `, {
         replacements: newContChan,
         type: QueryTypes.INSERT
     })
     const channels = await db.query(`
-    SELECT contact_id, cc.channel_id, channel_name FROM contacts_channels cc 
+    SELECT contact_id, cc.channel_id, channel_name, user_account, preference
+    FROM contacts_channels cc 
     JOIN channels ch ON cc.channel_id = ch.channel_id 
     WHERE contact_id = :contact_id
     `, {

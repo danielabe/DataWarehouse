@@ -1552,6 +1552,9 @@ definitions:
       region_name:
         type: "string"
         example: "Sudamérica"
+      address:
+        type: "string"
+        example: "Humboldt 1967"
       company_id:
         type: "integer"
         format: "int64"
@@ -1572,11 +1575,15 @@ definitions:
           {
             contact_id: 14,
             channel_id: 1,
+            user_account: 341564399,
+            preference: Canal favorito,
             channel: Whatsapp
           },
           {
             contact_id: 14,
             channel_id: 2,
+            user_account: https://www.facebook.com/agustinsoria,
+            preference: No molestar,
             channel: Facebook
           }
           ]
@@ -1596,6 +1603,9 @@ definitions:
         type: "integer"
         format: "int64"
         example: 1
+      address:
+        type: "string"
+        example: "Humboldt 1967"
       company_id:
         type: "integer"
         format: "int64"
@@ -1611,10 +1621,14 @@ definitions:
         type: "object"
         example: [
           {
-            channel_id: 1
+            channel_id: 1,
+            user_account: 341564399,
+            preference: Canal favorito
           },
           {
-            channel_id: 2
+            channel_id: 2,
+            user_account: https://www.facebook.com/agustinsoria,
+            preference: No molestar
           }
           ]
   NewContactPut:
@@ -1633,6 +1647,9 @@ definitions:
         type: "integer"
         format: "int64"
         example: 1
+      address:
+        type: "string"
+        example: "Humboldt 1967"
       company_id:
         type: "integer"
         format: "int64"
@@ -1664,6 +1681,9 @@ definitions:
         type: "integer"
         format: "int64"
         example: 2
+      address:
+        type: "string"
+        example: "Humboldt 1967"
       company_id:
         type: "integer"
         format: "int64"
@@ -1682,16 +1702,26 @@ definitions:
         type: "integer"
         format: "int64"
         example: 2
+      user_account: 
+        type: "string"
+        example: "https://www.facebook.com/agustinsoria"
+      preference: 
+        type: "string"
+        example: "No molestar"
   ChannelsContact:
     example: [
       {
         contact_id: 14,
         channel_id: 1,
+        user_account: 341564399,
+        preference: Canal favorito,
         channel: Whatsapp
       },
       {
         contact_id: 14,
         channel_id: 2,
+        user_account: https://www.facebook.com/agustinsoria,
+        preference: No molestar,
         channel: Facebook
       }
       ]

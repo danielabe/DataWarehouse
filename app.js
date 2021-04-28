@@ -251,7 +251,9 @@ app.delete('/contacts/:contactId', validateContactId, async (req, res) => {
 app.post('/contacts/:contactId/channels', validateContactId, validateChannelIdAdd, async (req, res) => {
     const newContChan = {
         contact_id: +req.params.contactId,
-        channel_id: req.body.channel_id
+        channel_id: req.body.channel_id,
+        user_account: req.body.user_account,
+        preference: req.body.preference
     }
     addChannel(newContChan, req, res)
 })

@@ -698,7 +698,9 @@ app.post('/contacts/:contactId/channels', validateContactId, validateChannelIdAd
         case 0:
           newContChan = {
             contact_id: +req.params.contactId,
-            channel_id: req.body.channel_id
+            channel_id: req.body.channel_id,
+            user_account: req.body.user_account,
+            preference: req.body.preference
           };
           addChannel(newContChan, req, res);
 
