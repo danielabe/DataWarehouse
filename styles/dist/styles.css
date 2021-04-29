@@ -416,6 +416,105 @@ main {
   color: red;
 }
 
+.taskbar {
+  display: flex;
+  margin: 20.3px 0 0 0;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  margin: 0 0 0 29.5px;
+}
+
+.search {
+  width: 36.7vw;
+  height: 41px;
+  outline: none;
+  border: none;
+  border: 1px solid #CCCCCC;
+  border-radius: 3.5px;
+}
+
+.fa-search {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 41px;
+  height: 41px;
+  margin: 0 0 0 9px;
+  color: #1d72c2;
+  border: 1px solid #CCCCCC;
+  border-radius: 3.5px;
+}
+.fa-search:hover {
+  cursor: pointer;
+}
+
+.export-add {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 0 28px 0 0;
+}
+
+.fa-upload {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 41px;
+  height: 41px;
+  margin: 0 9px 0 0;
+  color: #1d72c2;
+  border: 1px solid #1d72c2;
+  border-radius: 3.5px;
+}
+.fa-upload:hover {
+  cursor: pointer;
+}
+
+.exp-contacts-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 12.6vw;
+  height: 41px;
+  margin: 0 9px 0 0;
+  border: 1px solid #1d72c2;
+  border-radius: 1.5px;
+  color: #0683f9;
+}
+.exp-contacts-btn:hover {
+  cursor: pointer;
+}
+
+.fa-caret-down {
+  display: flex;
+  align-items: center;
+  width: 10px;
+  height: 6.7px;
+  margin: 0 0 0 10px;
+  color: #1d72c2;
+}
+
+.new-contact-btn {
+  width: 12.6vw;
+  height: 41px;
+  border: none;
+  border-radius: 2px;
+  background: #1d72c2;
+  color: white;
+}
+.new-contact-btn:hover {
+  background: #0683f9;
+}
+.new-contact-btn:active {
+  background: #afafaf;
+}
+.new-contact-btn:hover {
+  cursor: pointer;
+}
+
 .none {
   display: none;
 }
