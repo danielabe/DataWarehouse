@@ -553,6 +553,18 @@ main {
     }
 }
 
+.col-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.grey-info {
+    font-size: 11px;
+    color: rgba(0,0,0,0.50);
+}
+
+
 
 .none {
     display: none;

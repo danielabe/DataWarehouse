@@ -546,6 +546,17 @@ main {
   background: rgba(0, 0, 0, 0.05);
 }
 
+.col-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.grey-info {
+  font-size: 11px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
 .none {
   display: none;
 }

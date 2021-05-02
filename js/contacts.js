@@ -27,6 +27,8 @@ async function getContacts() {
             cityName: element.city_name,
             countryId: element.country_id,
             countryName: element.country_name,
+            regionId: element.region_id,
+            regionName: element.region_name,
             companyId: element.company_id,
             companyName: element.company_name,
             position: element.position,
@@ -47,8 +49,8 @@ async function getContacts() {
         const trash = document.createElement('i')
         const pen = document.createElement('i')
 
-        contact.innerText = info.firstname + ' ' + info.lastname
-        country.innerText = info.countryName
+        contact.innerHTML = `<p>${info.firstname} ${info.lastname}</p><p class="grey-info">${info.email}</p>`
+        country.innerHTML = `<p>${info.countryName}</p><p class="grey-info">${info.regionName}</p>`
         company.innerText = info.companyName
         position.innerText = info.position
         preferredChannel.innerText = info.preferred_channels + 'arreglar'
@@ -56,13 +58,13 @@ async function getContacts() {
    
         contactsList.classList.add('users-list')
         row.classList.add('row-contact')
-        contact.classList.add('u-item')        
-        country.classList.add('u-item')        
+        contact.classList = 'u-item col-item'        
+        country.classList = 'u-item col-item'     
         company.classList.add('u-item')        
         position.classList.add('u-item')        
         preferredChannel.classList.add('u-item')        
         interest.classList.add('u-item')        
-        checkbox.classList = 'far fa-square'
+        checkbox.classList = 'far fa-square u-item'
         actions.classList = 'u-item action'
         ellipsis.classList = 'fas fa-ellipsis-h'
         trash.classList = 'fas fa-trash none'

@@ -39,6 +39,8 @@ function getContacts() {
               cityName: element.city_name,
               countryId: element.country_id,
               countryName: element.country_name,
+              regionId: element.region_id,
+              regionName: element.region_name,
               companyId: element.company_id,
               companyName: element.company_name,
               position: element.position,
@@ -58,21 +60,21 @@ function getContacts() {
             var ellipsis = document.createElement('i');
             var trash = document.createElement('i');
             var pen = document.createElement('i');
-            contact.innerText = info.firstname + ' ' + info.lastname;
-            country.innerText = info.countryName;
+            contact.innerHTML = "<p>".concat(info.firstname, " ").concat(info.lastname, "</p><p class=\"grey-info\">").concat(info.email, "</p>");
+            country.innerHTML = "<p>".concat(info.countryName, "</p><p class=\"grey-info\">").concat(info.regionName, "</p>");
             company.innerText = info.companyName;
             position.innerText = info.position;
             preferredChannel.innerText = info.preferred_channels + 'arreglar';
             interest.innerText = info.interest;
             contactsList.classList.add('users-list');
             row.classList.add('row-contact');
-            contact.classList.add('u-item');
-            country.classList.add('u-item');
+            contact.classList = 'u-item col-item';
+            country.classList = 'u-item col-item';
             company.classList.add('u-item');
             position.classList.add('u-item');
             preferredChannel.classList.add('u-item');
             interest.classList.add('u-item');
-            checkbox.classList = 'far fa-square';
+            checkbox.classList = 'far fa-square u-item';
             actions.classList = 'u-item action';
             ellipsis.classList = 'fas fa-ellipsis-h';
             trash.classList = 'fas fa-trash none';
