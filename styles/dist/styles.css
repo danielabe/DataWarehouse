@@ -557,6 +557,20 @@ main {
   color: rgba(0, 0, 0, 0.5);
 }
 
+.channel {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 24px;
+  margin-right: 4px;
+  font-size: 11px;
+  background-color: rgba(142, 199, 252, 0.5);
+  border-radius: 4px;
+  color: #0683f9;
+}
+
 .none {
   display: none;
 }

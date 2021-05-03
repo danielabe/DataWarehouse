@@ -14,7 +14,6 @@ async function getContacts() {
     const data = await response.json()
     console.log(data)
 
-
     const contactsList = document.createElement('div')
 
     data.forEach(element => {
@@ -53,9 +52,25 @@ async function getContacts() {
         country.innerHTML = `<p>${info.countryName}</p><p class="grey-info">${info.regionName}</p>`
         company.innerText = info.companyName
         position.innerText = info.position
-        preferredChannel.innerText = info.preferred_channels + 'arreglar'
-        interest.innerText = info.interest
-   
+        /* preferredChannel.innerText = info.preferredChannel[0].channel_name */
+        interest.innerText = info.interest + '%'
+        interest.innerHTML = `  <label for="progressBar">${info.interest}%</label>
+                                <progress id="progressBar" max="100" value=${info.interest}>${info.interest}%</progress>`
+        /* const progressBar = document.getElementById('progressBar')
+        if(0 <= info.interest <= 25) {
+            progressBar.style.color = '#1CC1F5'
+        } else if(25 <= info.interest <= 50) {
+            progressBar.style.color = '#FFC700'
+        } */
+        console.log('probando ' + info.preferredChannel)
+        
+        info.preferredChannel.map(element => { //esto no es obligatorio
+            const channel = document.createElement('div')
+            channel.innerText = element.channel_name
+            channel.classList.add('channel')
+            preferredChannel.appendChild(channel)
+        })
+
         contactsList.classList.add('users-list')
         row.classList.add('row-contact')
         contact.classList = 'u-item col-item'        
