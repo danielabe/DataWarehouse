@@ -5,7 +5,15 @@ var cancelDltContBtn = document.getElementById('cancelDltContBtn');
 var deleteContactBtn = document.getElementById('deleteContactBtn');
 var contactsList = document.getElementById('contactsList');
 var sortName = document.getElementById('sortName');
+var sortCountry = document.getElementById('sortCountry');
+var sortCompany = document.getElementById('sortCompany');
+var sortPosition = document.getElementById('sortPosition');
+var sortInterest = document.getElementById('sortInterest');
 var varSortName = 0;
+var varSortCountry = 0;
+var varSortCompany = 0;
+var varSortPosition = 0;
+var varSortInterest = 0;
 contacts.addEventListener('click', function () {
   getContacts();
 });
@@ -43,8 +51,36 @@ function getContacts() {
               sortByNameReverse(data);
             }
           });
+          sortCountry.addEventListener('click', function () {
+            if (varSortCountry === 0) {
+              sortByCountry(data);
+            } else if (varSortCountry === 1) {
+              sortByCountryReverse(data);
+            }
+          });
+          sortCompany.addEventListener('click', function () {
+            if (varSortCompany === 0) {
+              sortByCompany(data);
+            } else if (varSortCompany === 1) {
+              sortByCompanyReverse(data);
+            }
+          });
+          sortPosition.addEventListener('click', function () {
+            if (varSortPosition === 0) {
+              sortByPosition(data);
+            } else if (varSortPosition === 1) {
+              sortByPositionReverse(data);
+            }
+          });
+          sortInterest.addEventListener('click', function () {
+            if (varSortInterest === 0) {
+              sortByInterest(data);
+            } else if (varSortInterest === 1) {
+              sortByInterestReverse(data);
+            }
+          });
 
-        case 11:
+        case 15:
         case "end":
           return _context.stop();
       }
@@ -209,14 +245,13 @@ function deleteContact(info, contactsList) {
 
 function sortByName(data) {
   var sortedNames = data.sort(function (a, b) {
-    if (a.firstname > b.firstname) {
+    if (a.firstname.toUpperCase() > b.firstname.toUpperCase()) {
       return 1;
     }
 
-    if (a.firstname < b.firstname) {
+    if (a.firstname.toUpperCase() < b.firstname.toUpperCase()) {
       return -1;
-    } // a must be equal to b
-
+    }
 
     return 0;
   });
@@ -226,17 +261,144 @@ function sortByName(data) {
 
 function sortByNameReverse(data) {
   var sortedNames = data.reverse(function (a, b) {
-    if (a.firstname > b.firstname) {
+    if (a.firstname.toUpperCase() > b.firstname.toUpperCase()) {
       return 1;
     }
 
-    if (a.firstname < b.firstname) {
+    if (a.firstname.toUpperCase() < b.firstname.toUpperCase()) {
       return -1;
-    } // a must be equal to b
-
+    }
 
     return 0;
   });
   renderResults(sortedNames);
   varSortName = 0;
+}
+
+function sortByCountry(data) {
+  var sortedCountries = data.sort(function (a, b) {
+    if (a.country_name.toUpperCase() > b.country_name.toUpperCase()) {
+      return 1;
+    }
+
+    if (a.country_name.toUpperCase() < b.country_name.toUpperCase()) {
+      return -1;
+    }
+
+    return 0;
+  });
+  renderResults(sortedCountries);
+  varSortCountry = 1;
+}
+
+function sortByCountryReverse(data) {
+  var sortedCountries = data.reverse(function (a, b) {
+    if (a.country_name.toUpperCase() > b.country_name.toUpperCase()) {
+      return 1;
+    }
+
+    if (a.country_name.toUpperCase() < b.country_name.toUpperCase()) {
+      return -1;
+    }
+
+    return 0;
+  });
+  renderResults(sortedCountries);
+  varSortCountry = 0;
+}
+
+function sortByCompany(data) {
+  var sortedCompanies = data.sort(function (a, b) {
+    if (a.company_name.toUpperCase() > b.company_name.toUpperCase()) {
+      return 1;
+    }
+
+    if (a.company_name.toUpperCase() < b.company_name.toUpperCase()) {
+      return -1;
+    }
+
+    return 0;
+  });
+  renderResults(sortedCompanies);
+  varSortCompany = 1;
+}
+
+function sortByCompanyReverse(data) {
+  var sortedCompanies = data.reverse(function (a, b) {
+    if (a.company_name.toUpperCase() > b.company_name.toUpperCase()) {
+      return 1;
+    }
+
+    if (a.company_name.toUpperCase() < b.company_name.toUpperCase()) {
+      return -1;
+    }
+
+    return 0;
+  });
+  renderResults(sortedCompanies);
+  varSortCompany = 0;
+}
+
+function sortByPosition(data) {
+  var sortedPositions = data.sort(function (a, b) {
+    if (a.position.toUpperCase() > b.position.toUpperCase()) {
+      return 1;
+    }
+
+    if (a.position.toUpperCase() < b.position.toUpperCase()) {
+      return -1;
+    }
+
+    return 0;
+  });
+  renderResults(sortedPositions);
+  varSortPosition = 1;
+}
+
+function sortByPositionReverse(data) {
+  var sortedPositions = data.reverse(function (a, b) {
+    if (a.position.toUpperCase() > b.position.toUpperCase()) {
+      return 1;
+    }
+
+    if (a.position.toUpperCase() < b.position.toUpperCase()) {
+      return -1;
+    }
+
+    return 0;
+  });
+  renderResults(sortedPositions);
+  varSortPosition = 0;
+}
+
+function sortByInterest(data) {
+  var sortedInterests = data.sort(function (a, b) {
+    if (a.interest > b.interest) {
+      return 1;
+    }
+
+    if (a.interest < b.interest) {
+      return -1;
+    }
+
+    return 0;
+  });
+  renderResults(sortedInterests);
+  varSortInterest = 1;
+}
+
+function sortByInterestReverse(data) {
+  var sortedInterests = data.reverse(function (a, b) {
+    if (a.interest > b.interest) {
+      return 1;
+    }
+
+    if (a.interest < b.interest) {
+      return -1;
+    }
+
+    return 0;
+  });
+  renderResults(sortedInterests);
+  varSortInterest = 0;
 }

@@ -3,7 +3,16 @@ const cancelDltContBtn = document.getElementById('cancelDltContBtn')
 const deleteContactBtn = document.getElementById('deleteContactBtn')
 const contactsList = document.getElementById('contactsList')
 const sortName = document.getElementById('sortName')
+const sortCountry = document.getElementById('sortCountry')
+const sortCompany = document.getElementById('sortCompany')
+const sortPosition = document.getElementById('sortPosition')
+const sortInterest = document.getElementById('sortInterest')
+
 let varSortName = 0
+let varSortCountry = 0
+let varSortCompany = 0
+let varSortPosition = 0
+let varSortInterest = 0
 
 contacts.addEventListener('click', () => {
     getContacts()
@@ -27,6 +36,34 @@ async function getContacts() {
             sortByName(data)
         } else if(varSortName === 1) {
             sortByNameReverse(data)
+        }
+    })
+    sortCountry.addEventListener('click', () => {
+        if(varSortCountry === 0) {
+            sortByCountry(data)
+        } else if(varSortCountry === 1) {
+            sortByCountryReverse(data)
+        }
+    })
+    sortCompany.addEventListener('click', () => {
+        if(varSortCompany === 0) {
+            sortByCompany(data)
+        } else if(varSortCompany === 1) {
+            sortByCompanyReverse(data)
+        }
+    })
+    sortPosition.addEventListener('click', () => {
+        if(varSortPosition === 0) {
+            sortByPosition(data)
+        } else if(varSortPosition === 1) {
+            sortByPositionReverse(data)
+        }
+    })
+    sortInterest.addEventListener('click', () => {
+        if(varSortInterest === 0) {
+            sortByInterest(data)
+        } else if(varSortInterest === 1) {
+            sortByInterestReverse(data)
         }
     })
 }
@@ -160,13 +197,12 @@ async function deleteContact(info, contactsList) {
 
 function sortByName(data) {
     const sortedNames = data.sort(function (a, b) {
-        if (a.firstname > b.firstname) { 
+        if (a.firstname.toUpperCase() > b.firstname.toUpperCase()) { 
             return 1
         }
-        if (a.firstname < b.firstname) {
+        if (a.firstname.toUpperCase() < b.firstname.toUpperCase()) {
           return -1
         }
-        // a must be equal to b
         return 0
     })
     renderResults(sortedNames)
@@ -175,15 +211,126 @@ function sortByName(data) {
 
 function sortByNameReverse(data) {
     const sortedNames = data.reverse(function (a, b) {
-        if (a.firstname > b.firstname) { 
+        if (a.firstname.toUpperCase() > b.firstname.toUpperCase()) { 
             return 1
         }
-        if (a.firstname < b.firstname) {
+        if (a.firstname.toUpperCase() < b.firstname.toUpperCase()) {
           return -1
         }
-        // a must be equal to b
         return 0
     })
     renderResults(sortedNames)
     varSortName = 0
+}
+
+function sortByCountry(data) {
+    const sortedCountries = data.sort(function (a, b) {
+        if (a.country_name.toUpperCase() > b.country_name.toUpperCase()) { 
+            return 1
+        }
+        if (a.country_name.toUpperCase() < b.country_name.toUpperCase()) {
+          return -1
+        }
+        return 0
+    })
+    renderResults(sortedCountries)
+    varSortCountry = 1
+}
+
+function sortByCountryReverse(data) {
+    const sortedCountries = data.reverse(function (a, b) {
+        if (a.country_name.toUpperCase() > b.country_name.toUpperCase()) { 
+            return 1
+        }
+        if (a.country_name.toUpperCase() < b.country_name.toUpperCase()) {
+          return -1
+        }
+        return 0
+    })
+    renderResults(sortedCountries)
+    varSortCountry = 0
+}
+
+function sortByCompany(data) {
+    const sortedCompanies = data.sort(function (a, b) {
+        if (a.company_name.toUpperCase() > b.company_name.toUpperCase()) { 
+            return 1
+        }
+        if (a.company_name.toUpperCase() < b.company_name.toUpperCase()) {
+          return -1
+        }
+        return 0
+    })
+    renderResults(sortedCompanies)
+    varSortCompany = 1
+}
+
+function sortByCompanyReverse(data) {
+    const sortedCompanies = data.reverse(function (a, b) {
+        if (a.company_name.toUpperCase() > b.company_name.toUpperCase()) { 
+            return 1
+        }
+        if (a.company_name.toUpperCase() < b.company_name.toUpperCase()) {
+          return -1
+        }
+        return 0
+    })
+    renderResults(sortedCompanies)
+    varSortCompany = 0
+}
+
+function sortByPosition(data) {
+    const sortedPositions = data.sort(function (a, b) {
+        if (a.position.toUpperCase() > b.position.toUpperCase()) { 
+            return 1
+        }
+        if (a.position.toUpperCase() < b.position.toUpperCase()) {
+          return -1
+        }
+        return 0
+    })
+    renderResults(sortedPositions)
+    varSortPosition = 1
+}
+
+function sortByPositionReverse(data) {
+    const sortedPositions = data.reverse(function (a, b) {
+        if (a.position.toUpperCase() > b.position.toUpperCase()) { 
+            return 1
+        }
+        if (a.position.toUpperCase() < b.position.toUpperCase()) {
+          return -1
+        }
+        return 0
+    })
+    renderResults(sortedPositions)
+    varSortPosition = 0
+}
+
+function sortByInterest(data) {
+    const sortedInterests = data.sort(function (a, b) {
+        if (a.interest > b.interest) { 
+            return 1
+        }
+        if (a.interest < b.interest) {
+          return -1
+        }
+        return 0
+    })
+    renderResults(sortedInterests)
+    varSortInterest = 1
+}
+
+function sortByInterestReverse(data) {
+    const sortedInterests = data.reverse(function (a, b) {
+        if (a.interest > b.interest) { 
+            return 1
+        }
+        if (a.interest < b.interest) {
+          return -1
+        }
+        return 0
+    })
+    renderResults(sortedInterests)
+    varSortInterest = 0
 }
