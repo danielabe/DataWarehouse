@@ -1,12 +1,14 @@
 const darkImageContacts = document.getElementById('darkImageContacts')
 const cancelDltContBtn = document.getElementById('cancelDltContBtn')
 const deleteContactBtn = document.getElementById('deleteContactBtn')
+const contactsList = document.getElementById('contactsList')
 
 contacts.addEventListener('click', () => {
     getContacts()
 })
 
 async function getContacts() {
+    contactsList.innerHTML = ''
     console.log(JSON.parse(sessionStorage.getItem('Token')))
     const options = {
         method: 'GET',
@@ -17,8 +19,6 @@ async function getContacts() {
     const response = await fetch('http://localhost:3000/contacts', options)
     const data = await response.json()
     console.log(data)
-
-    const contactsList = document.createElement('div')
 
     data.forEach(async element => {
         const info = {
@@ -64,7 +64,6 @@ async function getContacts() {
             preferredChannel.appendChild(channel)
         })
 
-        contactsList.classList.add('users-list')
         row.classList.add('row-contact')
         contact.classList = 'u-item col-item'        
         country.classList = 'u-item col-item'     
@@ -107,7 +106,6 @@ async function getContacts() {
         row.appendChild(preferredChannel)
         row.appendChild(interest)
         row.appendChild(actions)
-        contactsSection.appendChild(contactsList)
 
         row.addEventListener('mouseover', () => hoverRow(ellipsis, trash, pen))
         row.addEventListener('mouseout', () => outRow(ellipsis, trash, pen))
@@ -129,6 +127,7 @@ function modalDelete(info, contactsList) {
     deleteContactBtn.addEventListener('click', () => {
         body.classList.remove('modal')
         darkImageContacts.classList.add('none')
+        contactsList.innerHTML = ''
         deleteContact(info, contactsList)
     })
 }
@@ -143,6 +142,5 @@ async function deleteContact(info, contactsList) {
     const response = await fetch(`http://localhost:3000/contacts/${info.contactId}`, options)
     const data = await response.json()
     console.log(data)
-    contactsList.remove()
     getContacts()
 }
