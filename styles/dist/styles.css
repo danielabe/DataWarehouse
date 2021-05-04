@@ -597,6 +597,33 @@ progress::-moz-progress-bar {
   border-radius: 4px;
 }
 
+.orange::-webkit-progress-value {
+  background: #FF6F00;
+}
+
+/* firefox */
+.orange::-moz-progress-bar {
+  background: #FF6F00;
+}
+
+.yellow::-webkit-progress-value {
+  background: #FFC700;
+}
+
+/* firefox */
+.yellow::-moz-progress-bar {
+  background: #FFC700;
+}
+
+.blue::-webkit-progress-value {
+  background: #1CC1F5;
+}
+
+/* firefox */
+.blue::-moz-progress-bar {
+  background: #1CC1F5;
+}
+
 .none {
   display: none;
 }
