@@ -43,8 +43,6 @@ async function getContacts() {
         const position = document.createElement('div')
         const preferredChannel = document.createElement('div')
         const interest = document.createElement('div')
-        /* const percentage = document.createElement('label')
-        const progress = document.createElement('progress') */
         const actions = document.createElement('div')
         const ellipsis = document.createElement('i')
         const trash = document.createElement('i')
@@ -54,17 +52,6 @@ async function getContacts() {
         country.innerHTML = `<p>${info.countryName}</p><p class="grey-info">${info.regionName}</p>`
         company.innerText = info.companyName
         position.innerText = info.position
-        /* preferredChannel.innerText = info.preferredChannel[0].channel_name */
-        /* interest.innerText = info.interest + '%' */
-        /* interest.innerHTML = await `  <label for="progressBar">${info.interest}%</label>
-                                <progress id="progressBar" class="progress" max="100" value=${info.interest}>${info.interest}%</progress>` */
-        /* const progressBar = document.getElementById('progressBar')
-        if(0 <= info.interest <= 25) {
-            progressBar.style.color = '#1CC1F5'
-        } else if(25 <= info.interest <= 50) {
-            progressBar.style.color = '#FFC700'
-        } */
-        
         
         info.preferredChannel.map(element => { //esto no es obligatorio
             const channel = document.createElement('div')
@@ -72,8 +59,6 @@ async function getContacts() {
             channel.classList.add('channel')
             preferredChannel.appendChild(channel)
         })
-        /* percentage.innerHTML = `${info.interest}%`
-        progress.innerText = `${info.interest}%` */
 
         contactsList.classList.add('users-list')
         row.classList.add('row-contact')
@@ -82,32 +67,30 @@ async function getContacts() {
         company.classList.add('u-item')        
         position.classList.add('u-item')        
         preferredChannel.classList.add('u-item')        
-        interest.classList.add('u-item')        
-        /* percentage.classList.add('')      */   
-        /* progress.classList.add('progress')   */      
+        interest.classList.add('u-item')            
         checkbox.classList = 'far fa-square u-item'
         actions.classList = 'u-item action'
         ellipsis.classList = 'fas fa-ellipsis-h'
         trash.classList = 'fas fa-trash none'
         pen.classList = 'fas fa-pen none'
-        const progressBar = document.getElementById('progressBar')
+
         if(+info.interest === 100) {
-            interest.innerHTML = `<label for="progressBar">${info.interest}%</label>
+            interest.innerHTML = `<label class="percentage" for="progressBar">${info.interest}%</label>
                                 <progress id="progressBar" class="progress" max="100" value=${info.interest}>${info.interest}%</progress>`
         } else if(75 <= +info.interest && +info.interest < 100) {
-            interest.innerHTML = `<label for="progressBar">${info.interest}%</label>
+            interest.innerHTML = `<label class="percentage" for="progressBar">${info.interest}%</label>
                                 <progress id="progressBar" class="progress orange" max="100" value=${info.interest}>${info.interest}%</progress>`
         } else if(50 <= +info.interest && +info.interest < 75) {
-            interest.innerHTML = `<label for="progressBar">${info.interest}%</label>
+            interest.innerHTML = `<label class="percentage" for="progressBar">${info.interest}%</label>
                                 <progress id="progressBar" class="progress yellow" max="100" value=${info.interest}>${info.interest}%</progress>`
         } else if(25 <= +info.interest && +info.interest < 50) {
-            console.log('daniela')
-            interest.innerHTML = `<label for="progressBar">${info.interest}%</label>
+            interest.innerHTML = `<label class="percentage" for="progressBar">${info.interest}%</label>
                                 <progress id="progressBar" class="progress blue" max="100" value=${info.interest}>${info.interest}%</progress>`
+        } else if(0 <= +info.interest && +info.interest < 25) {
+            interest.innerHTML = `<label class="percentage" for="progressBar">${info.interest}%</label>
+                                <progress id="progressBar" class="progress grey" max="100" value=${info.interest}>${info.interest}%</progress>`
         }
 
-        /* interest.appendChild(percentage)
-        interest.appendChild(progress) */
         actions.appendChild(ellipsis)
         actions.appendChild(trash)
         actions.appendChild(pen)

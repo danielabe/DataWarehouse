@@ -30,7 +30,7 @@ function getContacts() {
           console.log(data);
           contactsList = document.createElement('div');
           data.forEach(function _callee(element) {
-            var info, row, checkbox, contact, country, company, position, preferredChannel, interest, actions, ellipsis, trash, pen, progressBar;
+            var info, row, checkbox, contact, country, company, position, preferredChannel, interest, actions, ellipsis, trash, pen;
             return regeneratorRuntime.async(function _callee$(_context) {
               while (1) {
                 switch (_context.prev = _context.next) {
@@ -61,9 +61,6 @@ function getContacts() {
                     position = document.createElement('div');
                     preferredChannel = document.createElement('div');
                     interest = document.createElement('div');
-                    /* const percentage = document.createElement('label')
-                    const progress = document.createElement('progress') */
-
                     actions = document.createElement('div');
                     ellipsis = document.createElement('i');
                     trash = document.createElement('i');
@@ -72,20 +69,6 @@ function getContacts() {
                     country.innerHTML = "<p>".concat(info.countryName, "</p><p class=\"grey-info\">").concat(info.regionName, "</p>");
                     company.innerText = info.companyName;
                     position.innerText = info.position;
-                    /* preferredChannel.innerText = info.preferredChannel[0].channel_name */
-
-                    /* interest.innerText = info.interest + '%' */
-
-                    /* interest.innerHTML = await `  <label for="progressBar">${info.interest}%</label>
-                                            <progress id="progressBar" class="progress" max="100" value=${info.interest}>${info.interest}%</progress>` */
-
-                    /* const progressBar = document.getElementById('progressBar')
-                    if(0 <= info.interest <= 25) {
-                        progressBar.style.color = '#1CC1F5'
-                    } else if(25 <= info.interest <= 50) {
-                        progressBar.style.color = '#FFC700'
-                    } */
-
                     info.preferredChannel.map(function (element) {
                       //esto no es obligatorio
                       var channel = document.createElement('div');
@@ -93,9 +76,6 @@ function getContacts() {
                       channel.classList.add('channel');
                       preferredChannel.appendChild(channel);
                     });
-                    /* percentage.innerHTML = `${info.interest}%`
-                    progress.innerText = `${info.interest}%` */
-
                     contactsList.classList.add('users-list');
                     row.classList.add('row-contact');
                     contact.classList = 'u-item col-item';
@@ -104,30 +84,23 @@ function getContacts() {
                     position.classList.add('u-item');
                     preferredChannel.classList.add('u-item');
                     interest.classList.add('u-item');
-                    /* percentage.classList.add('')      */
-
-                    /* progress.classList.add('progress')   */
-
                     checkbox.classList = 'far fa-square u-item';
                     actions.classList = 'u-item action';
                     ellipsis.classList = 'fas fa-ellipsis-h';
                     trash.classList = 'fas fa-trash none';
                     pen.classList = 'fas fa-pen none';
-                    progressBar = document.getElementById('progressBar');
 
                     if (+info.interest === 100) {
-                      interest.innerHTML = "<label for=\"progressBar\">".concat(info.interest, "%</label>\n                                <progress id=\"progressBar\" class=\"progress\" max=\"100\" value=").concat(info.interest, ">").concat(info.interest, "%</progress>");
+                      interest.innerHTML = "<label class=\"percentage\" for=\"progressBar\">".concat(info.interest, "%</label>\n                                <progress id=\"progressBar\" class=\"progress\" max=\"100\" value=").concat(info.interest, ">").concat(info.interest, "%</progress>");
                     } else if (75 <= +info.interest && +info.interest < 100) {
-                      interest.innerHTML = "<label for=\"progressBar\">".concat(info.interest, "%</label>\n                                <progress id=\"progressBar\" class=\"progress orange\" max=\"100\" value=").concat(info.interest, ">").concat(info.interest, "%</progress>");
+                      interest.innerHTML = "<label class=\"percentage\" for=\"progressBar\">".concat(info.interest, "%</label>\n                                <progress id=\"progressBar\" class=\"progress orange\" max=\"100\" value=").concat(info.interest, ">").concat(info.interest, "%</progress>");
                     } else if (50 <= +info.interest && +info.interest < 75) {
-                      interest.innerHTML = "<label for=\"progressBar\">".concat(info.interest, "%</label>\n                                <progress id=\"progressBar\" class=\"progress yellow\" max=\"100\" value=").concat(info.interest, ">").concat(info.interest, "%</progress>");
+                      interest.innerHTML = "<label class=\"percentage\" for=\"progressBar\">".concat(info.interest, "%</label>\n                                <progress id=\"progressBar\" class=\"progress yellow\" max=\"100\" value=").concat(info.interest, ">").concat(info.interest, "%</progress>");
                     } else if (25 <= +info.interest && +info.interest < 50) {
-                      console.log('daniela');
-                      interest.innerHTML = "<label for=\"progressBar\">".concat(info.interest, "%</label>\n                                <progress id=\"progressBar\" class=\"progress blue\" max=\"100\" value=").concat(info.interest, ">").concat(info.interest, "%</progress>");
+                      interest.innerHTML = "<label class=\"percentage\" for=\"progressBar\">".concat(info.interest, "%</label>\n                                <progress id=\"progressBar\" class=\"progress blue\" max=\"100\" value=").concat(info.interest, ">").concat(info.interest, "%</progress>");
+                    } else if (0 <= +info.interest && +info.interest < 25) {
+                      interest.innerHTML = "<label class=\"percentage\" for=\"progressBar\">".concat(info.interest, "%</label>\n                                <progress id=\"progressBar\" class=\"progress grey\" max=\"100\" value=").concat(info.interest, ">").concat(info.interest, "%</progress>");
                     }
-                    /* interest.appendChild(percentage)
-                    interest.appendChild(progress) */
-
 
                     actions.appendChild(ellipsis);
                     actions.appendChild(trash);
@@ -155,7 +128,7 @@ function getContacts() {
                       return editUser(info, contactsList);
                     });
 
-                  case 51:
+                  case 50:
                   case "end":
                     return _context.stop();
                 }

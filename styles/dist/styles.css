@@ -571,6 +571,11 @@ main {
   color: #0683f9;
 }
 
+.percentage {
+  width: 33px;
+  margin-right: 15.5px;
+}
+
 progress {
   background-color: rgba(232, 232, 232, 0.9);
   border: 1px;
@@ -622,6 +627,15 @@ progress::-moz-progress-bar {
 /* firefox */
 .blue::-moz-progress-bar {
   background: #1CC1F5;
+}
+
+.grey::-webkit-progress-value {
+  background: rgba(232, 232, 232, 0.9);
+}
+
+/* firefox */
+.grey::-moz-progress-bar {
+  background: rgba(232, 232, 232, 0.9);
 }
 
 .none {
