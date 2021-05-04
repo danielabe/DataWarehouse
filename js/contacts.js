@@ -1,3 +1,7 @@
+const darkImageContacts = document.getElementById('darkImageContacts')
+const cancelDltContBtn = document.getElementById('cancelDltContBtn')
+const deleteContactBtn = document.getElementById('deleteContactBtn')
+
 contacts.addEventListener('click', () => {
     getContacts()
 })
@@ -108,7 +112,37 @@ async function getContacts() {
         row.addEventListener('mouseover', () => hoverRow(ellipsis, trash, pen))
         row.addEventListener('mouseout', () => outRow(ellipsis, trash, pen))
 
-        trash.addEventListener('click', () => deleteUser(info, contactsList))
+        trash.addEventListener('click', () => modalDelete(info, contactsList))
         pen.addEventListener('click', () => editUser(info, contactsList))
     })
+}
+
+function modalDelete(info, contactsList) {
+    window.scrollTo(0, 0)
+    body.classList.add('modal')
+    darkImageContacts.classList.remove('none')
+
+    cancelDltContBtn.addEventListener('click', () => {
+        body.classList.remove('modal')
+        darkImageContacts.classList.add('none')
+    })
+    deleteContactBtn.addEventListener('click', () => {
+        body.classList.remove('modal')
+        darkImageContacts.classList.add('none')
+        deleteContact(info, contactsList)
+    })
+}
+
+async function deleteContact(info, contactsList) {
+    const options = {
+        method: 'DELETE',
+        headers: {
+            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
+        }
+    }
+    const response = await fetch(`http://localhost:3000/contacts/${info.contactId}`, options)
+    const data = await response.json()
+    console.log(data)
+    contactsList.remove()
+    getContacts()
 }

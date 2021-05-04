@@ -646,7 +646,63 @@ progress::-moz-progress-bar {
     background: rgba(232, 232, 232, 0.9); 
 }
 
+.dk-img-cont {
+    justify-content: center;
+}
 
+.window-del-cont {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 339px;
+    height: 303px;
+    background-color: white;
+}
+
+.delete-contact {
+    width: 100px;
+    margin-top: 16.2px;
+}
+
+.msg-modal {
+    width: 277px;
+    margin-top: 42.8px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.btn-dlt-cont {
+    display: flex;
+    justify-content: center;
+    margin-top: 42.8px;
+}
+
+.btn-modal-cancel {
+    width: 130px;
+    height: 41px;
+    margin-right: 24px;
+    background-color: white;
+    border: none;
+    border: 1px solid rgb(29, 114, 194);
+    border-radius: 1.5px;
+    color: #0683F9;
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.btn-modal-dlt {
+    width: 130px;
+    height: 42px;
+    background-color: #F03738;
+    border: none;
+    border-radius: 1.5px;
+    font-weight: bold;
+    color: white;
+    &:hover {
+        cursor: pointer;
+    }
+}
 
 .none {
     display: none;

@@ -1,5 +1,8 @@
 "use strict";
 
+var darkImageContacts = document.getElementById('darkImageContacts');
+var cancelDltContBtn = document.getElementById('cancelDltContBtn');
+var deleteContactBtn = document.getElementById('deleteContactBtn');
 contacts.addEventListener('click', function () {
   getContacts();
 });
@@ -122,7 +125,7 @@ function getContacts() {
                       return outRow(ellipsis, trash, pen);
                     });
                     trash.addEventListener('click', function () {
-                      return deleteUser(info, contactsList);
+                      return modalDelete(info, contactsList);
                     });
                     pen.addEventListener('click', function () {
                       return editUser(info, contactsList);
@@ -139,6 +142,55 @@ function getContacts() {
         case 11:
         case "end":
           return _context2.stop();
+      }
+    }
+  });
+}
+
+function modalDelete(info, contactsList) {
+  window.scrollTo(0, 0);
+  body.classList.add('modal');
+  darkImageContacts.classList.remove('none');
+  cancelDltContBtn.addEventListener('click', function () {
+    body.classList.remove('modal');
+    darkImageContacts.classList.add('none');
+  });
+  deleteContactBtn.addEventListener('click', function () {
+    body.classList.remove('modal');
+    darkImageContacts.classList.add('none');
+    deleteContact(info, contactsList);
+  });
+}
+
+function deleteContact(info, contactsList) {
+  var options, response, data;
+  return regeneratorRuntime.async(function deleteContact$(_context3) {
+    while (1) {
+      switch (_context3.prev = _context3.next) {
+        case 0:
+          options = {
+            method: 'DELETE',
+            headers: {
+              Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
+            }
+          };
+          _context3.next = 3;
+          return regeneratorRuntime.awrap(fetch("http://localhost:3000/contacts/".concat(info.contactId), options));
+
+        case 3:
+          response = _context3.sent;
+          _context3.next = 6;
+          return regeneratorRuntime.awrap(response.json());
+
+        case 6:
+          data = _context3.sent;
+          console.log(data);
+          contactsList.remove();
+          getContacts();
+
+        case 10:
+        case "end":
+          return _context3.stop();
       }
     }
   });
