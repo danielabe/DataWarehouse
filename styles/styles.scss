@@ -542,6 +542,9 @@ main {
 
 .fa-sort-alpha-down {
     margin: 0 0 0 8.2px;
+    &:hover {
+        cursor: pointer;
+    }
 }
 
 .row-contact {

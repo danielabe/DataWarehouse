@@ -2,13 +2,15 @@ const darkImageContacts = document.getElementById('darkImageContacts')
 const cancelDltContBtn = document.getElementById('cancelDltContBtn')
 const deleteContactBtn = document.getElementById('deleteContactBtn')
 const contactsList = document.getElementById('contactsList')
+const sortName = document.getElementById('sortName')
+let varSortName = 0
 
 contacts.addEventListener('click', () => {
     getContacts()
 })
 
 async function getContacts() {
-    contactsList.innerHTML = ''
+    contactsList.innerHTML = '' //ver si puedo sacar este
     console.log(JSON.parse(sessionStorage.getItem('Token')))
     const options = {
         method: 'GET',
@@ -18,8 +20,19 @@ async function getContacts() {
     }
     const response = await fetch('http://localhost:3000/contacts', options)
     const data = await response.json()
-    console.log(data)
+    renderResults(data)
+    
+    sortName.addEventListener('click', () => {
+        if(varSortName === 0) {
+            sortByName(data)
+        } else if(varSortName === 1) {
+            sortByNameReverse(data)
+        }
+    })
+}
 
+function renderResults(data) {
+    contactsList.innerHTML = ''
     data.forEach(async element => {
         const info = {
             contactId: element.contact_id,
@@ -38,7 +51,7 @@ async function getContacts() {
             preferredChannel: element.preferred_channels,
             interest: element.interest
         }
-        console.log(element)
+        
         const row = document.createElement('div')
         const checkbox = document.createElement('i')
         const contact = document.createElement('div')
@@ -119,11 +132,12 @@ function modalDelete(info, contactsList) {
     window.scrollTo(0, 0)
     body.classList.add('modal')
     darkImageContacts.classList.remove('none')
-
+    
     cancelDltContBtn.addEventListener('click', () => {
         body.classList.remove('modal')
         darkImageContacts.classList.add('none')
     })
+
     deleteContactBtn.addEventListener('click', () => {
         body.classList.remove('modal')
         darkImageContacts.classList.add('none')
@@ -141,6 +155,35 @@ async function deleteContact(info, contactsList) {
     }
     const response = await fetch(`http://localhost:3000/contacts/${info.contactId}`, options)
     const data = await response.json()
-    console.log(data)
     getContacts()
+}
+
+function sortByName(data) {
+    const sortedNames = data.sort(function (a, b) {
+        if (a.firstname > b.firstname) { 
+            return 1
+        }
+        if (a.firstname < b.firstname) {
+          return -1
+        }
+        // a must be equal to b
+        return 0
+    })
+    renderResults(sortedNames)
+    varSortName = 1
+}
+
+function sortByNameReverse(data) {
+    const sortedNames = data.reverse(function (a, b) {
+        if (a.firstname > b.firstname) { 
+            return 1
+        }
+        if (a.firstname < b.firstname) {
+          return -1
+        }
+        // a must be equal to b
+        return 0
+    })
+    renderResults(sortedNames)
+    varSortName = 0
 }

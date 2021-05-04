@@ -536,6 +536,9 @@ main {
 .fa-sort-alpha-down {
   margin: 0 0 0 8.2px;
 }
+.fa-sort-alpha-down:hover {
+  cursor: pointer;
+}
 
 .row-contact {
   display: grid;
