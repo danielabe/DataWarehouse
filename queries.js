@@ -917,6 +917,35 @@ async function deleteChannelContact(newContChan, req, res) {
     res.status(200).send("Channel successfully removed").end()
 }
 
+async function getResults(req, res) {
+    const searchValue = req.body.search_value
+    const contacts = await db.query(`
+    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,
+    co.country_name, co.region_id, re.region_name, cont.address, cont.company_id, comp.company_name,
+    position, interest
+    FROM contacts cont 
+    JOIN cities ci ON ci.city_id = cont.city_id
+    JOIN countries co ON co.country_id = ci.country_id
+    JOIN regions re ON re.region_id = co.region_id
+    JOIN companies comp ON comp.company_id = cont.company_id
+    WHERE firstname LIKE '${searchValue}%' OR lastname LIKE '${searchValue}%' OR email LIKE '${searchValue}%'
+    `, {
+        replacements: [searchValue],
+        type: QueryTypes.SELECT 
+    })
+    console.table(contacts)
+    const channels = await db.query(`
+    SELECT * FROM contacts_channels cc 
+    INNER JOIN channels ch ON cc.channel_id = ch.channel_id`, { 
+        type: QueryTypes.SELECT 
+    })
+    const contactsAndChannels = contacts.map(contact => 
+        Object.assign( {} , contact, { preferred_channels: channels.filter(channel => 
+            channel.contact_id === contact.contact_id)}
+        ))
+    res.status(200).json(contactsAndChannels)
+}
+
 //channels
 async function getChannels(req, res) {
     const channels = await db.query(`SELECT * FROM channels`, { type: QueryTypes.SELECT })
@@ -1014,16 +1043,22 @@ module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser,
     validateEmailQuery, validateUserIdQuery, getUser, modifyUser, deleteUser, 
     getRegions, createRegion, validateRegionNameQuery, validateRegionIdQuery, 
     getRegion, validateRegionNamePutQuery, modifyRegion, deleteRegion, 
-    getCountriesRegion, getCitiesRegion, getRegionsCountriesCities, getCountries, validateCountryNameQuery,
-    createCountry, validateCountryIdQuery, getCountry, validateCountryNamePutQuery,
-    modifyCountry, validateRegionIdCountryQuery, deleteCountry, getCitiesCountry,
-    getCities, validateCityNameQuery, createCity, validateCityIdQuery, getCity,
-    validateCountryIdCityQuery, validateCityNamePutQuery, modifyCity, deleteCity,
-    getCompanies, validateCompanyNameQuery, createCompany,validateCompanyIdQuery, 
-    getCompany, validateCompanyNamePutQuery, modifyCompany, validateCityIdPutQuery,
-    deleteCompany, getContacts, validateEmailContactsQuery, validateChannelIdQuery,
-    createContact, validateContactIdQuery, getContact, validateEmailContactsPutQuery,
-    validateCompanyIdPutQuery, validateChannelIdPutQuery, modifycontact, deleteContact,
-    validateChannelIdAddQuery, addChannel, deleteChannelContact, validateChannelIdDelQuery,
-    getChannels, validateChannelNameQuery, createChannel, validateChannelIdExQuery,
-    getChannel, validateChannelNamePutQuery, modifyChannel, deleteChannel }
+    getCountriesRegion, getCitiesRegion, getRegionsCountriesCities, getCountries, 
+    validateCountryNameQuery, createCountry, validateCountryIdQuery, getCountry, 
+    validateCountryNamePutQuery, modifyCountry, validateRegionIdCountryQuery, 
+    deleteCountry, getCitiesCountry, getCities, validateCityNameQuery, createCity, 
+    validateCityIdQuery, getCity, validateCountryIdCityQuery, validateCityNamePutQuery, 
+    modifyCity, deleteCity, getCompanies, validateCompanyNameQuery, createCompany,
+    validateCompanyIdQuery, getCompany, validateCompanyNamePutQuery, modifyCompany, 
+    validateCityIdPutQuery, deleteCompany, getContacts, validateEmailContactsQuery, 
+    validateChannelIdQuery, createContact, validateContactIdQuery, getContact, 
+    validateEmailContactsPutQuery, validateCompanyIdPutQuery, validateChannelIdPutQuery, 
+    modifycontact, deleteContact, validateChannelIdAddQuery, addChannel, deleteChannelContact, 
+    validateChannelIdDelQuery, getResults, getChannels, validateChannelNameQuery, createChannel, 
+    validateChannelIdExQuery, getChannel, validateChannelNamePutQuery, modifyChannel, deleteChannel }
+
+
+
+
+/* const dani = db.contacts.find( { "firstname": "dan" } )
+console.log(dani) */

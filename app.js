@@ -10,7 +10,7 @@ const { selectUserLogin, getUsers, createUser, getUser, modifyUser, deleteUser, 
     deleteCountry, getCitiesCountry, getCities, createCity, getCity, modifyCity,
     deleteCity, getCompanies, createCompany, getCompany, modifyCompany, deleteCompany,
     getContacts, createContact, getContact, modifycontact, deleteContact, addChannel,
-    deleteChannelContact, getChannels, createChannel, getChannel, modifyChannel,
+    deleteChannelContact, getResults, getChannels, createChannel, getChannel, modifyChannel,
     deleteChannel } = require('./queries.js')
 
 const { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
@@ -265,6 +265,10 @@ app.delete('/contacts/:contactId/channels/:channelId', validateContactId, valida
         channel_id: +req.params.channelId
     }
     deleteChannelContact(newContChan, req, res)
+})
+
+app.get('/search', async (req, res) => {    
+    getResults(req, res)                                 
 })
 
 //channels

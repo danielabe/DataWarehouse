@@ -48,6 +48,7 @@ var _require = require('./queries.js'),
     deleteContact = _require.deleteContact,
     addChannel = _require.addChannel,
     deleteChannelContact = _require.deleteChannelContact,
+    getResults = _require.getResults,
     getChannels = _require.getChannels,
     createChannel = _require.createChannel,
     getChannel = _require.getChannel,
@@ -732,14 +733,13 @@ app["delete"]('/contacts/:contactId/channels/:channelId', validateContactId, val
       }
     }
   });
-}); //channels
-
-app.get('/channels', function _callee38(req, res) {
+});
+app.get('/search', function _callee38(req, res) {
   return regeneratorRuntime.async(function _callee38$(_context38) {
     while (1) {
       switch (_context38.prev = _context38.next) {
         case 0:
-          getChannels(req, res);
+          getResults(req, res);
 
         case 1:
         case "end":
@@ -747,31 +747,30 @@ app.get('/channels', function _callee38(req, res) {
       }
     }
   });
-});
-app.post('/channels', validateChannelName, function _callee39(req, res) {
-  var channel_name;
+}); //channels
+
+app.get('/channels', function _callee39(req, res) {
   return regeneratorRuntime.async(function _callee39$(_context39) {
     while (1) {
       switch (_context39.prev = _context39.next) {
         case 0:
-          channel_name = req.body.channel_name;
-          createChannel(channel_name, req, res);
+          getChannels(req, res);
 
-        case 2:
+        case 1:
         case "end":
           return _context39.stop();
       }
     }
   });
 });
-app.get('/channels/:channelId', validateChannelIdEx, function _callee40(req, res) {
-  var channelId;
+app.post('/channels', validateChannelName, function _callee40(req, res) {
+  var channel_name;
   return regeneratorRuntime.async(function _callee40$(_context40) {
     while (1) {
       switch (_context40.prev = _context40.next) {
         case 0:
-          channelId = +req.params.channelId;
-          getChannel(channelId, req, res);
+          channel_name = req.body.channel_name;
+          createChannel(channel_name, req, res);
 
         case 2:
         case "end":
@@ -780,14 +779,14 @@ app.get('/channels/:channelId', validateChannelIdEx, function _callee40(req, res
     }
   });
 });
-app.put('/channels/:channelId', validateChannelIdEx, validateChannelNamePut, function _callee41(req, res) {
+app.get('/channels/:channelId', validateChannelIdEx, function _callee41(req, res) {
   var channelId;
   return regeneratorRuntime.async(function _callee41$(_context41) {
     while (1) {
       switch (_context41.prev = _context41.next) {
         case 0:
           channelId = +req.params.channelId;
-          modifyChannel(channelId, req, res);
+          getChannel(channelId, req, res);
 
         case 2:
         case "end":
@@ -796,11 +795,27 @@ app.put('/channels/:channelId', validateChannelIdEx, validateChannelNamePut, fun
     }
   });
 });
-app["delete"]('/channels/:channelId', validateChannelIdEx, function _callee42(req, res) {
+app.put('/channels/:channelId', validateChannelIdEx, validateChannelNamePut, function _callee42(req, res) {
   var channelId;
   return regeneratorRuntime.async(function _callee42$(_context42) {
     while (1) {
       switch (_context42.prev = _context42.next) {
+        case 0:
+          channelId = +req.params.channelId;
+          modifyChannel(channelId, req, res);
+
+        case 2:
+        case "end":
+          return _context42.stop();
+      }
+    }
+  });
+});
+app["delete"]('/channels/:channelId', validateChannelIdEx, function _callee43(req, res) {
+  var channelId;
+  return regeneratorRuntime.async(function _callee43$(_context43) {
+    while (1) {
+      switch (_context43.prev = _context43.next) {
         case 0:
           channelId = +req.params.channelId;
           deleteChannel(channelId, req, res); //no puedo borrar una region si tengo países en ella o si borro una region 
@@ -808,7 +823,7 @@ app["delete"]('/channels/:channelId', validateChannelIdEx, function _callee42(re
 
         case 2:
         case "end":
-          return _context42.stop();
+          return _context43.stop();
       }
     }
   });

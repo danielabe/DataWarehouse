@@ -1147,11 +1147,34 @@ paths:
       responses:
         "200":
           description: "Channel successfully removed"
-
         "401":
           description: "Unauthorized"
         "404":
           description: "Contact or channel not found"
+  /contacts/search:
+    get:
+      tags:
+      - "contacts"
+      summary: "Returns search results"
+      description: ""
+      operationId: "getSearchResults"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Authorization"
+        description: "Authorization token obtained at logging"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: '#/definitions/Contact'
+        "401":
+          description: "Unauthorized"
   /channels:
     get:
       tags:
