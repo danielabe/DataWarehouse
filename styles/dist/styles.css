@@ -436,8 +436,8 @@ main {
 .search {
   width: 36.7vw;
   height: 41px;
+  padding-left: 13.5px;
   outline: none;
-  border: none;
   border: 1px solid #CCCCCC;
   border-radius: 3.5px;
 }

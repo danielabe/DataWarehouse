@@ -267,12 +267,12 @@ app.delete('/contacts/:contactId/channels/:channelId', validateContactId, valida
     deleteChannelContact(newContChan, req, res)
 })
 
-app.get('/search', async (req, res) => {    
+app.post('/search', async (req, res) => {    
     getResults(req, res)                                 
 })
 
 //channels
-app.get('/channels', async (req, res) => {    
+app.post('/channels', async (req, res) => {    
     getChannels(req, res)                                 
 })
 

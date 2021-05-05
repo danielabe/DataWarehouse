@@ -734,7 +734,7 @@ app["delete"]('/contacts/:contactId/channels/:channelId', validateContactId, val
     }
   });
 });
-app.get('/search', function _callee38(req, res) {
+app.post('/search', function _callee38(req, res) {
   return regeneratorRuntime.async(function _callee38$(_context38) {
     while (1) {
       switch (_context38.prev = _context38.next) {
@@ -749,7 +749,7 @@ app.get('/search', function _callee38(req, res) {
   });
 }); //channels
 
-app.get('/channels', function _callee39(req, res) {
+app.post('/channels', function _callee39(req, res) {
   return regeneratorRuntime.async(function _callee39$(_context39) {
     while (1) {
       switch (_context39.prev = _context39.next) {

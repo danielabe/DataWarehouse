@@ -928,7 +928,10 @@ async function getResults(req, res) {
     JOIN countries co ON co.country_id = ci.country_id
     JOIN regions re ON re.region_id = co.region_id
     JOIN companies comp ON comp.company_id = cont.company_id
-    WHERE firstname LIKE '${searchValue}%' OR lastname LIKE '${searchValue}%' OR email LIKE '${searchValue}%'
+    WHERE firstname LIKE '%${searchValue}%' OR lastname LIKE '%${searchValue}%' OR email LIKE '%${searchValue}%'
+    OR ci.city_name LIKE '${searchValue}%' OR co.country_name LIKE '${searchValue}%' OR re.region_name LIKE '${searchValue}%'
+    OR cont.address LIKE '${searchValue}%' OR comp.company_name LIKE '${searchValue}%' OR position LIKE '%${searchValue}%'
+    OR interest LIKE '${searchValue}%'
     `, {
         replacements: [searchValue],
         type: QueryTypes.SELECT 
@@ -1056,9 +1059,3 @@ module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser,
     modifycontact, deleteContact, validateChannelIdAddQuery, addChannel, deleteChannelContact, 
     validateChannelIdDelQuery, getResults, getChannels, validateChannelNameQuery, createChannel, 
     validateChannelIdExQuery, getChannel, validateChannelNamePutQuery, modifyChannel, deleteChannel }
-
-
-
-
-/* const dani = db.contacts.find( { "firstname": "dan" } )
-console.log(dani) */

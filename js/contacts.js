@@ -7,6 +7,8 @@ const sortCountry = document.getElementById('sortCountry')
 const sortCompany = document.getElementById('sortCompany')
 const sortPosition = document.getElementById('sortPosition')
 const sortInterest = document.getElementById('sortInterest')
+const search = document.getElementById('search')
+const searchInput = document.getElementById('searchInput')
 
 let varSortName = 0
 let varSortCountry = 0
@@ -165,6 +167,7 @@ function renderResults(data) {
     })
 }
 
+//delete contact
 function modalDelete(info, contactsList) {
     window.scrollTo(0, 0)
     body.classList.add('modal')
@@ -195,6 +198,7 @@ async function deleteContact(info, contactsList) {
     getContacts()
 }
 
+//sort columns
 function sortByName(data) {
     const sortedNames = data.sort(function (a, b) {
         if (a.firstname.toUpperCase() > b.firstname.toUpperCase()) { 
@@ -333,4 +337,26 @@ function sortByInterestReverse(data) {
     })
     renderResults(sortedInterests)
     varSortInterest = 0
+}
+
+//search contacts
+search.addEventListener('click', () => getSearchResults())
+
+async function getSearchResults() { //mostrar todos al borrar input, espacio apellido? enter?
+    console.log(JSON.parse(sessionStorage.getItem('Token')))
+    const search = {
+        search_value: searchInput.value
+    }
+    const options = {
+        method: 'POST',
+        body: JSON.stringify(search),
+        headers: {
+            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`,
+            "Content-Type": "application/json"
+        }
+    }
+    const response = await fetch('http://localhost:3000/search', options)
+    const data = await response.json()
+    console.log(data)
+    renderResults(data)
 }

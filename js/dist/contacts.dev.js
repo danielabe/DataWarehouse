@@ -9,6 +9,8 @@ var sortCountry = document.getElementById('sortCountry');
 var sortCompany = document.getElementById('sortCompany');
 var sortPosition = document.getElementById('sortPosition');
 var sortInterest = document.getElementById('sortInterest');
+var search = document.getElementById('search');
+var searchInput = document.getElementById('searchInput');
 var varSortName = 0;
 var varSortCountry = 0;
 var varSortCompany = 0;
@@ -193,7 +195,8 @@ function renderResults(data) {
       }
     });
   });
-}
+} //delete contact
+
 
 function modalDelete(info, contactsList) {
   window.scrollTo(0, 0);
@@ -241,7 +244,8 @@ function deleteContact(info, contactsList) {
       }
     }
   });
-}
+} //sort columns
+
 
 function sortByName(data) {
   var sortedNames = data.sort(function (a, b) {
@@ -401,4 +405,49 @@ function sortByInterestReverse(data) {
   });
   renderResults(sortedInterests);
   varSortInterest = 0;
+} //search contacts
+
+
+search.addEventListener('click', function () {
+  return getSearchResults();
+});
+
+function getSearchResults() {
+  var search, options, response, data;
+  return regeneratorRuntime.async(function getSearchResults$(_context4) {
+    while (1) {
+      switch (_context4.prev = _context4.next) {
+        case 0:
+          //mostrar todos al borrar input, espacio apellido? enter?
+          console.log(JSON.parse(sessionStorage.getItem('Token')));
+          search = {
+            search_value: searchInput.value
+          };
+          options = {
+            method: 'POST',
+            body: JSON.stringify(search),
+            headers: {
+              Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token'))),
+              "Content-Type": "application/json"
+            }
+          };
+          _context4.next = 5;
+          return regeneratorRuntime.awrap(fetch('http://localhost:3000/search', options));
+
+        case 5:
+          response = _context4.sent;
+          _context4.next = 8;
+          return regeneratorRuntime.awrap(response.json());
+
+        case 8:
+          data = _context4.sent;
+          console.log(data);
+          renderResults(data);
+
+        case 11:
+        case "end":
+          return _context4.stop();
+      }
+    }
+  });
 }

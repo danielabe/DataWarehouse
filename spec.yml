@@ -1151,7 +1151,7 @@ paths:
           description: "Unauthorized"
         "404":
           description: "Contact or channel not found"
-  /contacts/search:
+  /search:
     get:
       tags:
       - "contacts"
