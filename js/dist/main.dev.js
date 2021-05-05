@@ -114,7 +114,7 @@ function getUsers() {
               perfil: element.perfil
             };
             console.log(element);
-            var row = document.createElement('div');
+            var row = document.createElement('li');
             var user = document.createElement('div');
             var email = document.createElement('div');
             var perfil = document.createElement('div');

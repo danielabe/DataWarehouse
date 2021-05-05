@@ -113,7 +113,7 @@ function renderResults(data) {
               preferredChannel: element.preferred_channels,
               interest: element.interest
             };
-            row = document.createElement('div');
+            row = document.createElement('li');
             checkbox = document.createElement('i');
             contact = document.createElement('div');
             country = document.createElement('div');

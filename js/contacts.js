@@ -89,7 +89,7 @@ function renderResults(data) {
             interest: element.interest
         }
         
-        const row = document.createElement('div')
+        const row = document.createElement('li')
         const checkbox = document.createElement('i')
         const contact = document.createElement('div')
         const country = document.createElement('div')

@@ -82,7 +82,7 @@ async function getUsers() {
             perfil: element.perfil
         }
         console.log(element)
-        const row = document.createElement('div')
+        const row = document.createElement('li')
         const user = document.createElement('div')
         const email = document.createElement('div')
         const perfil = document.createElement('div')
