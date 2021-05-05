@@ -23,6 +23,7 @@ const saveRegion = document.getElementById('saveRegion')
 const cancelRegion = document.getElementById('cancelRegion')
 const newRegForm = document.getElementById('newRegForm')
 const msgContainer = document.getElementById('msgContainer')
+const usersList = document.getElementById('usersList')
 
 submit.addEventListener('click', (event) => {
     event.preventDefault()
@@ -49,9 +50,9 @@ async function loginFunction() {
         saveToken(data)
         login.classList.add('none')
         varSect = 'noLog'
-        //section que aparece luego de login
-        usersSection.classList.remove('none')
-        getUsers()
+       
+        contactsSection.classList.remove('none')
+        getContacts()
     }
 }
 
@@ -60,6 +61,7 @@ function saveToken(data) {
 }
 
 async function getUsers() {
+    usersList.innerHTML = ''
     console.log(JSON.parse(sessionStorage.getItem('Token')))
     const options = {
         method: 'GET',
@@ -70,7 +72,6 @@ async function getUsers() {
     const response = await fetch('http://localhost:3000/users', options)
     const data = await response.json()
     console.log(data)
-    const usersList = document.createElement('div')
 
     data.forEach(element => {
         const info = {
@@ -94,7 +95,6 @@ async function getUsers() {
         email.innerText = info.email
         perfil.innerText = info.perfil
    
-        usersList.classList.add('users-list')
         row.classList.add('row-user')
         user.classList.add('u-item')        
         email.classList.add('u-item')     
@@ -112,7 +112,6 @@ async function getUsers() {
         row.appendChild(email)
         row.appendChild(perfil)
         row.appendChild(actions)
-        usersSection.appendChild(usersList)
 
         row.addEventListener('mouseover', () => hoverRow(ellipsis, trash, pen))
         row.addEventListener('mouseout', () => outRow(ellipsis, trash, pen))
@@ -144,7 +143,6 @@ async function deleteUser(info, usersList) {
     const response = await fetch(`http://localhost:3000/users/${info.userId}`, options)
     const data = await response.json()
     console.log(data)
-    usersList.remove()
     getUsers()
 }
 
@@ -158,7 +156,6 @@ async function editUser(info, usersList) {  //esta funcion la voy a hacer luego,
     const response = await fetch(`http://localhost:3000/users/${info.userId}`, options)
     const data = await response.json()
     console.log(data)
-    usersList.remove()
     getUsers()
 }
 
@@ -202,7 +199,6 @@ users.addEventListener('click', () => {
         usersSection.classList.remove('none')
         locationSection.classList.add('none')
 
-        usersList.remove()
         getUsers()
     }
 })
@@ -335,6 +331,7 @@ cancelRegion.addEventListener('click', () => {
     body.classList.remove('modal')
     darkImage.classList.add('none')
 })
+
 async function addRegion() {
     const region = { region_name: newRegion.value }
 

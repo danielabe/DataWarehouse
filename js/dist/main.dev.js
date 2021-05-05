@@ -25,6 +25,7 @@ var saveRegion = document.getElementById('saveRegion');
 var cancelRegion = document.getElementById('cancelRegion');
 var newRegForm = document.getElementById('newRegForm');
 var msgContainer = document.getElementById('msgContainer');
+var usersList = document.getElementById('usersList');
 submit.addEventListener('click', function (event) {
   event.preventDefault();
   loginFunction(); //funcion nueva pantalla
@@ -62,10 +63,9 @@ function loginFunction() {
             console.log(data);
             saveToken(data);
             login.classList.add('none');
-            varSect = 'noLog'; //section que aparece luego de login
-
-            usersSection.classList.remove('none');
-            getUsers();
+            varSect = 'noLog';
+            contactsSection.classList.remove('none');
+            getContacts();
           }
 
         case 9:
@@ -81,11 +81,12 @@ function saveToken(data) {
 }
 
 function getUsers() {
-  var options, response, data, usersList;
+  var options, response, data;
   return regeneratorRuntime.async(function getUsers$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
         case 0:
+          usersList.innerHTML = '';
           console.log(JSON.parse(sessionStorage.getItem('Token')));
           options = {
             method: 'GET',
@@ -93,18 +94,17 @@ function getUsers() {
               Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
             }
           };
-          _context2.next = 4;
+          _context2.next = 5;
           return regeneratorRuntime.awrap(fetch('http://localhost:3000/users', options));
 
-        case 4:
+        case 5:
           response = _context2.sent;
-          _context2.next = 7;
+          _context2.next = 8;
           return regeneratorRuntime.awrap(response.json());
 
-        case 7:
+        case 8:
           data = _context2.sent;
           console.log(data);
-          usersList = document.createElement('div');
           data.forEach(function (element) {
             var info = {
               userId: element.user_id,
@@ -125,7 +125,6 @@ function getUsers() {
             user.innerText = info.firstname + ' ' + info.lastname;
             email.innerText = info.email;
             perfil.innerText = info.perfil;
-            usersList.classList.add('users-list');
             row.classList.add('row-user');
             user.classList.add('u-item');
             email.classList.add('u-item');
@@ -142,7 +141,6 @@ function getUsers() {
             row.appendChild(email);
             row.appendChild(perfil);
             row.appendChild(actions);
-            usersSection.appendChild(usersList);
             row.addEventListener('mouseover', function () {
               return hoverRow(ellipsis, trash, pen);
             });
@@ -200,10 +198,9 @@ function deleteUser(info, usersList) {
         case 6:
           data = _context3.sent;
           console.log(data);
-          usersList.remove();
           getUsers();
 
-        case 10:
+        case 9:
         case "end":
           return _context3.stop();
       }
@@ -237,10 +234,9 @@ function editUser(info, usersList) {
         case 6:
           data = _context4.sent;
           console.log(data);
-          usersList.remove();
           getUsers();
 
-        case 10:
+        case 9:
         case "end":
           return _context4.stop();
       }
@@ -282,7 +278,6 @@ users.addEventListener('click', function () {
     companiesSection.classList.add('none');
     usersSection.classList.remove('none');
     locationSection.classList.add('none');
-    usersList.remove();
     getUsers();
   }
 });
