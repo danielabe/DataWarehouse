@@ -350,7 +350,7 @@ searchInput.addEventListener('keyup', (event) => {
     if(event.key === 'Backspace' && searchInput.value === '') getSearchResults()
 })
 
-async function getSearchResults() { //mostrar todos al borrar input, espacio apellido? enter?
+async function getSearchResults() { //espacio apellido?
     console.log(JSON.parse(sessionStorage.getItem('Token')))
     const search = {
         search_value: searchInput.value

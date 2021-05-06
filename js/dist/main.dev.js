@@ -254,6 +254,7 @@ contacts.addEventListener('click', function () {
     companiesSection.classList.add('none');
     usersSection.classList.add('none');
     locationSection.classList.add('none');
+    searchInput.value = '';
   }
 });
 companies.addEventListener('click', function () {

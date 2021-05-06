@@ -424,7 +424,7 @@ function getSearchResults() {
     while (1) {
       switch (_context4.prev = _context4.next) {
         case 0:
-          //mostrar todos al borrar input, espacio apellido? enter?
+          //espacio apellido?
           console.log(JSON.parse(sessionStorage.getItem('Token')));
           search = {
             search_value: searchInput.value

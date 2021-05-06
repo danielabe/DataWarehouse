@@ -170,6 +170,8 @@ contacts.addEventListener('click', () => {
         companiesSection.classList.add('none')
         usersSection.classList.add('none')
         locationSection.classList.add('none')
+
+        searchInput.value = ''
     }
 })
 
