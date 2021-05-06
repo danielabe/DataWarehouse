@@ -533,6 +533,11 @@ main {
   color: rgba(0, 0, 0, 0.5);
 }
 
+.fa-check-square {
+  font-size: 15px;
+  color: #1d72c2;
+}
+
 .fa-sort-alpha-down {
   margin: 0 0 0 8.2px;
 }

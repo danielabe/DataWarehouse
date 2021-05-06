@@ -16,6 +16,8 @@ let varSortCompany = 0
 let varSortPosition = 0
 let varSortInterest = 0
 
+
+//show contacts 
 contacts.addEventListener('click', () => {
     getContacts()
 })
@@ -88,7 +90,8 @@ function renderResults(data) {
             companyName: element.company_name,
             position: element.position,
             preferredChannel: element.preferred_channels,
-            interest: element.interest
+            interest: element.interest,
+            varSelectContact : 0
         }
         
         const row = document.createElement('li')
@@ -164,6 +167,8 @@ function renderResults(data) {
 
         trash.addEventListener('click', () => modalDelete(info, contactsList))
         pen.addEventListener('click', () => editUser(info, contactsList))
+
+        checkbox.addEventListener('click', () => selectContact(checkbox, info))
     })
 }
 
@@ -367,4 +372,25 @@ async function getSearchResults() { //espacio apellido?
     const data = await response.json()
     console.log(data)
     renderResults(data)
+}
+
+//select contacts 
+function selectContact(checkbox, info) {
+    if(info.varSelectContact === 0) {
+        check(checkbox, info)
+    } else if (info.varSelectContact === 1) {
+        uncheck(checkbox, info)
+    }
+}
+
+function check(checkbox, info) {
+    checkbox.classList = 'fas fa-check-square u-item'
+    info.varSelectContact = 1
+    console.log(info.varSelectContact)
+}
+
+function uncheck(checkbox, info) {
+    checkbox.classList = 'far fa-square u-item'
+    info.varSelectContact = 0
+    console.log(info.varSelectContact)
 }

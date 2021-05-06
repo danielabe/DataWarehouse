@@ -15,7 +15,8 @@ var varSortName = 0;
 var varSortCountry = 0;
 var varSortCompany = 0;
 var varSortPosition = 0;
-var varSortInterest = 0;
+var varSortInterest = 0; //show contacts 
+
 contacts.addEventListener('click', function () {
   getContacts();
 });
@@ -113,7 +114,8 @@ function renderResults(data) {
               companyName: element.company_name,
               position: element.position,
               preferredChannel: element.preferred_channels,
-              interest: element.interest
+              interest: element.interest,
+              varSelectContact: 0
             };
             row = document.createElement('li');
             checkbox = document.createElement('i');
@@ -187,8 +189,11 @@ function renderResults(data) {
             pen.addEventListener('click', function () {
               return editUser(info, contactsList);
             });
+            checkbox.addEventListener('click', function () {
+              return selectContact(checkbox, info);
+            });
 
-          case 47:
+          case 48:
           case "end":
             return _context2.stop();
         }
@@ -456,4 +461,25 @@ function getSearchResults() {
       }
     }
   });
+} //select contacts 
+
+
+function selectContact(checkbox, info) {
+  if (info.varSelectContact === 0) {
+    check(checkbox, info);
+  } else if (info.varSelectContact === 1) {
+    uncheck(checkbox, info);
+  }
+}
+
+function check(checkbox, info) {
+  checkbox.classList = 'fas fa-check-square u-item';
+  info.varSelectContact = 1;
+  console.log(info.varSelectContact);
+}
+
+function uncheck(checkbox, info) {
+  checkbox.classList = 'far fa-square u-item';
+  info.varSelectContact = 0;
+  console.log(info.varSelectContact);
 }
