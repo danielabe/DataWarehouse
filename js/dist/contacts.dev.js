@@ -411,6 +411,12 @@ function sortByInterestReverse(data) {
 search.addEventListener('click', function () {
   return getSearchResults();
 });
+searchInput.addEventListener('keyup', function (event) {
+  if (event.key === 'Enter') getSearchResults();
+});
+searchInput.addEventListener('keyup', function (event) {
+  if (event.key === 'Backspace' && searchInput.value === '') getSearchResults();
+});
 
 function getSearchResults() {
   var search, options, response, data;

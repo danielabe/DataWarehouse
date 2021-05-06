@@ -342,6 +342,14 @@ function sortByInterestReverse(data) {
 //search contacts
 search.addEventListener('click', () => getSearchResults())
 
+searchInput.addEventListener('keyup', (event) => {
+    if(event.key === 'Enter') getSearchResults()
+})
+
+searchInput.addEventListener('keyup', (event) => {
+    if(event.key === 'Backspace' && searchInput.value === '') getSearchResults()
+})
+
 async function getSearchResults() { //mostrar todos al borrar input, espacio apellido? enter?
     console.log(JSON.parse(sessionStorage.getItem('Token')))
     const search = {
