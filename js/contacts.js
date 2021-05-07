@@ -9,6 +9,7 @@ const sortPosition = document.getElementById('sortPosition')
 const sortInterest = document.getElementById('sortInterest')
 const search = document.getElementById('search')
 const searchInput = document.getElementById('searchInput')
+const checkboxAll = document.getElementById('checkboxAll')
 
 let varSortName = 0
 let varSortCountry = 0
@@ -394,3 +395,5 @@ function uncheck(checkbox, info) {
     info.varSelectContact = 0
     console.log(info.varSelectContact)
 }
+
+/* checkboxAll.addEventListener('click', () => {console.log('hola dani')}) */

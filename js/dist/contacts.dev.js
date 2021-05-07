@@ -11,6 +11,7 @@ var sortPosition = document.getElementById('sortPosition');
 var sortInterest = document.getElementById('sortInterest');
 var search = document.getElementById('search');
 var searchInput = document.getElementById('searchInput');
+var checkboxAll = document.getElementById('checkboxAll');
 var varSortName = 0;
 var varSortCountry = 0;
 var varSortCompany = 0;
@@ -483,3 +484,4 @@ function uncheck(checkbox, info) {
   info.varSelectContact = 0;
   console.log(info.varSelectContact);
 }
+/* checkboxAll.addEventListener('click', () => {console.log('hola dani')}) */
