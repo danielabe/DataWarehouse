@@ -473,15 +473,31 @@ function selectContact(checkbox, info) {
   }
 }
 
+var contIdArray = [];
+
 function check(checkbox, info) {
   checkbox.classList = 'fas fa-check-square u-item';
   info.varSelectContact = 1;
-  console.log(info.varSelectContact);
+  contIdArray = contIdArray.concat(info.contactId);
+  console.log(contIdArray);
+  console.log(contIdArray.length);
+  contactCounter(contIdArray);
 }
 
 function uncheck(checkbox, info) {
   checkbox.classList = 'far fa-square u-item';
   info.varSelectContact = 0;
-  console.log(info.varSelectContact);
+  var index = contIdArray.indexOf(info.contactId);
+  contIdArray.splice(index, 1);
+  console.log(contIdArray);
+  console.log(contIdArray.length);
+  contactCounter(contIdArray);
+}
+
+var contCounter = document.getElementById('contCounter');
+
+function contactCounter(contIdArray) {
+  contCounter.classList.remove('hidden');
+  contCounter.innerText = "".concat(contIdArray.length, " seleccionados");
 }
 /* checkboxAll.addEventListener('click', () => {console.log('hola dani')}) */

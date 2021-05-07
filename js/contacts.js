@@ -384,16 +384,31 @@ function selectContact(checkbox, info) {
     }
 }
 
+let contIdArray = []
 function check(checkbox, info) {
     checkbox.classList = 'fas fa-check-square u-item'
     info.varSelectContact = 1
-    console.log(info.varSelectContact)
+
+    contIdArray = contIdArray.concat(info.contactId)
+    console.log(contIdArray)
+    console.log(contIdArray.length)
+    contactCounter(contIdArray)
 }
 
 function uncheck(checkbox, info) {
     checkbox.classList = 'far fa-square u-item'
     info.varSelectContact = 0
-    console.log(info.varSelectContact)
+
+    const index = contIdArray.indexOf(info.contactId)
+    contIdArray.splice(index, 1)
+    console.log(contIdArray)
+    console.log(contIdArray.length)
+    contactCounter(contIdArray)
+}
+const contCounter = document.getElementById('contCounter')
+function contactCounter(contIdArray) {
+    contCounter.classList.remove('hidden')
+    contCounter.innerText = `${contIdArray.length} seleccionados`
 }
 
 /* checkboxAll.addEventListener('click', () => {console.log('hola dani')}) */

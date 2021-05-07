@@ -670,7 +670,10 @@ progress::-moz-progress-bar {
     }
 }
 
-
+.hidden {
+    height: 22px;
+    visibility: hidden;
+}
 
 .none {
     display: none;

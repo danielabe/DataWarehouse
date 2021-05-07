@@ -662,6 +662,11 @@ progress::-moz-progress-bar {
   cursor: pointer;
 }
 
+.hidden {
+  height: 22px;
+  visibility: hidden;
+}
+
 .none {
   display: none;
 }
