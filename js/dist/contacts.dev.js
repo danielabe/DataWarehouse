@@ -495,9 +495,10 @@ function uncheck(checkbox, info) {
 }
 
 var contCounter = document.getElementById('contCounter');
+var counterAndDelete = document.getElementById('counterAndDelete');
 
 function contactCounter(contIdArray) {
-  contCounter.classList.remove('hidden');
+  counterAndDelete.classList.remove('hidden');
   contCounter.innerText = "".concat(contIdArray.length, " seleccionados");
 }
 /* checkboxAll.addEventListener('click', () => {console.log('hola dani')}) */

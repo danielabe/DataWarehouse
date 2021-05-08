@@ -406,8 +406,9 @@ function uncheck(checkbox, info) {
     contactCounter(contIdArray)
 }
 const contCounter = document.getElementById('contCounter')
+const counterAndDelete = document.getElementById('counterAndDelete')
 function contactCounter(contIdArray) {
-    contCounter.classList.remove('hidden')
+    counterAndDelete.classList.remove('hidden')
     contCounter.innerText = `${contIdArray.length} seleccionados`
 }
 
