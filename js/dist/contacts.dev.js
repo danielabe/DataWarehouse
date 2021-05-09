@@ -12,6 +12,8 @@ var sortInterest = document.getElementById('sortInterest');
 var search = document.getElementById('search');
 var searchInput = document.getElementById('searchInput');
 var checkboxAll = document.getElementById('checkboxAll');
+var contCounter = document.getElementById('contCounter');
+var counterAndDelete = document.getElementById('counterAndDelete');
 var varSortName = 0;
 var varSortCountry = 0;
 var varSortCompany = 0;
@@ -494,11 +496,13 @@ function uncheck(checkbox, info) {
   contactCounter(contIdArray);
 }
 
-var contCounter = document.getElementById('contCounter');
-var counterAndDelete = document.getElementById('counterAndDelete');
-
 function contactCounter(contIdArray) {
-  counterAndDelete.classList.remove('hidden');
   contCounter.innerText = "".concat(contIdArray.length, " seleccionados");
+
+  if (contIdArray.length !== 0) {
+    counterAndDelete.classList.remove('hidden');
+  } else if (contIdArray.length === 0) {
+    counterAndDelete.classList.add('hidden');
+  }
 }
 /* checkboxAll.addEventListener('click', () => {console.log('hola dani')}) */

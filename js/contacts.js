@@ -10,6 +10,8 @@ const sortInterest = document.getElementById('sortInterest')
 const search = document.getElementById('search')
 const searchInput = document.getElementById('searchInput')
 const checkboxAll = document.getElementById('checkboxAll')
+const contCounter = document.getElementById('contCounter')
+const counterAndDelete = document.getElementById('counterAndDelete')
 
 let varSortName = 0
 let varSortCountry = 0
@@ -405,11 +407,14 @@ function uncheck(checkbox, info) {
     console.log(contIdArray.length)
     contactCounter(contIdArray)
 }
-const contCounter = document.getElementById('contCounter')
-const counterAndDelete = document.getElementById('counterAndDelete')
+
 function contactCounter(contIdArray) {
-    counterAndDelete.classList.remove('hidden')
     contCounter.innerText = `${contIdArray.length} seleccionados`
+    if(contIdArray.length !== 0) {
+        counterAndDelete.classList.remove('hidden')
+    } else if(contIdArray.length === 0) {
+        counterAndDelete.classList.add('hidden')
+    }
 }
 
 /* checkboxAll.addEventListener('click', () => {console.log('hola dani')}) */
