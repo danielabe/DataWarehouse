@@ -503,6 +503,11 @@ main {
     color: rgb(29, 114, 194);
 }
 
+.fa-minus-square {
+    font-size: 15px;
+    color: rgb(29, 114, 194);
+}
+
 .fa-sort-alpha-down {
     margin: 0 0 0 8.2px;
     &:hover {
@@ -682,8 +687,10 @@ progress::-moz-progress-bar {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 95px;
+    box-sizing: content-box;
+    width: 96px;
     height: 24px;
+    padding: 0 8px;
     border-radius: 4px;
     font-size: 12px;
     background-color: rgba(142, 199, 252, 0.5);

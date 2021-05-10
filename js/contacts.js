@@ -171,7 +171,7 @@ function renderResults(data) {
         trash.addEventListener('click', () => modalDelete(info, contactsList))
         pen.addEventListener('click', () => editUser(info, contactsList))
 
-        checkbox.addEventListener('click', () => selectContact(checkbox, info))
+        checkbox.addEventListener('click', () => selectContact(checkbox, info, data))
     })
 }
 
@@ -378,34 +378,34 @@ async function getSearchResults() { //espacio apellido?
 }
 
 //select contacts 
-function selectContact(checkbox, info) {
+function selectContact(checkbox, info, data) {
     if(info.varSelectContact === 0) {
-        check(checkbox, info)
+        check(checkbox, info, data)
     } else if (info.varSelectContact === 1) {
-        uncheck(checkbox, info)
+        uncheck(checkbox, info, data)
     }
 }
 
 let contIdArray = []
-function check(checkbox, info) {
+function check(checkbox, info, data) {
     checkbox.classList = 'fas fa-check-square u-item'
     info.varSelectContact = 1
 
     contIdArray = contIdArray.concat(info.contactId)
-    console.log(contIdArray)
-    console.log(contIdArray.length)
+
     contactCounter(contIdArray)
+    allContacts(data)
 }
 
-function uncheck(checkbox, info) {
+function uncheck(checkbox, info, data) {
     checkbox.classList = 'far fa-square u-item'
     info.varSelectContact = 0
 
     const index = contIdArray.indexOf(info.contactId)
     contIdArray.splice(index, 1)
-    console.log(contIdArray)
-    console.log(contIdArray.length)
+
     contactCounter(contIdArray)
+    allContacts(data)
 }
 
 function contactCounter(contIdArray) {
@@ -417,4 +417,10 @@ function contactCounter(contIdArray) {
     }
 }
 
-/* checkboxAll.addEventListener('click', () => {console.log('hola dani')}) */
+function allContacts(data) {
+    if(contIdArray.length === data.length) {
+        checkboxAll.classList = 'fas fa-check-square'
+    } else if(contIdArray.length !== 0 && contIdArray.length !== data.length) {
+        checkboxAll.classList = 'fas fa-minus-square'
+    }
+}

@@ -193,7 +193,7 @@ function renderResults(data) {
               return editUser(info, contactsList);
             });
             checkbox.addEventListener('click', function () {
-              return selectContact(checkbox, info);
+              return selectContact(checkbox, info, data);
             });
 
           case 48:
@@ -467,33 +467,31 @@ function getSearchResults() {
 } //select contacts 
 
 
-function selectContact(checkbox, info) {
+function selectContact(checkbox, info, data) {
   if (info.varSelectContact === 0) {
-    check(checkbox, info);
+    check(checkbox, info, data);
   } else if (info.varSelectContact === 1) {
-    uncheck(checkbox, info);
+    uncheck(checkbox, info, data);
   }
 }
 
 var contIdArray = [];
 
-function check(checkbox, info) {
+function check(checkbox, info, data) {
   checkbox.classList = 'fas fa-check-square u-item';
   info.varSelectContact = 1;
   contIdArray = contIdArray.concat(info.contactId);
-  console.log(contIdArray);
-  console.log(contIdArray.length);
   contactCounter(contIdArray);
+  allContacts(data);
 }
 
-function uncheck(checkbox, info) {
+function uncheck(checkbox, info, data) {
   checkbox.classList = 'far fa-square u-item';
   info.varSelectContact = 0;
   var index = contIdArray.indexOf(info.contactId);
   contIdArray.splice(index, 1);
-  console.log(contIdArray);
-  console.log(contIdArray.length);
   contactCounter(contIdArray);
+  allContacts(data);
 }
 
 function contactCounter(contIdArray) {
@@ -505,4 +503,11 @@ function contactCounter(contIdArray) {
     counterAndDelete.classList.add('hidden');
   }
 }
-/* checkboxAll.addEventListener('click', () => {console.log('hola dani')}) */
+
+function allContacts(data) {
+  if (contIdArray.length === data.length) {
+    checkboxAll.classList = 'fas fa-check-square';
+  } else if (contIdArray.length !== 0 && contIdArray.length !== data.length) {
+    checkboxAll.classList = 'fas fa-minus-square';
+  }
+}

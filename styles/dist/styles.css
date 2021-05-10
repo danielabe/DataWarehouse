@@ -496,6 +496,11 @@ main {
   color: #1d72c2;
 }
 
+.fa-minus-square {
+  font-size: 15px;
+  color: #1d72c2;
+}
+
 .fa-sort-alpha-down {
   margin: 0 0 0 8.2px;
 }
@@ -674,8 +679,10 @@ progress::-moz-progress-bar {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 95px;
+  box-sizing: content-box;
+  width: 96px;
   height: 24px;
+  padding: 0 8px;
   border-radius: 4px;
   font-size: 12px;
   background-color: rgba(142, 199, 252, 0.5);
