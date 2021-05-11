@@ -196,7 +196,7 @@ function renderResults(data) {
               return editUser(info, contactsList);
             });
             checkbox.addEventListener('click', function () {
-              return selectContact(checkbox, info, data);
+              return selectContact(checkbox, info, data, row);
             });
 
           case 48:
@@ -470,28 +470,28 @@ function getSearchResults() {
 } //select contacts 
 
 
-function selectContact(checkbox, info, data) {
+function selectContact(checkbox, info, data, row) {
   if (checkbox.classList == 'far fa-square u-item select') {
-    check(checkbox, info, data);
-    console.log('dani sos la mejor');
+    check(checkbox, info, data, row);
   } else if (checkbox.classList == 'fas fa-check-square u-item select') {
-    uncheck(checkbox, info, data);
-    console.log('inutil');
+    uncheck(checkbox, info, data, row);
   }
 }
 
 var contIdArray = [];
 
-function check(checkbox, info, data) {
+function check(checkbox, info, data, row) {
   checkbox.classList = 'fas fa-check-square u-item select';
+  row.style.backgroundColor = 'rgba(142, 199, 252, 0.5)';
   contIdArray = contIdArray.concat(info.contactId);
   console.log(contIdArray);
   contactCounter(contIdArray);
   allContacts(data);
 }
 
-function uncheck(checkbox, info, data) {
+function uncheck(checkbox, info, data, row) {
   checkbox.classList = 'far fa-square u-item select';
+  row.style.backgroundColor = 'white';
   var index = contIdArray.indexOf(info.contactId);
   contIdArray.splice(index, 1);
   console.log(contIdArray);
@@ -521,6 +521,7 @@ function allContacts(data) {
 
 function checkboxAllFunction(data) {
   var allConts = document.querySelectorAll('.select');
+  var rowContact = document.querySelectorAll('.row-contact');
 
   if (checkboxAll.classList == 'far fa-square') {
     checkboxAll.classList = 'fas fa-check-square'; //seleccionar todos
@@ -532,6 +533,9 @@ function checkboxAllFunction(data) {
     data.forEach(function (element) {
       contIdArray = contIdArray.concat(element.contact_id);
     });
+    rowContact.forEach(function (row) {
+      return row.style.backgroundColor = 'rgba(142, 199, 252, 0.5)';
+    });
     console.log(contIdArray);
     contactCounter(contIdArray);
   } else if (checkboxAll.classList == 'fas fa-check-square') {
@@ -542,6 +546,9 @@ function checkboxAllFunction(data) {
     allConts.forEach(function (element) {
       element.classList = 'far fa-square u-item select';
     });
+    rowContact.forEach(function (row) {
+      return row.style.backgroundColor = 'white';
+    });
     contactCounter(contIdArray);
   } else if (checkboxAll.classList == 'fas fa-minus-square') {
     checkboxAll.classList = 'far fa-square'; //desseleccionar seleccionados
@@ -550,6 +557,9 @@ function checkboxAllFunction(data) {
     console.log(contIdArray);
     allConts.forEach(function (element) {
       element.classList = 'far fa-square u-item select';
+    });
+    rowContact.forEach(function (row) {
+      return row.style.backgroundColor = 'white';
     });
     contactCounter(contIdArray);
   }
