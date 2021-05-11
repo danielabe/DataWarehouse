@@ -19,7 +19,6 @@ let varSortCompany = 0
 let varSortPosition = 0
 let varSortInterest = 0
 
-
 //show contacts 
 contacts.addEventListener('click', () => {
     getContacts()
@@ -38,6 +37,8 @@ async function getContacts() {
     const data = await response.json()
     renderResults(data)
     
+    checkboxAll.addEventListener('click', () => checkboxAllFunction(data))
+
     sortName.addEventListener('click', () => {
         if(varSortName === 0) {
             sortByName(data)
@@ -129,7 +130,7 @@ function renderResults(data) {
         position.classList.add('u-item')        
         preferredChannel.classList.add('u-item')        
         interest.classList.add('u-item')            
-        checkbox.classList = 'far fa-square u-item'
+        checkbox.classList = 'far fa-square u-item select'
         actions.classList = 'u-item action'
         ellipsis.classList = 'fas fa-ellipsis-h'
         trash.classList = 'fas fa-trash none'
@@ -379,31 +380,31 @@ async function getSearchResults() { //espacio apellido?
 
 //select contacts 
 function selectContact(checkbox, info, data) {
-    if(info.varSelectContact === 0) {
+    if(checkbox.classList == 'far fa-square u-item select') {
         check(checkbox, info, data)
-    } else if (info.varSelectContact === 1) {
+        console.log('dani sos la mejor')
+    } else if(checkbox.classList == 'fas fa-check-square u-item select') { 
         uncheck(checkbox, info, data)
+        console.log('inutil')
     }
 }
 
 let contIdArray = []
 function check(checkbox, info, data) {
-    checkbox.classList = 'fas fa-check-square u-item'
-    info.varSelectContact = 1
+    checkbox.classList = 'fas fa-check-square u-item select'
 
     contIdArray = contIdArray.concat(info.contactId)
-
+    console.log(contIdArray)
     contactCounter(contIdArray)
     allContacts(data)
 }
 
 function uncheck(checkbox, info, data) {
-    checkbox.classList = 'far fa-square u-item'
-    info.varSelectContact = 0
+    checkbox.classList = 'far fa-square u-item select'
 
     const index = contIdArray.indexOf(info.contactId)
     contIdArray.splice(index, 1)
-
+    console.log(contIdArray)
     contactCounter(contIdArray)
     allContacts(data)
 }
@@ -422,5 +423,42 @@ function allContacts(data) {
         checkboxAll.classList = 'fas fa-check-square'
     } else if(contIdArray.length !== 0 && contIdArray.length !== data.length) {
         checkboxAll.classList = 'fas fa-minus-square'
+    } else if (contIdArray.length === 0) {
+        checkboxAll.classList = 'far fa-square'
+    }
+}
+
+function checkboxAllFunction(data) {
+    const allConts = document.querySelectorAll('.select')
+    if(checkboxAll.classList == 'far fa-square') {
+        checkboxAll.classList = 'fas fa-check-square'
+        //seleccionar todos
+        console.log(allConts)
+        allConts.forEach(element => {
+            element.classList = 'fas fa-check-square u-item select'
+        })
+        data.forEach(element => {
+            contIdArray = contIdArray.concat(element.contact_id)
+        })
+        console.log(contIdArray)
+        contactCounter(contIdArray)
+    } else if(checkboxAll.classList == 'fas fa-check-square') {
+        checkboxAll.classList = 'far fa-square'
+        //desseleccionar todos
+        contIdArray = []
+        console.log(contIdArray)
+        allConts.forEach(element => {
+            element.classList = 'far fa-square u-item select'
+        })
+        contactCounter(contIdArray)
+    } else if(checkboxAll.classList == 'fas fa-minus-square') {
+        checkboxAll.classList = 'far fa-square'
+        //desseleccionar seleccionados
+        contIdArray = []
+        console.log(contIdArray)
+        allConts.forEach(element => {
+            element.classList = 'far fa-square u-item select'
+        })
+        contactCounter(contIdArray)
     }
 }
