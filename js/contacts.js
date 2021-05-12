@@ -14,14 +14,15 @@ const contCounter = document.getElementById('contCounter')
 const counterAndDelete = document.getElementById('counterAndDelete')
 
 let contIdArray = []
+let dataCheckbox = []
 
 let varSortName = 0
 let varSortCountry = 0
 let varSortCompany = 0
 let varSortPosition = 0
 let varSortInterest = 0
+
 let varCheckboxAll = 'unselected'
-let dataCheckbox = []
 
 //show contacts 
 contacts.addEventListener('click', () => {
@@ -49,7 +50,7 @@ async function getContacts() {
         } else if(varSortName === 1) {
             sortByNameReverse(data)
         }
-        checkAfterSort(data)
+        checkAfterSortAndSearch(data)
     })
     sortCountry.addEventListener('click', () => {
         if(varSortCountry === 0) {
@@ -57,7 +58,7 @@ async function getContacts() {
         } else if(varSortCountry === 1) {
             sortByCountryReverse(data)
         }
-        checkAfterSort(data)
+        checkAfterSortAndSearch(data)
     })
     sortCompany.addEventListener('click', () => {
         if(varSortCompany === 0) {
@@ -65,7 +66,7 @@ async function getContacts() {
         } else if(varSortCompany === 1) {
             sortByCompanyReverse(data)
         }
-        checkAfterSort(data)
+        checkAfterSortAndSearch(data)
     })
     sortPosition.addEventListener('click', () => {
         if(varSortPosition === 0) {
@@ -73,7 +74,7 @@ async function getContacts() {
         } else if(varSortPosition === 1) {
             sortByPositionReverse(data)
         }
-        checkAfterSort(data)
+        checkAfterSortAndSearch(data)
     })
     sortInterest.addEventListener('click', () => {
         if(varSortInterest === 0) {
@@ -81,11 +82,11 @@ async function getContacts() {
         } else if(varSortInterest === 1) {
             sortByInterestReverse(data)
         }
-        checkAfterSort(data)
+        checkAfterSortAndSearch(data)
     })
 }
 
-function checkAfterSort(data) {
+function checkAfterSortAndSearch(data) {
     counterAndDelete.classList.add('hidden')
     varCheckboxAll = 'indeterminate'
     console.log(varCheckboxAll)
@@ -400,6 +401,7 @@ async function getSearchResults() { //espacio apellido?
     console.log(data)
     renderResults(data)
     dataCheckbox = data
+    checkAfterSortAndSearch(data)
     /* checkboxAll.addEventListener('click', () => checkboxAllFunction(data)) */
 }
 

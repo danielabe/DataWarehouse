@@ -15,13 +15,13 @@ var checkboxAll = document.getElementById('checkboxAll');
 var contCounter = document.getElementById('contCounter');
 var counterAndDelete = document.getElementById('counterAndDelete');
 var contIdArray = [];
+var dataCheckbox = [];
 var varSortName = 0;
 var varSortCountry = 0;
 var varSortCompany = 0;
 var varSortPosition = 0;
 var varSortInterest = 0;
-var varCheckboxAll = 'unselected';
-var dataCheckbox = []; //show contacts 
+var varCheckboxAll = 'unselected'; //show contacts 
 
 contacts.addEventListener('click', function () {
   getContacts();
@@ -63,7 +63,7 @@ function getContacts() {
               sortByNameReverse(data);
             }
 
-            checkAfterSort(data);
+            checkAfterSortAndSearch(data);
           });
           sortCountry.addEventListener('click', function () {
             if (varSortCountry === 0) {
@@ -72,7 +72,7 @@ function getContacts() {
               sortByCountryReverse(data);
             }
 
-            checkAfterSort(data);
+            checkAfterSortAndSearch(data);
           });
           sortCompany.addEventListener('click', function () {
             if (varSortCompany === 0) {
@@ -81,7 +81,7 @@ function getContacts() {
               sortByCompanyReverse(data);
             }
 
-            checkAfterSort(data);
+            checkAfterSortAndSearch(data);
           });
           sortPosition.addEventListener('click', function () {
             if (varSortPosition === 0) {
@@ -90,7 +90,7 @@ function getContacts() {
               sortByPositionReverse(data);
             }
 
-            checkAfterSort(data);
+            checkAfterSortAndSearch(data);
           });
           sortInterest.addEventListener('click', function () {
             if (varSortInterest === 0) {
@@ -99,7 +99,7 @@ function getContacts() {
               sortByInterestReverse(data);
             }
 
-            checkAfterSort(data);
+            checkAfterSortAndSearch(data);
           });
 
         case 16:
@@ -110,7 +110,7 @@ function getContacts() {
   });
 }
 
-function checkAfterSort(data) {
+function checkAfterSortAndSearch(data) {
   counterAndDelete.classList.add('hidden');
   varCheckboxAll = 'indeterminate';
   console.log(varCheckboxAll);
@@ -489,9 +489,10 @@ function getSearchResults() {
           console.log(data);
           renderResults(data);
           dataCheckbox = data;
+          checkAfterSortAndSearch(data);
           /* checkboxAll.addEventListener('click', () => checkboxAllFunction(data)) */
 
-        case 12:
+        case 13:
         case "end":
           return _context4.stop();
       }
