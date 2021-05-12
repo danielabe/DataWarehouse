@@ -13,11 +13,15 @@ const checkboxAll = document.getElementById('checkboxAll')
 const contCounter = document.getElementById('contCounter')
 const counterAndDelete = document.getElementById('counterAndDelete')
 
+let contIdArray = []
+
 let varSortName = 0
 let varSortCountry = 0
 let varSortCompany = 0
 let varSortPosition = 0
 let varSortInterest = 0
+let varCheckboxAll = 'unselected'
+let dataCheckbox = []
 
 //show contacts 
 contacts.addEventListener('click', () => {
@@ -35,9 +39,9 @@ async function getContacts() {
     }
     const response = await fetch('http://localhost:3000/contacts', options)
     const data = await response.json()
+    dataCheckbox = data
     renderResults(data)
-    
-    checkboxAll.addEventListener('click', () => checkboxAllFunction(data))
+    /* checkboxAll.addEventListener('click', () => checkboxAllFunction(data)) */
 
     sortName.addEventListener('click', () => {
         if(varSortName === 0) {
@@ -45,6 +49,7 @@ async function getContacts() {
         } else if(varSortName === 1) {
             sortByNameReverse(data)
         }
+        checkAfterSort(data)
     })
     sortCountry.addEventListener('click', () => {
         if(varSortCountry === 0) {
@@ -52,6 +57,7 @@ async function getContacts() {
         } else if(varSortCountry === 1) {
             sortByCountryReverse(data)
         }
+        checkAfterSort(data)
     })
     sortCompany.addEventListener('click', () => {
         if(varSortCompany === 0) {
@@ -59,6 +65,7 @@ async function getContacts() {
         } else if(varSortCompany === 1) {
             sortByCompanyReverse(data)
         }
+        checkAfterSort(data)
     })
     sortPosition.addEventListener('click', () => {
         if(varSortPosition === 0) {
@@ -66,6 +73,7 @@ async function getContacts() {
         } else if(varSortPosition === 1) {
             sortByPositionReverse(data)
         }
+        checkAfterSort(data)
     })
     sortInterest.addEventListener('click', () => {
         if(varSortInterest === 0) {
@@ -73,10 +81,24 @@ async function getContacts() {
         } else if(varSortInterest === 1) {
             sortByInterestReverse(data)
         }
+        checkAfterSort(data)
     })
 }
 
+function checkAfterSort(data) {
+    counterAndDelete.classList.add('hidden')
+    varCheckboxAll = 'indeterminate'
+    console.log(varCheckboxAll)
+    checkboxAllFunction(data)
+}
+
+checkboxAll.addEventListener('click', () => checkboxAllFunction(dataCheckbox))
+
 function renderResults(data) {
+    
+    /* checkboxAll.classList = 'fas fa-check-square'
+            checkboxAllFunction(data)
+     */
     contactsList.innerHTML = ''
     data.forEach(async element => {
         const info = {
@@ -220,6 +242,7 @@ function sortByName(data) {
     })
     renderResults(sortedNames)
     varSortName = 1
+    /* varCheckboxAll = 0 */
 }
 
 function sortByNameReverse(data) {
@@ -376,6 +399,8 @@ async function getSearchResults() { //espacio apellido?
     const data = await response.json()
     console.log(data)
     renderResults(data)
+    dataCheckbox = data
+    /* checkboxAll.addEventListener('click', () => checkboxAllFunction(data)) */
 }
 
 //select contacts 
@@ -387,7 +412,6 @@ function selectContact(checkbox, info, data, row) {
     }
 }
 
-let contIdArray = []
 function check(checkbox, info, data, row) {
     checkbox.classList = 'fas fa-check-square u-item select'
     row.style.backgroundColor = 'rgba(142, 199, 252, 0.5)'
@@ -419,20 +443,26 @@ function contactCounter(contIdArray) {
 function allContacts(data) {
     if(contIdArray.length === data.length) {
         checkboxAll.classList = 'fas fa-check-square'
+        varCheckboxAll = 'selected'
     } else if(contIdArray.length !== 0 && contIdArray.length !== data.length) {
         checkboxAll.classList = 'fas fa-minus-square'
+        varCheckboxAll = 'indeterminate'
     } else if (contIdArray.length === 0) {
         checkboxAll.classList = 'far fa-square'
+        varCheckboxAll = 'unselected'
     }
 }
 
 function checkboxAllFunction(data) {
+    console.log(varCheckboxAll)
     const allConts = document.querySelectorAll('.select')
     const rowContact = document.querySelectorAll('.row-contact')
-    if(checkboxAll.classList == 'far fa-square') {
+    if(/* checkboxAll.classList == 'far fa-square' || */ varCheckboxAll === 'unselected') {
+        contIdArray = []
+        console.log('no seleccionado a seleccionado')
         checkboxAll.classList = 'fas fa-check-square'
         //seleccionar todos
-        console.log(allConts)
+        /* console.log(allConts) */
         allConts.forEach(element => {
             element.classList = 'fas fa-check-square u-item select'
         })
@@ -442,7 +472,10 @@ function checkboxAllFunction(data) {
         rowContact.forEach(row => row.style.backgroundColor = 'rgba(142, 199, 252, 0.5)')
         console.log(contIdArray)
         contactCounter(contIdArray)
-    } else if(checkboxAll.classList == 'fas fa-check-square') {
+        varCheckboxAll = 'selected'
+        console.log(varCheckboxAll)
+    } else if(/* checkboxAll.classList == 'fas fa-check-square' || checkboxAll.classList == 'fas fa-minus-square' || */ varCheckboxAll === 'selected') {
+        console.log('seleccionado a no seleccionado')
         checkboxAll.classList = 'far fa-square'
         //desseleccionar todos
         contIdArray = []
@@ -452,7 +485,11 @@ function checkboxAllFunction(data) {
         })
         rowContact.forEach(row => row.style.backgroundColor = 'white')
         contactCounter(contIdArray)
-    } else if(checkboxAll.classList == 'fas fa-minus-square') {
+        varCheckboxAll = 'unselected'
+        console.log(varCheckboxAll)
+
+    } else if(/* checkboxAll.classList == 'fas fa-minus-square' */ varCheckboxAll === 'indeterminate') {
+        console.log('indeterminado a no seleccionado')
         checkboxAll.classList = 'far fa-square'
         //desseleccionar seleccionados
         contIdArray = []
@@ -462,5 +499,6 @@ function checkboxAllFunction(data) {
         })
         rowContact.forEach(row => row.style.backgroundColor = 'white')
         contactCounter(contIdArray)
+        varCheckboxAll = 'unselected'
     }
 }

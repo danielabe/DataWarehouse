@@ -14,11 +14,14 @@ var searchInput = document.getElementById('searchInput');
 var checkboxAll = document.getElementById('checkboxAll');
 var contCounter = document.getElementById('contCounter');
 var counterAndDelete = document.getElementById('counterAndDelete');
+var contIdArray = [];
 var varSortName = 0;
 var varSortCountry = 0;
 var varSortCompany = 0;
 var varSortPosition = 0;
-var varSortInterest = 0; //show contacts 
+var varSortInterest = 0;
+var varCheckboxAll = 'unselected';
+var dataCheckbox = []; //show contacts 
 
 contacts.addEventListener('click', function () {
   getContacts();
@@ -49,16 +52,18 @@ function getContacts() {
 
         case 8:
           data = _context.sent;
+          dataCheckbox = data;
           renderResults(data);
-          checkboxAll.addEventListener('click', function () {
-            return checkboxAllFunction(data);
-          });
+          /* checkboxAll.addEventListener('click', () => checkboxAllFunction(data)) */
+
           sortName.addEventListener('click', function () {
             if (varSortName === 0) {
               sortByName(data);
             } else if (varSortName === 1) {
               sortByNameReverse(data);
             }
+
+            checkAfterSort(data);
           });
           sortCountry.addEventListener('click', function () {
             if (varSortCountry === 0) {
@@ -66,6 +71,8 @@ function getContacts() {
             } else if (varSortCountry === 1) {
               sortByCountryReverse(data);
             }
+
+            checkAfterSort(data);
           });
           sortCompany.addEventListener('click', function () {
             if (varSortCompany === 0) {
@@ -73,6 +80,8 @@ function getContacts() {
             } else if (varSortCompany === 1) {
               sortByCompanyReverse(data);
             }
+
+            checkAfterSort(data);
           });
           sortPosition.addEventListener('click', function () {
             if (varSortPosition === 0) {
@@ -80,6 +89,8 @@ function getContacts() {
             } else if (varSortPosition === 1) {
               sortByPositionReverse(data);
             }
+
+            checkAfterSort(data);
           });
           sortInterest.addEventListener('click', function () {
             if (varSortInterest === 0) {
@@ -87,6 +98,8 @@ function getContacts() {
             } else if (varSortInterest === 1) {
               sortByInterestReverse(data);
             }
+
+            checkAfterSort(data);
           });
 
         case 16:
@@ -97,7 +110,21 @@ function getContacts() {
   });
 }
 
+function checkAfterSort(data) {
+  counterAndDelete.classList.add('hidden');
+  varCheckboxAll = 'indeterminate';
+  console.log(varCheckboxAll);
+  checkboxAllFunction(data);
+}
+
+checkboxAll.addEventListener('click', function () {
+  return checkboxAllFunction(dataCheckbox);
+});
+
 function renderResults(data) {
+  /* checkboxAll.classList = 'fas fa-check-square'
+          checkboxAllFunction(data)
+   */
   contactsList.innerHTML = '';
   data.forEach(function _callee(element) {
     var info, row, checkbox, contact, country, company, position, preferredChannel, interest, actions, ellipsis, trash, pen;
@@ -272,6 +299,7 @@ function sortByName(data) {
   });
   renderResults(sortedNames);
   varSortName = 1;
+  /* varCheckboxAll = 0 */
 }
 
 function sortByNameReverse(data) {
@@ -460,8 +488,10 @@ function getSearchResults() {
           data = _context4.sent;
           console.log(data);
           renderResults(data);
+          dataCheckbox = data;
+          /* checkboxAll.addEventListener('click', () => checkboxAllFunction(data)) */
 
-        case 11:
+        case 12:
         case "end":
           return _context4.stop();
       }
@@ -477,8 +507,6 @@ function selectContact(checkbox, info, data, row) {
     uncheck(checkbox, info, data, row);
   }
 }
-
-var contIdArray = [];
 
 function check(checkbox, info, data, row) {
   checkbox.classList = 'fas fa-check-square u-item select';
@@ -512,21 +540,30 @@ function contactCounter(contIdArray) {
 function allContacts(data) {
   if (contIdArray.length === data.length) {
     checkboxAll.classList = 'fas fa-check-square';
+    varCheckboxAll = 'selected';
   } else if (contIdArray.length !== 0 && contIdArray.length !== data.length) {
     checkboxAll.classList = 'fas fa-minus-square';
+    varCheckboxAll = 'indeterminate';
   } else if (contIdArray.length === 0) {
     checkboxAll.classList = 'far fa-square';
+    varCheckboxAll = 'unselected';
   }
 }
 
 function checkboxAllFunction(data) {
+  console.log(varCheckboxAll);
   var allConts = document.querySelectorAll('.select');
   var rowContact = document.querySelectorAll('.row-contact');
 
-  if (checkboxAll.classList == 'far fa-square') {
+  if (
+  /* checkboxAll.classList == 'far fa-square' || */
+  varCheckboxAll === 'unselected') {
+    contIdArray = [];
+    console.log('no seleccionado a seleccionado');
     checkboxAll.classList = 'fas fa-check-square'; //seleccionar todos
 
-    console.log(allConts);
+    /* console.log(allConts) */
+
     allConts.forEach(function (element) {
       element.classList = 'fas fa-check-square u-item select';
     });
@@ -538,7 +575,12 @@ function checkboxAllFunction(data) {
     });
     console.log(contIdArray);
     contactCounter(contIdArray);
-  } else if (checkboxAll.classList == 'fas fa-check-square') {
+    varCheckboxAll = 'selected';
+    console.log(varCheckboxAll);
+  } else if (
+  /* checkboxAll.classList == 'fas fa-check-square' || checkboxAll.classList == 'fas fa-minus-square' || */
+  varCheckboxAll === 'selected') {
+    console.log('seleccionado a no seleccionado');
     checkboxAll.classList = 'far fa-square'; //desseleccionar todos
 
     contIdArray = [];
@@ -550,7 +592,12 @@ function checkboxAllFunction(data) {
       return row.style.backgroundColor = 'white';
     });
     contactCounter(contIdArray);
-  } else if (checkboxAll.classList == 'fas fa-minus-square') {
+    varCheckboxAll = 'unselected';
+    console.log(varCheckboxAll);
+  } else if (
+  /* checkboxAll.classList == 'fas fa-minus-square' */
+  varCheckboxAll === 'indeterminate') {
+    console.log('indeterminado a no seleccionado');
     checkboxAll.classList = 'far fa-square'; //desseleccionar seleccionados
 
     contIdArray = [];
@@ -562,5 +609,6 @@ function checkboxAllFunction(data) {
       return row.style.backgroundColor = 'white';
     });
     contactCounter(contIdArray);
+    varCheckboxAll = 'unselected';
   }
 }
