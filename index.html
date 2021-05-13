@@ -46,7 +46,7 @@
                     <input id="searchInput" class="search" type="text">
                     <i id="search" class="fas fa-search"></i>
                 </div>
-                <button class="new-contact-btn">Agregar contacto</button>
+                <button id="newCntBtn" class="new-contact-btn">Agregar contacto</button>
             </div>
             <div id="counterAndDelete" class="counter-delete hidden">
                 <span id="contCounter" class="counter"></span>
@@ -65,6 +65,39 @@
                 <li class="u-item h-item">Acciones</li>
             </ul>
             <ul id="contactsList" class="users-list"></ul>
+            <div id="darkImageAddCtc" class="dark-image none">
+                <div class="head-window">
+                    <p class="wind-title">Nuevo contacto</p>
+                </div>
+                <div class="window-white">
+                    <button id="cancelContact" class="btn-white">Cancelar</button>
+                    <button id="saveContact" class="btn-grey">Guardar contacto</button>
+                </div>
+                <form id="newCtcForm" class="new-form new-ctc-form">
+                    <label class="form-lbl" for="name">
+                        <p>Nombre <span class="red-asterisk">*</span></p>
+                        <input id="name" class="field ncnt-input" type="text">
+                    </label>
+                    <!-- <div id="" class="msg-container"></div> -->
+                    <label class="form-lbl" for="surname">
+                        <p>Apellido<span class="red-asterisk">*</span></p>
+                        <input id="surname" class="field ncnt-input" type="text">
+                    </label>
+                    <!-- <div id="" class="msg-container"></div> -->
+                    <label class="form-lbl" for="position">
+                        <p>Cargo<span class="red-asterisk">*</span></p>
+                        <input id="position" class="field ncnt-input" type="text">
+                    </label>
+                    <label class="form-lbl" for="email">
+                        <p>Email<span class="red-asterisk">*</span></p>
+                        <input id="email" class="field ncnt-input" type="text">
+                    </label>
+                    <label class="form-lbl" for="company">
+                        <p>Compañia<span class="red-asterisk">*</span></p>
+                        <input id="company" class="field ncnt-input" type="text" placeholder="Ingresar nombre de compañía">
+                    </label>
+                </form>
+            </div>
             <div id="darkImageContacts" class="dark-image dk-img-cont none">
                 <div class="window-del-cont">
                     <img class="delete-contact" src="styles/images/delete-contact.png" alt="Contact"/>
@@ -98,15 +131,15 @@
                 <ul id="regionList"></ul>
             </div>
             <div id="darkImage" class="dark-image none">
-                <div class="window-add-reg">
+                <div class="head-window">
                     <p class="wind-title">Nueva región</p>
                 </div>
-                <div class="window-add-reg-white">
+                <div class="window-white">
                     <button id="cancelRegion" class="btn-white">Cancelar</button>
                     <button id="saveRegion" class="btn-grey">Guardar región</button>
                 </div>
-                <form id="newRegForm" class="new-reg-form">
-                    <label class="nr-lb" for="newRegion">Nombre de la región<span class="red-asterisk">*</span></label>
+                <form id="newRegForm" class="new-form">
+                    <label class="nr-lbl" for="newRegion">Nombre de la región<span class="red-asterisk">*</span></label>
                     <input id="newRegion" class="field nr-input" type="text">
                     <div id="msgContainer" class="msg-container"></div>
                 </form>

@@ -88,15 +88,15 @@ main {
   width: 250px;
 }
 
+.log::-webkit-input-placeholder {
+  text-align: center;
+}
+
 .field {
-  height: 30px;
+  height: 35px;
   outline: none;
   border: 1px solid #CCCCCC;
   border-radius: 2px;
-}
-
-.field::-webkit-input-placeholder {
-  text-align: center;
 }
 
 .submit {
@@ -309,7 +309,7 @@ main {
   background: rgba(0, 0, 0, 0.8);
 }
 
-.window-add-reg {
+.head-window {
   width: 90vw;
   height: 140px;
   position: relative;
@@ -328,7 +328,7 @@ main {
   left: 31.8px;
 }
 
-.window-add-reg-white {
+.window-white {
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
@@ -341,7 +341,7 @@ main {
   border-top: 0px;
 }
 
-.new-reg-form {
+.new-form {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -355,7 +355,7 @@ main {
   border-radius: 6.5px;
 }
 
-.nr-lb {
+.nr-lbl {
   width: 50%;
   padding: 0 0 10.6px 0;
   font-size: 14px;
@@ -710,6 +710,25 @@ progress::-moz-progress-bar {
   width: min-content;
   font-size: 15px;
   color: #1d72c2;
+}
+
+.ncnt-input {
+  width: 90%;
+  padding-left: 5px;
+  font-size: 12px;
+}
+
+.new-ctc-form {
+  flex-direction: row;
+  justify-content: space-around;
+  padding-left: 2%;
+}
+
+.form-lbl {
+  width: 95%;
+  padding: 0 0 10.6px 0;
+  font-size: 14px;
+  color: #333333;
 }
 
 .none {

@@ -15,6 +15,7 @@ var checkboxAll = document.getElementById('checkboxAll');
 var contCounter = document.getElementById('contCounter');
 var counterAndDelete = document.getElementById('counterAndDelete');
 var dltCtcBtn = document.getElementById('dltCtcBtn');
+var newCntBtn = document.getElementById('newCntBtn');
 var contIdArray = [];
 var dataCheckbox = [];
 var varSortName = 0;
@@ -666,4 +667,12 @@ function checkboxAllFunction(data) {
     contactCounter(contIdArray);
     varCheckboxAll = 'unselected';
   }
-}
+} //add contact
+
+
+newCntBtn.addEventListener('click', function () {
+  window.scrollTo(0, 0);
+  body.classList.add('modal');
+  darkImageAddCtc.classList.remove('none');
+  console.log('add contact');
+});

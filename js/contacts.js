@@ -13,6 +13,7 @@ const checkboxAll = document.getElementById('checkboxAll')
 const contCounter = document.getElementById('contCounter')
 const counterAndDelete = document.getElementById('counterAndDelete')
 const dltCtcBtn = document.getElementById('dltCtcBtn')
+const newCntBtn = document.getElementById('newCntBtn')
 
 let contIdArray = []
 let dataCheckbox = []
@@ -535,3 +536,11 @@ function checkboxAllFunction(data) {
         varCheckboxAll = 'unselected'
     }
 }
+
+//add contact
+newCntBtn.addEventListener('click', () => {
+    window.scrollTo(0, 0)
+    body.classList.add('modal')
+    darkImageAddCtc.classList.remove('none')
+    console.log('add contact')
+})
