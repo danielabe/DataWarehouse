@@ -12,6 +12,7 @@ const searchInput = document.getElementById('searchInput')
 const checkboxAll = document.getElementById('checkboxAll')
 const contCounter = document.getElementById('contCounter')
 const counterAndDelete = document.getElementById('counterAndDelete')
+const dltCtcBtn = document.getElementById('dltCtcBtn')
 
 let contIdArray = []
 let dataCheckbox = []
@@ -21,6 +22,7 @@ let varSortCountry = 0
 let varSortCompany = 0
 let varSortPosition = 0
 let varSortInterest = 0
+let varDelete = 0
 
 let varCheckboxAll = 'unselected'
 
@@ -50,7 +52,7 @@ async function getContacts() {
         } else if(varSortName === 1) {
             sortByNameReverse(data)
         }
-        checkAfterSortAndSearch(data)
+        checkAfterSortAndSearch(data) 
     })
     sortCountry.addEventListener('click', () => {
         if(varSortCountry === 0) {
@@ -213,12 +215,16 @@ function modalDelete(info, contactsList) {
     deleteContactBtn.addEventListener('click', () => {
         body.classList.remove('modal')
         darkImageContacts.classList.add('none')
-        contactsList.innerHTML = ''
-        deleteContact(info, contactsList)
+        /* contactsList.innerHTML = '' */
+        if(varDelete === 0) {
+            deleteContact(info, contactsList)
+        } else if (varDelete === 1) {
+            deleteContacts()
+        }
     })
 }
 
-async function deleteContact(info, contactsList) {
+async function deleteContact(info/* , contactsList */) {
     const options = {
         method: 'DELETE',
         headers: {
@@ -228,6 +234,31 @@ async function deleteContact(info, contactsList) {
     const response = await fetch(`http://localhost:3000/contacts/${info.contactId}`, options)
     const data = await response.json()
     getContacts()
+    checkAfterSortAndSearch() //no se si funciona el data, con o sin data va igual, no se si es correcto
+}
+
+dltCtcBtn.addEventListener('click', () => {
+    varDelete = 1
+    modalDelete(/* info *//* , contactsList */)
+})
+
+function deleteContacts() {
+    contIdArray.forEach(async ctc => {
+        console.log(ctc)
+        const info = {
+            contactId: ctc
+        }
+        const options = {
+            method: 'DELETE',
+            headers: {
+                Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
+            }
+        }
+        const response = await fetch(`http://localhost:3000/contacts/${info.contactId}`, options)
+        const data = await response.json()
+        getContacts()
+    })
+    checkAfterSortAndSearch() //no se si funciona el data, con o sin data va igual, no se si es correcto
 }
 
 //sort columns

@@ -14,6 +14,7 @@ var searchInput = document.getElementById('searchInput');
 var checkboxAll = document.getElementById('checkboxAll');
 var contCounter = document.getElementById('contCounter');
 var counterAndDelete = document.getElementById('counterAndDelete');
+var dltCtcBtn = document.getElementById('dltCtcBtn');
 var contIdArray = [];
 var dataCheckbox = [];
 var varSortName = 0;
@@ -21,6 +22,7 @@ var varSortCountry = 0;
 var varSortCompany = 0;
 var varSortPosition = 0;
 var varSortInterest = 0;
+var varDelete = 0;
 var varCheckboxAll = 'unselected'; //show contacts 
 
 contacts.addEventListener('click', function () {
@@ -247,12 +249,19 @@ function modalDelete(info, contactsList) {
   deleteContactBtn.addEventListener('click', function () {
     body.classList.remove('modal');
     darkImageContacts.classList.add('none');
-    contactsList.innerHTML = '';
-    deleteContact(info, contactsList);
+    /* contactsList.innerHTML = '' */
+
+    if (varDelete === 0) {
+      deleteContact(info, contactsList);
+    } else if (varDelete === 1) {
+      deleteContacts();
+    }
   });
 }
 
-function deleteContact(info, contactsList) {
+function deleteContact(info
+/* , contactsList */
+) {
   var options, response, data;
   return regeneratorRuntime.async(function deleteContact$(_context3) {
     while (1) {
@@ -275,13 +284,58 @@ function deleteContact(info, contactsList) {
         case 6:
           data = _context3.sent;
           getContacts();
+          checkAfterSortAndSearch(); //no se si funciona el data, con o sin data va igual, no se si es correcto
 
-        case 8:
+        case 9:
         case "end":
           return _context3.stop();
       }
     }
   });
+}
+
+dltCtcBtn.addEventListener('click', function () {
+  varDelete = 1;
+  modalDelete();
+});
+
+function deleteContacts() {
+  contIdArray.forEach(function _callee2(ctc) {
+    var info, options, response, data;
+    return regeneratorRuntime.async(function _callee2$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            console.log(ctc);
+            info = {
+              contactId: ctc
+            };
+            options = {
+              method: 'DELETE',
+              headers: {
+                Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
+              }
+            };
+            _context4.next = 5;
+            return regeneratorRuntime.awrap(fetch("http://localhost:3000/contacts/".concat(info.contactId), options));
+
+          case 5:
+            response = _context4.sent;
+            _context4.next = 8;
+            return regeneratorRuntime.awrap(response.json());
+
+          case 8:
+            data = _context4.sent;
+            getContacts();
+
+          case 10:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    });
+  });
+  checkAfterSortAndSearch(); //no se si funciona el data, con o sin data va igual, no se si es correcto
 } //sort columns
 
 
@@ -459,9 +513,9 @@ searchInput.addEventListener('keyup', function (event) {
 
 function getSearchResults() {
   var search, options, response, data;
-  return regeneratorRuntime.async(function getSearchResults$(_context4) {
+  return regeneratorRuntime.async(function getSearchResults$(_context5) {
     while (1) {
-      switch (_context4.prev = _context4.next) {
+      switch (_context5.prev = _context5.next) {
         case 0:
           //espacio apellido?
           console.log(JSON.parse(sessionStorage.getItem('Token')));
@@ -476,16 +530,16 @@ function getSearchResults() {
               "Content-Type": "application/json"
             }
           };
-          _context4.next = 5;
+          _context5.next = 5;
           return regeneratorRuntime.awrap(fetch('http://localhost:3000/search', options));
 
         case 5:
-          response = _context4.sent;
-          _context4.next = 8;
+          response = _context5.sent;
+          _context5.next = 8;
           return regeneratorRuntime.awrap(response.json());
 
         case 8:
-          data = _context4.sent;
+          data = _context5.sent;
           console.log(data);
           renderResults(data);
           dataCheckbox = data;
@@ -494,7 +548,7 @@ function getSearchResults() {
 
         case 13:
         case "end":
-          return _context4.stop();
+          return _context5.stop();
       }
     }
   });
