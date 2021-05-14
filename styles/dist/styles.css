@@ -714,7 +714,7 @@ progress::-moz-progress-bar {
 
 .ncnt-input {
   width: 90%;
-  padding-left: 5px;
+  padding-left: 8px;
   font-size: 12px;
 }
 
@@ -729,6 +729,47 @@ progress::-moz-progress-bar {
   padding: 0 0 10.6px 0;
   font-size: 14px;
   color: #333333;
+}
+
+.comp-lbl {
+  position: relative;
+}
+
+.select-company {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.select-company:hover {
+  cursor: pointer;
+}
+
+.fa-caret-down {
+  width: min-content;
+  padding-right: 15px;
+  /* text-align: right; */
+  font-size: 15px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.sug-comp {
+  display: flex;
+  align-items: center;
+  height: 24px;
+  padding-left: 18px;
+  font-size: 13px;
+  list-style: none;
+}
+.sug-comp:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.company-list {
+  width: 90%;
+  margin-top: 4.5px;
+  border: 1px solid #CCCCCC;
+  border-radius: 2px;
+  background-color: white;
 }
 
 .none {

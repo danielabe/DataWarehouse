@@ -80,21 +80,24 @@
                     </label>
                     <!-- <div id="" class="msg-container"></div> -->
                     <label class="form-lbl" for="surname">
-                        <p>Apellido<span class="red-asterisk">*</span></p>
+                        <p>Apellido <span class="red-asterisk">*</span></p>
                         <input id="surname" class="field ncnt-input" type="text">
                     </label>
                     <!-- <div id="" class="msg-container"></div> -->
                     <label class="form-lbl" for="position">
-                        <p>Cargo<span class="red-asterisk">*</span></p>
+                        <p>Cargo <span class="red-asterisk">*</span></p>
                         <input id="position" class="field ncnt-input" type="text">
                     </label>
                     <label class="form-lbl" for="email">
-                        <p>Email<span class="red-asterisk">*</span></p>
+                        <p>Email <span class="red-asterisk">*</span></p>
                         <input id="email" class="field ncnt-input" type="text">
                     </label>
-                    <label class="form-lbl" for="company">
-                        <p>Compañia<span class="red-asterisk">*</span></p>
-                        <input id="company" class="field ncnt-input" type="text" placeholder="Ingresar nombre de compañía">
+                    <label id="compLbl" class="form-lbl comp-lbl" for="company">
+                        <p>Compañia <span class="red-asterisk">*</span></p>
+                        <div id="company" class="field ncnt-input select-company">
+                            Seleccionar compañía<i class="fas fa-caret-down"></i>
+                        </div>
+                        <ul id="selectCompany" class="company-list none"></ul>
                     </label>
                 </form>
             </div>

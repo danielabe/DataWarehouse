@@ -16,6 +16,9 @@ var contCounter = document.getElementById('contCounter');
 var counterAndDelete = document.getElementById('counterAndDelete');
 var dltCtcBtn = document.getElementById('dltCtcBtn');
 var newCntBtn = document.getElementById('newCntBtn');
+var company = document.getElementById('company');
+var selectCompany = document.getElementById('selectCompany');
+var compLbl = document.getElementById('compLbl');
 var contIdArray = [];
 var dataCheckbox = [];
 var varSortName = 0;
@@ -24,6 +27,7 @@ var varSortCompany = 0;
 var varSortPosition = 0;
 var varSortInterest = 0;
 var varDelete = 0;
+var varSelectCompany = 0;
 var varCheckboxAll = 'unselected'; //show contacts 
 
 contacts.addEventListener('click', function () {
@@ -675,4 +679,64 @@ newCntBtn.addEventListener('click', function () {
   body.classList.add('modal');
   darkImageAddCtc.classList.remove('none');
   console.log('add contact');
+}); //select company
+
+company.addEventListener('click', function () {
+  if (varSelectCompany === 0) {
+    getCompanies();
+  } else if (varSelectCompany === 1) {
+    selectCompany.classList.add('none');
+    selectCompany.innerHTML = '';
+    varSelectCompany = 0;
+    compLbl.style.top = '0px';
+  }
 });
+
+function getCompanies() {
+  var options, response, data;
+  return regeneratorRuntime.async(function getCompanies$(_context6) {
+    while (1) {
+      switch (_context6.prev = _context6.next) {
+        case 0:
+          options = {
+            method: 'GET',
+            headers: {
+              Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
+            }
+          };
+          _context6.next = 3;
+          return regeneratorRuntime.awrap(fetch('http://localhost:3000/companies', options));
+
+        case 3:
+          response = _context6.sent;
+          _context6.next = 6;
+          return regeneratorRuntime.awrap(response.json());
+
+        case 6:
+          data = _context6.sent;
+          renderSelectCompanies(data);
+
+        case 8:
+        case "end":
+          return _context6.stop();
+      }
+    }
+  });
+}
+
+function renderSelectCompanies(data) {
+  varSelectCompany = 1;
+  selectCompany.classList.remove('none');
+  var hcomp = (data.length * 24 + 6) / 2;
+  console.log(hcomp);
+  compLbl.style.top = "".concat(hcomp, "px");
+  data.forEach(function (element) {
+    var comp = document.createElement('li');
+    comp.innerText = element.company_name;
+    comp.classList.add('sug-comp');
+    selectCompany.appendChild(comp);
+    comp.addEventListener('click', function () {
+      return console.log(element.company_id);
+    });
+  });
+}

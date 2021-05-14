@@ -14,6 +14,9 @@ const contCounter = document.getElementById('contCounter')
 const counterAndDelete = document.getElementById('counterAndDelete')
 const dltCtcBtn = document.getElementById('dltCtcBtn')
 const newCntBtn = document.getElementById('newCntBtn')
+const company = document.getElementById('company')
+const selectCompany = document.getElementById('selectCompany')
+const compLbl = document.getElementById('compLbl')
 
 let contIdArray = []
 let dataCheckbox = []
@@ -24,6 +27,7 @@ let varSortCompany = 0
 let varSortPosition = 0
 let varSortInterest = 0
 let varDelete = 0
+let varSelectCompany = 0
 
 let varCheckboxAll = 'unselected'
 
@@ -544,3 +548,43 @@ newCntBtn.addEventListener('click', () => {
     darkImageAddCtc.classList.remove('none')
     console.log('add contact')
 })
+
+//select company
+company.addEventListener('click', () => {
+    if(varSelectCompany === 0) {
+        getCompanies()
+    } else if(varSelectCompany === 1) {
+        selectCompany.classList.add('none')
+        selectCompany.innerHTML = ''
+        varSelectCompany = 0
+        compLbl.style.top = '0px'
+    }
+})
+
+async function getCompanies() {
+    const options = {
+        method: 'GET',
+        headers: {
+            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
+        }
+    }
+    const response = await fetch('http://localhost:3000/companies', options)
+    const data = await response.json()
+    renderSelectCompanies(data)
+}
+
+function renderSelectCompanies(data) {
+    varSelectCompany = 1
+    selectCompany.classList.remove('none')
+    const hcomp = (data.length * 24 + 6) / 2
+    console.log(hcomp)
+    compLbl.style.top = `${hcomp}px`
+    data.forEach(element => {
+        const comp = document.createElement('li')
+        comp.innerText = element.company_name
+        comp.classList.add('sug-comp')
+        selectCompany.appendChild(comp)
+
+        comp.addEventListener('click', () => console.log(element.company_id))
+    })
+}
