@@ -543,8 +543,8 @@ function checkboxAllFunction(data) {
 
 //add contact
 newCntBtn.addEventListener('click', () => {
-    window.scrollTo(0, 0)
-    body.classList.add('modal')
+    /* window.scrollTo(0, 0) */
+    /* body.classList.add('modal') */
     darkImageAddCtc.classList.remove('none')
     console.log('add contact')
 })
@@ -580,11 +580,30 @@ function renderSelectCompanies(data) {
     console.log(hcomp)
     compLbl.style.top = `${hcomp}px`
     data.forEach(element => {
-        const comp = document.createElement('li')
-        comp.innerText = element.company_name
-        comp.classList.add('sug-comp')
-        selectCompany.appendChild(comp)
+        const info = {
+            companyId: element.company_id,
+            companyName: element.company_name,
+            cityId: element.city_id,
+            cityName: element.city_name,
+            countryId: element.country_id,
+            countryName: element.country_name,
+            regionId: element.region_id,
+            regionName: element.region_name
+        }
+        const companyItem = document.createElement('li')
+        companyItem.innerText = info.companyName
+        companyItem.classList.add('sug-comp')
+        selectCompany.appendChild(companyItem)
 
-        comp.addEventListener('click', () => console.log(element.company_id))
+        companyItem.addEventListener('click', () => selectCompanyFunction(info))
     })
+}
+
+function selectCompanyFunction(info) {
+    console.log(info.companyName)
+    selectCompany.classList.add('none')
+    selectCompany.innerHTML = ''
+    varSelectCompany = 0
+    compLbl.style.top = '0px'
+    company.innerHTML = `${info.companyName}<i class="fas fa-caret-down"></i>`
 }

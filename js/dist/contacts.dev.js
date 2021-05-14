@@ -675,8 +675,9 @@ function checkboxAllFunction(data) {
 
 
 newCntBtn.addEventListener('click', function () {
-  window.scrollTo(0, 0);
-  body.classList.add('modal');
+  /* window.scrollTo(0, 0) */
+
+  /* body.classList.add('modal') */
   darkImageAddCtc.classList.remove('none');
   console.log('add contact');
 }); //select company
@@ -731,12 +732,31 @@ function renderSelectCompanies(data) {
   console.log(hcomp);
   compLbl.style.top = "".concat(hcomp, "px");
   data.forEach(function (element) {
-    var comp = document.createElement('li');
-    comp.innerText = element.company_name;
-    comp.classList.add('sug-comp');
-    selectCompany.appendChild(comp);
-    comp.addEventListener('click', function () {
-      return console.log(element.company_id);
+    var info = {
+      companyId: element.company_id,
+      companyName: element.company_name,
+      cityId: element.city_id,
+      cityName: element.city_name,
+      countryId: element.country_id,
+      countryName: element.country_name,
+      regionId: element.region_id,
+      regionName: element.region_name
+    };
+    var companyItem = document.createElement('li');
+    companyItem.innerText = info.companyName;
+    companyItem.classList.add('sug-comp');
+    selectCompany.appendChild(companyItem);
+    companyItem.addEventListener('click', function () {
+      return selectCompanyFunction(info);
     });
   });
+}
+
+function selectCompanyFunction(info) {
+  console.log(info.companyName);
+  selectCompany.classList.add('none');
+  selectCompany.innerHTML = '';
+  varSelectCompany = 0;
+  compLbl.style.top = '0px';
+  company.innerHTML = "".concat(info.companyName, "<i class=\"fas fa-caret-down\"></i>");
 }
