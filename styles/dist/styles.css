@@ -828,6 +828,11 @@ progress::-moz-progress-bar {
   justify-content: space-between;
 }
 
+.h-pref {
+  height: 64px;
+  z-index: 1;
+}
+
 .none {
   display: none;
 }

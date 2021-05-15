@@ -26,6 +26,9 @@ const citiesList = document.getElementById('citiesList')
 const address = document.getElementById('address')
 const interestSelect = document.getElementById('interestSelect')
 const interestsList = document.getElementById('interestsList')
+const telephone = document.getElementById('telephone')
+const selectTelephone = document.getElementById('selectTelephone')
+const prefTelephoneList = document.getElementById('prefTelephoneList')
 
 let contIdArray = []
 let dataCheckbox = []
@@ -43,6 +46,8 @@ let varEnableCountry = 0
 let varEnableCity = 0
 let varSelectCity = 0
 let varSelectInterest = 0
+let varPrefTel = 0
+let varEnablePref = 0
 
 let varRegId
 let varCountId
@@ -828,4 +833,44 @@ function selectInterestFunction(interest) {
     varSelectInterest = 0
     interestsList.classList.add('none')
     interestSelect.innerHTML = `${interest}<i class="fas fa-caret-down"></i>`
+}
+
+//contact channels
+telephone.addEventListener('keyup', () => enablePreferences())
+
+function enablePreferences() {
+    if(telephone.value !== '') {
+        selectTelephone.classList.remove('disable')
+        varEnablePref = 1
+    } else if(telephone.value === '') {
+        selectTelephone.classList.add('disable')
+        selectTelephone.innerHTML = `Sin preferencia<i class="fas fa-caret-down"></i>`
+        varEnablePref = 0
+    }
+}
+
+selectTelephone.addEventListener('click', () => {
+    if(varEnablePref === 1) {
+        if(varPrefTel === 0) {
+            showPreferences()
+        } else if(varPrefTel === 1) {
+            prefTelephoneList.classList.add('none')
+            varPrefTel = 0
+        }
+    }
+})
+
+function showPreferences() {
+    prefTelephoneList.classList.remove('none')
+    varPrefTel = 1
+    const prefArray = document.querySelectorAll('.pref-tel')
+    prefArray.forEach(element => {
+        element.addEventListener('click', () => selectPrefTelFunction(element.innerText))
+    })
+}
+
+function selectPrefTelFunction(pref) {
+    varPrefTel = 0
+    prefTelephoneList.classList.add('none')
+    selectTelephone.innerHTML = `${pref}<i class="fas fa-caret-down"></i>`
 }

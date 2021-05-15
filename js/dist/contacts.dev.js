@@ -28,6 +28,9 @@ var citiesList = document.getElementById('citiesList');
 var address = document.getElementById('address');
 var interestSelect = document.getElementById('interestSelect');
 var interestsList = document.getElementById('interestsList');
+var telephone = document.getElementById('telephone');
+var selectTelephone = document.getElementById('selectTelephone');
+var prefTelephoneList = document.getElementById('prefTelephoneList');
 var contIdArray = [];
 var dataCheckbox = [];
 var varSortName = 0;
@@ -43,6 +46,8 @@ var varEnableCountry = 0;
 var varEnableCity = 0;
 var varSelectCity = 0;
 var varSelectInterest = 0;
+var varPrefTel = 0;
+var varEnablePref = 0;
 var varRegId;
 var varCountId;
 var varCheckboxAll = 'unselected'; //show contacts 
@@ -1042,4 +1047,48 @@ function selectInterestFunction(interest) {
   varSelectInterest = 0;
   interestsList.classList.add('none');
   interestSelect.innerHTML = "".concat(interest, "<i class=\"fas fa-caret-down\"></i>");
+} //contact channels
+
+
+telephone.addEventListener('keyup', function () {
+  return enablePreferences();
+});
+
+function enablePreferences() {
+  if (telephone.value !== '') {
+    selectTelephone.classList.remove('disable');
+    varEnablePref = 1;
+  } else if (telephone.value === '') {
+    selectTelephone.classList.add('disable');
+    selectTelephone.innerHTML = "Sin preferencia<i class=\"fas fa-caret-down\"></i>";
+    varEnablePref = 0;
+  }
+}
+
+selectTelephone.addEventListener('click', function () {
+  if (varEnablePref === 1) {
+    if (varPrefTel === 0) {
+      showPreferences();
+    } else if (varPrefTel === 1) {
+      prefTelephoneList.classList.add('none');
+      varPrefTel = 0;
+    }
+  }
+});
+
+function showPreferences() {
+  prefTelephoneList.classList.remove('none');
+  varPrefTel = 1;
+  var prefArray = document.querySelectorAll('.pref-tel');
+  prefArray.forEach(function (element) {
+    element.addEventListener('click', function () {
+      return selectPrefTelFunction(element.innerText);
+    });
+  });
+}
+
+function selectPrefTelFunction(pref) {
+  varPrefTel = 0;
+  prefTelephoneList.classList.add('none');
+  selectTelephone.innerHTML = "".concat(pref, "<i class=\"fas fa-caret-down\"></i>");
 }
