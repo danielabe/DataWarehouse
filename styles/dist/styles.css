@@ -822,6 +822,12 @@ progress::-moz-progress-bar {
   background-color: #C6CACC;
 }
 
+.s-channel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .none {
   display: none;
 }

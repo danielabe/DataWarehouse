@@ -71,129 +71,129 @@
                 </div>
                 <form class="window-white contact-window">
                     <div class="location-and-interest">
-                        <label id="regionLbl" class="form-lbl comp-lbl index-slct" for="regionSelect">
+                        <div id="regionLbl" class="form-lbl comp-lbl index-slct">
                             <p>Región</p>
                             <div id="regionSelect" class="field ncnt-input select-company">
                                 Seleccionar región<i class="fas fa-caret-down"></i>
                             </div>
                             <ul id="regionsList" class="company-list none"></ul>
-                        </label>
-                        <label id="countryLbl" class="form-lbl comp-lbl index-slct" for="countrySelect">
+                        </div>
+                        <div id="countryLbl" class="form-lbl comp-lbl index-slct">
                             <p>País</p>
                             <div id="countrySelect" class="field ncnt-input select-company disable">
                                 Seleccionar país<i class="fas fa-caret-down"></i>
                             </div>
                             <ul id="countriesList" class="company-list none"></ul>
-                        </label>
-                        <label id="cityLbl" class="form-lbl comp-lbl index-slct" for="citySelect">
+                        </div>
+                        <div id="cityLbl" class="form-lbl comp-lbl index-slct">
                             <p>Ciudad</p>
                             <div id="citySelect" class="field ncnt-input select-company disable">
                                 Seleccionar ciudad<i class="fas fa-caret-down"></i>
                             </div>
                             <ul id="citiesList" class="company-list none"></ul>
-                        </label>
+                        </div>
                         <label class="form-lbl" for="address">
                             <p>Dirección</p>
                             <input id="address" class="field ncnt-input disable" type="text" disabled placeholder="Ingresa una dirección">
                         </label>
-                        <label id="interestLbl" class="form-lbl comp-lbl" for="interestSelect">
+                        <div id="interestLbl" class="form-lbl comp-lbl">
                             <p>Interés</p>
                             <div id="interestSelect" class="field ncnt-input select-company slct-int">
                                 0%<i class="fas fa-caret-down"></i>
                             </div>
-                            <ul id="interestsList" class="company-list none">
+                            <ul id="interestsList" class="company-list slct-int none">
                                 <li class="sug-comp int">0%</li>
                                 <li class="sug-comp int">25%</li>
                                 <li class="sug-comp int">50%</li>
                                 <li class="sug-comp int">75%</li>
                                 <li class="sug-comp int">100%</li>
                             </ul>
-                        </label>
+                        </div>
                     </div>
-                    <!-- corregir desde aca -->
                     <div class="contact-channel">
-                        <label id="regionLbl" class="form-lbl comp-lbl" for="regionSelect">
+                        <div id="" class="form-lbl comp-lbl">
                             <p>Canal de contacto</p>
-                            <div id="regionSelect" class="field ncnt-input select-company">
-                                Seleccionar canal<i class="fas fa-caret-down"></i>
-                            </div>
-                            <ul id="selectRegion" class="company-list none"></ul>
-                        </label>
-                        <label class="form-lbl" for="name">
+                            <p id="" class="field ncnt-input s-channel">Teléfono</p>
+                        </div>
+                        <label class="form-lbl" for="telephone">
                             <p>Cuenta de usuario</p>
-                            <input id="name" class="field ncnt-input" type="text">
+                            <input id="telephone" class="field ncnt-input" type="text">
                         </label>
-                        <label id="regionLbl" class="form-lbl comp-lbl" for="regionSelect">
+                        <div id="" class="form-lbl comp-lbl">
                             <p>Preferencias</p>
-                            <div id="regionSelect" class="field ncnt-input select-company">
-                                Seleccionar región<i class="fas fa-caret-down"></i>
-                            </div>
-                            <ul id="selectRegion" class="company-list none"></ul>
+                            <p id="" class="field ncnt-input select-company disable">
+                                Sin preferencia<i class="fas fa-caret-down"></i>
+                            </p>
+                            <ul id="selectPrefTelephone" class="company-list none">
+                                <li>Sin preferencia</li>
+                                <li>Canal favorito</li>
+                                <li>No molestar</li>
+                            </ul>
+                        </div>
+                        <div id="" class="form-lbl comp-lbl">
+                            <p id="" class="field ncnt-input s-channel">Whatsapp</p>
+                        </div>
+                        <label class="form-lbl" for="wsp">
+                            <input id="wsp" class="field ncnt-input" type="text">
                         </label>
-                    
-                        <label id="regionLbl" class="form-lbl comp-lbl" for="regionSelect">
-                            <div id="regionSelect" class="field ncnt-input select-company">
-                                Seleccionar canal<i class="fas fa-caret-down"></i>
-                            </div>
-                            <ul id="selectRegion" class="company-list none"></ul>
+                        <div id="" class="form-lbl comp-lbl">
+                            <p id="" class="field ncnt-input select-company disable">
+                                Sin preferencia<i class="fas fa-caret-down"></i>
+                            </p>
+                            <ul id="selectPrefWsp" class="company-list none">
+                                <li>Sin preferencia</li>
+                                <li>Canal favorito</li>
+                                <li>No molestar</li>
+                            </ul>
+                        </div>
+                        <div id="" class="form-lbl comp-lbl">
+                            <p id="" class="field ncnt-input s-channel">Instagram</p>
+                        </div>
+                        <label class="form-lbl" for="instagram">
+                            <input id="instagram" class="field ncnt-input" type="text">
                         </label>
-                        <label class="form-lbl" for="name">
-                            <input id="name" class="field ncnt-input" type="text">
+                        <div id="" class="form-lbl comp-lbl">
+                            <p id="" class="field ncnt-input select-company disable">
+                                Sin preferencia<i class="fas fa-caret-down"></i>
+                            </p>
+                            <ul id="selectPrefInstagram" class="company-list none">
+                                <li>Sin preferencia</li>
+                                <li>Canal favorito</li>
+                                <li>No molestar</li>
+                            </ul>
+                        </div>
+                        <div id="regionLbl" class="form-lbl comp-lbl">
+                            <p id="regionSelect" class="field ncnt-input s-channel">Facebook</p>
+                        </div>
+                        <label class="form-lbl" for="facebook">
+                            <input id="facebook" class="field ncnt-input" type="text">
                         </label>
-                        <label id="regionLbl" class="form-lbl comp-lbl" for="regionSelect">
-                            <div id="regionSelect" class="field ncnt-input select-company">
-                                Seleccionar región<i class="fas fa-caret-down"></i>
-                            </div>
-                            <ul id="selectRegion" class="company-list none"></ul>
+                        <div id="" class="form-lbl comp-lbl">
+                            <p id="" class="field ncnt-input select-company disable">
+                                Sin preferencia<i class="fas fa-caret-down"></i>
+                            </p>
+                            <ul id="selectPrefFacebook" class="company-list none">
+                                <li>Sin preferencia</li>
+                                <li>Canal favorito</li>
+                                <li>No molestar</li>
+                            </ul>
+                        </div>
+                        <div id="regionLbl" class="form-lbl comp-lbl">
+                            <p id="regionSelect" class="field ncnt-input s-channel">Linkedin</p>
+                        </div>
+                        <label class="form-lbl" for="linkedin">
+                            <input id="linkedin" class="field ncnt-input" type="text">
                         </label>
-                    
-                        <label id="regionLbl" class="form-lbl comp-lbl" for="regionSelect">
-                            <div id="regionSelect" class="field ncnt-input select-company">
-                                Seleccionar canal<i class="fas fa-caret-down"></i>
-                            </div>
-                            <ul id="selectRegion" class="company-list none"></ul>
-                        </label>
-                        <label class="form-lbl" for="name">
-                            <input id="name" class="field ncnt-input" type="text">
-                        </label>
-                        <label id="regionLbl" class="form-lbl comp-lbl" for="regionSelect">
-                            <div id="regionSelect" class="field ncnt-input select-company">
-                                Seleccionar región<i class="fas fa-caret-down"></i>
-                            </div>
-                            <ul id="selectRegion" class="company-list none"></ul>
-                        </label>
-                    
-                        <label id="regionLbl" class="form-lbl comp-lbl" for="regionSelect">
-                            <div id="regionSelect" class="field ncnt-input select-company">
-                                Seleccionar canal<i class="fas fa-caret-down"></i>
-                            </div>
-                            <ul id="selectRegion" class="company-list none"></ul>
-                        </label>
-                        <label class="form-lbl" for="name">
-                            <input id="name" class="field ncnt-input" type="text">
-                        </label>
-                        <label id="regionLbl" class="form-lbl comp-lbl" for="regionSelect">
-                            <div id="regionSelect" class="field ncnt-input select-company">
-                                Seleccionar región<i class="fas fa-caret-down"></i>
-                            </div>
-                            <ul id="selectRegion" class="company-list none"></ul>
-                        </label>
-                    
-                        <label id="regionLbl" class="form-lbl comp-lbl" for="regionSelect">
-                            <div id="regionSelect" class="field ncnt-input select-company">
-                                Seleccionar canal<i class="fas fa-caret-down"></i>
-                            </div>
-                            <ul id="selectRegion" class="company-list none"></ul>
-                        </label>
-                        <label class="form-lbl" for="name">
-                            <input id="name" class="field ncnt-input" type="text">
-                        </label>
-                        <label id="regionLbl" class="form-lbl comp-lbl" for="regionSelect">
-                            <div id="regionSelect" class="field ncnt-input select-company">
-                                Seleccionar región<i class="fas fa-caret-down"></i>
-                            </div>
-                            <ul id="selectRegion" class="company-list none"></ul>
-                        </label>
+                        <div id="" class="form-lbl comp-lbl">
+                            <p id="" class="field ncnt-input select-company disable">
+                                Sin preferencia<i class="fas fa-caret-down"></i>
+                            </p>
+                            <ul id="selectPrefLinkedin" class="company-list none">
+                                <li>Sin preferencia</li>
+                                <li>Canal favorito</li>
+                                <li>No molestar</li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="buttons">
                         <button id="cancelContact" class="btn-white">Cancelar</button>
@@ -219,13 +219,13 @@
                         <p>Email <span class="red-asterisk">*</span></p>
                         <input id="email" class="field ncnt-input" type="text">
                     </label>
-                    <label id="compLbl" class="form-lbl comp-lbl" for="company">
+                    <div id="compLbl" class="form-lbl comp-lbl" for="company">
                         <p>Compañia <span class="red-asterisk">*</span></p>
-                        <div id="company" class="field ncnt-input select-company">
+                        <p id="company" class="field ncnt-input select-company">
                             Seleccionar compañía<i class="fas fa-caret-down"></i>
-                        </div>
+                        </dipv>
                         <ul id="selectCompany" class="company-list none"></ul>
-                    </label>
+                    </div>
                 </form>
             </div>
             <div id="darkImageContacts" class="dark-image dk-img-cont none">
