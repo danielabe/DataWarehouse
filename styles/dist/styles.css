@@ -379,7 +379,7 @@ main {
   border: none;
   border-radius: 2px;
   font-weight: bold;
-  color: #e8e8e8;
+  color: rgba(0, 0, 0, 0.25);
 }
 .btn-white:hover {
   cursor: pointer;
@@ -729,6 +729,7 @@ progress::-moz-progress-bar {
 .form-lbl {
   width: 95%;
   padding: 0 0 10.6px 0;
+  /* z-index: 1; */
   font-size: 14px;
   color: #333333;
 }
@@ -785,6 +786,7 @@ progress::-moz-progress-bar {
   display: flex;
   align-self: flex-start;
   width: 85.8vw;
+  height: 64px;
   margin: 100px 0 0 32px;
 }
 
@@ -810,6 +812,10 @@ progress::-moz-progress-bar {
 
 .dk-img-ctc {
   height: 890px;
+}
+
+.index-slct {
+  z-index: 1;
 }
 
 .none {

@@ -17,6 +17,8 @@ const newCntBtn = document.getElementById('newCntBtn')
 const company = document.getElementById('company')
 const selectCompany = document.getElementById('selectCompany')
 const compLbl = document.getElementById('compLbl')
+const regionSelect = document.getElementById('regionSelect')
+const regionsList = document.getElementById('regionsList')
 
 let contIdArray = []
 let dataCheckbox = []
@@ -28,6 +30,7 @@ let varSortPosition = 0
 let varSortInterest = 0
 let varDelete = 0
 let varSelectCompany = 0
+let varSelectRegion = 0
 
 let varCheckboxAll = 'unselected'
 
@@ -606,4 +609,56 @@ function selectCompanyFunction(info) {
     varSelectCompany = 0
     compLbl.style.top = '0px'
     company.innerHTML = `${info.companyName}<i class="fas fa-caret-down"></i>`
+}
+
+//select region
+regionSelect.addEventListener('click', () => {
+    if(varSelectRegion === 0) {
+        getRegions()
+    } else if(varSelectRegion === 1) {
+        regionsList.classList.add('none')
+        regionsList.innerHTML = ''
+        varSelectRegion = 0
+        /* compLbl.style.top = '0px' */
+    }
+})
+
+async function getRegions() {
+    const options = {
+        method: 'GET',
+        headers: {
+            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
+        }
+    }
+    const response = await fetch('http://localhost:3000/regions', options)
+    const data = await response.json()
+    console.log(data)
+    renderSelectRegions(data)
+}
+
+function renderSelectRegions(data) {
+    varSelectRegion = 1
+    regionsList.classList.remove('none')
+    const hreg = (data.length * 24 + 6) / 2
+    console.log(hreg)
+    /* compLbl.style.top = `${hreg}px` */
+    data.forEach(element => {
+        const info = {
+            regionId: element.region_id,
+            regionName: element.region_name,
+        }
+        const regionItem = document.createElement('li')
+        regionItem.innerText = info.regionName
+        regionItem.classList.add('sug-comp')
+        regionsList.appendChild(regionItem)
+
+        regionItem.addEventListener('click', () => selectRegionFunction(info))
+    })
+}
+
+function selectRegionFunction(info) {
+    regionsList.classList.add('none')
+    regionsList.innerHTML = ''
+    varSelectRegion = 0
+    regionSelect.innerHTML = `${info.regionName}<i class="fas fa-caret-down"></i>`
 }

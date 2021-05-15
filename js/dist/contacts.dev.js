@@ -19,6 +19,8 @@ var newCntBtn = document.getElementById('newCntBtn');
 var company = document.getElementById('company');
 var selectCompany = document.getElementById('selectCompany');
 var compLbl = document.getElementById('compLbl');
+var regionSelect = document.getElementById('regionSelect');
+var regionsList = document.getElementById('regionsList');
 var contIdArray = [];
 var dataCheckbox = [];
 var varSortName = 0;
@@ -28,6 +30,7 @@ var varSortPosition = 0;
 var varSortInterest = 0;
 var varDelete = 0;
 var varSelectCompany = 0;
+var varSelectRegion = 0;
 var varCheckboxAll = 'unselected'; //show contacts 
 
 contacts.addEventListener('click', function () {
@@ -759,4 +762,78 @@ function selectCompanyFunction(info) {
   varSelectCompany = 0;
   compLbl.style.top = '0px';
   company.innerHTML = "".concat(info.companyName, "<i class=\"fas fa-caret-down\"></i>");
+} //select region
+
+
+regionSelect.addEventListener('click', function () {
+  if (varSelectRegion === 0) {
+    getRegions();
+  } else if (varSelectRegion === 1) {
+    regionsList.classList.add('none');
+    regionsList.innerHTML = '';
+    varSelectRegion = 0;
+    /* compLbl.style.top = '0px' */
+  }
+});
+
+function getRegions() {
+  var options, response, data;
+  return regeneratorRuntime.async(function getRegions$(_context7) {
+    while (1) {
+      switch (_context7.prev = _context7.next) {
+        case 0:
+          options = {
+            method: 'GET',
+            headers: {
+              Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
+            }
+          };
+          _context7.next = 3;
+          return regeneratorRuntime.awrap(fetch('http://localhost:3000/regions', options));
+
+        case 3:
+          response = _context7.sent;
+          _context7.next = 6;
+          return regeneratorRuntime.awrap(response.json());
+
+        case 6:
+          data = _context7.sent;
+          console.log(data);
+          renderSelectRegions(data);
+
+        case 9:
+        case "end":
+          return _context7.stop();
+      }
+    }
+  });
+}
+
+function renderSelectRegions(data) {
+  varSelectRegion = 1;
+  regionsList.classList.remove('none');
+  var hreg = (data.length * 24 + 6) / 2;
+  console.log(hreg);
+  /* compLbl.style.top = `${hreg}px` */
+
+  data.forEach(function (element) {
+    var info = {
+      regionId: element.region_id,
+      regionName: element.region_name
+    };
+    var regionItem = document.createElement('li');
+    regionItem.innerText = info.regionName;
+    regionItem.classList.add('sug-comp');
+    regionsList.appendChild(regionItem);
+    regionItem.addEventListener('click', function () {
+      return selectRegionFunction(info);
+    });
+  });
+}
+
+function selectRegionFunction(info) {
+  regionsList.classList.add('none');
+  regionsList.innerHTML = '';
+  varSelectRegion = 0;
+  regionSelect.innerHTML = "".concat(info.regionName, "<i class=\"fas fa-caret-down\"></i>");
 }
