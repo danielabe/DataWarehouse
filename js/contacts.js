@@ -19,6 +19,11 @@ const selectCompany = document.getElementById('selectCompany')
 const compLbl = document.getElementById('compLbl')
 const regionSelect = document.getElementById('regionSelect')
 const regionsList = document.getElementById('regionsList')
+const countrySelect = document.getElementById('countrySelect')
+const countriesList = document.getElementById('countriesList')
+const citySelect = document.getElementById('citySelect')
+const citiesList = document.getElementById('citiesList')
+const address = document.getElementById('address')
 
 let contIdArray = []
 let dataCheckbox = []
@@ -31,6 +36,13 @@ let varSortInterest = 0
 let varDelete = 0
 let varSelectCompany = 0
 let varSelectRegion = 0
+let varSelectCountry = 0
+let varEnableCountry = 0
+let varEnableCity = 0
+let varSelectCity = 0
+
+let varRegId
+let varCountId
 
 let varCheckboxAll = 'unselected'
 
@@ -549,7 +561,6 @@ newCntBtn.addEventListener('click', () => {
     /* window.scrollTo(0, 0) */
     /* body.classList.add('modal') */
     darkImageAddCtc.classList.remove('none')
-    console.log('add contact')
 })
 
 //select company
@@ -559,8 +570,8 @@ company.addEventListener('click', () => {
     } else if(varSelectCompany === 1) {
         selectCompany.classList.add('none')
         selectCompany.innerHTML = ''
-        varSelectCompany = 0
         compLbl.style.top = '0px'
+        varSelectCompany = 0
     }
 })
 
@@ -579,9 +590,11 @@ async function getCompanies() {
 function renderSelectCompanies(data) {
     varSelectCompany = 1
     selectCompany.classList.remove('none')
+
     const hcomp = (data.length * 24 + 6) / 2
     console.log(hcomp)
     compLbl.style.top = `${hcomp}px`
+
     data.forEach(element => {
         const info = {
             companyId: element.company_id,
@@ -603,12 +616,11 @@ function renderSelectCompanies(data) {
 }
 
 function selectCompanyFunction(info) {
-    console.log(info.companyName)
     selectCompany.classList.add('none')
     selectCompany.innerHTML = ''
-    varSelectCompany = 0
     compLbl.style.top = '0px'
     company.innerHTML = `${info.companyName}<i class="fas fa-caret-down"></i>`
+    varSelectCompany = 0
 }
 
 //select region
@@ -619,7 +631,6 @@ regionSelect.addEventListener('click', () => {
         regionsList.classList.add('none')
         regionsList.innerHTML = ''
         varSelectRegion = 0
-        /* compLbl.style.top = '0px' */
     }
 })
 
@@ -639,8 +650,8 @@ async function getRegions() {
 function renderSelectRegions(data) {
     varSelectRegion = 1
     regionsList.classList.remove('none')
-    const hreg = (data.length * 24 + 6) / 2
-    console.log(hreg)
+    /* const hreg = (data.length * 24 + 6) / 2
+    console.log(hreg) */
     /* compLbl.style.top = `${hreg}px` */
     data.forEach(element => {
         const info = {
@@ -657,8 +668,137 @@ function renderSelectRegions(data) {
 }
 
 function selectRegionFunction(info) {
+    varSelectRegion = 0
     regionsList.classList.add('none')
     regionsList.innerHTML = ''
-    varSelectRegion = 0
     regionSelect.innerHTML = `${info.regionName}<i class="fas fa-caret-down"></i>`
+
+    countrySelect.classList.remove('disable')
+    citySelect.classList.add('disable')
+    address.disabled = true
+    countrySelect.innerHTML = `Seleccionar país<i class="fas fa-caret-down"></i>`
+    citySelect.innerHTML = `Seleccionar ciudad<i class="fas fa-caret-down"></i>`
+    countriesList.classList.add('none')
+    citiesList.classList.add('none')
+
+    varEnableCity = 0
+    varSelectCountry = 0
+    varEnableCountry = 1
+    varRegId = +info.regionId
+}
+
+//select country
+countrySelect.addEventListener('click', () => {
+    if(varEnableCountry === 1) {
+        if(varSelectCountry === 0) {
+            getCountries()
+        } else if(varSelectCountry === 1) {
+            countriesList.classList.add('none')
+            countriesList.innerHTML = ''
+            varSelectCountry = 0
+        }
+    }
+})
+
+async function getCountries() {
+    const options = {
+        method: 'GET',
+        headers: {
+            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
+        }
+    }
+    const response = await fetch(`http://localhost:3000/regions/${varRegId}/countries`, options)
+    const data = await response.json()
+    console.log(data)
+    renderSelectCountries(data)
+}
+
+function renderSelectCountries(data) {
+    varSelectCountry = 1
+    countriesList.innerHTML = ''
+    countriesList.classList.remove('none')
+    /* const hreg = (data.length * 24 + 6) / 2
+    console.log(hreg) */
+    data.forEach(element => {
+        const info = {
+            countryId: element.country_id,
+            countryName: element.country_name,
+        }
+        const countryItem = document.createElement('li')
+        countryItem.innerText = info.countryName
+        countryItem.classList.add('sug-comp')
+        countriesList.appendChild(countryItem)
+
+        countryItem.addEventListener('click', () => selectCountryFunction(info))
+    })
+}
+
+function selectCountryFunction(info) {
+    varSelectCountry = 0
+    countriesList.classList.add('none')
+    countriesList.innerHTML = ''
+    countrySelect.innerHTML = `${info.countryName}<i class="fas fa-caret-down"></i>`
+
+    citySelect.classList.remove('disable')
+    address.disabled = true
+    citySelect.innerHTML = `Seleccionar ciudad<i class="fas fa-caret-down"></i>`
+    citiesList.classList.add('none')
+
+    varEnableCity = 1
+    varCountId = +info.countryId
+}
+
+//select city
+citySelect.addEventListener('click', () => {
+    if(varEnableCity === 1) {
+        if(varSelectCity === 0) {
+            getCities()
+        } else if(varSelectCity === 1) {
+            citiesList.classList.add('none')
+            citiesList.innerHTML = ''
+            varSelectCity = 0
+        }
+    }
+})
+
+async function getCities() {
+    const options = {
+        method: 'GET',
+        headers: {
+            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
+        }
+    }
+    const response = await fetch(`http://localhost:3000/countries/${varCountId}/cities`, options)
+    const data = await response.json()
+    console.log(data)
+    renderSelectCities(data)
+}
+
+function renderSelectCities(data) {
+    varSelectCity = 1
+    citiesList.innerHTML = ''
+    citiesList.classList.remove('none')
+    // const hreg = (data.length * 24 + 6) / 2
+    // console.log(hreg)
+    data.forEach(element => {
+        const info = {
+            cityId: element.city_id,
+            cityName: element.city_name,
+        }
+        const cityItem = document.createElement('li')
+        cityItem.innerText = info.cityName
+        cityItem.classList.add('sug-comp')
+        citiesList.appendChild(cityItem)
+
+        cityItem.addEventListener('click', () => selectCityFunction(info))
+    })
+}
+
+function selectCityFunction(info) {
+    varSelectCity = 0
+    citiesList.classList.add('none')
+    citiesList.innerHTML = ''
+    citySelect.innerHTML = `${info.cityName}<i class="fas fa-caret-down"></i>`
+
+    address.disabled = false
 }

@@ -21,6 +21,11 @@ var selectCompany = document.getElementById('selectCompany');
 var compLbl = document.getElementById('compLbl');
 var regionSelect = document.getElementById('regionSelect');
 var regionsList = document.getElementById('regionsList');
+var countrySelect = document.getElementById('countrySelect');
+var countriesList = document.getElementById('countriesList');
+var citySelect = document.getElementById('citySelect');
+var citiesList = document.getElementById('citiesList');
+var address = document.getElementById('address');
 var contIdArray = [];
 var dataCheckbox = [];
 var varSortName = 0;
@@ -31,6 +36,12 @@ var varSortInterest = 0;
 var varDelete = 0;
 var varSelectCompany = 0;
 var varSelectRegion = 0;
+var varSelectCountry = 0;
+var varEnableCountry = 0;
+var varEnableCity = 0;
+var varSelectCity = 0;
+var varRegId;
+var varCountId;
 var varCheckboxAll = 'unselected'; //show contacts 
 
 contacts.addEventListener('click', function () {
@@ -682,7 +693,6 @@ newCntBtn.addEventListener('click', function () {
 
   /* body.classList.add('modal') */
   darkImageAddCtc.classList.remove('none');
-  console.log('add contact');
 }); //select company
 
 company.addEventListener('click', function () {
@@ -691,8 +701,8 @@ company.addEventListener('click', function () {
   } else if (varSelectCompany === 1) {
     selectCompany.classList.add('none');
     selectCompany.innerHTML = '';
-    varSelectCompany = 0;
     compLbl.style.top = '0px';
+    varSelectCompany = 0;
   }
 });
 
@@ -756,12 +766,11 @@ function renderSelectCompanies(data) {
 }
 
 function selectCompanyFunction(info) {
-  console.log(info.companyName);
   selectCompany.classList.add('none');
   selectCompany.innerHTML = '';
-  varSelectCompany = 0;
   compLbl.style.top = '0px';
   company.innerHTML = "".concat(info.companyName, "<i class=\"fas fa-caret-down\"></i>");
+  varSelectCompany = 0;
 } //select region
 
 
@@ -772,7 +781,6 @@ regionSelect.addEventListener('click', function () {
     regionsList.classList.add('none');
     regionsList.innerHTML = '';
     varSelectRegion = 0;
-    /* compLbl.style.top = '0px' */
   }
 });
 
@@ -812,8 +820,9 @@ function getRegions() {
 function renderSelectRegions(data) {
   varSelectRegion = 1;
   regionsList.classList.remove('none');
-  var hreg = (data.length * 24 + 6) / 2;
-  console.log(hreg);
+  /* const hreg = (data.length * 24 + 6) / 2
+  console.log(hreg) */
+
   /* compLbl.style.top = `${hreg}px` */
 
   data.forEach(function (element) {
@@ -832,8 +841,175 @@ function renderSelectRegions(data) {
 }
 
 function selectRegionFunction(info) {
+  varSelectRegion = 0;
   regionsList.classList.add('none');
   regionsList.innerHTML = '';
-  varSelectRegion = 0;
   regionSelect.innerHTML = "".concat(info.regionName, "<i class=\"fas fa-caret-down\"></i>");
+  countrySelect.classList.remove('disable');
+  citySelect.classList.add('disable');
+  address.disabled = true;
+  countrySelect.innerHTML = "Seleccionar pa\xEDs<i class=\"fas fa-caret-down\"></i>";
+  citySelect.innerHTML = "Seleccionar ciudad<i class=\"fas fa-caret-down\"></i>";
+  countriesList.classList.add('none');
+  citiesList.classList.add('none');
+  varEnableCity = 0;
+  varSelectCountry = 0;
+  varEnableCountry = 1;
+  varRegId = +info.regionId;
+} //select country
+
+
+countrySelect.addEventListener('click', function () {
+  if (varEnableCountry === 1) {
+    if (varSelectCountry === 0) {
+      getCountries();
+    } else if (varSelectCountry === 1) {
+      countriesList.classList.add('none');
+      countriesList.innerHTML = '';
+      varSelectCountry = 0;
+    }
+  }
+});
+
+function getCountries() {
+  var options, response, data;
+  return regeneratorRuntime.async(function getCountries$(_context8) {
+    while (1) {
+      switch (_context8.prev = _context8.next) {
+        case 0:
+          options = {
+            method: 'GET',
+            headers: {
+              Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
+            }
+          };
+          _context8.next = 3;
+          return regeneratorRuntime.awrap(fetch("http://localhost:3000/regions/".concat(varRegId, "/countries"), options));
+
+        case 3:
+          response = _context8.sent;
+          _context8.next = 6;
+          return regeneratorRuntime.awrap(response.json());
+
+        case 6:
+          data = _context8.sent;
+          console.log(data);
+          renderSelectCountries(data);
+
+        case 9:
+        case "end":
+          return _context8.stop();
+      }
+    }
+  });
+}
+
+function renderSelectCountries(data) {
+  varSelectCountry = 1;
+  countriesList.innerHTML = '';
+  countriesList.classList.remove('none');
+  /* const hreg = (data.length * 24 + 6) / 2
+  console.log(hreg) */
+
+  data.forEach(function (element) {
+    var info = {
+      countryId: element.country_id,
+      countryName: element.country_name
+    };
+    var countryItem = document.createElement('li');
+    countryItem.innerText = info.countryName;
+    countryItem.classList.add('sug-comp');
+    countriesList.appendChild(countryItem);
+    countryItem.addEventListener('click', function () {
+      return selectCountryFunction(info);
+    });
+  });
+}
+
+function selectCountryFunction(info) {
+  varSelectCountry = 0;
+  countriesList.classList.add('none');
+  countriesList.innerHTML = '';
+  countrySelect.innerHTML = "".concat(info.countryName, "<i class=\"fas fa-caret-down\"></i>");
+  citySelect.classList.remove('disable');
+  address.disabled = true;
+  citySelect.innerHTML = "Seleccionar ciudad<i class=\"fas fa-caret-down\"></i>";
+  citiesList.classList.add('none');
+  varEnableCity = 1;
+  varCountId = +info.countryId;
+} //select city
+
+
+citySelect.addEventListener('click', function () {
+  if (varEnableCity === 1) {
+    if (varSelectCity === 0) {
+      getCities();
+    } else if (varSelectCity === 1) {
+      citiesList.classList.add('none');
+      citiesList.innerHTML = '';
+      varSelectCity = 0;
+    }
+  }
+});
+
+function getCities() {
+  var options, response, data;
+  return regeneratorRuntime.async(function getCities$(_context9) {
+    while (1) {
+      switch (_context9.prev = _context9.next) {
+        case 0:
+          options = {
+            method: 'GET',
+            headers: {
+              Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
+            }
+          };
+          _context9.next = 3;
+          return regeneratorRuntime.awrap(fetch("http://localhost:3000/countries/".concat(varCountId, "/cities"), options));
+
+        case 3:
+          response = _context9.sent;
+          _context9.next = 6;
+          return regeneratorRuntime.awrap(response.json());
+
+        case 6:
+          data = _context9.sent;
+          console.log(data);
+          renderSelectCities(data);
+
+        case 9:
+        case "end":
+          return _context9.stop();
+      }
+    }
+  });
+}
+
+function renderSelectCities(data) {
+  varSelectCity = 1;
+  citiesList.innerHTML = '';
+  citiesList.classList.remove('none'); // const hreg = (data.length * 24 + 6) / 2
+  // console.log(hreg)
+
+  data.forEach(function (element) {
+    var info = {
+      cityId: element.city_id,
+      cityName: element.city_name
+    };
+    var cityItem = document.createElement('li');
+    cityItem.innerText = info.cityName;
+    cityItem.classList.add('sug-comp');
+    citiesList.appendChild(cityItem);
+    cityItem.addEventListener('click', function () {
+      return selectCityFunction(info);
+    });
+  });
+}
+
+function selectCityFunction(info) {
+  varSelectCity = 0;
+  citiesList.classList.add('none');
+  citiesList.innerHTML = '';
+  citySelect.innerHTML = "".concat(info.cityName, "<i class=\"fas fa-caret-down\"></i>");
+  address.disabled = false;
 }
