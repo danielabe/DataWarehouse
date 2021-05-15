@@ -26,6 +26,8 @@ var countriesList = document.getElementById('countriesList');
 var citySelect = document.getElementById('citySelect');
 var citiesList = document.getElementById('citiesList');
 var address = document.getElementById('address');
+var interestSelect = document.getElementById('interestSelect');
+var interestsList = document.getElementById('interestsList');
 var contIdArray = [];
 var dataCheckbox = [];
 var varSortName = 0;
@@ -40,6 +42,7 @@ var varSelectCountry = 0;
 var varEnableCountry = 0;
 var varEnableCity = 0;
 var varSelectCity = 0;
+var varSelectInterest = 0;
 var varRegId;
 var varCountId;
 var varCheckboxAll = 'unselected'; //show contacts 
@@ -1012,4 +1015,31 @@ function selectCityFunction(info) {
   citiesList.innerHTML = '';
   citySelect.innerHTML = "".concat(info.cityName, "<i class=\"fas fa-caret-down\"></i>");
   address.disabled = false;
+} //select interest
+
+
+interestSelect.addEventListener('click', function () {
+  if (varSelectInterest === 0) {
+    showInterest();
+  } else if (varSelectInterest === 1) {
+    interestsList.classList.add('none');
+    varSelectInterest = 0;
+  }
+});
+
+function showInterest() {
+  interestsList.classList.remove('none');
+  varSelectInterest = 1;
+  var intArray = document.querySelectorAll('.int');
+  intArray.forEach(function (element) {
+    element.addEventListener('click', function () {
+      return selectInterestFunction(element.innerText);
+    });
+  });
+}
+
+function selectInterestFunction(interest) {
+  varSelectInterest = 0;
+  interestsList.classList.add('none');
+  interestSelect.innerHTML = "".concat(interest, "<i class=\"fas fa-caret-down\"></i>");
 }

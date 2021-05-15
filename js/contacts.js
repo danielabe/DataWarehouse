@@ -24,6 +24,8 @@ const countriesList = document.getElementById('countriesList')
 const citySelect = document.getElementById('citySelect')
 const citiesList = document.getElementById('citiesList')
 const address = document.getElementById('address')
+const interestSelect = document.getElementById('interestSelect')
+const interestsList = document.getElementById('interestsList')
 
 let contIdArray = []
 let dataCheckbox = []
@@ -40,6 +42,7 @@ let varSelectCountry = 0
 let varEnableCountry = 0
 let varEnableCity = 0
 let varSelectCity = 0
+let varSelectInterest = 0
 
 let varRegId
 let varCountId
@@ -799,6 +802,30 @@ function selectCityFunction(info) {
     citiesList.classList.add('none')
     citiesList.innerHTML = ''
     citySelect.innerHTML = `${info.cityName}<i class="fas fa-caret-down"></i>`
-
     address.disabled = false
+}
+
+//select interest
+interestSelect.addEventListener('click', () => {
+    if(varSelectInterest === 0) {
+        showInterest()
+    } else if(varSelectInterest === 1) {
+        interestsList.classList.add('none')
+        varSelectInterest = 0
+    }
+})
+
+function showInterest() {
+    interestsList.classList.remove('none')
+    varSelectInterest = 1
+    const intArray = document.querySelectorAll('.int')
+    intArray.forEach(element => {
+        element.addEventListener('click', () => selectInterestFunction(element.innerText))
+    })
+}
+
+function selectInterestFunction(interest) {
+    varSelectInterest = 0
+    interestsList.classList.add('none')
+    interestSelect.innerHTML = `${interest}<i class="fas fa-caret-down"></i>`
 }
