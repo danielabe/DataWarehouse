@@ -31,6 +31,9 @@ var interestsList = document.getElementById('interestsList');
 var telephone = document.getElementById('telephone');
 var selectTelephone = document.getElementById('selectTelephone');
 var prefTelephoneList = document.getElementById('prefTelephoneList');
+var whatsapp = document.getElementById('whatsapp');
+var selectWhatsapp = document.getElementById('selectWhatsapp');
+var prefWhatsappList = document.getElementById('prefWhatsappList');
 var contIdArray = [];
 var dataCheckbox = [];
 var varSortName = 0;
@@ -47,7 +50,9 @@ var varEnableCity = 0;
 var varSelectCity = 0;
 var varSelectInterest = 0;
 var varPrefTel = 0;
-var varEnablePref = 0;
+var varPrefWsp = 0;
+var varEnablePrefT = 0;
+var varEnablePrefW = 0;
 var varRegId;
 var varCountId;
 var varCheckboxAll = 'unselected'; //show contacts 
@@ -1048,27 +1053,28 @@ function selectInterestFunction(interest) {
   interestsList.classList.add('none');
   interestSelect.innerHTML = "".concat(interest, "<i class=\"fas fa-caret-down\"></i>");
 } //contact channels
+//telephone
 
 
 telephone.addEventListener('keyup', function () {
-  return enablePreferences();
+  return enablePrefTel();
 });
 
-function enablePreferences() {
+function enablePrefTel() {
   if (telephone.value !== '') {
     selectTelephone.classList.remove('disable');
-    varEnablePref = 1;
+    varEnablePrefT = 1;
   } else if (telephone.value === '') {
     selectTelephone.classList.add('disable');
     selectTelephone.innerHTML = "Sin preferencia<i class=\"fas fa-caret-down\"></i>";
-    varEnablePref = 0;
+    varEnablePrefT = 0;
   }
 }
 
 selectTelephone.addEventListener('click', function () {
-  if (varEnablePref === 1) {
+  if (varEnablePrefT === 1) {
     if (varPrefTel === 0) {
-      showPreferences();
+      showPrefTel();
     } else if (varPrefTel === 1) {
       prefTelephoneList.classList.add('none');
       varPrefTel = 0;
@@ -1076,7 +1082,7 @@ selectTelephone.addEventListener('click', function () {
   }
 });
 
-function showPreferences() {
+function showPrefTel() {
   prefTelephoneList.classList.remove('none');
   varPrefTel = 1;
   var prefArray = document.querySelectorAll('.pref-tel');
@@ -1091,4 +1097,48 @@ function selectPrefTelFunction(pref) {
   varPrefTel = 0;
   prefTelephoneList.classList.add('none');
   selectTelephone.innerHTML = "".concat(pref, "<i class=\"fas fa-caret-down\"></i>");
+} //whatsapp
+
+
+whatsapp.addEventListener('keyup', function () {
+  return enablePrefWsp();
+});
+
+function enablePrefWsp() {
+  if (whatsapp.value !== '') {
+    selectWhatsapp.classList.remove('disable');
+    varEnablePrefW = 1;
+  } else if (whatsapp.value === '') {
+    selectWhatsapp.classList.add('disable');
+    selectWhatsapp.innerHTML = "Sin preferencia<i class=\"fas fa-caret-down\"></i>";
+    varEnablePrefW = 0;
+  }
+}
+
+selectWhatsapp.addEventListener('click', function () {
+  if (varEnablePrefW === 1) {
+    if (varPrefWsp === 0) {
+      showPrefWsp();
+    } else if (varPrefWsp === 1) {
+      prefWhatsappList.classList.add('none');
+      varPrefWsp = 0;
+    }
+  }
+});
+
+function showPrefWsp() {
+  prefWhatsappList.classList.remove('none');
+  varPrefWsp = 1;
+  var prefArray = document.querySelectorAll('.pref-wsp');
+  prefArray.forEach(function (element) {
+    element.addEventListener('click', function () {
+      return selectPrefWspFunction(element.innerText);
+    });
+  });
+}
+
+function selectPrefWspFunction(pref) {
+  varPrefWsp = 0;
+  prefWhatsappList.classList.add('none');
+  selectWhatsapp.innerHTML = "".concat(pref, "<i class=\"fas fa-caret-down\"></i>");
 }

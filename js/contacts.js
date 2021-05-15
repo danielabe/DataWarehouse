@@ -29,6 +29,9 @@ const interestsList = document.getElementById('interestsList')
 const telephone = document.getElementById('telephone')
 const selectTelephone = document.getElementById('selectTelephone')
 const prefTelephoneList = document.getElementById('prefTelephoneList')
+const whatsapp = document.getElementById('whatsapp')
+const selectWhatsapp = document.getElementById('selectWhatsapp')
+const prefWhatsappList = document.getElementById('prefWhatsappList')
 
 let contIdArray = []
 let dataCheckbox = []
@@ -47,7 +50,9 @@ let varEnableCity = 0
 let varSelectCity = 0
 let varSelectInterest = 0
 let varPrefTel = 0
-let varEnablePref = 0
+let varPrefWsp = 0
+let varEnablePrefT = 0
+let varEnablePrefW = 0
 
 let varRegId
 let varCountId
@@ -836,23 +841,24 @@ function selectInterestFunction(interest) {
 }
 
 //contact channels
-telephone.addEventListener('keyup', () => enablePreferences())
+//telephone
+telephone.addEventListener('keyup', () => enablePrefTel())
 
-function enablePreferences() {
+function enablePrefTel() {
     if(telephone.value !== '') {
         selectTelephone.classList.remove('disable')
-        varEnablePref = 1
+        varEnablePrefT = 1
     } else if(telephone.value === '') {
         selectTelephone.classList.add('disable')
         selectTelephone.innerHTML = `Sin preferencia<i class="fas fa-caret-down"></i>`
-        varEnablePref = 0
+        varEnablePrefT = 0
     }
 }
 
 selectTelephone.addEventListener('click', () => {
-    if(varEnablePref === 1) {
+    if(varEnablePrefT === 1) {
         if(varPrefTel === 0) {
-            showPreferences()
+            showPrefTel()
         } else if(varPrefTel === 1) {
             prefTelephoneList.classList.add('none')
             varPrefTel = 0
@@ -860,7 +866,7 @@ selectTelephone.addEventListener('click', () => {
     }
 })
 
-function showPreferences() {
+function showPrefTel() {
     prefTelephoneList.classList.remove('none')
     varPrefTel = 1
     const prefArray = document.querySelectorAll('.pref-tel')
@@ -873,4 +879,44 @@ function selectPrefTelFunction(pref) {
     varPrefTel = 0
     prefTelephoneList.classList.add('none')
     selectTelephone.innerHTML = `${pref}<i class="fas fa-caret-down"></i>`
+}
+
+//whatsapp
+whatsapp.addEventListener('keyup', () => enablePrefWsp())
+
+function enablePrefWsp() {
+    if(whatsapp.value !== '') {
+        selectWhatsapp.classList.remove('disable')
+        varEnablePrefW = 1
+    } else if(whatsapp.value === '') {
+        selectWhatsapp.classList.add('disable')
+        selectWhatsapp.innerHTML = `Sin preferencia<i class="fas fa-caret-down"></i>`
+        varEnablePrefW = 0
+    }
+}
+
+selectWhatsapp.addEventListener('click', () => {
+    if(varEnablePrefW === 1) {
+        if(varPrefWsp === 0) {
+            showPrefWsp()
+        } else if(varPrefWsp === 1) {
+            prefWhatsappList.classList.add('none')
+            varPrefWsp = 0
+        }
+    }
+})
+
+function showPrefWsp() {
+    prefWhatsappList.classList.remove('none')
+    varPrefWsp = 1
+    const prefArray = document.querySelectorAll('.pref-wsp')
+    prefArray.forEach(element => {
+        element.addEventListener('click', () => selectPrefWspFunction(element.innerText))
+    })
+}
+
+function selectPrefWspFunction(pref) {
+    varPrefWsp = 0
+    prefWhatsappList.classList.add('none')
+    selectWhatsapp.innerHTML = `${pref}<i class="fas fa-caret-down"></i>`
 }

@@ -828,7 +828,12 @@ progress::-moz-progress-bar {
   justify-content: space-between;
 }
 
-.h-pref {
+.h-pref2 {
+  height: 64px;
+  z-index: 2;
+}
+
+.h-pref1 {
   height: 64px;
   z-index: 1;
 }
