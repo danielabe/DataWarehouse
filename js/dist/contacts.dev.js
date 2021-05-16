@@ -1111,7 +1111,7 @@ function showPrefTel() {
 function selectPrefTelFunction(pref) {
   varPrefTel = 0;
   prefTelephoneList.classList.add('none');
-  selectTelephone.innerHTML = "".concat(pref, "<i class=\"fas fa-caret-down\"></i>");
+  preferenceIcons(pref, selectTelephone);
 } //whatsapp
 
 
@@ -1155,7 +1155,7 @@ function showPrefWsp() {
 function selectPrefWspFunction(pref) {
   varPrefWsp = 0;
   prefWhatsappList.classList.add('none');
-  selectWhatsapp.innerHTML = "".concat(pref, "<i class=\"fas fa-caret-down\"></i>");
+  preferenceIcons(pref, selectWhatsapp);
 } //instagram
 
 
@@ -1199,7 +1199,7 @@ function showPrefInst() {
 function selectPrefInstFunction(pref) {
   varPrefInst = 0;
   prefInstagramList.classList.add('none');
-  selectInstagram.innerHTML = "".concat(pref, "<i class=\"fas fa-caret-down\"></i>");
+  preferenceIcons(pref, selectInstagram);
 } //facebook
 
 
@@ -1243,7 +1243,7 @@ function showPrefFace() {
 function selectPrefFaceFunction(pref) {
   varPrefFace = 0;
   prefFacebookList.classList.add('none');
-  selectFacebook.innerHTML = "".concat(pref, "<i class=\"fas fa-caret-down\"></i>");
+  preferenceIcons(pref, selectFacebook);
 } //linkedin
 
 
@@ -1287,5 +1287,15 @@ function showPrefLink() {
 function selectPrefLinkFunction(pref) {
   varPrefLink = 0;
   prefLinkedinList.classList.add('none');
-  selectLinkedin.innerHTML = "".concat(pref, "<i class=\"fas fa-caret-down\"></i>");
+  preferenceIcons(pref, selectLinkedin);
+}
+
+function preferenceIcons(pref, select) {
+  if (pref === 'Sin preferencia') {
+    select.innerHTML = "".concat(pref, "<i class=\"fas fa-caret-down\"></i>");
+  } else if (pref === 'Canal favorito') {
+    select.innerHTML = "<i class=\"fas fa-heart\"></i><p>".concat(pref, "</p><i class=\"fas fa-caret-down\"></i>");
+  } else if (pref === 'No molestar') {
+    select.innerHTML = "<i class=\"fas fa-ban\"></i><p>".concat(pref, "</p><i class=\"fas fa-caret-down\"></i>");
+  }
 }
