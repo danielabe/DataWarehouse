@@ -34,6 +34,15 @@ var prefTelephoneList = document.getElementById('prefTelephoneList');
 var whatsapp = document.getElementById('whatsapp');
 var selectWhatsapp = document.getElementById('selectWhatsapp');
 var prefWhatsappList = document.getElementById('prefWhatsappList');
+var instagram = document.getElementById('instagram');
+var selectInstagram = document.getElementById('selectInstagram');
+var prefInstagramList = document.getElementById('prefInstagramList');
+var facebook = document.getElementById('facebook');
+var selectFacebook = document.getElementById('selectFacebook');
+var prefFacebookList = document.getElementById('prefFacebookList');
+var linkedin = document.getElementById('linkedin');
+var selectLinkedin = document.getElementById('selectLinkedin');
+var prefLinkedinList = document.getElementById('prefLinkedinList');
 var contIdArray = [];
 var dataCheckbox = [];
 var varSortName = 0;
@@ -51,8 +60,14 @@ var varSelectCity = 0;
 var varSelectInterest = 0;
 var varPrefTel = 0;
 var varPrefWsp = 0;
+var varPrefInst = 0;
+var varPrefFace = 0;
+var varPrefLink = 0;
 var varEnablePrefT = 0;
 var varEnablePrefW = 0;
+var varEnablePrefI = 0;
+var varEnablePrefF = 0;
+var varEnablePrefL = 0;
 var varRegId;
 var varCountId;
 var varCheckboxAll = 'unselected'; //show contacts 
@@ -1141,4 +1156,136 @@ function selectPrefWspFunction(pref) {
   varPrefWsp = 0;
   prefWhatsappList.classList.add('none');
   selectWhatsapp.innerHTML = "".concat(pref, "<i class=\"fas fa-caret-down\"></i>");
+} //instagram
+
+
+instagram.addEventListener('keyup', function () {
+  return enablePrefInst();
+});
+
+function enablePrefInst() {
+  if (instagram.value !== '') {
+    selectInstagram.classList.remove('disable');
+    varEnablePrefI = 1;
+  } else if (instagram.value === '') {
+    selectInstagram.classList.add('disable');
+    selectInstagram.innerHTML = "Sin preferencia<i class=\"fas fa-caret-down\"></i>";
+    varEnablePrefI = 0;
+  }
+}
+
+selectInstagram.addEventListener('click', function () {
+  if (varEnablePrefI === 1) {
+    if (varPrefInst === 0) {
+      showPrefInst();
+    } else if (varPrefInst === 1) {
+      prefInstagramList.classList.add('none');
+      varPrefInst = 0;
+    }
+  }
+});
+
+function showPrefInst() {
+  prefInstagramList.classList.remove('none');
+  varPrefInst = 1;
+  var prefArray = document.querySelectorAll('.pref-inst');
+  prefArray.forEach(function (element) {
+    element.addEventListener('click', function () {
+      return selectPrefInstFunction(element.innerText);
+    });
+  });
+}
+
+function selectPrefInstFunction(pref) {
+  varPrefInst = 0;
+  prefInstagramList.classList.add('none');
+  selectInstagram.innerHTML = "".concat(pref, "<i class=\"fas fa-caret-down\"></i>");
+} //facebook
+
+
+facebook.addEventListener('keyup', function () {
+  return enablePrefFace();
+});
+
+function enablePrefFace() {
+  if (facebook.value !== '') {
+    selectFacebook.classList.remove('disable');
+    varEnablePrefF = 1;
+  } else if (facebook.value === '') {
+    selectFacebook.classList.add('disable');
+    selectFacebook.innerHTML = "Sin preferencia<i class=\"fas fa-caret-down\"></i>";
+    varEnablePrefF = 0;
+  }
+}
+
+selectFacebook.addEventListener('click', function () {
+  if (varEnablePrefF === 1) {
+    if (varPrefFace === 0) {
+      showPrefFace();
+    } else if (varPrefFace === 1) {
+      prefFacebookList.classList.add('none');
+      varPrefFace = 0;
+    }
+  }
+});
+
+function showPrefFace() {
+  prefFacebookList.classList.remove('none');
+  varPrefFace = 1;
+  var prefArray = document.querySelectorAll('.pref-face');
+  prefArray.forEach(function (element) {
+    element.addEventListener('click', function () {
+      return selectPrefFaceFunction(element.innerText);
+    });
+  });
+}
+
+function selectPrefFaceFunction(pref) {
+  varPrefFace = 0;
+  prefFacebookList.classList.add('none');
+  selectFacebook.innerHTML = "".concat(pref, "<i class=\"fas fa-caret-down\"></i>");
+} //linkedin
+
+
+linkedin.addEventListener('keyup', function () {
+  return enablePrefLink();
+});
+
+function enablePrefLink() {
+  if (linkedin.value !== '') {
+    selectLinkedin.classList.remove('disable');
+    varEnablePrefL = 1;
+  } else if (linkedin.value === '') {
+    selectLinkedin.classList.add('disable');
+    selectLinkedin.innerHTML = "Sin preferencia<i class=\"fas fa-caret-down\"></i>";
+    varEnablePrefL = 0;
+  }
+}
+
+selectLinkedin.addEventListener('click', function () {
+  if (varEnablePrefL === 1) {
+    if (varPrefLink === 0) {
+      showPrefLink();
+    } else if (varPrefLink === 1) {
+      prefLinkedinList.classList.add('none');
+      varPrefLink = 0;
+    }
+  }
+});
+
+function showPrefLink() {
+  prefLinkedinList.classList.remove('none');
+  varPrefLink = 1;
+  var prefArray = document.querySelectorAll('.pref-link');
+  prefArray.forEach(function (element) {
+    element.addEventListener('click', function () {
+      return selectPrefLinkFunction(element.innerText);
+    });
+  });
+}
+
+function selectPrefLinkFunction(pref) {
+  varPrefLink = 0;
+  prefLinkedinList.classList.add('none');
+  selectLinkedin.innerHTML = "".concat(pref, "<i class=\"fas fa-caret-down\"></i>");
 }

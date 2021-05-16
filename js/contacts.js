@@ -32,6 +32,15 @@ const prefTelephoneList = document.getElementById('prefTelephoneList')
 const whatsapp = document.getElementById('whatsapp')
 const selectWhatsapp = document.getElementById('selectWhatsapp')
 const prefWhatsappList = document.getElementById('prefWhatsappList')
+const instagram = document.getElementById('instagram')
+const selectInstagram = document.getElementById('selectInstagram')
+const prefInstagramList = document.getElementById('prefInstagramList')
+const facebook = document.getElementById('facebook')
+const selectFacebook = document.getElementById('selectFacebook')
+const prefFacebookList = document.getElementById('prefFacebookList')
+const linkedin = document.getElementById('linkedin')
+const selectLinkedin = document.getElementById('selectLinkedin')
+const prefLinkedinList = document.getElementById('prefLinkedinList')
 
 let contIdArray = []
 let dataCheckbox = []
@@ -51,8 +60,14 @@ let varSelectCity = 0
 let varSelectInterest = 0
 let varPrefTel = 0
 let varPrefWsp = 0
+let varPrefInst = 0
+let varPrefFace = 0
+let varPrefLink = 0
 let varEnablePrefT = 0
 let varEnablePrefW = 0
+let varEnablePrefI = 0
+let varEnablePrefF = 0
+let varEnablePrefL = 0
 
 let varRegId
 let varCountId
@@ -919,4 +934,124 @@ function selectPrefWspFunction(pref) {
     varPrefWsp = 0
     prefWhatsappList.classList.add('none')
     selectWhatsapp.innerHTML = `${pref}<i class="fas fa-caret-down"></i>`
+}
+
+//instagram
+instagram.addEventListener('keyup', () => enablePrefInst())
+
+function enablePrefInst() {
+    if(instagram.value !== '') {
+        selectInstagram.classList.remove('disable')
+        varEnablePrefI = 1
+    } else if(instagram.value === '') {
+        selectInstagram.classList.add('disable')
+        selectInstagram.innerHTML = `Sin preferencia<i class="fas fa-caret-down"></i>`
+        varEnablePrefI = 0
+    }
+}
+
+selectInstagram.addEventListener('click', () => {
+    if(varEnablePrefI === 1) {
+        if(varPrefInst === 0) {
+            showPrefInst()
+        } else if(varPrefInst === 1) {
+            prefInstagramList.classList.add('none')
+            varPrefInst = 0
+        }
+    }
+})
+
+function showPrefInst() {
+    prefInstagramList.classList.remove('none')
+    varPrefInst = 1
+    const prefArray = document.querySelectorAll('.pref-inst')
+    prefArray.forEach(element => {
+        element.addEventListener('click', () => selectPrefInstFunction(element.innerText))
+    })
+}
+
+function selectPrefInstFunction(pref) {
+    varPrefInst = 0
+    prefInstagramList.classList.add('none')
+    selectInstagram.innerHTML = `${pref}<i class="fas fa-caret-down"></i>`
+}
+
+//facebook
+facebook.addEventListener('keyup', () => enablePrefFace())
+
+function enablePrefFace() {
+    if(facebook.value !== '') {
+        selectFacebook.classList.remove('disable')
+        varEnablePrefF = 1
+    } else if(facebook.value === '') {
+        selectFacebook.classList.add('disable')
+        selectFacebook.innerHTML = `Sin preferencia<i class="fas fa-caret-down"></i>`
+        varEnablePrefF = 0
+    }
+}
+
+selectFacebook.addEventListener('click', () => {
+    if(varEnablePrefF === 1) {
+        if(varPrefFace === 0) {
+            showPrefFace()
+        } else if(varPrefFace === 1) {
+            prefFacebookList.classList.add('none')
+            varPrefFace = 0
+        }
+    }
+})
+
+function showPrefFace() {
+    prefFacebookList.classList.remove('none')
+    varPrefFace = 1
+    const prefArray = document.querySelectorAll('.pref-face')
+    prefArray.forEach(element => {
+        element.addEventListener('click', () => selectPrefFaceFunction(element.innerText))
+    })
+}
+
+function selectPrefFaceFunction(pref) {
+    varPrefFace = 0
+    prefFacebookList.classList.add('none')
+    selectFacebook.innerHTML = `${pref}<i class="fas fa-caret-down"></i>`
+}
+
+//linkedin
+linkedin.addEventListener('keyup', () => enablePrefLink())
+
+function enablePrefLink() {
+    if(linkedin.value !== '') {
+        selectLinkedin.classList.remove('disable')
+        varEnablePrefL = 1
+    } else if(linkedin.value === '') {
+        selectLinkedin.classList.add('disable')
+        selectLinkedin.innerHTML = `Sin preferencia<i class="fas fa-caret-down"></i>`
+        varEnablePrefL = 0
+    }
+}
+
+selectLinkedin.addEventListener('click', () => {
+    if(varEnablePrefL === 1) {
+        if(varPrefLink === 0) {
+            showPrefLink()
+        } else if(varPrefLink === 1) {
+            prefLinkedinList.classList.add('none')
+            varPrefLink = 0
+        }
+    }
+})
+
+function showPrefLink() {
+    prefLinkedinList.classList.remove('none')
+    varPrefLink = 1
+    const prefArray = document.querySelectorAll('.pref-link')
+    prefArray.forEach(element => {
+        element.addEventListener('click', () => selectPrefLinkFunction(element.innerText))
+    })
+}
+
+function selectPrefLinkFunction(pref) {
+    varPrefLink = 0
+    prefLinkedinList.classList.add('none')
+    selectLinkedin.innerHTML = `${pref}<i class="fas fa-caret-down"></i>`
 }
