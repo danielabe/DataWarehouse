@@ -319,13 +319,16 @@ main {
   border-bottom: 0px;
   font-weight: bold;
   color: white;
+  display: flex;
+  justify-content: space-between;
+  padding: 26.7px 31.8px 0 31.8px;
   /* box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%); */
 }
 
 .wind-title {
-  position: relative;
+  /* position: relative;
   top: 26.7px;
-  left: 31.8px;
+  left: 31.8px; */
 }
 
 .window-white {
@@ -863,6 +866,14 @@ progress::-moz-progress-bar {
   width: 28px;
   font-size: 13.5px;
   color: #F03738;
+}
+
+.fa-times {
+  width: min-content;
+  font-size: 16px;
+}
+.fa-times:hover {
+  cursor: pointer;
 }
 
 .none {

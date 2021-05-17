@@ -43,6 +43,9 @@ var prefFacebookList = document.getElementById('prefFacebookList');
 var linkedin = document.getElementById('linkedin');
 var selectLinkedin = document.getElementById('selectLinkedin');
 var prefLinkedinList = document.getElementById('prefLinkedinList');
+var cancelContact = document.getElementById('cancelContact');
+var closeNewCtc = document.getElementById('closeNewCtc');
+var darkImageAddCtc = document.getElementById('darkImageAddCtc');
 var contIdArray = [];
 var dataCheckbox = [];
 var varSortName = 0;
@@ -1299,3 +1302,19 @@ function preferenceIcons(pref, select) {
     select.innerHTML = "<i class=\"fas fa-ban\"></i><p>".concat(pref, "</p><i class=\"fas fa-caret-down\"></i>");
   }
 }
+
+cancelContact.addEventListener('click', function (event) {
+  return closeWindowNewContact(event);
+});
+closeNewCtc.addEventListener('click', function (event) {
+  return closeWindowNewContact(event);
+});
+
+function closeWindowNewContact(event) {
+  event.preventDefault();
+  darkImageAddCtc.classList.add('none');
+} //ui kit
+//inicio
+//nuevo contacto
+//editar contacto
+//editar canales de contacto

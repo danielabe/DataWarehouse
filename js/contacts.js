@@ -41,6 +41,9 @@ const prefFacebookList = document.getElementById('prefFacebookList')
 const linkedin = document.getElementById('linkedin')
 const selectLinkedin = document.getElementById('selectLinkedin')
 const prefLinkedinList = document.getElementById('prefLinkedinList')
+const cancelContact = document.getElementById('cancelContact')
+const closeNewCtc = document.getElementById('closeNewCtc')
+const darkImageAddCtc = document.getElementById('darkImageAddCtc')
 
 let contIdArray = []
 let dataCheckbox = []
@@ -1065,3 +1068,17 @@ function preferenceIcons(pref, select) {
         select.innerHTML = `<i class="fas fa-ban"></i><p>${pref}</p><i class="fas fa-caret-down"></i>`
     }
 }
+
+cancelContact.addEventListener('click', (event) => closeWindowNewContact(event))
+closeNewCtc.addEventListener('click', (event) => closeWindowNewContact(event))
+
+function closeWindowNewContact(event) {
+    event.preventDefault()
+    darkImageAddCtc.classList.add('none')
+}
+
+//ui kit
+//inicio
+//nuevo contacto
+//editar contacto
+//editar canales de contacto
