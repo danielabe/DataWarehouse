@@ -49,9 +49,12 @@ const firstname = document.getElementById('firstname')
 const lastname = document.getElementById('lastname')
 const position = document.getElementById('position')
 const email = document.getElementById('email')
+const chan1 = document.getElementById('chan1')
+const chan2 = document.getElementById('chan2')
 
 let contIdArray = []
 let dataCheckbox = []
+let channelsDB = []
 
 let varSortName = 0
 let varSortCountry = 0
@@ -599,7 +602,25 @@ newCntBtn.addEventListener('click', () => {
     /* window.scrollTo(0, 0) */
     /* body.classList.add('modal') */
     darkImageAddCtc.classList.remove('none')
+    getAllChannels()
 })
+
+async function getAllChannels() {
+    const options = {
+        method: 'GET',
+        headers: {
+            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
+        }
+    }
+    const response = await fetch('http://localhost:3000/channels', options)
+    const data = await response.json()
+    data.map(element => {
+        channelsDB = channelsDB.concat({channelName: element.channel_name, channelId: element.channel_id})
+    })
+    console.log(channelsDB)
+    const chanArray = document.querySelectorAll('.s-channel')
+    chanArray.forEach((el, i) => el.innerText = channelsDB[i].channelName)
+}
 
 //select company
 company.addEventListener('click', () => {
@@ -1101,6 +1122,7 @@ saveContact.addEventListener('click', (event) => addContact(event))
 
 async function addContact(event) {
     event.preventDefault()
+    
     const contact = {
         firstname: firstname.value,
         lastname: lastname.value,
@@ -1164,3 +1186,4 @@ async function addContact(event) {
 //validar canales
 //actualizar en swagger region y country
 //overflow
+//si tengo ganas cambiar los id de los canalaes en el html

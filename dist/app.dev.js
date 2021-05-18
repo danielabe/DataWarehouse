@@ -622,8 +622,8 @@ app.get('/contacts', function _callee31(req, res) {
     }
   });
 });
-app.post('/contacts', validateFirstname, validateLastname, validateEmailContacts, validateRegionId, validateCountryId, validateCityId, validateAddress, validateCompanyId, validatePosition, validateInterest,
-/* validateChannelId, validateUserAccount, 
+app.post('/contacts', validateFirstname, validateLastname, validateEmailContacts, validateRegionId, validateCountryId, validateCityId, validateAddress, validateCompanyId, validatePosition, validateInterest, validateChannelId,
+/*validateUserAccount, 
 validatePreference, */
 function _callee32(req, res) {
   var newContact;
@@ -752,7 +752,7 @@ app.post('/search', function _callee38(req, res) {
   });
 }); //channels
 
-app.post('/channels', function _callee39(req, res) {
+app.get('/channels', function _callee39(req, res) {
   return regeneratorRuntime.async(function _callee39$(_context39) {
     while (1) {
       switch (_context39.prev = _context39.next) {

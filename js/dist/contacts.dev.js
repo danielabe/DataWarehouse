@@ -51,8 +51,11 @@ var firstname = document.getElementById('firstname');
 var lastname = document.getElementById('lastname');
 var position = document.getElementById('position');
 var email = document.getElementById('email');
+var chan1 = document.getElementById('chan1');
+var chan2 = document.getElementById('chan2');
 var contIdArray = [];
 var dataCheckbox = [];
+var channelsDB = [];
 var varSortName = 0;
 var varSortCountry = 0;
 var varSortCompany = 0;
@@ -731,7 +734,51 @@ newCntBtn.addEventListener('click', function () {
 
   /* body.classList.add('modal') */
   darkImageAddCtc.classList.remove('none');
-}); //select company
+  getAllChannels();
+});
+
+function getAllChannels() {
+  var options, response, data, chanArray;
+  return regeneratorRuntime.async(function getAllChannels$(_context6) {
+    while (1) {
+      switch (_context6.prev = _context6.next) {
+        case 0:
+          options = {
+            method: 'GET',
+            headers: {
+              Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
+            }
+          };
+          _context6.next = 3;
+          return regeneratorRuntime.awrap(fetch('http://localhost:3000/channels', options));
+
+        case 3:
+          response = _context6.sent;
+          _context6.next = 6;
+          return regeneratorRuntime.awrap(response.json());
+
+        case 6:
+          data = _context6.sent;
+          data.map(function (element) {
+            channelsDB = channelsDB.concat({
+              channelName: element.channel_name,
+              channelId: element.channel_id
+            });
+          });
+          console.log(channelsDB);
+          chanArray = document.querySelectorAll('.s-channel');
+          chanArray.forEach(function (el, i) {
+            return el.innerText = channelsDB[i].channelName;
+          });
+
+        case 11:
+        case "end":
+          return _context6.stop();
+      }
+    }
+  });
+} //select company
+
 
 company.addEventListener('click', function () {
   if (varSelectCompany === 0) {
@@ -746,9 +793,9 @@ company.addEventListener('click', function () {
 
 function getCompanies() {
   var options, response, data;
-  return regeneratorRuntime.async(function getCompanies$(_context6) {
+  return regeneratorRuntime.async(function getCompanies$(_context7) {
     while (1) {
-      switch (_context6.prev = _context6.next) {
+      switch (_context7.prev = _context7.next) {
         case 0:
           options = {
             method: 'GET',
@@ -756,21 +803,21 @@ function getCompanies() {
               Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
             }
           };
-          _context6.next = 3;
+          _context7.next = 3;
           return regeneratorRuntime.awrap(fetch('http://localhost:3000/companies', options));
 
         case 3:
-          response = _context6.sent;
-          _context6.next = 6;
+          response = _context7.sent;
+          _context7.next = 6;
           return regeneratorRuntime.awrap(response.json());
 
         case 6:
-          data = _context6.sent;
+          data = _context7.sent;
           renderSelectCompanies(data);
 
         case 8:
         case "end":
-          return _context6.stop();
+          return _context7.stop();
       }
     }
   });
@@ -825,9 +872,9 @@ regionSelect.addEventListener('click', function () {
 
 function getRegions() {
   var options, response, data;
-  return regeneratorRuntime.async(function getRegions$(_context7) {
+  return regeneratorRuntime.async(function getRegions$(_context8) {
     while (1) {
-      switch (_context7.prev = _context7.next) {
+      switch (_context8.prev = _context8.next) {
         case 0:
           options = {
             method: 'GET',
@@ -835,22 +882,22 @@ function getRegions() {
               Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
             }
           };
-          _context7.next = 3;
+          _context8.next = 3;
           return regeneratorRuntime.awrap(fetch('http://localhost:3000/regions', options));
 
         case 3:
-          response = _context7.sent;
-          _context7.next = 6;
+          response = _context8.sent;
+          _context8.next = 6;
           return regeneratorRuntime.awrap(response.json());
 
         case 6:
-          data = _context7.sent;
+          data = _context8.sent;
           console.log(data);
           renderSelectRegions(data);
 
         case 9:
         case "end":
-          return _context7.stop();
+          return _context8.stop();
       }
     }
   });
@@ -915,9 +962,9 @@ countrySelect.addEventListener('click', function () {
 
 function getCountries() {
   var options, response, data;
-  return regeneratorRuntime.async(function getCountries$(_context8) {
+  return regeneratorRuntime.async(function getCountries$(_context9) {
     while (1) {
-      switch (_context8.prev = _context8.next) {
+      switch (_context9.prev = _context9.next) {
         case 0:
           options = {
             method: 'GET',
@@ -925,22 +972,22 @@ function getCountries() {
               Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
             }
           };
-          _context8.next = 3;
+          _context9.next = 3;
           return regeneratorRuntime.awrap(fetch("http://localhost:3000/regions/".concat(varRegId, "/countries"), options));
 
         case 3:
-          response = _context8.sent;
-          _context8.next = 6;
+          response = _context9.sent;
+          _context9.next = 6;
           return regeneratorRuntime.awrap(response.json());
 
         case 6:
-          data = _context8.sent;
+          data = _context9.sent;
           console.log(data);
           renderSelectCountries(data);
 
         case 9:
         case "end":
-          return _context8.stop();
+          return _context9.stop();
       }
     }
   });
@@ -997,9 +1044,9 @@ citySelect.addEventListener('click', function () {
 
 function getCities() {
   var options, response, data;
-  return regeneratorRuntime.async(function getCities$(_context9) {
+  return regeneratorRuntime.async(function getCities$(_context10) {
     while (1) {
-      switch (_context9.prev = _context9.next) {
+      switch (_context10.prev = _context10.next) {
         case 0:
           options = {
             method: 'GET',
@@ -1007,22 +1054,22 @@ function getCities() {
               Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
             }
           };
-          _context9.next = 3;
+          _context10.next = 3;
           return regeneratorRuntime.awrap(fetch("http://localhost:3000/countries/".concat(varCountId, "/cities"), options));
 
         case 3:
-          response = _context9.sent;
-          _context9.next = 6;
+          response = _context10.sent;
+          _context10.next = 6;
           return regeneratorRuntime.awrap(response.json());
 
         case 6:
-          data = _context9.sent;
+          data = _context10.sent;
           console.log(data);
           renderSelectCities(data);
 
         case 9:
         case "end":
-          return _context9.stop();
+          return _context10.stop();
       }
     }
   });
@@ -1341,9 +1388,9 @@ saveContact.addEventListener('click', function (event) {
 
 function addContact(event) {
   var contact, options, response, data;
-  return regeneratorRuntime.async(function addContact$(_context10) {
+  return regeneratorRuntime.async(function addContact$(_context11) {
     while (1) {
-      switch (_context10.prev = _context10.next) {
+      switch (_context11.prev = _context11.next) {
         case 0:
           event.preventDefault();
           contact = {
@@ -1371,29 +1418,29 @@ function addContact(event) {
               Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
             }
           };
-          _context10.prev = 3;
-          _context10.next = 6;
+          _context11.prev = 3;
+          _context11.next = 6;
           return regeneratorRuntime.awrap(fetch('http://localhost:3000/contacts', options));
 
         case 6:
-          response = _context10.sent;
-          _context10.next = 9;
+          response = _context11.sent;
+          _context11.next = 9;
           return regeneratorRuntime.awrap(response.json());
 
         case 9:
-          data = _context10.sent;
+          data = _context11.sent;
           console.log(data);
-          _context10.next = 16;
+          _context11.next = 16;
           break;
 
         case 13:
-          _context10.prev = 13;
-          _context10.t0 = _context10["catch"](3);
-          return _context10.abrupt("return", _context10.t0);
+          _context11.prev = 13;
+          _context11.t0 = _context11["catch"](3);
+          return _context11.abrupt("return", _context11.t0);
 
         case 16:
         case "end":
-          return _context10.stop();
+          return _context11.stop();
       }
     }
   }, null, null, [[3, 13]]);
@@ -1407,3 +1454,4 @@ function addContact(event) {
 //validar canales
 //actualizar en swagger region y country
 //overflow
+//si tengo ganas cambiar los id de los canalaes en el html

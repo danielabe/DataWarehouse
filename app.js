@@ -218,7 +218,7 @@ app.get('/contacts', async (req, res) => {
 
 app.post('/contacts', validateFirstname, validateLastname, validateEmailContacts,
 validateRegionId, validateCountryId, validateCityId, validateAddress, validateCompanyId, 
-validatePosition, validateInterest,/* validateChannelId, validateUserAccount, 
+validatePosition, validateInterest, validateChannelId, /*validateUserAccount, 
 validatePreference, */ async (req, res) => {
     const newContact = {
         firstname: req.body.firstname,
@@ -273,7 +273,7 @@ app.post('/search', async (req, res) => {
 })
 
 //channels
-app.post('/channels', async (req, res) => {    
+app.get('/channels', async (req, res) => {    
     getChannels(req, res)                                 
 })
 
