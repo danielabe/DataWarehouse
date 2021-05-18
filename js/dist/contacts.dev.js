@@ -51,8 +51,6 @@ var firstname = document.getElementById('firstname');
 var lastname = document.getElementById('lastname');
 var position = document.getElementById('position');
 var email = document.getElementById('email');
-var chan1 = document.getElementById('chan1');
-var chan2 = document.getElementById('chan2');
 var contIdArray = [];
 var dataCheckbox = [];
 var channelsDB = [];
@@ -738,7 +736,7 @@ newCntBtn.addEventListener('click', function () {
 });
 
 function getAllChannels() {
-  var options, response, data, chanArray;
+  var options, response, data, chanArray, chansArray;
   return regeneratorRuntime.async(function getAllChannels$(_context6) {
     while (1) {
       switch (_context6.prev = _context6.next) {
@@ -767,11 +765,18 @@ function getAllChannels() {
           });
           console.log(channelsDB);
           chanArray = document.querySelectorAll('.s-channel');
+          chansArray = document.querySelectorAll('.chan');
+          chansArray.forEach(function (el, i) {
+            el.addEventListener('click', function () {
+              return console.log(channelsDB[i].channelId);
+            });
+          });
           chanArray.forEach(function (el, i) {
-            return el.innerText = channelsDB[i].channelName;
+            el.innerText = channelsDB[i].channelName;
+            /* el.addEventListener('click', () => console.log(channelsDB[i].channelId)) */
           });
 
-        case 11:
+        case 13:
         case "end":
           return _context6.stop();
       }
@@ -1387,12 +1392,39 @@ saveContact.addEventListener('click', function (event) {
 });
 
 function addContact(event) {
-  var contact, options, response, data;
+  var channels, filteredChannels, contact, options, response, data;
   return regeneratorRuntime.async(function addContact$(_context11) {
     while (1) {
       switch (_context11.prev = _context11.next) {
         case 0:
           event.preventDefault();
+          channels = [{
+            channel_id: channelsDB[0].channelId,
+            user_account: telephone.value,
+            preference: selectTelephone.innerText
+          }, {
+            channel_id: channelsDB[1].channelId,
+            user_account: whatsapp.value,
+            preference: selectWhatsapp.innerText
+          }, {
+            channel_id: channelsDB[2].channelId,
+            user_account: instagram.value,
+            preference: selectInstagram.innerText
+          }, {
+            channel_id: channelsDB[3].channelId,
+            user_account: facebook.value,
+            preference: selectFacebook.innerText
+          }, {
+            channel_id: channelsDB[4].channelId,
+            user_account: linkedin.value,
+            preference: selectLinkedin.innerText
+          }];
+          filteredChannels = [];
+          channels.forEach(function (chan) {
+            if (chan.user_account !== '') {
+              filteredChannels = filteredChannels.concat(chan);
+            }
+          });
           contact = {
             firstname: firstname.value,
             lastname: lastname.value,
@@ -1404,11 +1436,7 @@ function addContact(event) {
             company_id: varCompanyId,
             position: position.value,
             interest: +interestSelect.innerText.slice(0, -1),
-            preferred_channels: [{
-              channel_id: 1,
-              user_account: 341564399,
-              preference: "Canal favorito"
-            }]
+            preferred_channels: filteredChannels
           };
           options = {
             method: 'POST',
@@ -1418,32 +1446,32 @@ function addContact(event) {
               Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
             }
           };
-          _context11.prev = 3;
-          _context11.next = 6;
+          _context11.prev = 6;
+          _context11.next = 9;
           return regeneratorRuntime.awrap(fetch('http://localhost:3000/contacts', options));
 
-        case 6:
+        case 9:
           response = _context11.sent;
-          _context11.next = 9;
+          _context11.next = 12;
           return regeneratorRuntime.awrap(response.json());
 
-        case 9:
+        case 12:
           data = _context11.sent;
           console.log(data);
-          _context11.next = 16;
+          _context11.next = 19;
           break;
 
-        case 13:
-          _context11.prev = 13;
-          _context11.t0 = _context11["catch"](3);
+        case 16:
+          _context11.prev = 16;
+          _context11.t0 = _context11["catch"](6);
           return _context11.abrupt("return", _context11.t0);
 
-        case 16:
+        case 19:
         case "end":
           return _context11.stop();
       }
     }
-  }, null, null, [[3, 13]]);
+  }, null, null, [[6, 16]]);
 } //ui kit
 //inicio
 //nuevo contacto
@@ -1451,7 +1479,6 @@ function addContact(event) {
 //editar canales de contacto
 //borrar canales al borrar contacto 
 //refrescar datos cargados al cerrar la ventana de nuevo contacto
-//validar canales
 //actualizar en swagger region y country
 //overflow
 //si tengo ganas cambiar los id de los canalaes en el html

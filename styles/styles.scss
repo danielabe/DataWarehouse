@@ -804,9 +804,11 @@ progress::-moz-progress-bar {
 }
 
 .contact-channel {
-    display: grid;
+    /* display: grid;
     grid-template: repeat(1, 1fr)/33% 33% 33%;
-    grid-gap: 7px;
+    grid-gap: 7px; */
+    display: flex;
+    flex-direction: column;
     align-self: flex-start;
     width: 52.8vw;
     margin: 36px 0 0 32px;
@@ -888,6 +890,11 @@ progress::-moz-progress-bar {
 
 .btn-green {
     background-color: #429c41;
+}
+
+.chan {
+    display: grid;
+    grid-template: repeat(1, 1fr)/33% 33% 33%;
 }
 
 .none {

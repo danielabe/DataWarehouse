@@ -49,8 +49,6 @@ const firstname = document.getElementById('firstname')
 const lastname = document.getElementById('lastname')
 const position = document.getElementById('position')
 const email = document.getElementById('email')
-const chan1 = document.getElementById('chan1')
-const chan2 = document.getElementById('chan2')
 
 let contIdArray = []
 let dataCheckbox = []
@@ -619,7 +617,14 @@ async function getAllChannels() {
     })
     console.log(channelsDB)
     const chanArray = document.querySelectorAll('.s-channel')
-    chanArray.forEach((el, i) => el.innerText = channelsDB[i].channelName)
+    const chansArray = document.querySelectorAll('.chan')
+    chansArray.forEach((el, i) => {
+        el.addEventListener('click', () => console.log(channelsDB[i].channelId))
+    })
+    chanArray.forEach((el, i) => {
+        el.innerText = channelsDB[i].channelName
+        /* el.addEventListener('click', () => console.log(channelsDB[i].channelId)) */
+    })
 }
 
 //select company
@@ -1122,6 +1127,41 @@ saveContact.addEventListener('click', (event) => addContact(event))
 
 async function addContact(event) {
     event.preventDefault()
+    const channels = [
+        {
+            channel_id: channelsDB[0].channelId,
+            user_account: telephone.value,
+            preference: selectTelephone.innerText
+        },
+        {
+            channel_id: channelsDB[1].channelId,
+            user_account: whatsapp.value,
+            preference: selectWhatsapp.innerText
+        },
+        {
+            channel_id: channelsDB[2].channelId,
+            user_account: instagram.value,
+            preference: selectInstagram.innerText
+        },
+        {
+            channel_id: channelsDB[3].channelId,
+            user_account: facebook.value,
+            preference: selectFacebook.innerText
+        },
+        {
+            channel_id: channelsDB[4].channelId,
+            user_account: linkedin.value,
+            preference: selectLinkedin.innerText
+        }
+
+    ]
+
+    let filteredChannels = []
+    channels.forEach(chan => {
+        if(chan.user_account !== '') {
+            filteredChannels = filteredChannels.concat(chan)
+        }
+    })
     
     const contact = {
         firstname: firstname.value,
@@ -1134,13 +1174,7 @@ async function addContact(event) {
         company_id: varCompanyId,
         position: position.value,
         interest: +interestSelect.innerText.slice(0, -1),
-        preferred_channels: [
-            {
-                channel_id: 1,
-                user_account: 341564399,
-                preference: "Canal favorito"
-            }
-        ]
+        preferred_channels: filteredChannels
     }
     
     const options = {
@@ -1183,7 +1217,6 @@ async function addContact(event) {
 
 //borrar canales al borrar contacto 
 //refrescar datos cargados al cerrar la ventana de nuevo contacto
-//validar canales
 //actualizar en swagger region y country
 //overflow
 //si tengo ganas cambiar los id de los canalaes en el html
