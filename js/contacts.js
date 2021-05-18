@@ -1117,12 +1117,59 @@ closeNewCtc.addEventListener('click', (event) => closeWindowNewContact(event))
 
 function closeWindowNewContact(event) {
     event.preventDefault()
-    darkImageAddCtc.classList.add('none')
-    main.classList.remove('height-add-ctc')
+    firstname.value = ''
+    lastname.value = ''
+    position.value = ''
+    email.value = ''
+    address.value = ''
+    telephone.value = ''
+    whatsapp.value = ''
+    instagram.value = ''
+    facebook.value = ''
+    linkedin.value = ''
+    company.innerHTML = 'Seleccionar compañía<i class="fas fa-caret-down"></i>'
+    regionSelect.innerHTML = 'Seleccionar región<i class="fas fa-caret-down"></i>'
+    countrySelect.innerHTML = 'Seleccionar país<i class="fas fa-caret-down"></i>'
+    citySelect.innerHTML = 'Seleccionar ciudad<i class="fas fa-caret-down"></i>'
+    interestSelect.innerHTML = '0%<i class="fas fa-caret-down"></i>'
+    selectTelephone.innerHTML = `Sin preferencia<i class="fas fa-caret-down"></i>`
+    selectWhatsapp.innerHTML = `Sin preferencia<i class="fas fa-caret-down"></i>`
+    selectInstagram.innerHTML = `Sin preferencia<i class="fas fa-caret-down"></i>`
+    selectFacebook.innerHTML = `Sin preferencia<i class="fas fa-caret-down"></i>`
+    selectLinkedin.innerHTML = `Sin preferencia<i class="fas fa-caret-down"></i>`
     varCompanyId = null
     varRegId = null
     varCountId = null
     varCityId = null
+    
+    address.disabled = true
+    darkImageAddCtc.classList.add('none')
+    main.classList.remove('height-add-ctc')
+    address.classList.add('disable')
+    citySelect.classList.add('disable')
+    countrySelect.classList.add('disable')
+    regionsList.classList.add('none')
+    countriesList.classList.add('none')
+    citiesList.classList.add('none')
+    selectTelephone.classList.add('disable')
+    selectWhatsapp.classList.add('disable')
+    selectInstagram.classList.add('disable')
+    selectFacebook.classList.add('disable')
+    selectLinkedin.classList.add('disable')
+    prefTelephoneList.classList.add('none')
+    prefWhatsappList.classList.add('none')
+    prefInstagramList.classList.add('none')
+    prefFacebookList.classList.add('none')
+    prefLinkedinList.classList.add('none')
+    
+    varSelectRegion = 0
+    varSelectCountry = 0
+    varEnablePrefT = 0
+    varEnablePrefW = 0
+    varEnablePrefI = 0
+    varEnablePrefF = 0
+    varEnablePrefL = 0
+    getContacts()
 }
 
 //save contact
@@ -1210,6 +1257,7 @@ async function addContact(event) {
     } catch(reason) {
         return reason
     }
+    closeWindowNewContact(event)
 }
 //ui kit
 //inicio
@@ -1218,8 +1266,7 @@ async function addContact(event) {
 //editar canales de contacto
 
 
-//borrar canales al borrar contacto 
-//refrescar datos cargados al cerrar la ventana de nuevo contacto
+//cuando abro nuevo contacto no funciona bien el ordenar
 //actualizar en swagger region y country
+//borrar canales al borrar contacto 
 //si tengo ganas cambiar los id de los canalaes en el html
-//actualizar lista de contactos al cerrar o guardar
