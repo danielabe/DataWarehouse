@@ -51,6 +51,7 @@ var firstname = document.getElementById('firstname');
 var lastname = document.getElementById('lastname');
 var position = document.getElementById('position');
 var email = document.getElementById('email');
+var main = document.querySelector('main');
 var contIdArray = [];
 var dataCheckbox = [];
 var channelsDB = [];
@@ -732,6 +733,7 @@ newCntBtn.addEventListener('click', function () {
 
   /* body.classList.add('modal') */
   darkImageAddCtc.classList.remove('none');
+  main.classList.add('height-add-ctc');
   getAllChannels();
 });
 
@@ -1380,6 +1382,7 @@ closeNewCtc.addEventListener('click', function (event) {
 function closeWindowNewContact(event) {
   event.preventDefault();
   darkImageAddCtc.classList.add('none');
+  main.classList.remove('height-add-ctc');
   varCompanyId = null;
   varRegId = null;
   varCountId = null;
@@ -1480,5 +1483,5 @@ function addContact(event) {
 //borrar canales al borrar contacto 
 //refrescar datos cargados al cerrar la ventana de nuevo contacto
 //actualizar en swagger region y country
-//overflow
 //si tengo ganas cambiar los id de los canalaes en el html
+//actualizar lista de contactos al cerrar o guardar

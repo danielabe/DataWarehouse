@@ -897,6 +897,11 @@ progress::-moz-progress-bar {
     grid-template: repeat(1, 1fr)/33% 33% 33%;
 }
 
+.height-add-ctc {
+    height: 826px;
+    overflow: hidden;
+}
+
 .none {
     display: none;
 }

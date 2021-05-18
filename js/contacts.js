@@ -49,6 +49,7 @@ const firstname = document.getElementById('firstname')
 const lastname = document.getElementById('lastname')
 const position = document.getElementById('position')
 const email = document.getElementById('email')
+const main = document.querySelector('main')
 
 let contIdArray = []
 let dataCheckbox = []
@@ -600,6 +601,7 @@ newCntBtn.addEventListener('click', () => {
     /* window.scrollTo(0, 0) */
     /* body.classList.add('modal') */
     darkImageAddCtc.classList.remove('none')
+    main.classList.add('height-add-ctc')
     getAllChannels()
 })
 
@@ -1116,6 +1118,7 @@ closeNewCtc.addEventListener('click', (event) => closeWindowNewContact(event))
 function closeWindowNewContact(event) {
     event.preventDefault()
     darkImageAddCtc.classList.add('none')
+    main.classList.remove('height-add-ctc')
     varCompanyId = null
     varRegId = null
     varCountId = null
@@ -1218,5 +1221,5 @@ async function addContact(event) {
 //borrar canales al borrar contacto 
 //refrescar datos cargados al cerrar la ventana de nuevo contacto
 //actualizar en swagger region y country
-//overflow
 //si tengo ganas cambiar los id de los canalaes en el html
+//actualizar lista de contactos al cerrar o guardar
