@@ -876,6 +876,10 @@ progress::-moz-progress-bar {
   cursor: pointer;
 }
 
+.btn-green {
+  background-color: #429c41;
+}
+
 .none {
   display: none;
 }

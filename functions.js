@@ -41,13 +41,13 @@ function filterAdmin(req, res, next) {
 
 function validateFirstname(req, res, next) {
     const firstname = req.body.firstname
-    if(firstname.length >= 3 && firstname.length <= 64) next()
+    if(firstname.length >= 1 && firstname.length <= 64) next()
     else res.status(400).send("The firstname length is wrong").end()
 }
 
 function validateLastname(req, res, next) {
     const lastname = req.body.lastname
-    if(lastname.length >= 2 && lastname.length <= 64) next()
+    if(lastname.length >= 1 && lastname.length <= 64) next()
     else res.status(400).send("The lastname length is wrong").end()
 }
 
@@ -152,7 +152,7 @@ async function validateCompanyName(req, res, next) {
 
 function validateAddress(req, res, next) {
     const address = req.body.address
-    if(address.length >= 3 && address.length <= 64) next()
+    if(address.length >= 1 && address.length <= 64) next()
     else res.status(400).send("The address is wrong").end()
 }
 
@@ -183,7 +183,7 @@ async function validateEmailContacts(req, res, next) {
 
 function validatePosition(req, res, next) {
     const position = req.body.position
-    if(position.length >= 2 && position.length <= 64) next()
+    if(position.length >= 1 && position.length <= 64) next()
     else res.status(400).send("The position is wrong").end()
 }
 

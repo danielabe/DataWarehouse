@@ -44,6 +44,11 @@ const prefLinkedinList = document.getElementById('prefLinkedinList')
 const cancelContact = document.getElementById('cancelContact')
 const closeNewCtc = document.getElementById('closeNewCtc')
 const darkImageAddCtc = document.getElementById('darkImageAddCtc')
+const saveContact = document.getElementById('saveContact')
+const firstname = document.getElementById('firstname')
+const lastname = document.getElementById('lastname')
+const position = document.getElementById('position')
+const email = document.getElementById('email')
 
 let contIdArray = []
 let dataCheckbox = []
@@ -74,6 +79,8 @@ let varEnablePrefL = 0
 
 let varRegId
 let varCountId
+let varCityId
+let varCompanyId = null
 
 let varCheckboxAll = 'unselected'
 
@@ -652,6 +659,7 @@ function selectCompanyFunction(info) {
     compLbl.style.top = '0px'
     company.innerHTML = `${info.companyName}<i class="fas fa-caret-down"></i>`
     varSelectCompany = 0
+    varCompanyId = info.companyId
 }
 
 //select region
@@ -707,6 +715,7 @@ function selectRegionFunction(info) {
     countrySelect.classList.remove('disable')
     citySelect.classList.add('disable')
     address.disabled = true
+    address.classList.add('disable')
     countrySelect.innerHTML = `Seleccionar país<i class="fas fa-caret-down"></i>`
     citySelect.innerHTML = `Seleccionar ciudad<i class="fas fa-caret-down"></i>`
     countriesList.classList.add('none')
@@ -716,6 +725,8 @@ function selectRegionFunction(info) {
     varSelectCountry = 0
     varEnableCountry = 1
     varRegId = +info.regionId
+    varCountId = null
+    varCityId = null
 }
 
 //select country
@@ -772,6 +783,7 @@ function selectCountryFunction(info) {
 
     citySelect.classList.remove('disable')
     address.disabled = true
+    address.classList.add('disable')
     citySelect.innerHTML = `Seleccionar ciudad<i class="fas fa-caret-down"></i>`
     citiesList.classList.add('none')
 
@@ -831,6 +843,8 @@ function selectCityFunction(info) {
     citiesList.innerHTML = ''
     citySelect.innerHTML = `${info.cityName}<i class="fas fa-caret-down"></i>`
     address.disabled = false
+    address.classList.remove('disable')
+    varCityId = +info.cityId
 }
 
 //select interest
@@ -1069,16 +1083,84 @@ function preferenceIcons(pref, select) {
     }
 }
 
+//close window new contact 
 cancelContact.addEventListener('click', (event) => closeWindowNewContact(event))
 closeNewCtc.addEventListener('click', (event) => closeWindowNewContact(event))
 
 function closeWindowNewContact(event) {
     event.preventDefault()
     darkImageAddCtc.classList.add('none')
+    varCompanyId = null
+    varRegId = null
+    varCountId = null
+    varCityId = null
 }
 
+//save contact
+saveContact.addEventListener('click', (event) => addContact(event))
+
+async function addContact(event) {
+    event.preventDefault()
+    const contact = {
+        firstname: firstname.value,
+        lastname: lastname.value,
+        email: email.value,
+        region_id: varRegId,
+        country_id: varCountId,
+        city_id: varCityId,
+        address: address.value,
+        company_id: varCompanyId,
+        position: position.value,
+        interest: +interestSelect.innerText.slice(0, -1),
+        preferred_channels: [
+            {
+                channel_id: 1,
+                user_account: 341564399,
+                preference: "Canal favorito"
+            }
+        ]
+    }
+    
+    const options = {
+        method: 'POST',
+        body: JSON.stringify(contact),
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
+        }
+    }
+    try {
+        const response = await fetch('http://localhost:3000/contacts', options)
+        /* if(response.status === 400) {
+            msgContainer.innerHTML = ''
+            const msgError = document.createElement('p')
+            msgContainer.appendChild(msgError)
+            if(newRegion.value.length < 2 || newRegion.value.length > 64) {
+                msgError.innerText = 'Nombre incorrecto'
+            } else {
+                msgError.innerText = 'La región ya existe'
+            }
+        } */
+        /* if(response.status === 201) {
+            body.classList.remove('modal')
+            darkImageAddCtc.classList.add('none')
+            getContacts()
+        } */
+        const data = await response.json()
+        console.log(data)
+    } catch(reason) {
+        return reason
+    }
+}
 //ui kit
 //inicio
 //nuevo contacto
 //editar contacto
 //editar canales de contacto
+
+
+//borrar canales al borrar contacto 
+//refrescar datos cargados al cerrar la ventana de nuevo contacto
+//validar canales
+//actualizar en swagger region y country
+//overflow

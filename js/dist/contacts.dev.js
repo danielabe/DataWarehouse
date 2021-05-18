@@ -46,6 +46,11 @@ var prefLinkedinList = document.getElementById('prefLinkedinList');
 var cancelContact = document.getElementById('cancelContact');
 var closeNewCtc = document.getElementById('closeNewCtc');
 var darkImageAddCtc = document.getElementById('darkImageAddCtc');
+var saveContact = document.getElementById('saveContact');
+var firstname = document.getElementById('firstname');
+var lastname = document.getElementById('lastname');
+var position = document.getElementById('position');
+var email = document.getElementById('email');
 var contIdArray = [];
 var dataCheckbox = [];
 var varSortName = 0;
@@ -73,6 +78,8 @@ var varEnablePrefF = 0;
 var varEnablePrefL = 0;
 var varRegId;
 var varCountId;
+var varCityId;
+var varCompanyId = null;
 var varCheckboxAll = 'unselected'; //show contacts 
 
 contacts.addEventListener('click', function () {
@@ -802,6 +809,7 @@ function selectCompanyFunction(info) {
   compLbl.style.top = '0px';
   company.innerHTML = "".concat(info.companyName, "<i class=\"fas fa-caret-down\"></i>");
   varSelectCompany = 0;
+  varCompanyId = info.companyId;
 } //select region
 
 
@@ -879,6 +887,7 @@ function selectRegionFunction(info) {
   countrySelect.classList.remove('disable');
   citySelect.classList.add('disable');
   address.disabled = true;
+  address.classList.add('disable');
   countrySelect.innerHTML = "Seleccionar pa\xEDs<i class=\"fas fa-caret-down\"></i>";
   citySelect.innerHTML = "Seleccionar ciudad<i class=\"fas fa-caret-down\"></i>";
   countriesList.classList.add('none');
@@ -887,6 +896,8 @@ function selectRegionFunction(info) {
   varSelectCountry = 0;
   varEnableCountry = 1;
   varRegId = +info.regionId;
+  varCountId = null;
+  varCityId = null;
 } //select country
 
 
@@ -964,6 +975,7 @@ function selectCountryFunction(info) {
   countrySelect.innerHTML = "".concat(info.countryName, "<i class=\"fas fa-caret-down\"></i>");
   citySelect.classList.remove('disable');
   address.disabled = true;
+  address.classList.add('disable');
   citySelect.innerHTML = "Seleccionar ciudad<i class=\"fas fa-caret-down\"></i>";
   citiesList.classList.add('none');
   varEnableCity = 1;
@@ -1043,6 +1055,8 @@ function selectCityFunction(info) {
   citiesList.innerHTML = '';
   citySelect.innerHTML = "".concat(info.cityName, "<i class=\"fas fa-caret-down\"></i>");
   address.disabled = false;
+  address.classList.remove('disable');
+  varCityId = +info.cityId;
 } //select interest
 
 
@@ -1301,7 +1315,8 @@ function preferenceIcons(pref, select) {
   } else if (pref === 'No molestar') {
     select.innerHTML = "<i class=\"fas fa-ban\"></i><p>".concat(pref, "</p><i class=\"fas fa-caret-down\"></i>");
   }
-}
+} //close window new contact 
+
 
 cancelContact.addEventListener('click', function (event) {
   return closeWindowNewContact(event);
@@ -1313,8 +1328,82 @@ closeNewCtc.addEventListener('click', function (event) {
 function closeWindowNewContact(event) {
   event.preventDefault();
   darkImageAddCtc.classList.add('none');
+  varCompanyId = null;
+  varRegId = null;
+  varCountId = null;
+  varCityId = null;
+} //save contact
+
+
+saveContact.addEventListener('click', function (event) {
+  return addContact(event);
+});
+
+function addContact(event) {
+  var contact, options, response, data;
+  return regeneratorRuntime.async(function addContact$(_context10) {
+    while (1) {
+      switch (_context10.prev = _context10.next) {
+        case 0:
+          event.preventDefault();
+          contact = {
+            firstname: firstname.value,
+            lastname: lastname.value,
+            email: email.value,
+            region_id: varRegId,
+            country_id: varCountId,
+            city_id: varCityId,
+            address: address.value,
+            company_id: varCompanyId,
+            position: position.value,
+            interest: +interestSelect.innerText.slice(0, -1),
+            preferred_channels: [{
+              channel_id: 1,
+              user_account: 341564399,
+              preference: "Canal favorito"
+            }]
+          };
+          options = {
+            method: 'POST',
+            body: JSON.stringify(contact),
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
+            }
+          };
+          _context10.prev = 3;
+          _context10.next = 6;
+          return regeneratorRuntime.awrap(fetch('http://localhost:3000/contacts', options));
+
+        case 6:
+          response = _context10.sent;
+          _context10.next = 9;
+          return regeneratorRuntime.awrap(response.json());
+
+        case 9:
+          data = _context10.sent;
+          console.log(data);
+          _context10.next = 16;
+          break;
+
+        case 13:
+          _context10.prev = 13;
+          _context10.t0 = _context10["catch"](3);
+          return _context10.abrupt("return", _context10.t0);
+
+        case 16:
+        case "end":
+          return _context10.stop();
+      }
+    }
+  }, null, null, [[3, 13]]);
 } //ui kit
 //inicio
 //nuevo contacto
 //editar contacto
 //editar canales de contacto
+//borrar canales al borrar contacto 
+//refrescar datos cargados al cerrar la ventana de nuevo contacto
+//validar canales
+//actualizar en swagger region y country
+//overflow

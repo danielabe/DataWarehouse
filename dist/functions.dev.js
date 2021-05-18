@@ -77,12 +77,12 @@ function filterAdmin(req, res, next) {
 
 function validateFirstname(req, res, next) {
   var firstname = req.body.firstname;
-  if (firstname.length >= 3 && firstname.length <= 64) next();else res.status(400).send("The firstname length is wrong").end();
+  if (firstname.length >= 1 && firstname.length <= 64) next();else res.status(400).send("The firstname length is wrong").end();
 }
 
 function validateLastname(req, res, next) {
   var lastname = req.body.lastname;
-  if (lastname.length >= 2 && lastname.length <= 64) next();else res.status(400).send("The lastname length is wrong").end();
+  if (lastname.length >= 1 && lastname.length <= 64) next();else res.status(400).send("The lastname length is wrong").end();
 }
 
 function validateEmail(req, res, next) {
@@ -349,7 +349,7 @@ function validateCompanyName(req, res, next) {
 
 function validateAddress(req, res, next) {
   var address = req.body.address;
-  if (address.length >= 3 && address.length <= 64) next();else res.status(400).send("The address is wrong").end();
+  if (address.length >= 1 && address.length <= 64) next();else res.status(400).send("The address is wrong").end();
 }
 
 function validateCompanyId(req, res, next) {
@@ -438,7 +438,7 @@ function validateEmailContacts(req, res, next) {
 
 function validatePosition(req, res, next) {
   var position = req.body.position;
-  if (position.length >= 2 && position.length <= 64) next();else res.status(400).send("The position is wrong").end();
+  if (position.length >= 1 && position.length <= 64) next();else res.status(400).send("The position is wrong").end();
 }
 
 function validateInterest(req, res, next) {
