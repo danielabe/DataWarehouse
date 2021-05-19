@@ -54,7 +54,6 @@ var email = document.getElementById('email');
 var main = document.querySelector('main');
 var contIdArray = [];
 var dataCheckbox = [];
-var channelsDB = [];
 var varSortName = 0;
 var varSortCountry = 0;
 var varSortCompany = 0;
@@ -96,27 +95,29 @@ function getContacts() {
         case 0:
           contactsList.innerHTML = ''; //ver si puedo sacar este
 
-          console.log(JSON.parse(sessionStorage.getItem('Token')));
+          /* console.log(JSON.parse(sessionStorage.getItem('Token'))) */
+
           options = {
             method: 'GET',
             headers: {
               Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
             }
           };
-          _context.next = 5;
+          _context.next = 4;
           return regeneratorRuntime.awrap(fetch('http://localhost:3000/contacts', options));
 
-        case 5:
+        case 4:
           response = _context.sent;
-          _context.next = 8;
+          _context.next = 7;
           return regeneratorRuntime.awrap(response.json());
 
-        case 8:
+        case 7:
           data = _context.sent;
           dataCheckbox = data;
           renderResults(data);
           /* checkboxAll.addEventListener('click', () => checkboxAllFunction(data)) */
 
+          varSortName = 0;
           sortName.addEventListener('click', function () {
             if (varSortName === 0) {
               sortByName(data);
@@ -174,7 +175,8 @@ function getContacts() {
 function checkAfterSortAndSearch(data) {
   counterAndDelete.classList.add('hidden');
   varCheckboxAll = 'indeterminate';
-  console.log(varCheckboxAll);
+  /* console.log(varCheckboxAll) */
+
   checkboxAllFunction(data);
 }
 
@@ -342,10 +344,11 @@ function deleteContact(info
 
         case 6:
           data = _context3.sent;
-          getContacts();
+
+          /* getContacts() */
           checkAfterSortAndSearch(); //no se si funciona el data, con o sin data va igual, no se si es correcto
 
-        case 9:
+        case 8:
         case "end":
           return _context3.stop();
       }
@@ -385,9 +388,8 @@ function deleteContacts() {
 
           case 8:
             data = _context4.sent;
-            getContacts();
 
-          case 10:
+          case 9:
           case "end":
             return _context4.stop();
         }
@@ -399,7 +401,9 @@ function deleteContacts() {
 
 
 function sortByName(data) {
+  /* console.log(data) */
   var sortedNames = data.sort(function (a, b) {
+    /* console.log(data) */
     if (a.firstname.toUpperCase() > b.firstname.toUpperCase()) {
       return 1;
     }
@@ -411,12 +415,16 @@ function sortByName(data) {
     return 0;
   });
   renderResults(sortedNames);
+  console.log(sortedNames);
   varSortName = 1;
   /* varCheckboxAll = 0 */
 }
 
 function sortByNameReverse(data) {
+  console.log('dani');
   var sortedNames = data.reverse(function (a, b) {
+    console.log(data);
+
     if (a.firstname.toUpperCase() > b.firstname.toUpperCase()) {
       return 1;
     }
@@ -427,6 +435,7 @@ function sortByNameReverse(data) {
 
     return 0;
   });
+  console.log(sortedNames);
   renderResults(sortedNames);
   varSortName = 0;
 }
@@ -665,7 +674,7 @@ function allContacts(data) {
 }
 
 function checkboxAllFunction(data) {
-  console.log(varCheckboxAll);
+  /* console.log(varCheckboxAll) */
   var allConts = document.querySelectorAll('.select');
   var rowContact = document.querySelectorAll('.row-contact');
 
@@ -711,11 +720,12 @@ function checkboxAllFunction(data) {
   } else if (
   /* checkboxAll.classList == 'fas fa-minus-square' */
   varCheckboxAll === 'indeterminate') {
-    console.log('indeterminado a no seleccionado');
+    /* console.log('indeterminado a no seleccionado') */
     checkboxAll.classList = 'far fa-square'; //desseleccionar seleccionados
 
     contIdArray = [];
-    console.log(contIdArray);
+    /* console.log(contIdArray) */
+
     allConts.forEach(function (element) {
       element.classList = 'far fa-square u-item select';
     });
@@ -738,26 +748,27 @@ newCntBtn.addEventListener('click', function () {
 });
 
 function getAllChannels() {
-  var options, response, data, chanArray, chansArray;
+  var channelsDB, options, response, data, chanArray, chansArray;
   return regeneratorRuntime.async(function getAllChannels$(_context6) {
     while (1) {
       switch (_context6.prev = _context6.next) {
         case 0:
+          channelsDB = [];
           options = {
             method: 'GET',
             headers: {
               Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
             }
           };
-          _context6.next = 3;
+          _context6.next = 4;
           return regeneratorRuntime.awrap(fetch('http://localhost:3000/channels', options));
 
-        case 3:
+        case 4:
           response = _context6.sent;
-          _context6.next = 6;
+          _context6.next = 7;
           return regeneratorRuntime.awrap(response.json());
 
-        case 6:
+        case 7:
           data = _context6.sent;
           data.map(function (element) {
             channelsDB = channelsDB.concat({
@@ -778,7 +789,7 @@ function getAllChannels() {
             /* el.addEventListener('click', () => console.log(channelsDB[i].channelId)) */
           });
 
-        case 13:
+        case 14:
         case "end":
           return _context6.stop();
       }
@@ -1378,6 +1389,8 @@ cancelContact.addEventListener('click', function (event) {
 closeNewCtc.addEventListener('click', function (event) {
   return closeWindowNewContact(event);
 });
+/* cancelContact.addEventListener('click', () => getContacts())
+closeNewCtc.addEventListener('click', () => getContacts()) */
 
 function closeWindowNewContact(event) {
   event.preventDefault();
@@ -1431,7 +1444,7 @@ function closeWindowNewContact(event) {
   varEnablePrefI = 0;
   varEnablePrefF = 0;
   varEnablePrefL = 0;
-  getContacts();
+  /* getContacts() */
 } //save contact
 
 
@@ -1528,7 +1541,7 @@ function addContact(event) {
 //nuevo contacto
 //editar contacto
 //editar canales de contacto
-//cuando abro nuevo contacto no funciona bien el ordenar
 //actualizar en swagger region y country
 //borrar canales al borrar contacto 
+//no refresca al eliminar, crear contacto, provocaba error al ordenar
 //si tengo ganas cambiar los id de los canalaes en el html

@@ -53,7 +53,6 @@ const main = document.querySelector('main')
 
 let contIdArray = []
 let dataCheckbox = []
-let channelsDB = []
 
 let varSortName = 0
 let varSortCountry = 0
@@ -93,7 +92,7 @@ contacts.addEventListener('click', () => {
 
 async function getContacts() {
     contactsList.innerHTML = '' //ver si puedo sacar este
-    console.log(JSON.parse(sessionStorage.getItem('Token')))
+    /* console.log(JSON.parse(sessionStorage.getItem('Token'))) */
     const options = {
         method: 'GET',
         headers: {
@@ -105,7 +104,7 @@ async function getContacts() {
     dataCheckbox = data
     renderResults(data)
     /* checkboxAll.addEventListener('click', () => checkboxAllFunction(data)) */
-
+    varSortName = 0
     sortName.addEventListener('click', () => {
         if(varSortName === 0) {
             sortByName(data)
@@ -151,7 +150,7 @@ async function getContacts() {
 function checkAfterSortAndSearch(data) {
     counterAndDelete.classList.add('hidden')
     varCheckboxAll = 'indeterminate'
-    console.log(varCheckboxAll)
+    /* console.log(varCheckboxAll) */
     checkboxAllFunction(data)
 }
 
@@ -293,7 +292,7 @@ async function deleteContact(info/* , contactsList */) {
     }
     const response = await fetch(`http://localhost:3000/contacts/${info.contactId}`, options)
     const data = await response.json()
-    getContacts()
+    /* getContacts() */
     checkAfterSortAndSearch() //no se si funciona el data, con o sin data va igual, no se si es correcto
 }
 
@@ -316,14 +315,16 @@ function deleteContacts() {
         }
         const response = await fetch(`http://localhost:3000/contacts/${info.contactId}`, options)
         const data = await response.json()
-        getContacts()
+        /* getContacts() */
     })
     checkAfterSortAndSearch() //no se si funciona el data, con o sin data va igual, no se si es correcto
 }
 
 //sort columns
 function sortByName(data) {
+    /* console.log(data) */
     const sortedNames = data.sort(function (a, b) {
+        /* console.log(data) */
         if (a.firstname.toUpperCase() > b.firstname.toUpperCase()) { 
             return 1
         }
@@ -333,12 +334,15 @@ function sortByName(data) {
         return 0
     })
     renderResults(sortedNames)
+    console.log(sortedNames)
     varSortName = 1
     /* varCheckboxAll = 0 */
 }
 
 function sortByNameReverse(data) {
+    console.log('dani')
     const sortedNames = data.reverse(function (a, b) {
+        console.log(data)
         if (a.firstname.toUpperCase() > b.firstname.toUpperCase()) { 
             return 1
         }
@@ -347,6 +351,7 @@ function sortByNameReverse(data) {
         }
         return 0
     })
+    console.log(sortedNames)
     renderResults(sortedNames)
     varSortName = 0
 }
@@ -547,7 +552,7 @@ function allContacts(data) {
 }
 
 function checkboxAllFunction(data) {
-    console.log(varCheckboxAll)
+    /* console.log(varCheckboxAll) */
     const allConts = document.querySelectorAll('.select')
     const rowContact = document.querySelectorAll('.row-contact')
     if(/* checkboxAll.classList == 'far fa-square' || */ varCheckboxAll === 'unselected') {
@@ -582,11 +587,11 @@ function checkboxAllFunction(data) {
         console.log(varCheckboxAll)
 
     } else if(/* checkboxAll.classList == 'fas fa-minus-square' */ varCheckboxAll === 'indeterminate') {
-        console.log('indeterminado a no seleccionado')
+        /* console.log('indeterminado a no seleccionado') */
         checkboxAll.classList = 'far fa-square'
         //desseleccionar seleccionados
         contIdArray = []
-        console.log(contIdArray)
+        /* console.log(contIdArray) */
         allConts.forEach(element => {
             element.classList = 'far fa-square u-item select'
         })
@@ -606,6 +611,7 @@ newCntBtn.addEventListener('click', () => {
 })
 
 async function getAllChannels() {
+    let channelsDB = []
     const options = {
         method: 'GET',
         headers: {
@@ -1114,6 +1120,8 @@ function preferenceIcons(pref, select) {
 //close window new contact 
 cancelContact.addEventListener('click', (event) => closeWindowNewContact(event))
 closeNewCtc.addEventListener('click', (event) => closeWindowNewContact(event))
+/* cancelContact.addEventListener('click', () => getContacts())
+closeNewCtc.addEventListener('click', () => getContacts()) */
 
 function closeWindowNewContact(event) {
     event.preventDefault()
@@ -1169,7 +1177,7 @@ function closeWindowNewContact(event) {
     varEnablePrefI = 0
     varEnablePrefF = 0
     varEnablePrefL = 0
-    getContacts()
+    /* getContacts() */
 }
 
 //save contact
@@ -1266,7 +1274,8 @@ async function addContact(event) {
 //editar canales de contacto
 
 
-//cuando abro nuevo contacto no funciona bien el ordenar
+
 //actualizar en swagger region y country
 //borrar canales al borrar contacto 
+//no refresca al eliminar, crear contacto, provocaba error al ordenar
 //si tengo ganas cambiar los id de los canalaes en el html
