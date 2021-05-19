@@ -53,6 +53,7 @@ const main = document.querySelector('main')
 
 let contIdArray = []
 let dataCheckbox = []
+let channelsDB = []
 
 let varSortName = 0
 let varSortCountry = 0
@@ -611,7 +612,7 @@ newCntBtn.addEventListener('click', () => {
 })
 
 async function getAllChannels() {
-    let channelsDB = []
+    channelsDB = []
     const options = {
         method: 'GET',
         headers: {
@@ -1186,34 +1187,12 @@ saveContact.addEventListener('click', (event) => addContact(event))
 async function addContact(event) {
     event.preventDefault()
     const channels = [
-        {
-            channel_id: channelsDB[0].channelId,
-            user_account: telephone.value,
-            preference: selectTelephone.innerText
-        },
-        {
-            channel_id: channelsDB[1].channelId,
-            user_account: whatsapp.value,
-            preference: selectWhatsapp.innerText
-        },
-        {
-            channel_id: channelsDB[2].channelId,
-            user_account: instagram.value,
-            preference: selectInstagram.innerText
-        },
-        {
-            channel_id: channelsDB[3].channelId,
-            user_account: facebook.value,
-            preference: selectFacebook.innerText
-        },
-        {
-            channel_id: channelsDB[4].channelId,
-            user_account: linkedin.value,
-            preference: selectLinkedin.innerText
-        }
-
+        { channel_id: channelsDB[0].channelId, user_account: telephone.value, preference: selectTelephone.innerText },
+        { channel_id: channelsDB[1].channelId, user_account: whatsapp.value, preference: selectWhatsapp.innerText },
+        { channel_id: channelsDB[2].channelId, user_account: instagram.value, preference: selectInstagram.innerText },
+        { channel_id: channelsDB[3].channelId, user_account: facebook.value, preference: selectFacebook.innerText },
+        { channel_id: channelsDB[4].channelId, user_account: linkedin.value, preference: selectLinkedin.innerText }
     ]
-
     let filteredChannels = []
     channels.forEach(chan => {
         if(chan.user_account !== '') {
@@ -1225,8 +1204,8 @@ async function addContact(event) {
         firstname: firstname.value,
         lastname: lastname.value,
         email: email.value,
-        region_id: varRegId,
-        country_id: varCountId,
+        /* region_id: varRegId,
+        country_id: varCountId, */
         city_id: varCityId,
         address: address.value,
         company_id: varCompanyId,
@@ -1235,6 +1214,7 @@ async function addContact(event) {
         preferred_channels: filteredChannels
     }
     
+    validateData(contact)
     const options = {
         method: 'POST',
         body: JSON.stringify(contact),
@@ -1245,6 +1225,7 @@ async function addContact(event) {
     }
     try {
         const response = await fetch('http://localhost:3000/contacts', options)
+        console.log(response.text())
         /* if(response.status === 400) {
             msgContainer.innerHTML = ''
             const msgError = document.createElement('p')
@@ -1261,11 +1242,44 @@ async function addContact(event) {
             getContacts()
         } */
         const data = await response.json()
+        /* console.log(data.value) */
         console.log(data)
     } catch(reason) {
+        /* console.log(reason) */
         return reason
     }
     closeWindowNewContact(event)
+}
+
+function validateData(contact) {
+    if(contact.firstname === '') {
+        firstname.classList.add('border-wrong')
+    }
+    if(contact.lastname === '') {
+        lastname.classList.add('border-wrong')
+    }
+    if(contact.position === '') {
+        position.classList.add('border-wrong')
+    }
+    if(contact.email === '') {
+        email.classList.add('border-wrong')
+    }
+    if(contact.company_id === null) {
+        company.classList.add('border-wrong')
+    }
+    if(regionSelect.innerText === 'Seleccionar región') {
+        regionSelect.classList.add('border-wrong')
+    }
+    if(countrySelect.innerText === 'Seleccionar país') {
+        countrySelect.classList.add('border-wrong')
+    }
+    if(contact.city_id === undefined) {
+        citySelect.classList.add('border-wrong')
+    }
+    if(contact.address === '') {
+        address.classList.add('border-wrong')
+    }
+    console.log(contact.city_id)
 }
 //ui kit
 //inicio
@@ -1275,7 +1289,7 @@ async function addContact(event) {
 
 
 
-//actualizar en swagger region y country
+//mensajes en rojo
 //borrar canales al borrar contacto 
 //no refresca al eliminar, crear contacto, provocaba error al ordenar
 //si tengo ganas cambiar los id de los canalaes en el html

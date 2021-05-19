@@ -1652,7 +1652,8 @@ function different(value, index, list) {
 }
 
 function createContact(newContact, req, res) {
-  var contactInserted, contact, channels, contactAndChannels;
+  var contactInserted, contact, channels, contactAndChannels, _contactAndChannels;
+
   return regeneratorRuntime.async(function createContact$(_context53) {
     while (1) {
       switch (_context53.prev = _context53.next) {
@@ -1665,27 +1666,31 @@ function createContact(newContact, req, res) {
 
         case 2:
           contactInserted = _context53.sent;
-          req.body.preferred_channels.forEach(function _callee(channel) {
-            return regeneratorRuntime.async(function _callee$(_context52) {
-              while (1) {
-                switch (_context52.prev = _context52.next) {
-                  case 0:
-                    _context52.next = 2;
-                    return regeneratorRuntime.awrap(db.query("\n    INSERT INTO contacts_channels (contact_id, channel_id, user_account, preference)\n    VALUES (".concat(contactInserted[0], ", ").concat(channel.channel_id, ", '").concat(channel.user_account, "', '").concat(channel.preference, "')\n    "), {
-                      replacements: req.body.preferred_channels,
-                      type: QueryTypes.INSERT
-                    }));
 
-                  case 2:
-                    return _context52.abrupt("return", _context52.sent);
+          if (newContact.preferred_channels.length !== 0) {
+            req.body.preferred_channels.forEach(function _callee(channel) {
+              return regeneratorRuntime.async(function _callee$(_context52) {
+                while (1) {
+                  switch (_context52.prev = _context52.next) {
+                    case 0:
+                      _context52.next = 2;
+                      return regeneratorRuntime.awrap(db.query("\n        INSERT INTO contacts_channels (contact_id, channel_id, user_account, preference)\n        VALUES (".concat(contactInserted[0], ", ").concat(channel.channel_id, ", '").concat(channel.user_account, "', '").concat(channel.preference, "')\n        "), {
+                        replacements: req.body.preferred_channels,
+                        type: QueryTypes.INSERT
+                      }));
 
-                  case 3:
-                  case "end":
-                    return _context52.stop();
+                    case 2:
+                      return _context52.abrupt("return", _context52.sent);
+
+                    case 3:
+                    case "end":
+                      return _context52.stop();
+                  }
                 }
-              }
+              });
             });
-          });
+          }
+
           _context53.next = 6;
           return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.address, cont.company_id, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    WHERE contact_id = ?\n    ", {
             replacements: [contactInserted[0]],
@@ -1702,12 +1707,20 @@ function createContact(newContact, req, res) {
 
         case 9:
           channels = _context53.sent;
-          contactAndChannels = Object.assign({}, contact[0], {
-            preferred_channels: channels
-          });
-          res.status(201).json(Object.assign(contactAndChannels));
 
-        case 12:
+          if (newContact.preferred_channels.length === 0) {
+            contactAndChannels = Object.assign({}, contact[0], {
+              preferred_channels: []
+            });
+            res.status(201).json(Object.assign(contactAndChannels));
+          } else {
+            _contactAndChannels = Object.assign({}, contact[0], {
+              preferred_channels: channels
+            });
+            res.status(201).json(Object.assign(_contactAndChannels));
+          }
+
+        case 11:
         case "end":
           return _context53.stop();
       }

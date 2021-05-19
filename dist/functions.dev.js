@@ -481,7 +481,7 @@ function validateContactId(req, res, next) {
 function validateUserAccount(req, res, next) {
   var channelsBody = req.body.preferred_channels;
   channelsBody.every(function (element) {
-    if (element.user_account.length >= 2 && element.user_account.length <= 64) next();else res.status(400).send("The userAccount length is wrong").end();
+    if (element.user_account.length >= 1 && element.user_account.length <= 64) next();else res.status(400).send("The userAccount length is wrong").end();
   });
 }
 
@@ -493,6 +493,7 @@ function validatePreference(req, res, next) {
         case 0:
           channelsBody = req.body.preferred_channels;
           channelsBody.every(function (element) {
+            console.log(element);
             if (element.preference === 'Sin preferencia' || element.preference === 'Canal favorito' || element.preference === 'No molestar') next();else res.status(400).send("The preference is wrong").end();
           });
 

@@ -216,10 +216,9 @@ app.get('/contacts', async (req, res) => {
     getContacts(req, res)                                 
 })
 
-app.post('/contacts', validateFirstname, validateLastname, validateEmailContacts,
-validateRegionId, validateCountryId, validateCityId, validateAddress, validateCompanyId, 
-validatePosition, validateInterest, validateChannelId, /*validateUserAccount, 
-validatePreference, */ async (req, res) => {
+app.post('/contacts', validateFirstname, validateLastname, validatePosition, validateEmailContacts, 
+validateCompanyId, validateCityId, validateAddress, validateInterest, validateChannelId, 
+validateUserAccount, validatePreference, async (req, res) => {
     const newContact = {
         firstname: req.body.firstname,
         lastname: req.body.lastname,

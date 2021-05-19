@@ -675,13 +675,16 @@ async function createContact(newContact, req, res) { //arreglar la asincronia, a
         replacements: newContact,
         type: QueryTypes.INSERT
     })
-    req.body.preferred_channels.forEach(async channel => await db.query(`
-    INSERT INTO contacts_channels (contact_id, channel_id, user_account, preference)
-    VALUES (${contactInserted[0]}, ${channel.channel_id}, '${channel.user_account}', '${channel.preference}')
-    `, {
-        replacements: req.body.preferred_channels,
-        type: QueryTypes.INSERT
-    }))
+    
+    if(newContact.preferred_channels.length !== 0) {
+        req.body.preferred_channels.forEach(async channel => await db.query(`
+        INSERT INTO contacts_channels (contact_id, channel_id, user_account, preference)
+        VALUES (${contactInserted[0]}, ${channel.channel_id}, '${channel.user_account}', '${channel.preference}')
+        `, {
+            replacements: req.body.preferred_channels,
+            type: QueryTypes.INSERT
+        }))
+    }
     const contact = await db.query(`
     SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,
     co.country_name, co.region_id, re.region_name, cont.address, cont.company_id, comp.company_name,
@@ -703,8 +706,13 @@ async function createContact(newContact, req, res) { //arreglar la asincronia, a
         replacements: [contactInserted[0]],
         type: QueryTypes.SELECT 
     })
-    const contactAndChannels = Object.assign( {} , contact[0], { preferred_channels: channels})
-    res.status(201).json(Object.assign( contactAndChannels ))
+    if(newContact.preferred_channels.length === 0) {
+        const contactAndChannels = Object.assign( {} , contact[0], { preferred_channels: []})
+        res.status(201).json(Object.assign( contactAndChannels ))
+    } else {
+        const contactAndChannels = Object.assign( {} , contact[0], { preferred_channels: channels})
+        res.status(201).json(Object.assign( contactAndChannels ))
+    }
 }
 
 async function validateContactIdQuery(req, res, next) {

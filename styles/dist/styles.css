@@ -892,6 +892,10 @@ progress::-moz-progress-bar {
   overflow: hidden;
 }
 
+.border-wrong {
+  border: 1px solid #F03738;
+}
+
 .none {
   display: none;
 }

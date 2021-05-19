@@ -54,6 +54,7 @@ var email = document.getElementById('email');
 var main = document.querySelector('main');
 var contIdArray = [];
 var dataCheckbox = [];
+var channelsDB = [];
 var varSortName = 0;
 var varSortCountry = 0;
 var varSortCompany = 0;
@@ -748,7 +749,7 @@ newCntBtn.addEventListener('click', function () {
 });
 
 function getAllChannels() {
-  var channelsDB, options, response, data, chanArray, chansArray;
+  var options, response, data, chanArray, chansArray;
   return regeneratorRuntime.async(function getAllChannels$(_context6) {
     while (1) {
       switch (_context6.prev = _context6.next) {
@@ -1490,8 +1491,9 @@ function addContact(event) {
             firstname: firstname.value,
             lastname: lastname.value,
             email: email.value,
-            region_id: varRegId,
-            country_id: varCountId,
+
+            /* region_id: varRegId,
+            country_id: varCountId, */
             city_id: varCityId,
             address: address.value,
             company_id: varCompanyId,
@@ -1499,6 +1501,7 @@ function addContact(event) {
             interest: +interestSelect.innerText.slice(0, -1),
             preferred_channels: filteredChannels
           };
+          validateData(contact);
           options = {
             method: 'POST',
             body: JSON.stringify(contact),
@@ -1507,41 +1510,101 @@ function addContact(event) {
               Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
             }
           };
-          _context11.prev = 6;
-          _context11.next = 9;
+          _context11.prev = 7;
+          _context11.next = 10;
           return regeneratorRuntime.awrap(fetch('http://localhost:3000/contacts', options));
 
-        case 9:
+        case 10:
           response = _context11.sent;
-          _context11.next = 12;
+          console.log(response.text());
+          /* if(response.status === 400) {
+              msgContainer.innerHTML = ''
+              const msgError = document.createElement('p')
+              msgContainer.appendChild(msgError)
+              if(newRegion.value.length < 2 || newRegion.value.length > 64) {
+                  msgError.innerText = 'Nombre incorrecto'
+              } else {
+                  msgError.innerText = 'La región ya existe'
+              }
+          } */
+
+          /* if(response.status === 201) {
+              body.classList.remove('modal')
+              darkImageAddCtc.classList.add('none')
+              getContacts()
+          } */
+
+          _context11.next = 14;
           return regeneratorRuntime.awrap(response.json());
 
-        case 12:
+        case 14:
           data = _context11.sent;
+
+          /* console.log(data.value) */
           console.log(data);
-          _context11.next = 19;
+          _context11.next = 21;
           break;
 
-        case 16:
-          _context11.prev = 16;
-          _context11.t0 = _context11["catch"](6);
+        case 18:
+          _context11.prev = 18;
+          _context11.t0 = _context11["catch"](7);
           return _context11.abrupt("return", _context11.t0);
 
-        case 19:
+        case 21:
           closeWindowNewContact(event);
 
-        case 20:
+        case 22:
         case "end":
           return _context11.stop();
       }
     }
-  }, null, null, [[6, 16]]);
+  }, null, null, [[7, 18]]);
+}
+
+function validateData(contact) {
+  if (contact.firstname === '') {
+    firstname.classList.add('border-wrong');
+  }
+
+  if (contact.lastname === '') {
+    lastname.classList.add('border-wrong');
+  }
+
+  if (contact.position === '') {
+    position.classList.add('border-wrong');
+  }
+
+  if (contact.email === '') {
+    email.classList.add('border-wrong');
+  }
+
+  if (contact.company_id === null) {
+    company.classList.add('border-wrong');
+  }
+
+  if (regionSelect.innerText === 'Seleccionar región') {
+    regionSelect.classList.add('border-wrong');
+  }
+
+  if (countrySelect.innerText === 'Seleccionar país') {
+    countrySelect.classList.add('border-wrong');
+  }
+
+  if (contact.city_id === undefined) {
+    citySelect.classList.add('border-wrong');
+  }
+
+  if (contact.address === '') {
+    address.classList.add('border-wrong');
+  }
+
+  console.log(contact.city_id);
 } //ui kit
 //inicio
 //nuevo contacto
 //editar contacto
 //editar canales de contacto
-//actualizar en swagger region y country
+//mensajes en rojo
 //borrar canales al borrar contacto 
 //no refresca al eliminar, crear contacto, provocaba error al ordenar
 //si tengo ganas cambiar los id de los canalaes en el html
