@@ -96,6 +96,7 @@
                         <label class="form-lbl" for="address">
                             <p>Dirección</p>
                             <input id="address" class="field ncnt-input disable" type="text" disabled placeholder="Ingresa una dirección">
+                            <p id="msgAddress" class="msg-container">Este campo es obligatorio</p>
                         </label>
                         <div id="interestLbl" class="form-lbl comp-lbl">
                             <p>Interés</p>
@@ -212,29 +213,32 @@
                     </div>
                 </form>
                 <form id="newCtcForm" class="new-form new-ctc-form">
-                    <label class="form-lbl" for="firstname">
+                    <label class="form-lbl pad" for="firstname">
                         <p>Nombre <span class="red-asterisk">*</span></p>
                         <input id="firstname" class="field ncnt-input" type="text">
+                        <p id="msgFirst" class="msg-container">Este campo es obligatorio</p>
                     </label>
-                    <!-- <div id="" class="msg-container"></div> -->
-                    <label class="form-lbl" for="lastname">
+                    <label class="form-lbl pad" for="lastname">
                         <p>Apellido <span class="red-asterisk">*</span></p>
                         <input id="lastname" class="field ncnt-input" type="text">
+                        <p id="msgLast" class="msg-container">Este campo es obligatorio</p>
                     </label>
-                    <!-- <div id="" class="msg-container"></div> -->
-                    <label class="form-lbl" for="position">
+                    <label class="form-lbl pad" for="position">
                         <p>Cargo <span class="red-asterisk">*</span></p>
                         <input id="position" class="field ncnt-input" type="text">
+                        <p id="msgPos" class="msg-container">Este campo es obligatorio</p>
                     </label>
-                    <label class="form-lbl" for="email">
+                    <label class="form-lbl pad" for="email">
                         <p>Email <span class="red-asterisk">*</span></p>
                         <input id="email" class="field ncnt-input" type="text">
+                        <p id="msgEmail" class="msg-container">Error en datos ingresados</p>
                     </label>
                     <div id="compLbl" class="form-lbl comp-lbl" for="company">
                         <p>Compañia <span class="red-asterisk">*</span></p>
                         <p id="company" class="field ncnt-input select-company">
                             Seleccionar compañía<i class="fas fa-caret-down"></i>
-                        </dipv>
+                        </p>
+                        <!-- <p id="msgLast" class="msg-container">Este campo es obligatorio</p> -->
                         <ul id="selectCompany" class="company-list none"></ul>
                     </div>
                 </form>

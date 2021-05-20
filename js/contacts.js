@@ -50,6 +50,11 @@ const lastname = document.getElementById('lastname')
 const position = document.getElementById('position')
 const email = document.getElementById('email')
 const main = document.querySelector('main')
+const msgFirst = document.getElementById('msgFirst')
+const msgLast = document.getElementById('msgLast')
+const msgPos = document.getElementById('msgPos')
+const msgEmail = document.getElementById('msgEmail')
+const msgAddress = document.getElementById('msgAddress')
 
 let contIdArray = []
 let dataCheckbox = []
@@ -1171,6 +1176,22 @@ function closeWindowNewContact(event) {
     prefFacebookList.classList.add('none')
     prefLinkedinList.classList.add('none')
     
+    firstname.classList.remove('border-wrong')
+    msgFirst.classList.remove('visible')
+    lastname.classList.remove('border-wrong')
+    msgLast.classList.remove('visible')
+    position.classList.remove('border-wrong')
+    msgPos.classList.remove('visible')
+    email.classList.remove('border-wrong')
+    msgEmail.classList.remove('visible')
+    msgEmail.innerText = 'Error en datos ingresados'
+    company.classList.remove('border-wrong')
+    regionSelect.classList.remove('border-wrong')
+    countrySelect.classList.remove('border-wrong')
+    citySelect.classList.remove('border-wrong')
+    address.classList.remove('border-wrong')
+    msgAddress.classList.remove('visible')
+
     varSelectRegion = 0
     varSelectCountry = 0
     varEnablePrefT = 0
@@ -1225,17 +1246,12 @@ async function addContact(event) {
     }
     try {
         const response = await fetch('http://localhost:3000/contacts', options)
-        /* console.log(response.text()) */
-        /* if(response.status === 400) {
-            msgContainer.innerHTML = ''
-            const msgError = document.createElement('p')
-            msgContainer.appendChild(msgError)
-            if(newRegion.value.length < 2 || newRegion.value.length > 64) {
-                msgError.innerText = 'Nombre incorrecto'
-            } else {
-                msgError.innerText = 'La región ya existe'
-            }
-        } */
+        console.log(response.text())
+        if(response.status === 409) {
+            email.classList.add('border-wrong')
+            msgEmail.classList.add('visible')
+            msgEmail.innerText = 'El email ya existe'
+        }
         /* if(response.status === 201) {
             body.classList.remove('modal')
             darkImageAddCtc.classList.add('none')
@@ -1254,30 +1270,85 @@ async function addContact(event) {
 function validateData(contact) {
     if(contact.firstname === '') {
         firstname.classList.add('border-wrong')
+        msgFirst.classList.add('visible')
+        firstname.addEventListener('keyup', () => {
+            if(firstname.value !== '') {
+                firstname.classList.remove('border-wrong')
+                msgFirst.classList.remove('visible')
+            }
+        })
     }
     if(contact.lastname === '') {
         lastname.classList.add('border-wrong')
+        msgLast.classList.add('visible')
+        lastname.addEventListener('keyup', () => {
+            if(lastname.value !== '') {
+                lastname.classList.remove('border-wrong')
+                msgLast.classList.remove('visible')
+            }
+        })
     }
     if(contact.position === '') {
         position.classList.add('border-wrong')
+        msgPos.classList.add('visible')
+        position.addEventListener('keyup', () => {
+            if(position.value !== '') {
+                position.classList.remove('border-wrong')
+                msgPos.classList.remove('visible')
+            }
+        })
     }
-    if(contact.email === '') {
+    if(contact.email === '' || !(/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(email.value))) {
         email.classList.add('border-wrong')
+        msgEmail.classList.add('visible')
+        email.addEventListener('keyup', () => {
+            if(email.value !== '' && (/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(email.value))) {
+                email.classList.remove('border-wrong')
+                msgEmail.classList.remove('visible')
+            }
+        })
     }
     if(contact.company_id === null) {
         company.classList.add('border-wrong')
+        selectCompany.addEventListener('click', () => {
+            if(company.innerText !== 'Seleccionar compañía') {
+                company.classList.remove('border-wrong')
+            }
+        })
     }
     if(regionSelect.innerText === 'Seleccionar región') {
         regionSelect.classList.add('border-wrong')
+        regionsList.addEventListener('click', () => {
+            if(regionSelect.innerText !== 'Seleccionar región') {
+                regionSelect.classList.remove('border-wrong')
+            }
+        })
     }
     if(countrySelect.innerText === 'Seleccionar país') {
         countrySelect.classList.add('border-wrong')
+        countriesList.addEventListener('click', () => {
+            if(countrySelect.innerText !== 'Seleccionar país') {
+                countrySelect.classList.remove('border-wrong')
+            }
+        })
     }
     if(contact.city_id === undefined) {
         citySelect.classList.add('border-wrong')
+        citiesList.addEventListener('click', () => {
+            if(citySelect.innerText !== 'Seleccionar ciudad') {
+                citySelect.classList.remove('border-wrong')
+            }
+        })
     }
     if(contact.address === '') {
         address.classList.add('border-wrong')
+        msgAddress.classList.add('visible')
+        address.addEventListener('keyup', () => {
+            if(address.value !== '') {
+                address.classList.remove('border-wrong')
+                msgAddress.classList.remove('visible')
+            }
+        })
     }
 }
 //ui kit

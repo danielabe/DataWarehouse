@@ -56,7 +56,7 @@ async function validateEmailQuery(req, res, next) {
     const emailsArray = emails.map(user => user.email)
     if(/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(email)) {
         if(emailsArray.every(e => e != email)) next()
-        else res.status(400).send("The email already exists").end()
+        else res.status(409).send("The email already exists").end()
     } else res.status(400).send("The email is wrong").end()
 }
 
@@ -645,7 +645,7 @@ async function validateEmailContactsQuery(req, res, next) {
     const emailsArray = emails.map(contact => contact.email)
     if(/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(email)) {
         if(emailsArray.every(e => e != email)) next()
-        else res.status(400).send("The email already exists").end()
+        else res.status(409).send("The email already exists").end()
     } else res.status(400).send("The email is wrong").end()
 }
         
@@ -762,7 +762,7 @@ async function validateEmailContactsPutQuery(req, res, next) {
         const emailsArray = emails.map(contact => contact.email)
         if(/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(email)) {
             if(emailsArray.every(e => e != email)) next()
-            else res.status(400).send("The email already exists").end()
+            else res.status(409).send("The email already exists").end()
         } else res.status(400).send("The email is wrong").end()
     } else next()
 }

@@ -52,6 +52,11 @@ var lastname = document.getElementById('lastname');
 var position = document.getElementById('position');
 var email = document.getElementById('email');
 var main = document.querySelector('main');
+var msgFirst = document.getElementById('msgFirst');
+var msgLast = document.getElementById('msgLast');
+var msgPos = document.getElementById('msgPos');
+var msgEmail = document.getElementById('msgEmail');
+var msgAddress = document.getElementById('msgAddress');
 var contIdArray = [];
 var dataCheckbox = [];
 var channelsDB = [];
@@ -1438,6 +1443,21 @@ function closeWindowNewContact(event) {
   prefInstagramList.classList.add('none');
   prefFacebookList.classList.add('none');
   prefLinkedinList.classList.add('none');
+  firstname.classList.remove('border-wrong');
+  msgFirst.classList.remove('visible');
+  lastname.classList.remove('border-wrong');
+  msgLast.classList.remove('visible');
+  position.classList.remove('border-wrong');
+  msgPos.classList.remove('visible');
+  email.classList.remove('border-wrong');
+  msgEmail.classList.remove('visible');
+  msgEmail.innerText = 'Error en datos ingresados';
+  company.classList.remove('border-wrong');
+  regionSelect.classList.remove('border-wrong');
+  countrySelect.classList.remove('border-wrong');
+  citySelect.classList.remove('border-wrong');
+  address.classList.remove('border-wrong');
+  msgAddress.classList.remove('visible');
   varSelectRegion = 0;
   varSelectCountry = 0;
   varEnablePrefT = 0;
@@ -1516,68 +1536,137 @@ function addContact(event) {
 
         case 10:
           response = _context11.sent;
-          _context11.next = 13;
+          console.log(response.text());
+
+          if (response.status === 409) {
+            email.classList.add('border-wrong');
+            msgEmail.classList.add('visible');
+            msgEmail.innerText = 'El email ya existe';
+          }
+          /* if(response.status === 201) {
+              body.classList.remove('modal')
+              darkImageAddCtc.classList.add('none')
+              getContacts()
+          } */
+
+
+          _context11.next = 15;
           return regeneratorRuntime.awrap(response.json());
 
-        case 13:
+        case 15:
           data = _context11.sent;
 
           /* console.log(data.value) */
           console.log(data);
-          _context11.next = 20;
+          _context11.next = 22;
           break;
 
-        case 17:
-          _context11.prev = 17;
+        case 19:
+          _context11.prev = 19;
           _context11.t0 = _context11["catch"](7);
           return _context11.abrupt("return", _context11.t0);
 
-        case 20:
+        case 22:
           closeWindowNewContact(event);
 
-        case 21:
+        case 23:
         case "end":
           return _context11.stop();
       }
     }
-  }, null, null, [[7, 17]]);
+  }, null, null, [[7, 19]]);
 }
 
 function validateData(contact) {
   if (contact.firstname === '') {
     firstname.classList.add('border-wrong');
+    msgFirst.classList.add('visible');
+    firstname.addEventListener('keyup', function () {
+      if (firstname.value !== '') {
+        firstname.classList.remove('border-wrong');
+        msgFirst.classList.remove('visible');
+      }
+    });
   }
 
   if (contact.lastname === '') {
     lastname.classList.add('border-wrong');
+    msgLast.classList.add('visible');
+    lastname.addEventListener('keyup', function () {
+      if (lastname.value !== '') {
+        lastname.classList.remove('border-wrong');
+        msgLast.classList.remove('visible');
+      }
+    });
   }
 
   if (contact.position === '') {
     position.classList.add('border-wrong');
+    msgPos.classList.add('visible');
+    position.addEventListener('keyup', function () {
+      if (position.value !== '') {
+        position.classList.remove('border-wrong');
+        msgPos.classList.remove('visible');
+      }
+    });
   }
 
-  if (contact.email === '') {
+  if (contact.email === '' || !/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(email.value)) {
     email.classList.add('border-wrong');
+    msgEmail.classList.add('visible');
+    email.addEventListener('keyup', function () {
+      if (email.value !== '' && /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(email.value)) {
+        email.classList.remove('border-wrong');
+        msgEmail.classList.remove('visible');
+      }
+    });
   }
 
   if (contact.company_id === null) {
     company.classList.add('border-wrong');
+    selectCompany.addEventListener('click', function () {
+      if (company.innerText !== 'Seleccionar compañía') {
+        company.classList.remove('border-wrong');
+      }
+    });
   }
 
   if (regionSelect.innerText === 'Seleccionar región') {
     regionSelect.classList.add('border-wrong');
+    regionsList.addEventListener('click', function () {
+      if (regionSelect.innerText !== 'Seleccionar región') {
+        regionSelect.classList.remove('border-wrong');
+      }
+    });
   }
 
   if (countrySelect.innerText === 'Seleccionar país') {
     countrySelect.classList.add('border-wrong');
+    countriesList.addEventListener('click', function () {
+      if (countrySelect.innerText !== 'Seleccionar país') {
+        countrySelect.classList.remove('border-wrong');
+      }
+    });
   }
 
   if (contact.city_id === undefined) {
     citySelect.classList.add('border-wrong');
+    citiesList.addEventListener('click', function () {
+      if (citySelect.innerText !== 'Seleccionar ciudad') {
+        citySelect.classList.remove('border-wrong');
+      }
+    });
   }
 
   if (contact.address === '') {
     address.classList.add('border-wrong');
+    msgAddress.classList.add('visible');
+    address.addEventListener('keyup', function () {
+      if (address.value !== '') {
+        address.classList.remove('border-wrong');
+        msgAddress.classList.remove('visible');
+      }
+    });
   }
 } //ui kit
 //inicio

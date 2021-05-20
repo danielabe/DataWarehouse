@@ -422,10 +422,15 @@ main {
 }
 
 .msg-container {
-    width: 50%;
+    width: 100%;
+    visibility: hidden;
     font-size: 12px;
     font-style: italic;
-    color: red;
+    color: #F03738;
+}
+
+.visible {
+    visibility: visible;
 }
 
 .contacts {
@@ -904,6 +909,10 @@ progress::-moz-progress-bar {
 
 .border-wrong {
     border: 1px solid #F03738;
+}
+
+.pad {
+    padding-top: 17px;
 }
 
 .none {

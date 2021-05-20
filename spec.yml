@@ -110,6 +110,8 @@ paths:
           description: "Bad request"
         "403":
             description: "Unauthorized"
+        "409":
+            description: "Email already exists"
   /users/{userId}:
     get:
       tags:
@@ -985,6 +987,8 @@ paths:
           description: "Unauthorized"
         "404":
           description: "City or company not found"
+        "409":
+          description: "Email already exists"
   /contacts/{contactId}:
     get:
       tags:
@@ -1052,6 +1056,8 @@ paths:
           description: "Unauthorized"
         "404":
           description: "Contact not found"
+        "409":
+          description: "Email already exists"
     delete:
       tags:
       - "contacts"

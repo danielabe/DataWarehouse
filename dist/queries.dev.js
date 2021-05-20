@@ -150,7 +150,7 @@ function validateEmailQuery(req, res, next) {
           if (/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(email)) {
             if (emailsArray.every(function (e) {
               return e != email;
-            })) next();else res.status(400).send("The email already exists").end();
+            })) next();else res.status(409).send("The email already exists").end();
           } else res.status(400).send("The email is wrong").end();
 
         case 6:
@@ -1601,7 +1601,7 @@ function validateEmailContactsQuery(req, res, next) {
           if (/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(email)) {
             if (emailsArray.every(function (e) {
               return e != email;
-            })) next();else res.status(400).send("The email already exists").end();
+            })) next();else res.status(409).send("The email already exists").end();
           } else res.status(400).send("The email is wrong").end();
 
         case 6:
@@ -1848,7 +1848,7 @@ function validateEmailContactsPutQuery(req, res, next) {
           if (/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(email)) {
             if (emailsArray.every(function (e) {
               return e != email;
-            })) next();else res.status(400).send("The email already exists").end();
+            })) next();else res.status(409).send("The email already exists").end();
           } else res.status(400).send("The email is wrong").end();
 
           _context59.next = 10;
