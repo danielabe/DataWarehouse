@@ -905,6 +905,17 @@ progress::-moz-progress-bar {
   padding-top: 17px;
 }
 
+.chan-edit {
+  display: grid;
+  grid-template: repeat(1, 1fr)/33% 33% 33%;
+}
+
+.s-channel-edit {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .none {
   display: none;
 }

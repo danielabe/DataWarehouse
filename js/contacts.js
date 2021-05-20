@@ -58,6 +58,31 @@ const msgAddress = document.getElementById('msgAddress')
 const darkImageEditCtc = document.getElementById('darkImageEditCtc')
 const closeEditCtc = document.getElementById('closeEditCtc')
 const deleteContactEdit = document.getElementById('deleteContactEdit')
+const firstnameEdit = document.getElementById('firstnameEdit')
+const lastnameEdit = document.getElementById('lastnameEdit')
+const positionEdit = document.getElementById('positionEdit')
+const emailEdit = document.getElementById('emailEdit')
+const addressEdit = document.getElementById('addressEdit')
+const companyEdit = document.getElementById('companyEdit')
+const regionSelectEdit = document.getElementById('regionSelectEdit')
+const countrySelectEdit = document.getElementById('countrySelectEdit')
+const citySelectEdit = document.getElementById('citySelectEdit')
+const interestSelectEdit = document.getElementById('interestSelectEdit')
+const tel = document.getElementById('tel')
+const telephoneEdit = document.getElementById('telephoneEdit')
+const selectTelephoneEdit = document.getElementById('selectTelephoneEdit')
+const wsp = document.getElementById('wsp')
+const whatsappEdit = document.getElementById('whatsappEdit')
+const selectWhatsappEdit = document.getElementById('selectWhatsappEdit')
+const inst = document.getElementById('inst')
+const instagramEdit = document.getElementById('instagramEdit')
+const selectInstagramEdit = document.getElementById('selectInstagramEdit')
+const face = document.getElementById('face')
+const facebookEdit = document.getElementById('facebookEdit')
+const selectFacebookEdit = document.getElementById('selectFacebookEdit')
+const link = document.getElementById('link')
+const linkedinEdit = document.getElementById('linkedinEdit')
+const selectLinkedinEdit = document.getElementById('selectLinkedinEdit')
 
 let contIdArray = []
 let dataCheckbox = []
@@ -616,10 +641,12 @@ newCntBtn.addEventListener('click', () => {
     /* body.classList.add('modal') */
     darkImageAddCtc.classList.remove('none')
     main.classList.add('height-add-ctc')
-    getAllChannels()
+    const sChannel = 's-channel'
+    const chan = 'chan'
+    getAllChannels(sChannel, chan)
 })
 
-async function getAllChannels() {
+async function getAllChannels(sChannel, chan) {
     channelsDB = []
     const options = {
         method: 'GET',
@@ -633,12 +660,13 @@ async function getAllChannels() {
         channelsDB = channelsDB.concat({channelName: element.channel_name, channelId: element.channel_id})
     })
     console.log(channelsDB)
-    const chanArray = document.querySelectorAll('.s-channel')
-    const chansArray = document.querySelectorAll('.chan')
+    const chanArray = document.querySelectorAll(`.${sChannel}`)
+    const chansArray = document.querySelectorAll(`.${chan}`)
     chansArray.forEach((el, i) => {
         el.addEventListener('click', () => console.log(channelsDB[i].channelId))
     })
     chanArray.forEach((el, i) => {
+        console.log(channelsDB[i].channelName)
         el.innerText = channelsDB[i].channelName
         /* el.addEventListener('click', () => console.log(channelsDB[i].channelId)) */
     })
@@ -1249,7 +1277,7 @@ async function addContact(event) {
     }
     try {
         const response = await fetch('http://localhost:3000/contacts', options)
-        console.log(response.text())
+        /* console.log(response.text()) */
         if(response.status === 409) {
             email.classList.add('border-wrong')
             msgEmail.classList.add('visible')
@@ -1353,7 +1381,9 @@ function validateData(contact) {
 async function contactEdition(info) {
     darkImageEditCtc.classList.remove('none')
     main.classList.add('height-add-ctc')
-    getAllChannels()
+    const sChannel = 's-channel-edit'
+    const chan = 'chan-edit'
+    getAllChannels(sChannel, chan)
     const options = {                   
         method: 'GET',  
         headers: {
@@ -1363,15 +1393,77 @@ async function contactEdition(info) {
     const response = await fetch(`http://localhost:3000/contacts/${info.contactId}`, options)
     const data = await response.json()
     console.log(data)
+    loadData(data)
+}
+
+
+function loadData(data) {
+    firstnameEdit.value = data.firstname
+    lastnameEdit.value = data.lastname
+    positionEdit.value = data.position
+    emailEdit.value = data.email
+    addressEdit.value = data.address
+    interestSelectEdit.innerHTML = `${data.interest}%<i class="fas fa-caret-down"></i>`
+    if(data.company_name === '') {
+        companyEdit.innerHTML = 'Seleccionar compañía<i class="fas fa-caret-down"></i>'
+    } else {
+        companyEdit.innerHTML = `${data.company_name}<i class="fas fa-caret-down"></i>`
+    }
+    if(data.region_name === '') {
+        regionSelectEdit.innerHTML = 'Seleccionar región<i class="fas fa-caret-down"></i>'
+    } else {
+        regionSelectEdit.innerHTML = `${data.region_name}<i class="fas fa-caret-down"></i>`
+    }
+    if(data.country_name === '') {
+        countrySelectEdit.innerHTML = 'Seleccionar país<i class="fas fa-caret-down"></i>'
+    } else {
+        countrySelectEdit.innerHTML = `${data.country_name}<i class="fas fa-caret-down"></i>`
+    }
+    if(data.city_name === '') {
+        citySelectEdit.innerHTML = 'Seleccionar país<i class="fas fa-caret-down"></i>'
+    } else {
+        citySelectEdit.innerHTML = `${data.city_name}<i class="fas fa-caret-down"></i>`
+    }
+    data.preferred_channels.forEach((chan, i) => {
+        if(chan.channel_name === tel.innerText) {
+            telephoneEdit.value = data.preferred_channels[i].user_account
+            selectTelephoneEdit.innerHTML = `${data.preferred_channels[i].preference}<i class="fas fa-caret-down"></i>`
+        }
+    })
+    data.preferred_channels.forEach((chan, i) => {
+        if(chan.channel_name === wsp.innerText) {
+            whatsappEdit.value = data.preferred_channels[i].user_account
+            selectWhatsappEdit.innerHTML = `${data.preferred_channels[i].preference}<i class="fas fa-caret-down"></i>`
+        }
+    })
+    data.preferred_channels.forEach((chan, i) => {
+        if(chan.channel_name === inst.innerText) {
+            instagramEdit.value = data.preferred_channels[i].user_account
+            selectInstagramEdit.innerHTML = `${data.preferred_channels[i].preference}<i class="fas fa-caret-down"></i>`
+        }
+    })
+    data.preferred_channels.forEach((chan, i) => {
+        if(chan.channel_name === face.innerText) {
+            facebookEdit.value = data.preferred_channels[i].user_account
+            selectFacebookEdit.innerHTML = `${data.preferred_channels[i].preference}<i class="fas fa-caret-down"></i>`
+        }
+    })
+    data.preferred_channels.forEach((chan, i) => {
+        if(chan.channel_name === link.innerText) {
+            linkedinEdit.value = data.preferred_channels[i].user_account
+            selectLinkedinEdit.innerHTML = `${data.preferred_channels[i].preference}<i class="fas fa-caret-down"></i>`
+        }
+    })
 }
 
 //close window edit contact 
 closeEditCtc.addEventListener('click', (event) => closeWindowEditContact(event))
-deleteContactEdit.addEventListener('click', (event) => closeWindowEditContact(event))
+/* deleteContactEdit.addEventListener('click', (event) => closeWindowEditContact(event)) */
 
 function closeWindowEditContact(event) {
     event.preventDefault()
     darkImageEditCtc.classList.add('none')
+    main.classList.remove('height-add-ctc')
 }
 
 /* async function editContact(info, contactList) {  

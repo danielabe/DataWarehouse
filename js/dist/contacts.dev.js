@@ -60,6 +60,31 @@ var msgAddress = document.getElementById('msgAddress');
 var darkImageEditCtc = document.getElementById('darkImageEditCtc');
 var closeEditCtc = document.getElementById('closeEditCtc');
 var deleteContactEdit = document.getElementById('deleteContactEdit');
+var firstnameEdit = document.getElementById('firstnameEdit');
+var lastnameEdit = document.getElementById('lastnameEdit');
+var positionEdit = document.getElementById('positionEdit');
+var emailEdit = document.getElementById('emailEdit');
+var addressEdit = document.getElementById('addressEdit');
+var companyEdit = document.getElementById('companyEdit');
+var regionSelectEdit = document.getElementById('regionSelectEdit');
+var countrySelectEdit = document.getElementById('countrySelectEdit');
+var citySelectEdit = document.getElementById('citySelectEdit');
+var interestSelectEdit = document.getElementById('interestSelectEdit');
+var tel = document.getElementById('tel');
+var telephoneEdit = document.getElementById('telephoneEdit');
+var selectTelephoneEdit = document.getElementById('selectTelephoneEdit');
+var wsp = document.getElementById('wsp');
+var whatsappEdit = document.getElementById('whatsappEdit');
+var selectWhatsappEdit = document.getElementById('selectWhatsappEdit');
+var inst = document.getElementById('inst');
+var instagramEdit = document.getElementById('instagramEdit');
+var selectInstagramEdit = document.getElementById('selectInstagramEdit');
+var face = document.getElementById('face');
+var facebookEdit = document.getElementById('facebookEdit');
+var selectFacebookEdit = document.getElementById('selectFacebookEdit');
+var link = document.getElementById('link');
+var linkedinEdit = document.getElementById('linkedinEdit');
+var selectLinkedinEdit = document.getElementById('selectLinkedinEdit');
 var contIdArray = [];
 var dataCheckbox = [];
 var channelsDB = [];
@@ -753,10 +778,12 @@ newCntBtn.addEventListener('click', function () {
   /* body.classList.add('modal') */
   darkImageAddCtc.classList.remove('none');
   main.classList.add('height-add-ctc');
-  getAllChannels();
+  var sChannel = 's-channel';
+  var chan = 'chan';
+  getAllChannels(sChannel, chan);
 });
 
-function getAllChannels() {
+function getAllChannels(sChannel, chan) {
   var options, response, data, chanArray, chansArray;
   return regeneratorRuntime.async(function getAllChannels$(_context6) {
     while (1) {
@@ -786,14 +813,15 @@ function getAllChannels() {
             });
           });
           console.log(channelsDB);
-          chanArray = document.querySelectorAll('.s-channel');
-          chansArray = document.querySelectorAll('.chan');
+          chanArray = document.querySelectorAll(".".concat(sChannel));
+          chansArray = document.querySelectorAll(".".concat(chan));
           chansArray.forEach(function (el, i) {
             el.addEventListener('click', function () {
               return console.log(channelsDB[i].channelId);
             });
           });
           chanArray.forEach(function (el, i) {
+            console.log(channelsDB[i].channelName);
             el.innerText = channelsDB[i].channelName;
             /* el.addEventListener('click', () => console.log(channelsDB[i].channelId)) */
           });
@@ -1539,37 +1567,37 @@ function addContact(event) {
 
         case 10:
           response = _context11.sent;
-          console.log(response.text());
 
+          /* console.log(response.text()) */
           if (response.status === 409) {
             email.classList.add('border-wrong');
             msgEmail.classList.add('visible');
             msgEmail.innerText = 'El email ya existe';
           }
 
-          _context11.next = 15;
+          _context11.next = 14;
           return regeneratorRuntime.awrap(response.json());
 
-        case 15:
+        case 14:
           data = _context11.sent;
           console.log(data);
-          _context11.next = 22;
+          _context11.next = 21;
           break;
 
-        case 19:
-          _context11.prev = 19;
+        case 18:
+          _context11.prev = 18;
           _context11.t0 = _context11["catch"](7);
           return _context11.abrupt("return", _context11.t0);
 
-        case 22:
+        case 21:
           closeWindowNewContact(event);
 
-        case 23:
+        case 22:
         case "end":
           return _context11.stop();
       }
     }
-  }, null, null, [[7, 19]]);
+  }, null, null, [[7, 18]]);
 }
 
 function validateData(contact) {
@@ -1667,36 +1695,103 @@ function validateData(contact) {
 
 
 function contactEdition(info) {
-  var options, response, data;
+  var sChannel, chan, options, response, data;
   return regeneratorRuntime.async(function contactEdition$(_context12) {
     while (1) {
       switch (_context12.prev = _context12.next) {
         case 0:
           darkImageEditCtc.classList.remove('none');
           main.classList.add('height-add-ctc');
-          getAllChannels();
+          sChannel = 's-channel-edit';
+          chan = 'chan-edit';
+          getAllChannels(sChannel, chan);
           options = {
             method: 'GET',
             headers: {
               Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
             }
           };
-          _context12.next = 6;
+          _context12.next = 8;
           return regeneratorRuntime.awrap(fetch("http://localhost:3000/contacts/".concat(info.contactId), options));
 
-        case 6:
+        case 8:
           response = _context12.sent;
-          _context12.next = 9;
+          _context12.next = 11;
           return regeneratorRuntime.awrap(response.json());
 
-        case 9:
+        case 11:
           data = _context12.sent;
           console.log(data);
+          loadData(data);
 
-        case 11:
+        case 14:
         case "end":
           return _context12.stop();
       }
+    }
+  });
+}
+
+function loadData(data) {
+  firstnameEdit.value = data.firstname;
+  lastnameEdit.value = data.lastname;
+  positionEdit.value = data.position;
+  emailEdit.value = data.email;
+  addressEdit.value = data.address;
+  interestSelectEdit.innerHTML = "".concat(data.interest, "%<i class=\"fas fa-caret-down\"></i>");
+
+  if (data.company_name === '') {
+    companyEdit.innerHTML = 'Seleccionar compañía<i class="fas fa-caret-down"></i>';
+  } else {
+    companyEdit.innerHTML = "".concat(data.company_name, "<i class=\"fas fa-caret-down\"></i>");
+  }
+
+  if (data.region_name === '') {
+    regionSelectEdit.innerHTML = 'Seleccionar región<i class="fas fa-caret-down"></i>';
+  } else {
+    regionSelectEdit.innerHTML = "".concat(data.region_name, "<i class=\"fas fa-caret-down\"></i>");
+  }
+
+  if (data.country_name === '') {
+    countrySelectEdit.innerHTML = 'Seleccionar país<i class="fas fa-caret-down"></i>';
+  } else {
+    countrySelectEdit.innerHTML = "".concat(data.country_name, "<i class=\"fas fa-caret-down\"></i>");
+  }
+
+  if (data.city_name === '') {
+    citySelectEdit.innerHTML = 'Seleccionar país<i class="fas fa-caret-down"></i>';
+  } else {
+    citySelectEdit.innerHTML = "".concat(data.city_name, "<i class=\"fas fa-caret-down\"></i>");
+  }
+
+  data.preferred_channels.forEach(function (chan, i) {
+    if (chan.channel_name === tel.innerText) {
+      telephoneEdit.value = data.preferred_channels[i].user_account;
+      selectTelephoneEdit.innerHTML = "".concat(data.preferred_channels[i].preference, "<i class=\"fas fa-caret-down\"></i>");
+    }
+  });
+  data.preferred_channels.forEach(function (chan, i) {
+    if (chan.channel_name === wsp.innerText) {
+      whatsappEdit.value = data.preferred_channels[i].user_account;
+      selectWhatsappEdit.innerHTML = "".concat(data.preferred_channels[i].preference, "<i class=\"fas fa-caret-down\"></i>");
+    }
+  });
+  data.preferred_channels.forEach(function (chan, i) {
+    if (chan.channel_name === inst.innerText) {
+      instagramEdit.value = data.preferred_channels[i].user_account;
+      selectInstagramEdit.innerHTML = "".concat(data.preferred_channels[i].preference, "<i class=\"fas fa-caret-down\"></i>");
+    }
+  });
+  data.preferred_channels.forEach(function (chan, i) {
+    if (chan.channel_name === face.innerText) {
+      facebookEdit.value = data.preferred_channels[i].user_account;
+      selectFacebookEdit.innerHTML = "".concat(data.preferred_channels[i].preference, "<i class=\"fas fa-caret-down\"></i>");
+    }
+  });
+  data.preferred_channels.forEach(function (chan, i) {
+    if (chan.channel_name === link.innerText) {
+      linkedinEdit.value = data.preferred_channels[i].user_account;
+      selectLinkedinEdit.innerHTML = "".concat(data.preferred_channels[i].preference, "<i class=\"fas fa-caret-down\"></i>");
     }
   });
 } //close window edit contact 
@@ -1705,13 +1800,12 @@ function contactEdition(info) {
 closeEditCtc.addEventListener('click', function (event) {
   return closeWindowEditContact(event);
 });
-deleteContactEdit.addEventListener('click', function (event) {
-  return closeWindowEditContact(event);
-});
+/* deleteContactEdit.addEventListener('click', (event) => closeWindowEditContact(event)) */
 
 function closeWindowEditContact(event) {
   event.preventDefault();
   darkImageEditCtc.classList.add('none');
+  main.classList.remove('height-add-ctc');
 }
 /* async function editContact(info, contactList) {  
     const options = {                   
