@@ -43,6 +43,9 @@ var _require = require('./queries.js'),
     deleteCompany = _require.deleteCompany,
     getContacts = _require.getContacts,
     createContact = _require.createContact,
+    addChannelsContacts = _require.addChannelsContacts,
+    getContactInserted = _require.getContactInserted,
+    getChannelsInserted = _require.getChannelsInserted,
     getContact = _require.getContact,
     modifycontact = _require.modifycontact,
     deleteContact = _require.deleteContact,
@@ -623,7 +626,7 @@ app.get('/contacts', function _callee31(req, res) {
   });
 });
 app.post('/contacts', validateFirstname, validateLastname, validatePosition, validateEmailContacts, validateCompanyId, validateCityId, validateAddress, validateInterest, validateChannelId, validateUserAccount, validatePreference, function _callee32(req, res) {
-  var newContact;
+  var newContact, contactId, insertChannels, insertedContact, insertedChannels, contactAndChannels;
   return regeneratorRuntime.async(function _callee32$(_context32) {
     while (1) {
       switch (_context32.prev = _context32.next) {
@@ -639,9 +642,32 @@ app.post('/contacts', validateFirstname, validateLastname, validatePosition, val
             interest: req.body.interest,
             preferred_channels: req.body.preferred_channels
           };
-          createContact(newContact, req, res);
+          _context32.next = 3;
+          return regeneratorRuntime.awrap(createContact(newContact, req, res));
 
-        case 2:
+        case 3:
+          contactId = _context32.sent;
+          _context32.next = 6;
+          return regeneratorRuntime.awrap(addChannelsContacts(newContact, contactId, req, res));
+
+        case 6:
+          insertChannels = _context32.sent;
+          _context32.next = 9;
+          return regeneratorRuntime.awrap(getContactInserted(contactId, req, res));
+
+        case 9:
+          insertedContact = _context32.sent;
+          _context32.next = 12;
+          return regeneratorRuntime.awrap(getChannelsInserted(contactId, req, res));
+
+        case 12:
+          insertedChannels = _context32.sent;
+          contactAndChannels = Object.assign({}, insertedContact[0], {
+            preferred_channels: insertedChannels
+          });
+          res.status(201).json(contactAndChannels);
+
+        case 15:
         case "end":
           return _context32.stop();
       }

@@ -9,7 +9,7 @@ const { selectUserLogin, getUsers, createUser, getUser, modifyUser, deleteUser, 
     getCitiesRegion, getRegionsCountriesCities, getCountries, createCountry, getCountry, modifyCountry,
     deleteCountry, getCitiesCountry, getCities, createCity, getCity, modifyCity,
     deleteCity, getCompanies, createCompany, getCompany, modifyCompany, deleteCompany,
-    getContacts, createContact, getContact, modifycontact, deleteContact, addChannel,
+    getContacts, createContact, addChannelsContacts, getContactInserted, getChannelsInserted, getContact, modifycontact, deleteContact, addChannel,
     deleteChannelContact, getResults, getChannels, createChannel, getChannel, modifyChannel,
     deleteChannel } = require('./queries.js')
 
@@ -230,7 +230,13 @@ validateUserAccount, validatePreference, async (req, res) => {
         interest: req.body.interest,
         preferred_channels: req.body.preferred_channels
     }
-    createContact(newContact, req, res)
+    const contactId = await createContact(newContact, req, res)
+    const insertChannels = await addChannelsContacts(newContact, contactId, req, res)
+    const insertedContact = await getContactInserted(contactId, req, res)
+    const insertedChannels = await getChannelsInserted(contactId, req, res)
+    
+    const contactAndChannels = Object.assign( {} , insertedContact[0], { preferred_channels: insertedChannels})
+    res.status(201).json(contactAndChannels)
 })
 
 app.get('/contacts/:contactId', validateContactId, async (req, res) => {    

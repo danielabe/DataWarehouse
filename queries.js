@@ -675,16 +675,20 @@ async function createContact(newContact, req, res) { //arreglar la asincronia, a
         replacements: newContact,
         type: QueryTypes.INSERT
     })
-    
-    if(newContact.preferred_channels.length !== 0) {
-        req.body.preferred_channels.forEach(async channel => await db.query(`
-        INSERT INTO contacts_channels (contact_id, channel_id, user_account, preference)
-        VALUES (${contactInserted[0]}, ${channel.channel_id}, '${channel.user_account}', '${channel.preference}')
-        `, {
-            replacements: req.body.preferred_channels,
-            type: QueryTypes.INSERT
-        }))
-    }
+    return contactInserted[0]
+}
+
+async function addChannelsContacts(newContact, contactId, req, res) {
+    req.body.preferred_channels.forEach(async channel => await db.query(`
+    INSERT INTO contacts_channels (contact_id, channel_id, user_account, preference)
+    VALUES (${contactId}, ${channel.channel_id}, '${channel.user_account}', '${channel.preference}')
+    `, {
+        replacements: req.body.preferred_channels,
+        type: QueryTypes.INSERT
+    }))
+}
+
+async function getContactInserted(contactId, req, res) {
     const contact = await db.query(`
     SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,
     co.country_name, co.region_id, re.region_name, cont.address, cont.company_id, comp.company_name,
@@ -696,23 +700,21 @@ async function createContact(newContact, req, res) { //arreglar la asincronia, a
     JOIN companies comp ON comp.company_id = cont.company_id
     WHERE contact_id = ?
     `, {
-        replacements: [contactInserted[0]],
+        replacements: [contactId],
         type: QueryTypes.SELECT 
     })
+    return contact
+}
+
+async function getChannelsInserted(contactId, req, res) {
     const channels = await db.query(`
     SELECT * FROM contacts_channels cc 
     INNER JOIN channels ch ON cc.channel_id = ch.channel_id
     WHERE contact_id = ?`, { 
-        replacements: [contactInserted[0]],
+        replacements: [contactId],
         type: QueryTypes.SELECT 
     })
-    if(newContact.preferred_channels.length === 0) {
-        const contactAndChannels = Object.assign( {} , contact[0], { preferred_channels: []})
-        res.status(201).json(Object.assign( contactAndChannels ))
-    } else {
-        const contactAndChannels = Object.assign( {} , contact[0], { preferred_channels: channels})
-        res.status(201).json(Object.assign( contactAndChannels ))
-    }
+    return channels
 }
 
 async function validateContactIdQuery(req, res, next) {
@@ -1062,7 +1064,7 @@ module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser,
     modifyCity, deleteCity, getCompanies, validateCompanyNameQuery, createCompany,
     validateCompanyIdQuery, getCompany, validateCompanyNamePutQuery, modifyCompany, 
     validateCityIdPutQuery, deleteCompany, getContacts, validateEmailContactsQuery, 
-    validateChannelIdQuery, createContact, validateContactIdQuery, getContact, 
+    validateChannelIdQuery, createContact, addChannelsContacts, getContactInserted, getChannelsInserted, validateContactIdQuery, getContact, 
     validateEmailContactsPutQuery, validateCompanyIdPutQuery, validateChannelIdPutQuery, 
     modifycontact, deleteContact, validateChannelIdAddQuery, addChannel, deleteChannelContact, 
     validateChannelIdDelQuery, getResults, getChannels, validateChannelNameQuery, createChannel, 

@@ -1516,49 +1516,31 @@ function addContact(event) {
 
         case 10:
           response = _context11.sent;
-          console.log(response.text());
-          /* if(response.status === 400) {
-              msgContainer.innerHTML = ''
-              const msgError = document.createElement('p')
-              msgContainer.appendChild(msgError)
-              if(newRegion.value.length < 2 || newRegion.value.length > 64) {
-                  msgError.innerText = 'Nombre incorrecto'
-              } else {
-                  msgError.innerText = 'La región ya existe'
-              }
-          } */
-
-          /* if(response.status === 201) {
-              body.classList.remove('modal')
-              darkImageAddCtc.classList.add('none')
-              getContacts()
-          } */
-
-          _context11.next = 14;
+          _context11.next = 13;
           return regeneratorRuntime.awrap(response.json());
 
-        case 14:
+        case 13:
           data = _context11.sent;
 
           /* console.log(data.value) */
           console.log(data);
-          _context11.next = 21;
+          _context11.next = 20;
           break;
 
-        case 18:
-          _context11.prev = 18;
+        case 17:
+          _context11.prev = 17;
           _context11.t0 = _context11["catch"](7);
           return _context11.abrupt("return", _context11.t0);
 
-        case 21:
+        case 20:
           closeWindowNewContact(event);
 
-        case 22:
+        case 21:
         case "end":
           return _context11.stop();
       }
     }
-  }, null, null, [[7, 18]]);
+  }, null, null, [[7, 17]]);
 }
 
 function validateData(contact) {
@@ -1597,8 +1579,6 @@ function validateData(contact) {
   if (contact.address === '') {
     address.classList.add('border-wrong');
   }
-
-  console.log(contact.city_id);
 } //ui kit
 //inicio
 //nuevo contacto

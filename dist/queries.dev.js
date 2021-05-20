@@ -1652,104 +1652,57 @@ function different(value, index, list) {
 }
 
 function createContact(newContact, req, res) {
-  var contactInserted, contact, channels, contactAndChannels, _contactAndChannels;
-
-  return regeneratorRuntime.async(function createContact$(_context53) {
+  var contactInserted;
+  return regeneratorRuntime.async(function createContact$(_context52) {
     while (1) {
-      switch (_context53.prev = _context53.next) {
+      switch (_context52.prev = _context52.next) {
         case 0:
-          _context53.next = 2;
+          _context52.next = 2;
           return regeneratorRuntime.awrap(db.query("\n    INSERT INTO contacts (firstname, lastname, email, city_id, address, company_id, position, interest)\n    VALUES (:firstname, :lastname, :email, :city_id, :address, :company_id, :position, :interest)\n    ", {
             replacements: newContact,
             type: QueryTypes.INSERT
           }));
 
         case 2:
-          contactInserted = _context53.sent;
+          contactInserted = _context52.sent;
+          return _context52.abrupt("return", contactInserted[0]);
 
-          if (newContact.preferred_channels.length !== 0) {
-            req.body.preferred_channels.forEach(function _callee(channel) {
-              return regeneratorRuntime.async(function _callee$(_context52) {
-                while (1) {
-                  switch (_context52.prev = _context52.next) {
-                    case 0:
-                      _context52.next = 2;
-                      return regeneratorRuntime.awrap(db.query("\n        INSERT INTO contacts_channels (contact_id, channel_id, user_account, preference)\n        VALUES (".concat(contactInserted[0], ", ").concat(channel.channel_id, ", '").concat(channel.user_account, "', '").concat(channel.preference, "')\n        "), {
-                        replacements: req.body.preferred_channels,
-                        type: QueryTypes.INSERT
-                      }));
-
-                    case 2:
-                      return _context52.abrupt("return", _context52.sent);
-
-                    case 3:
-                    case "end":
-                      return _context52.stop();
-                  }
-                }
-              });
-            });
-          }
-
-          _context53.next = 6;
-          return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.address, cont.company_id, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    WHERE contact_id = ?\n    ", {
-            replacements: [contactInserted[0]],
-            type: QueryTypes.SELECT
-          }));
-
-        case 6:
-          contact = _context53.sent;
-          _context53.next = 9;
-          return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM contacts_channels cc \n    INNER JOIN channels ch ON cc.channel_id = ch.channel_id\n    WHERE contact_id = ?", {
-            replacements: [contactInserted[0]],
-            type: QueryTypes.SELECT
-          }));
-
-        case 9:
-          channels = _context53.sent;
-
-          if (newContact.preferred_channels.length === 0) {
-            contactAndChannels = Object.assign({}, contact[0], {
-              preferred_channels: []
-            });
-            res.status(201).json(Object.assign(contactAndChannels));
-          } else {
-            _contactAndChannels = Object.assign({}, contact[0], {
-              preferred_channels: channels
-            });
-            res.status(201).json(Object.assign(_contactAndChannels));
-          }
-
-        case 11:
+        case 4:
         case "end":
-          return _context53.stop();
+          return _context52.stop();
       }
     }
   });
 }
 
-function validateContactIdQuery(req, res, next) {
-  var contactId, contacts, contactsArray;
-  return regeneratorRuntime.async(function validateContactIdQuery$(_context54) {
+function addChannelsContacts(newContact, contactId, req, res) {
+  return regeneratorRuntime.async(function addChannelsContacts$(_context54) {
     while (1) {
       switch (_context54.prev = _context54.next) {
         case 0:
-          contactId = +req.params.contactId;
-          /* || req.body.contact_id */
+          req.body.preferred_channels.forEach(function _callee(channel) {
+            return regeneratorRuntime.async(function _callee$(_context53) {
+              while (1) {
+                switch (_context53.prev = _context53.next) {
+                  case 0:
+                    _context53.next = 2;
+                    return regeneratorRuntime.awrap(db.query("\n    INSERT INTO contacts_channels (contact_id, channel_id, user_account, preference)\n    VALUES (".concat(contactId, ", ").concat(channel.channel_id, ", '").concat(channel.user_account, "', '").concat(channel.preference, "')\n    "), {
+                      replacements: req.body.preferred_channels,
+                      type: QueryTypes.INSERT
+                    }));
 
-          _context54.next = 3;
-          return regeneratorRuntime.awrap(db.query("SELECT contact_id FROM contacts", {
-            type: QueryTypes.SELECT
-          }));
+                  case 2:
+                    return _context53.abrupt("return", _context53.sent);
 
-        case 3:
-          contacts = _context54.sent;
-          contactsArray = contacts.map(function (id) {
-            return id.contact_id;
+                  case 3:
+                  case "end":
+                    return _context53.stop();
+                }
+              }
+            });
           });
-          if (contactsArray.includes(contactId)) next();else res.status(404).send("The contact does not exist").end();
 
-        case 6:
+        case 1:
         case "end":
           return _context54.stop();
       }
@@ -1757,9 +1710,9 @@ function validateContactIdQuery(req, res, next) {
   });
 }
 
-function getContact(contactId, req, res) {
-  var contact, channels, contactAndChannels;
-  return regeneratorRuntime.async(function getContact$(_context55) {
+function getContactInserted(contactId, req, res) {
+  var contact;
+  return regeneratorRuntime.async(function getContactInserted$(_context55) {
     while (1) {
       switch (_context55.prev = _context55.next) {
         case 0:
@@ -1771,20 +1724,9 @@ function getContact(contactId, req, res) {
 
         case 2:
           contact = _context55.sent;
-          _context55.next = 5;
-          return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM contacts_channels cc \n    INNER JOIN channels ch ON cc.channel_id = ch.channel_id\n    WHERE contact_id = ?", {
-            replacements: [contactId],
-            type: QueryTypes.SELECT
-          }));
+          return _context55.abrupt("return", contact);
 
-        case 5:
-          channels = _context55.sent;
-          contactAndChannels = Object.assign({}, contact[0], {
-            preferred_channels: channels
-          });
-          res.status(201).json(Object.assign(contactAndChannels));
-
-        case 8:
+        case 4:
         case "end":
           return _context55.stop();
       }
@@ -1792,25 +1734,113 @@ function getContact(contactId, req, res) {
   });
 }
 
-function validateEmailContactsPutQuery(req, res, next) {
-  var email, emails, emailsArray;
-  return regeneratorRuntime.async(function validateEmailContactsPutQuery$(_context56) {
+function getChannelsInserted(contactId, req, res) {
+  var channels;
+  return regeneratorRuntime.async(function getChannelsInserted$(_context56) {
     while (1) {
       switch (_context56.prev = _context56.next) {
         case 0:
+          _context56.next = 2;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM contacts_channels cc \n    INNER JOIN channels ch ON cc.channel_id = ch.channel_id\n    WHERE contact_id = ?", {
+            replacements: [contactId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          channels = _context56.sent;
+          return _context56.abrupt("return", channels);
+
+        case 4:
+        case "end":
+          return _context56.stop();
+      }
+    }
+  });
+}
+
+function validateContactIdQuery(req, res, next) {
+  var contactId, contacts, contactsArray;
+  return regeneratorRuntime.async(function validateContactIdQuery$(_context57) {
+    while (1) {
+      switch (_context57.prev = _context57.next) {
+        case 0:
+          contactId = +req.params.contactId;
+          /* || req.body.contact_id */
+
+          _context57.next = 3;
+          return regeneratorRuntime.awrap(db.query("SELECT contact_id FROM contacts", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 3:
+          contacts = _context57.sent;
+          contactsArray = contacts.map(function (id) {
+            return id.contact_id;
+          });
+          if (contactsArray.includes(contactId)) next();else res.status(404).send("The contact does not exist").end();
+
+        case 6:
+        case "end":
+          return _context57.stop();
+      }
+    }
+  });
+}
+
+function getContact(contactId, req, res) {
+  var contact, channels, contactAndChannels;
+  return regeneratorRuntime.async(function getContact$(_context58) {
+    while (1) {
+      switch (_context58.prev = _context58.next) {
+        case 0:
+          _context58.next = 2;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.address, cont.company_id, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    WHERE contact_id = ?\n    ", {
+            replacements: [contactId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 2:
+          contact = _context58.sent;
+          _context58.next = 5;
+          return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM contacts_channels cc \n    INNER JOIN channels ch ON cc.channel_id = ch.channel_id\n    WHERE contact_id = ?", {
+            replacements: [contactId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 5:
+          channels = _context58.sent;
+          contactAndChannels = Object.assign({}, contact[0], {
+            preferred_channels: channels
+          });
+          res.status(201).json(Object.assign(contactAndChannels));
+
+        case 8:
+        case "end":
+          return _context58.stop();
+      }
+    }
+  });
+}
+
+function validateEmailContactsPutQuery(req, res, next) {
+  var email, emails, emailsArray;
+  return regeneratorRuntime.async(function validateEmailContactsPutQuery$(_context59) {
+    while (1) {
+      switch (_context59.prev = _context59.next) {
+        case 0:
           if (!req.body.email) {
-            _context56.next = 9;
+            _context59.next = 9;
             break;
           }
 
           email = req.body.email;
-          _context56.next = 4;
+          _context59.next = 4;
           return regeneratorRuntime.awrap(db.query("SELECT email FROM contacts", {
             type: QueryTypes.SELECT
           }));
 
         case 4:
-          emails = _context56.sent;
+          emails = _context59.sent;
           emailsArray = emails.map(function (contact) {
             return contact.email;
           });
@@ -1821,7 +1851,7 @@ function validateEmailContactsPutQuery(req, res, next) {
             })) next();else res.status(400).send("The email already exists").end();
           } else res.status(400).send("The email is wrong").end();
 
-          _context56.next = 10;
+          _context59.next = 10;
           break;
 
         case 9:
@@ -1829,7 +1859,7 @@ function validateEmailContactsPutQuery(req, res, next) {
 
         case 10:
         case "end":
-          return _context56.stop();
+          return _context59.stop();
       }
     }
   });
@@ -1837,28 +1867,28 @@ function validateEmailContactsPutQuery(req, res, next) {
 
 function validateCompanyIdPutQuery(req, res, next) {
   var companyId, companies, companiesArray;
-  return regeneratorRuntime.async(function validateCompanyIdPutQuery$(_context57) {
+  return regeneratorRuntime.async(function validateCompanyIdPutQuery$(_context60) {
     while (1) {
-      switch (_context57.prev = _context57.next) {
+      switch (_context60.prev = _context60.next) {
         case 0:
           if (!req.body.company_id) {
-            _context57.next = 9;
+            _context60.next = 9;
             break;
           }
 
           companyId = req.body.company_id;
-          _context57.next = 4;
+          _context60.next = 4;
           return regeneratorRuntime.awrap(db.query("SELECT company_id FROM companies", {
             type: QueryTypes.SELECT
           }));
 
         case 4:
-          companies = _context57.sent;
+          companies = _context60.sent;
           companiesArray = companies.map(function (id) {
             return id.company_id;
           });
           if (companiesArray.includes(companyId)) next();else res.status(404).send("The company does not exist").end();
-          _context57.next = 10;
+          _context60.next = 10;
           break;
 
         case 9:
@@ -1866,7 +1896,7 @@ function validateCompanyIdPutQuery(req, res, next) {
 
         case 10:
         case "end":
-          return _context57.stop();
+          return _context60.stop();
       }
     }
   });
@@ -1874,12 +1904,12 @@ function validateCompanyIdPutQuery(req, res, next) {
 
 function validateChannelIdPutQuery(req, res, next) {
   var channelsBody, idsBody, channelsIdDB, channelsArray;
-  return regeneratorRuntime.async(function validateChannelIdPutQuery$(_context58) {
+  return regeneratorRuntime.async(function validateChannelIdPutQuery$(_context61) {
     while (1) {
-      switch (_context58.prev = _context58.next) {
+      switch (_context61.prev = _context61.next) {
         case 0:
           if (!req.body.preferred_channels) {
-            _context58.next = 10;
+            _context61.next = 10;
             break;
           }
 
@@ -1887,13 +1917,13 @@ function validateChannelIdPutQuery(req, res, next) {
           idsBody = channelsBody.map(function (channel) {
             return channel.channel_id;
           });
-          _context58.next = 5;
+          _context61.next = 5;
           return regeneratorRuntime.awrap(db.query("SELECT channel_id FROM channels", {
             type: QueryTypes.SELECT
           }));
 
         case 5:
-          channelsIdDB = _context58.sent;
+          channelsIdDB = _context61.sent;
           channelsArray = channelsIdDB.map(function (id) {
             return id.channel_id;
           });
@@ -1904,7 +1934,7 @@ function validateChannelIdPutQuery(req, res, next) {
             if (idsBody.every(different)) next();else res.status(400).send("The channelId is wrong").end();
           } else res.status(400).send("The channelId is wrong").end();
 
-          _context58.next = 11;
+          _context61.next = 11;
           break;
 
         case 10:
@@ -1912,7 +1942,7 @@ function validateChannelIdPutQuery(req, res, next) {
 
         case 11:
         case "end":
-          return _context58.stop();
+          return _context61.stop();
       }
     }
   });
@@ -1920,18 +1950,18 @@ function validateChannelIdPutQuery(req, res, next) {
 
 function modifycontact(req, res) {
   var contact, modifiedContact, modified, contactRes, channels, contactAndChannels;
-  return regeneratorRuntime.async(function modifycontact$(_context59) {
+  return regeneratorRuntime.async(function modifycontact$(_context62) {
     while (1) {
-      switch (_context59.prev = _context59.next) {
+      switch (_context62.prev = _context62.next) {
         case 0:
-          _context59.next = 2;
+          _context62.next = 2;
           return regeneratorRuntime.awrap(db.query("SELECT * FROM contacts WHERE contact_id = ?", {
             replacements: [req.params.contactId],
             type: QueryTypes.SELECT
           }));
 
         case 2:
-          contact = _context59.sent;
+          contact = _context62.sent;
           modifiedContact = {
             contact_id: req.params.contactId,
             firstname: req.body.firstname || contact[0].firstname,
@@ -1947,30 +1977,30 @@ function modifycontact(req, res) {
             /* || chan[0].preferred_channels */
 
           };
-          _context59.next = 6;
+          _context62.next = 6;
           return regeneratorRuntime.awrap(db.query("\n    UPDATE contacts SET firstname = :firstname, lastname = :lastname, email = :email, city_id = :city_id, \n    address = :address, company_id = :company_id, position = :position, interest = :interest\n    WHERE contact_id = :contact_id\n    ", {
             replacements: modifiedContact,
             type: QueryTypes.UPDATE
           }));
 
         case 6:
-          modified = _context59.sent;
-          _context59.next = 9;
+          modified = _context62.sent;
+          _context62.next = 9;
           return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.company_id, cont.address, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    WHERE contact_id = ?\n    ", {
             replacements: [req.params.contactId],
             type: QueryTypes.SELECT
           }));
 
         case 9:
-          contactRes = _context59.sent;
-          _context59.next = 12;
+          contactRes = _context62.sent;
+          _context62.next = 12;
           return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM contacts_channels cc \n    INNER JOIN channels ch ON cc.channel_id = ch.channel_id\n    WHERE contact_id = ?", {
             replacements: [req.params.contactId],
             type: QueryTypes.SELECT
           }));
 
         case 12:
-          channels = _context59.sent;
+          channels = _context62.sent;
           contactAndChannels = Object.assign({}, contactRes[0], {
             preferred_channels: channels
           });
@@ -1978,7 +2008,7 @@ function modifycontact(req, res) {
 
         case 15:
         case "end":
-          return _context59.stop();
+          return _context62.stop();
       }
     }
   });
@@ -1986,31 +2016,31 @@ function modifycontact(req, res) {
 
 function deleteContact(contactId, req, res) {
   var contact, deleted;
-  return regeneratorRuntime.async(function deleteContact$(_context60) {
+  return regeneratorRuntime.async(function deleteContact$(_context63) {
     while (1) {
-      switch (_context60.prev = _context60.next) {
+      switch (_context63.prev = _context63.next) {
         case 0:
-          _context60.next = 2;
+          _context63.next = 2;
           return regeneratorRuntime.awrap(db.query("SELECT * FROM contacts WHERE contact_id = ?", {
             replacements: [contactId],
             type: QueryTypes.SELECT
           }));
 
         case 2:
-          contact = _context60.sent;
-          _context60.next = 5;
+          contact = _context63.sent;
+          _context63.next = 5;
           return regeneratorRuntime.awrap(db.query("DELETE FROM contacts WHERE contact_id = ?", {
             replacements: [contactId],
             type: QueryTypes.DELETE
           }));
 
         case 5:
-          deleted = _context60.sent;
+          deleted = _context63.sent;
           res.status(200).json(contact);
 
         case 7:
         case "end":
-          return _context60.stop();
+          return _context63.stop();
       }
     }
   });
@@ -2018,29 +2048,29 @@ function deleteContact(contactId, req, res) {
 
 function validateChannelIdAddQuery(req, res, next) {
   var channelId, channels, channelsArray, channelsContact, channelsContactArray;
-  return regeneratorRuntime.async(function validateChannelIdAddQuery$(_context61) {
+  return regeneratorRuntime.async(function validateChannelIdAddQuery$(_context64) {
     while (1) {
-      switch (_context61.prev = _context61.next) {
+      switch (_context64.prev = _context64.next) {
         case 0:
           channelId = req.body.channel_id;
-          _context61.next = 3;
+          _context64.next = 3;
           return regeneratorRuntime.awrap(db.query("SELECT channel_id FROM channels", {
             type: QueryTypes.SELECT
           }));
 
         case 3:
-          channels = _context61.sent;
+          channels = _context64.sent;
           channelsArray = channels.map(function (id) {
             return id.channel_id;
           });
-          _context61.next = 7;
+          _context64.next = 7;
           return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM contacts_channels cc \n    INNER JOIN channels ch ON cc.channel_id = ch.channel_id\n    WHERE contact_id = ?", {
             replacements: [req.params.contactId],
             type: QueryTypes.SELECT
           }));
 
         case 7:
-          channelsContact = _context61.sent;
+          channelsContact = _context64.sent;
           channelsContactArray = channelsContact.map(function (cc) {
             return cc.channel_id;
           });
@@ -2054,7 +2084,7 @@ function validateChannelIdAddQuery(req, res, next) {
 
         case 11:
         case "end":
-          return _context61.stop();
+          return _context64.stop();
       }
     }
   });
@@ -2062,19 +2092,19 @@ function validateChannelIdAddQuery(req, res, next) {
 
 function validateChannelIdDelQuery(req, res, next) {
   var channelId, channelsContact, channelsContactArray;
-  return regeneratorRuntime.async(function validateChannelIdDelQuery$(_context62) {
+  return regeneratorRuntime.async(function validateChannelIdDelQuery$(_context65) {
     while (1) {
-      switch (_context62.prev = _context62.next) {
+      switch (_context65.prev = _context65.next) {
         case 0:
           channelId = +req.params.channelId;
-          _context62.next = 3;
+          _context65.next = 3;
           return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM contacts_channels cc \n    INNER JOIN channels ch ON cc.channel_id = ch.channel_id\n    WHERE contact_id = ?", {
             replacements: [+req.params.contactId],
             type: QueryTypes.SELECT
           }));
 
         case 3:
-          channelsContact = _context62.sent;
+          channelsContact = _context65.sent;
           channelsContactArray = channelsContact.map(function (cc) {
             return cc.channel_id;
           });
@@ -2083,7 +2113,7 @@ function validateChannelIdDelQuery(req, res, next) {
 
         case 7:
         case "end":
-          return _context62.stop();
+          return _context65.stop();
       }
     }
   });
@@ -2091,31 +2121,31 @@ function validateChannelIdDelQuery(req, res, next) {
 
 function addChannel(newContChan, req, res) {
   var inserted, channels;
-  return regeneratorRuntime.async(function addChannel$(_context63) {
+  return regeneratorRuntime.async(function addChannel$(_context66) {
     while (1) {
-      switch (_context63.prev = _context63.next) {
+      switch (_context66.prev = _context66.next) {
         case 0:
-          _context63.next = 2;
+          _context66.next = 2;
           return regeneratorRuntime.awrap(db.query("\n    INSERT INTO contacts_channels (contact_id, channel_id, user_account, preference)\n    VALUES (:contact_id, :channel_id, :user_account, :preference)\n    ", {
             replacements: newContChan,
             type: QueryTypes.INSERT
           }));
 
         case 2:
-          inserted = _context63.sent;
-          _context63.next = 5;
+          inserted = _context66.sent;
+          _context66.next = 5;
           return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, cc.channel_id, channel_name, user_account, preference\n    FROM contacts_channels cc \n    JOIN channels ch ON cc.channel_id = ch.channel_id \n    WHERE contact_id = :contact_id\n    ", {
             replacements: newContChan,
             type: QueryTypes.SELECT
           }));
 
         case 5:
-          channels = _context63.sent;
+          channels = _context66.sent;
           res.status(201).json(channels);
 
         case 7:
         case "end":
-          return _context63.stop();
+          return _context66.stop();
       }
     }
   });
@@ -2123,23 +2153,23 @@ function addChannel(newContChan, req, res) {
 
 function deleteChannelContact(newContChan, req, res) {
   var deleted;
-  return regeneratorRuntime.async(function deleteChannelContact$(_context64) {
+  return regeneratorRuntime.async(function deleteChannelContact$(_context67) {
     while (1) {
-      switch (_context64.prev = _context64.next) {
+      switch (_context67.prev = _context67.next) {
         case 0:
-          _context64.next = 2;
+          _context67.next = 2;
           return regeneratorRuntime.awrap(db.query("DELETE FROM contacts_channels \n    WHERE contact_id = :contact_id AND channel_id = :channel_id", {
             replacements: newContChan,
             type: QueryTypes.DELETE
           }));
 
         case 2:
-          deleted = _context64.sent;
+          deleted = _context67.sent;
           res.status(200).send("Channel successfully removed").end();
 
         case 4:
         case "end":
-          return _context64.stop();
+          return _context67.stop();
       }
     }
   });
@@ -2147,27 +2177,27 @@ function deleteChannelContact(newContChan, req, res) {
 
 function getResults(req, res) {
   var searchValue, contacts, channels, contactsAndChannels;
-  return regeneratorRuntime.async(function getResults$(_context65) {
+  return regeneratorRuntime.async(function getResults$(_context68) {
     while (1) {
-      switch (_context65.prev = _context65.next) {
+      switch (_context68.prev = _context68.next) {
         case 0:
           searchValue = req.body.search_value;
-          _context65.next = 3;
+          _context68.next = 3;
           return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.address, cont.company_id, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    WHERE firstname LIKE '%".concat(searchValue, "%' OR lastname LIKE '%").concat(searchValue, "%' OR email LIKE '%").concat(searchValue, "%'\n    OR ci.city_name LIKE '").concat(searchValue, "%' OR co.country_name LIKE '").concat(searchValue, "%' OR re.region_name LIKE '").concat(searchValue, "%'\n    OR cont.address LIKE '").concat(searchValue, "%' OR comp.company_name LIKE '").concat(searchValue, "%' OR position LIKE '%").concat(searchValue, "%'\n    OR interest LIKE '").concat(searchValue, "%'\n    "), {
             replacements: [searchValue],
             type: QueryTypes.SELECT
           }));
 
         case 3:
-          contacts = _context65.sent;
+          contacts = _context68.sent;
           console.table(contacts);
-          _context65.next = 7;
+          _context68.next = 7;
           return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM contacts_channels cc \n    INNER JOIN channels ch ON cc.channel_id = ch.channel_id", {
             type: QueryTypes.SELECT
           }));
 
         case 7:
-          channels = _context65.sent;
+          channels = _context68.sent;
           contactsAndChannels = contacts.map(function (contact) {
             return Object.assign({}, contact, {
               preferred_channels: channels.filter(function (channel) {
@@ -2179,7 +2209,7 @@ function getResults(req, res) {
 
         case 10:
         case "end":
-          return _context65.stop();
+          return _context68.stop();
       }
     }
   });
@@ -2188,22 +2218,22 @@ function getResults(req, res) {
 
 function getChannels(req, res) {
   var channels;
-  return regeneratorRuntime.async(function getChannels$(_context66) {
+  return regeneratorRuntime.async(function getChannels$(_context69) {
     while (1) {
-      switch (_context66.prev = _context66.next) {
+      switch (_context69.prev = _context69.next) {
         case 0:
-          _context66.next = 2;
+          _context69.next = 2;
           return regeneratorRuntime.awrap(db.query("SELECT * FROM channels", {
             type: QueryTypes.SELECT
           }));
 
         case 2:
-          channels = _context66.sent;
+          channels = _context69.sent;
           res.status(200).json(channels);
 
         case 4:
         case "end":
-          return _context66.stop();
+          return _context69.stop();
       }
     }
   });
@@ -2211,18 +2241,18 @@ function getChannels(req, res) {
 
 function validateChannelNameQuery(req, res, next) {
   var channel, channels, channelsArray;
-  return regeneratorRuntime.async(function validateChannelNameQuery$(_context67) {
+  return regeneratorRuntime.async(function validateChannelNameQuery$(_context70) {
     while (1) {
-      switch (_context67.prev = _context67.next) {
+      switch (_context70.prev = _context70.next) {
         case 0:
           channel = req.body.channel_name;
-          _context67.next = 3;
+          _context70.next = 3;
           return regeneratorRuntime.awrap(db.query("SELECT channel_name FROM channels", {
             type: QueryTypes.SELECT
           }));
 
         case 3:
-          channels = _context67.sent;
+          channels = _context70.sent;
           channelsArray = channels.map(function (channel) {
             return channel.channel_name;
           });
@@ -2235,7 +2265,7 @@ function validateChannelNameQuery(req, res, next) {
 
         case 6:
         case "end":
-          return _context67.stop();
+          return _context70.stop();
       }
     }
   });
@@ -2243,11 +2273,11 @@ function validateChannelNameQuery(req, res, next) {
 
 function createChannel(channel_name, req, res) {
   var inserted;
-  return regeneratorRuntime.async(function createChannel$(_context68) {
+  return regeneratorRuntime.async(function createChannel$(_context71) {
     while (1) {
-      switch (_context68.prev = _context68.next) {
+      switch (_context71.prev = _context71.next) {
         case 0:
-          _context68.next = 2;
+          _context71.next = 2;
           return regeneratorRuntime.awrap(db.query("\n    INSERT INTO channels (channel_name)\n    VALUES (:channel_name)\n    ", {
             replacements: {
               channel_name: channel_name
@@ -2256,7 +2286,7 @@ function createChannel(channel_name, req, res) {
           }));
 
         case 2:
-          inserted = _context68.sent;
+          inserted = _context71.sent;
           res.status(201).json(Object.assign({}, {
             channel_id: inserted[0]
           }, {
@@ -2265,7 +2295,7 @@ function createChannel(channel_name, req, res) {
 
         case 4:
         case "end":
-          return _context68.stop();
+          return _context71.stop();
       }
     }
   });
@@ -2273,18 +2303,18 @@ function createChannel(channel_name, req, res) {
 
 function validateChannelIdExQuery(req, res, next) {
   var channelId, channels, channelsArray;
-  return regeneratorRuntime.async(function validateChannelIdExQuery$(_context69) {
+  return regeneratorRuntime.async(function validateChannelIdExQuery$(_context72) {
     while (1) {
-      switch (_context69.prev = _context69.next) {
+      switch (_context72.prev = _context72.next) {
         case 0:
           channelId = +req.params.channelId;
-          _context69.next = 3;
+          _context72.next = 3;
           return regeneratorRuntime.awrap(db.query("SELECT channel_id FROM channels", {
             type: QueryTypes.SELECT
           }));
 
         case 3:
-          channels = _context69.sent;
+          channels = _context72.sent;
           channelsArray = channels.map(function (id) {
             return id.channel_id;
           });
@@ -2292,7 +2322,7 @@ function validateChannelIdExQuery(req, res, next) {
 
         case 6:
         case "end":
-          return _context69.stop();
+          return _context72.stop();
       }
     }
   });
@@ -2300,23 +2330,23 @@ function validateChannelIdExQuery(req, res, next) {
 
 function getChannel(channelId, req, res) {
   var channel;
-  return regeneratorRuntime.async(function getChannel$(_context70) {
+  return regeneratorRuntime.async(function getChannel$(_context73) {
     while (1) {
-      switch (_context70.prev = _context70.next) {
+      switch (_context73.prev = _context73.next) {
         case 0:
-          _context70.next = 2;
+          _context73.next = 2;
           return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM channels WHERE channel_id = ?\n    ", {
             replacements: [channelId],
             type: QueryTypes.SELECT
           }));
 
         case 2:
-          channel = _context70.sent;
+          channel = _context73.sent;
           res.status(200).json(channel[0]);
 
         case 4:
         case "end":
-          return _context70.stop();
+          return _context73.stop();
       }
     }
   });
@@ -2324,23 +2354,23 @@ function getChannel(channelId, req, res) {
 
 function validateChannelNamePutQuery(req, res, next) {
   var channel, channels, channelsArray;
-  return regeneratorRuntime.async(function validateChannelNamePutQuery$(_context71) {
+  return regeneratorRuntime.async(function validateChannelNamePutQuery$(_context74) {
     while (1) {
-      switch (_context71.prev = _context71.next) {
+      switch (_context74.prev = _context74.next) {
         case 0:
           if (!req.body.channel_name) {
-            _context71.next = 9;
+            _context74.next = 9;
             break;
           }
 
           channel = req.body.channel_name;
-          _context71.next = 4;
+          _context74.next = 4;
           return regeneratorRuntime.awrap(db.query("SELECT channel_name FROM channels", {
             type: QueryTypes.SELECT
           }));
 
         case 4:
-          channels = _context71.sent;
+          channels = _context74.sent;
           channelsArray = channels.map(function (channel) {
             return channel.channel_name;
           });
@@ -2351,7 +2381,7 @@ function validateChannelNamePutQuery(req, res, next) {
             })) next();else res.status(400).send("The channel already exists").end();
           } else res.status(400).send("The channel name length is wrong").end();
 
-          _context71.next = 10;
+          _context74.next = 10;
           break;
 
         case 9:
@@ -2359,7 +2389,7 @@ function validateChannelNamePutQuery(req, res, next) {
 
         case 10:
         case "end":
-          return _context71.stop();
+          return _context74.stop();
       }
     }
   });
@@ -2367,23 +2397,23 @@ function validateChannelNamePutQuery(req, res, next) {
 
 function modifyChannel(channelId, req, res) {
   var channel, newChannel, modified;
-  return regeneratorRuntime.async(function modifyChannel$(_context72) {
+  return regeneratorRuntime.async(function modifyChannel$(_context75) {
     while (1) {
-      switch (_context72.prev = _context72.next) {
+      switch (_context75.prev = _context75.next) {
         case 0:
-          _context72.next = 2;
+          _context75.next = 2;
           return regeneratorRuntime.awrap(db.query("SELECT * FROM channels WHERE channel_id = ?", {
             replacements: [channelId],
             type: QueryTypes.SELECT
           }));
 
         case 2:
-          channel = _context72.sent;
+          channel = _context75.sent;
           newChannel = {
             channelId: channelId,
             channelName: req.body.channel_name || channel[0].channel_name
           };
-          _context72.next = 6;
+          _context75.next = 6;
           return regeneratorRuntime.awrap(db.query("\n    UPDATE channels SET channel_name = :channelName WHERE channel_id = :channelId\n    ", {
             replacements: newChannel
             /* Object.assign( {}, newchannel, {password: password} ) */
@@ -2392,12 +2422,12 @@ function modifyChannel(channelId, req, res) {
           }));
 
         case 6:
-          modified = _context72.sent;
+          modified = _context75.sent;
           res.status(200).json(newChannel);
 
         case 8:
         case "end":
-          return _context72.stop();
+          return _context75.stop();
       }
     }
   });
@@ -2405,31 +2435,31 @@ function modifyChannel(channelId, req, res) {
 
 function deleteChannel(channelId, req, res) {
   var channel, deleted;
-  return regeneratorRuntime.async(function deleteChannel$(_context73) {
+  return regeneratorRuntime.async(function deleteChannel$(_context76) {
     while (1) {
-      switch (_context73.prev = _context73.next) {
+      switch (_context76.prev = _context76.next) {
         case 0:
-          _context73.next = 2;
+          _context76.next = 2;
           return regeneratorRuntime.awrap(db.query("SELECT * FROM channels WHERE channel_id = ?", {
             replacements: [channelId],
             type: QueryTypes.SELECT
           }));
 
         case 2:
-          channel = _context73.sent;
-          _context73.next = 5;
+          channel = _context76.sent;
+          _context76.next = 5;
           return regeneratorRuntime.awrap(db.query("DELETE FROM channels WHERE channel_id = ?", {
             replacements: [channelId],
             type: QueryTypes.DELETE
           }));
 
         case 5:
-          deleted = _context73.sent;
+          deleted = _context76.sent;
           res.status(200).json(channel);
 
         case 7:
         case "end":
-          return _context73.stop();
+          return _context76.stop();
       }
     }
   });
@@ -2488,6 +2518,9 @@ module.exports = {
   validateEmailContactsQuery: validateEmailContactsQuery,
   validateChannelIdQuery: validateChannelIdQuery,
   createContact: createContact,
+  addChannelsContacts: addChannelsContacts,
+  getContactInserted: getContactInserted,
+  getChannelsInserted: getChannelsInserted,
   validateContactIdQuery: validateContactIdQuery,
   getContact: getContact,
   validateEmailContactsPutQuery: validateEmailContactsPutQuery,

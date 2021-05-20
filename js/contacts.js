@@ -1225,7 +1225,7 @@ async function addContact(event) {
     }
     try {
         const response = await fetch('http://localhost:3000/contacts', options)
-        console.log(response.text())
+        /* console.log(response.text()) */
         /* if(response.status === 400) {
             msgContainer.innerHTML = ''
             const msgError = document.createElement('p')
@@ -1279,7 +1279,6 @@ function validateData(contact) {
     if(contact.address === '') {
         address.classList.add('border-wrong')
     }
-    console.log(contact.city_id)
 }
 //ui kit
 //inicio
