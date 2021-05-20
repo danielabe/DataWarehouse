@@ -289,7 +289,7 @@ function renderResults(data) {
               return modalDelete(info, contactsList);
             });
             pen.addEventListener('click', function () {
-              return editUser(info, contactsList);
+              return contactEdition(info);
             });
             checkbox.addEventListener('click', function () {
               return selectContact(checkbox, info, data, row);
@@ -1543,20 +1543,12 @@ function addContact(event) {
             msgEmail.classList.add('visible');
             msgEmail.innerText = 'El email ya existe';
           }
-          /* if(response.status === 201) {
-              body.classList.remove('modal')
-              darkImageAddCtc.classList.add('none')
-              getContacts()
-          } */
-
 
           _context11.next = 15;
           return regeneratorRuntime.awrap(response.json());
 
         case 15:
           data = _context11.sent;
-
-          /* console.log(data.value) */
           console.log(data);
           _context11.next = 22;
           break;
@@ -1668,12 +1660,57 @@ function validateData(contact) {
       }
     });
   }
-} //ui kit
+} //edit contact
+
+
+function contactEdition(info) {
+  var options, response, data;
+  return regeneratorRuntime.async(function contactEdition$(_context12) {
+    while (1) {
+      switch (_context12.prev = _context12.next) {
+        case 0:
+          options = {
+            method: 'GET',
+            headers: {
+              Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
+            }
+          };
+          _context12.next = 3;
+          return regeneratorRuntime.awrap(fetch("http://localhost:3000/contacts/".concat(info.contactId), options));
+
+        case 3:
+          response = _context12.sent;
+          _context12.next = 6;
+          return regeneratorRuntime.awrap(response.json());
+
+        case 6:
+          data = _context12.sent;
+          console.log(data);
+
+        case 8:
+        case "end":
+          return _context12.stop();
+      }
+    }
+  });
+}
+/* async function editContact(info, contactList) {  
+    const options = {                   
+        method: 'PUT',  
+        headers: {
+            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
+        }
+    }
+    const response = await fetch(`http://localhost:3000/contacts/${info.contactId}`, options)
+    const data = await response.json()
+    console.log(data)
+    //getUsers()
+} */
+//ui kit
 //inicio
 //nuevo contacto
 //editar contacto
 //editar canales de contacto
-//mensajes en rojo
 //borrar canales al borrar contacto 
 //no refresca al eliminar, crear contacto, provocaba error al ordenar
 //si tengo ganas cambiar los id de los canalaes en el html

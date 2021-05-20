@@ -260,7 +260,7 @@ function renderResults(data) {
         row.addEventListener('mouseout', () => outRow(ellipsis, trash, pen))
 
         trash.addEventListener('click', () => modalDelete(info, contactsList))
-        pen.addEventListener('click', () => editUser(info, contactsList))
+        pen.addEventListener('click', () => contactEdition(info))
 
         checkbox.addEventListener('click', () => selectContact(checkbox, info, data, row))
     })
@@ -1252,16 +1252,10 @@ async function addContact(event) {
             msgEmail.classList.add('visible')
             msgEmail.innerText = 'El email ya existe'
         }
-        /* if(response.status === 201) {
-            body.classList.remove('modal')
-            darkImageAddCtc.classList.add('none')
-            getContacts()
-        } */
+        
         const data = await response.json()
-        /* console.log(data.value) */
         console.log(data)
     } catch(reason) {
-        /* console.log(reason) */
         return reason
     }
     closeWindowNewContact(event)
@@ -1351,6 +1345,32 @@ function validateData(contact) {
         })
     }
 }
+
+//edit contact
+async function contactEdition(info) {
+    const options = {                   
+        method: 'GET',  
+        headers: {
+            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
+        }
+    }
+    const response = await fetch(`http://localhost:3000/contacts/${info.contactId}`, options)
+    const data = await response.json()
+    console.log(data)
+}
+/* async function editContact(info, contactList) {  
+    const options = {                   
+        method: 'PUT',  
+        headers: {
+            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
+        }
+    }
+    const response = await fetch(`http://localhost:3000/contacts/${info.contactId}`, options)
+    const data = await response.json()
+    console.log(data)
+    //getUsers()
+} */
+
 //ui kit
 //inicio
 //nuevo contacto
@@ -1359,7 +1379,6 @@ function validateData(contact) {
 
 
 
-//mensajes en rojo
 //borrar canales al borrar contacto 
 //no refresca al eliminar, crear contacto, provocaba error al ordenar
 //si tengo ganas cambiar los id de los canalaes en el html
