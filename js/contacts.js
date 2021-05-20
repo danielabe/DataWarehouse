@@ -55,6 +55,9 @@ const msgLast = document.getElementById('msgLast')
 const msgPos = document.getElementById('msgPos')
 const msgEmail = document.getElementById('msgEmail')
 const msgAddress = document.getElementById('msgAddress')
+const darkImageEditCtc = document.getElementById('darkImageEditCtc')
+const closeEditCtc = document.getElementById('closeEditCtc')
+const deleteContactEdit = document.getElementById('deleteContactEdit')
 
 let contIdArray = []
 let dataCheckbox = []
@@ -1348,6 +1351,9 @@ function validateData(contact) {
 
 //edit contact
 async function contactEdition(info) {
+    darkImageEditCtc.classList.remove('none')
+    main.classList.add('height-add-ctc')
+    getAllChannels()
     const options = {                   
         method: 'GET',  
         headers: {
@@ -1358,6 +1364,16 @@ async function contactEdition(info) {
     const data = await response.json()
     console.log(data)
 }
+
+//close window edit contact 
+closeEditCtc.addEventListener('click', (event) => closeWindowEditContact(event))
+deleteContactEdit.addEventListener('click', (event) => closeWindowEditContact(event))
+
+function closeWindowEditContact(event) {
+    event.preventDefault()
+    darkImageEditCtc.classList.add('none')
+}
+
 /* async function editContact(info, contactList) {  
     const options = {                   
         method: 'PUT',  

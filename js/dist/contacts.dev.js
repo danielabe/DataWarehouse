@@ -57,6 +57,9 @@ var msgLast = document.getElementById('msgLast');
 var msgPos = document.getElementById('msgPos');
 var msgEmail = document.getElementById('msgEmail');
 var msgAddress = document.getElementById('msgAddress');
+var darkImageEditCtc = document.getElementById('darkImageEditCtc');
+var closeEditCtc = document.getElementById('closeEditCtc');
+var deleteContactEdit = document.getElementById('deleteContactEdit');
 var contIdArray = [];
 var dataCheckbox = [];
 var channelsDB = [];
@@ -1669,30 +1672,46 @@ function contactEdition(info) {
     while (1) {
       switch (_context12.prev = _context12.next) {
         case 0:
+          darkImageEditCtc.classList.remove('none');
+          main.classList.add('height-add-ctc');
+          getAllChannels();
           options = {
             method: 'GET',
             headers: {
               Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
             }
           };
-          _context12.next = 3;
+          _context12.next = 6;
           return regeneratorRuntime.awrap(fetch("http://localhost:3000/contacts/".concat(info.contactId), options));
 
-        case 3:
+        case 6:
           response = _context12.sent;
-          _context12.next = 6;
+          _context12.next = 9;
           return regeneratorRuntime.awrap(response.json());
 
-        case 6:
+        case 9:
           data = _context12.sent;
           console.log(data);
 
-        case 8:
+        case 11:
         case "end":
           return _context12.stop();
       }
     }
   });
+} //close window edit contact 
+
+
+closeEditCtc.addEventListener('click', function (event) {
+  return closeWindowEditContact(event);
+});
+deleteContactEdit.addEventListener('click', function (event) {
+  return closeWindowEditContact(event);
+});
+
+function closeWindowEditContact(event) {
+  event.preventDefault();
+  darkImageEditCtc.classList.add('none');
 }
 /* async function editContact(info, contactList) {  
     const options = {                   
