@@ -1014,7 +1014,7 @@ function selectRegionFunction(info, regList, regSelect) {
 countrySelect.addEventListener('click', function () {
   if (varEnableCountry === 1) {
     if (varSelectCountry === 0) {
-      getCountries();
+      getCountries(countriesList, countrySelect);
     } else if (varSelectCountry === 1) {
       countriesList.classList.add('none');
       countriesList.innerHTML = '';
@@ -1023,7 +1023,7 @@ countrySelect.addEventListener('click', function () {
   }
 });
 
-function getCountries() {
+function getCountries(countList, countSelect) {
   var options, response, data;
   return regeneratorRuntime.async(function getCountries$(_context9) {
     while (1) {
@@ -1046,7 +1046,7 @@ function getCountries() {
         case 6:
           data = _context9.sent;
           console.log(data);
-          renderSelectCountries(data);
+          renderSelectCountries(data, countList, countSelect);
 
         case 9:
         case "end":
@@ -1056,10 +1056,10 @@ function getCountries() {
   });
 }
 
-function renderSelectCountries(data) {
+function renderSelectCountries(data, countList, countSelect) {
   varSelectCountry = 1;
-  countriesList.innerHTML = '';
-  countriesList.classList.remove('none');
+  countList.innerHTML = '';
+  countList.classList.remove('none');
   /* const hreg = (data.length * 24 + 6) / 2
   console.log(hreg) */
 
@@ -1071,18 +1071,18 @@ function renderSelectCountries(data) {
     var countryItem = document.createElement('li');
     countryItem.innerText = info.countryName;
     countryItem.classList.add('sug-comp');
-    countriesList.appendChild(countryItem);
+    countList.appendChild(countryItem);
     countryItem.addEventListener('click', function () {
-      return selectCountryFunction(info);
+      return selectCountryFunction(info, countList, countSelect);
     });
   });
 }
 
-function selectCountryFunction(info) {
+function selectCountryFunction(info, countList, countSelect) {
   varSelectCountry = 0;
-  countriesList.classList.add('none');
-  countriesList.innerHTML = '';
-  countrySelect.innerHTML = "".concat(info.countryName, "<i class=\"fas fa-caret-down\"></i>");
+  countList.classList.add('none');
+  countList.innerHTML = '';
+  countSelect.innerHTML = "".concat(info.countryName, "<i class=\"fas fa-caret-down\"></i>");
   citySelect.classList.remove('disable');
   address.disabled = true;
   address.classList.add('disable');
@@ -1819,11 +1819,14 @@ function closeWindowEditContact(event) {
   darkImageEditCtc.classList.add('none');
   selectCompanyEdit.classList.add('none');
   regionsListEdit.classList.add('none');
+  countriesList.classList.add('none');
+  countrySelect.classList.add('disable');
   main.classList.remove('height-add-ctc');
   compLbl.style.top = '0px';
   compLblEdit.style.top = '0px';
   varSelectCompany = 0;
   varSelectRegion = 0;
+  varEnableCountry = 0;
 } //select company
 
 
@@ -1847,6 +1850,18 @@ regionSelectEdit.addEventListener('click', function () {
     regionsListEdit.classList.add('none');
     regionsListEdit.innerHTML = '';
     varSelectRegion = 0;
+  }
+});
+var countriesListEdit = document.getElementById('countriesListEdit'); //select country
+
+countrySelectEdit.addEventListener('click', function () {
+  if (varSelectCountry === 0) {
+    countriesListEdit.innerHTML = '';
+    getCountries(countriesListEdit, countrySelectEdit);
+  } else if (varSelectCountry === 1) {
+    countriesListEdit.classList.add('none');
+    countriesListEdit.innerHTML = '';
+    varSelectCountry = 0;
   }
 });
 /* async function editContact(info, contactList) {  

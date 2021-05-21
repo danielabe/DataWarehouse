@@ -810,7 +810,7 @@ function selectRegionFunction(info, regList, regSelect) {
 countrySelect.addEventListener('click', () => {
     if(varEnableCountry === 1) {
         if(varSelectCountry === 0) {
-            getCountries()
+            getCountries(countriesList, countrySelect)
         } else if(varSelectCountry === 1) {
             countriesList.classList.add('none')
             countriesList.innerHTML = ''
@@ -819,7 +819,7 @@ countrySelect.addEventListener('click', () => {
     }
 })
 
-async function getCountries() {
+async function getCountries(countList, countSelect) {
     const options = {
         method: 'GET',
         headers: {
@@ -829,13 +829,13 @@ async function getCountries() {
     const response = await fetch(`http://localhost:3000/regions/${varRegId}/countries`, options)
     const data = await response.json()
     console.log(data)
-    renderSelectCountries(data)
+    renderSelectCountries(data, countList, countSelect)
 }
 
-function renderSelectCountries(data) {
+function renderSelectCountries(data, countList, countSelect) {
     varSelectCountry = 1
-    countriesList.innerHTML = ''
-    countriesList.classList.remove('none')
+    countList.innerHTML = ''
+    countList.classList.remove('none')
     /* const hreg = (data.length * 24 + 6) / 2
     console.log(hreg) */
     data.forEach(element => {
@@ -846,17 +846,17 @@ function renderSelectCountries(data) {
         const countryItem = document.createElement('li')
         countryItem.innerText = info.countryName
         countryItem.classList.add('sug-comp')
-        countriesList.appendChild(countryItem)
+        countList.appendChild(countryItem)
 
-        countryItem.addEventListener('click', () => selectCountryFunction(info))
+        countryItem.addEventListener('click', () => selectCountryFunction(info, countList, countSelect))
     })
 }
 
-function selectCountryFunction(info) {
+function selectCountryFunction(info, countList, countSelect) {
     varSelectCountry = 0
-    countriesList.classList.add('none')
-    countriesList.innerHTML = ''
-    countrySelect.innerHTML = `${info.countryName}<i class="fas fa-caret-down"></i>`
+    countList.classList.add('none')
+    countList.innerHTML = ''
+    countSelect.innerHTML = `${info.countryName}<i class="fas fa-caret-down"></i>`
 
     citySelect.classList.remove('disable')
     address.disabled = true
@@ -1474,11 +1474,14 @@ function closeWindowEditContact(event) {
     darkImageEditCtc.classList.add('none')
     selectCompanyEdit.classList.add('none')
     regionsListEdit.classList.add('none')
+    countriesList.classList.add('none')
+    countrySelect.classList.add('disable')
     main.classList.remove('height-add-ctc')
     compLbl.style.top = '0px'
     compLblEdit.style.top = '0px'
     varSelectCompany = 0
     varSelectRegion = 0
+    varEnableCountry = 0
 }
 
 //select company
@@ -1498,11 +1501,23 @@ companyEdit.addEventListener('click', () => {
 regionSelectEdit.addEventListener('click', () => {
     if(varSelectRegion === 0) {
         regionsListEdit.innerHTML = ''
-        getRegions( regionsListEdit, regionSelectEdit)
+        getRegions(regionsListEdit, regionSelectEdit)
     } else if(varSelectRegion === 1) {
         regionsListEdit.classList.add('none')
         regionsListEdit.innerHTML = ''
         varSelectRegion = 0
+    }
+})
+const countriesListEdit = document.getElementById('countriesListEdit')
+//select country
+countrySelectEdit.addEventListener('click', () => {
+    if(varSelectCountry === 0) {
+        countriesListEdit.innerHTML = ''
+        getCountries(countriesListEdit, countrySelectEdit)
+    } else if(varSelectCountry === 1) {
+        countriesListEdit.classList.add('none')
+        countriesListEdit.innerHTML = ''
+        varSelectCountry = 0
     }
 })
 
