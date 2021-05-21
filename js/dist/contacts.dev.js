@@ -88,6 +88,7 @@ var selectLinkedinEdit = document.getElementById('selectLinkedinEdit');
 var compLblEdit = document.getElementById('compLblEdit');
 var selectCompanyEdit = document.getElementById('selectCompanyEdit');
 var regionsListEdit = document.getElementById('regionsListEdit');
+var countriesListEdit = document.getElementById('countriesListEdit');
 var contIdArray = [];
 var dataCheckbox = [];
 var channelsDB = [];
@@ -1096,7 +1097,7 @@ function selectCountryFunction(info, countList, countSelect) {
 citySelect.addEventListener('click', function () {
   if (varEnableCity === 1) {
     if (varSelectCity === 0) {
-      getCities();
+      getCities(citiesList, citySelect);
     } else if (varSelectCity === 1) {
       citiesList.classList.add('none');
       citiesList.innerHTML = '';
@@ -1104,8 +1105,9 @@ citySelect.addEventListener('click', function () {
     }
   }
 });
+/* getCities(citiesListEdit, citySelectEdit) */
 
-function getCities() {
+function getCities(citList, citSelect) {
   var options, response, data;
   return regeneratorRuntime.async(function getCities$(_context10) {
     while (1) {
@@ -1128,7 +1130,7 @@ function getCities() {
         case 6:
           data = _context10.sent;
           console.log(data);
-          renderSelectCities(data);
+          renderSelectCities(data, citList, citSelect);
 
         case 9:
         case "end":
@@ -1138,10 +1140,10 @@ function getCities() {
   });
 }
 
-function renderSelectCities(data) {
+function renderSelectCities(data, citList, citSelect) {
   varSelectCity = 1;
-  citiesList.innerHTML = '';
-  citiesList.classList.remove('none'); // const hreg = (data.length * 24 + 6) / 2
+  citList.innerHTML = '';
+  citList.classList.remove('none'); // const hreg = (data.length * 24 + 6) / 2
   // console.log(hreg)
 
   data.forEach(function (element) {
@@ -1152,18 +1154,18 @@ function renderSelectCities(data) {
     var cityItem = document.createElement('li');
     cityItem.innerText = info.cityName;
     cityItem.classList.add('sug-comp');
-    citiesList.appendChild(cityItem);
+    citList.appendChild(cityItem);
     cityItem.addEventListener('click', function () {
-      return selectCityFunction(info);
+      return selectCityFunction(info, citList, citSelect);
     });
   });
 }
 
-function selectCityFunction(info) {
+function selectCityFunction(info, citList, citSelect) {
   varSelectCity = 0;
-  citiesList.classList.add('none');
-  citiesList.innerHTML = '';
-  citySelect.innerHTML = "".concat(info.cityName, "<i class=\"fas fa-caret-down\"></i>");
+  citList.classList.add('none');
+  citList.innerHTML = '';
+  citSelect.innerHTML = "".concat(info.cityName, "<i class=\"fas fa-caret-down\"></i>");
   address.disabled = false;
   address.classList.remove('disable');
   varCityId = +info.cityId;
@@ -1851,8 +1853,7 @@ regionSelectEdit.addEventListener('click', function () {
     regionsListEdit.innerHTML = '';
     varSelectRegion = 0;
   }
-});
-var countriesListEdit = document.getElementById('countriesListEdit'); //select country
+}); //select country
 
 countrySelectEdit.addEventListener('click', function () {
   if (varSelectCountry === 0) {
@@ -1862,6 +1863,18 @@ countrySelectEdit.addEventListener('click', function () {
     countriesListEdit.classList.add('none');
     countriesListEdit.innerHTML = '';
     varSelectCountry = 0;
+  }
+});
+var citiesListEdit = document.getElementById('citiesListEdit'); //select city
+
+citySelectEdit.addEventListener('click', function () {
+  if (varSelectCity === 0) {
+    citiesListEdit.innerHTML = '';
+    getCities(citiesListEdit, citySelectEdit);
+  } else if (varSelectCity === 1) {
+    citiesListEdit.classList.add('none');
+    citiesListEdit.innerHTML = '';
+    varSelectCity = 0;
   }
 });
 /* async function editContact(info, contactList) {  

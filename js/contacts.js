@@ -86,6 +86,7 @@ const selectLinkedinEdit = document.getElementById('selectLinkedinEdit')
 const compLblEdit = document.getElementById('compLblEdit')
 const selectCompanyEdit = document.getElementById('selectCompanyEdit')
 const regionsListEdit = document.getElementById('regionsListEdit')
+const countriesListEdit = document.getElementById('countriesListEdit')
 
 let contIdArray = []
 let dataCheckbox = []
@@ -872,7 +873,7 @@ function selectCountryFunction(info, countList, countSelect) {
 citySelect.addEventListener('click', () => {
     if(varEnableCity === 1) {
         if(varSelectCity === 0) {
-            getCities()
+            getCities(citiesList, citySelect)
         } else if(varSelectCity === 1) {
             citiesList.classList.add('none')
             citiesList.innerHTML = ''
@@ -880,8 +881,8 @@ citySelect.addEventListener('click', () => {
         }
     }
 })
-
-async function getCities() {
+/* getCities(citiesListEdit, citySelectEdit) */
+async function getCities(citList, citSelect) {
     const options = {
         method: 'GET',
         headers: {
@@ -891,13 +892,13 @@ async function getCities() {
     const response = await fetch(`http://localhost:3000/countries/${varCountId}/cities`, options)
     const data = await response.json()
     console.log(data)
-    renderSelectCities(data)
+    renderSelectCities(data, citList, citSelect)
 }
 
-function renderSelectCities(data) {
+function renderSelectCities(data, citList, citSelect) {
     varSelectCity = 1
-    citiesList.innerHTML = ''
-    citiesList.classList.remove('none')
+    citList.innerHTML = ''
+    citList.classList.remove('none')
     // const hreg = (data.length * 24 + 6) / 2
     // console.log(hreg)
     data.forEach(element => {
@@ -908,17 +909,17 @@ function renderSelectCities(data) {
         const cityItem = document.createElement('li')
         cityItem.innerText = info.cityName
         cityItem.classList.add('sug-comp')
-        citiesList.appendChild(cityItem)
+        citList.appendChild(cityItem)
 
-        cityItem.addEventListener('click', () => selectCityFunction(info))
+        cityItem.addEventListener('click', () => selectCityFunction(info, citList, citSelect))
     })
 }
 
-function selectCityFunction(info) {
+function selectCityFunction(info, citList, citSelect) {
     varSelectCity = 0
-    citiesList.classList.add('none')
-    citiesList.innerHTML = ''
-    citySelect.innerHTML = `${info.cityName}<i class="fas fa-caret-down"></i>`
+    citList.classList.add('none')
+    citList.innerHTML = ''
+    citSelect.innerHTML = `${info.cityName}<i class="fas fa-caret-down"></i>`
     address.disabled = false
     address.classList.remove('disable')
     varCityId = +info.cityId
@@ -1508,7 +1509,7 @@ regionSelectEdit.addEventListener('click', () => {
         varSelectRegion = 0
     }
 })
-const countriesListEdit = document.getElementById('countriesListEdit')
+
 //select country
 countrySelectEdit.addEventListener('click', () => {
     if(varSelectCountry === 0) {
@@ -1518,6 +1519,18 @@ countrySelectEdit.addEventListener('click', () => {
         countriesListEdit.classList.add('none')
         countriesListEdit.innerHTML = ''
         varSelectCountry = 0
+    }
+})
+const citiesListEdit = document.getElementById('citiesListEdit')
+//select city
+citySelectEdit.addEventListener('click', () => {
+    if(varSelectCity === 0) {
+        citiesListEdit.innerHTML = ''
+        getCities(citiesListEdit, citySelectEdit)
+    } else if(varSelectCity === 1) {
+        citiesListEdit.classList.add('none')
+        citiesListEdit.innerHTML = ''
+        varSelectCity = 0
     }
 })
 
