@@ -85,6 +85,7 @@ const linkedinEdit = document.getElementById('linkedinEdit')
 const selectLinkedinEdit = document.getElementById('selectLinkedinEdit')
 const compLblEdit = document.getElementById('compLblEdit')
 const selectCompanyEdit = document.getElementById('selectCompanyEdit')
+const regionsListEdit = document.getElementById('regionsListEdit')
 
 let contIdArray = []
 let dataCheckbox = []
@@ -687,7 +688,7 @@ company.addEventListener('click', () => {
     }
 })
 
-async function getCompanies( slctCompany, compan, compLb) {
+async function getCompanies(slctCompany, compan, compLb) {
     const options = {
         method: 'GET',
         headers: {
@@ -741,15 +742,15 @@ function selectCompanyFunction(info, slctCompany, compan) {
 //select region
 regionSelect.addEventListener('click', () => {
     if(varSelectRegion === 0) {
-        getRegions()
+        getRegions( regionsList, regionSelect)
     } else if(varSelectRegion === 1) {
         regionsList.classList.add('none')
         regionsList.innerHTML = ''
         varSelectRegion = 0
     }
 })
-
-async function getRegions() {
+/* getRegions( regionsListEdit, regionSelectEdit, regionLblEdit) */
+async function getRegions(regList, regSelect) {
     const options = {
         method: 'GET',
         headers: {
@@ -759,12 +760,12 @@ async function getRegions() {
     const response = await fetch('http://localhost:3000/regions', options)
     const data = await response.json()
     console.log(data)
-    renderSelectRegions(data)
+    renderSelectRegions(data, regList, regSelect)
 }
 
-function renderSelectRegions(data) {
+function renderSelectRegions(data, regList, regSelect) {
     varSelectRegion = 1
-    regionsList.classList.remove('none')
+    regList.classList.remove('none')
     /* const hreg = (data.length * 24 + 6) / 2
     console.log(hreg) */
     /* compLbl.style.top = `${hreg}px` */
@@ -776,17 +777,17 @@ function renderSelectRegions(data) {
         const regionItem = document.createElement('li')
         regionItem.innerText = info.regionName
         regionItem.classList.add('sug-comp')
-        regionsList.appendChild(regionItem)
+        regList.appendChild(regionItem)
 
-        regionItem.addEventListener('click', () => selectRegionFunction(info))
+        regionItem.addEventListener('click', () => selectRegionFunction(info, regList, regSelect))
     })
 }
 
-function selectRegionFunction(info) {
+function selectRegionFunction(info, regList, regSelect) {
     varSelectRegion = 0
-    regionsList.classList.add('none')
-    regionsList.innerHTML = ''
-    regionSelect.innerHTML = `${info.regionName}<i class="fas fa-caret-down"></i>`
+    regList.classList.add('none')
+    regList.innerHTML = ''
+    regSelect.innerHTML = `${info.regionName}<i class="fas fa-caret-down"></i>`
 
     countrySelect.classList.remove('disable')
     citySelect.classList.add('disable')
@@ -1472,10 +1473,12 @@ function closeWindowEditContact(event) {
     event.preventDefault()
     darkImageEditCtc.classList.add('none')
     selectCompanyEdit.classList.add('none')
+    regionsListEdit.classList.add('none')
     main.classList.remove('height-add-ctc')
     compLbl.style.top = '0px'
     compLblEdit.style.top = '0px'
     varSelectCompany = 0
+    varSelectRegion = 0
 }
 
 //select company
@@ -1491,6 +1494,17 @@ companyEdit.addEventListener('click', () => {
     }
 })
 
+//select region
+regionSelectEdit.addEventListener('click', () => {
+    if(varSelectRegion === 0) {
+        regionsListEdit.innerHTML = ''
+        getRegions( regionsListEdit, regionSelectEdit)
+    } else if(varSelectRegion === 1) {
+        regionsListEdit.classList.add('none')
+        regionsListEdit.innerHTML = ''
+        varSelectRegion = 0
+    }
+})
 
 /* async function editContact(info, contactList) {  
     const options = {                   

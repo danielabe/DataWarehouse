@@ -87,6 +87,7 @@ var linkedinEdit = document.getElementById('linkedinEdit');
 var selectLinkedinEdit = document.getElementById('selectLinkedinEdit');
 var compLblEdit = document.getElementById('compLblEdit');
 var selectCompanyEdit = document.getElementById('selectCompanyEdit');
+var regionsListEdit = document.getElementById('regionsListEdit');
 var contIdArray = [];
 var dataCheckbox = [];
 var channelsDB = [];
@@ -923,15 +924,16 @@ function selectCompanyFunction(info, slctCompany, compan) {
 
 regionSelect.addEventListener('click', function () {
   if (varSelectRegion === 0) {
-    getRegions();
+    getRegions(regionsList, regionSelect);
   } else if (varSelectRegion === 1) {
     regionsList.classList.add('none');
     regionsList.innerHTML = '';
     varSelectRegion = 0;
   }
 });
+/* getRegions( regionsListEdit, regionSelectEdit, regionLblEdit) */
 
-function getRegions() {
+function getRegions(regList, regSelect) {
   var options, response, data;
   return regeneratorRuntime.async(function getRegions$(_context8) {
     while (1) {
@@ -954,7 +956,7 @@ function getRegions() {
         case 6:
           data = _context8.sent;
           console.log(data);
-          renderSelectRegions(data);
+          renderSelectRegions(data, regList, regSelect);
 
         case 9:
         case "end":
@@ -964,9 +966,9 @@ function getRegions() {
   });
 }
 
-function renderSelectRegions(data) {
+function renderSelectRegions(data, regList, regSelect) {
   varSelectRegion = 1;
-  regionsList.classList.remove('none');
+  regList.classList.remove('none');
   /* const hreg = (data.length * 24 + 6) / 2
   console.log(hreg) */
 
@@ -980,18 +982,18 @@ function renderSelectRegions(data) {
     var regionItem = document.createElement('li');
     regionItem.innerText = info.regionName;
     regionItem.classList.add('sug-comp');
-    regionsList.appendChild(regionItem);
+    regList.appendChild(regionItem);
     regionItem.addEventListener('click', function () {
-      return selectRegionFunction(info);
+      return selectRegionFunction(info, regList, regSelect);
     });
   });
 }
 
-function selectRegionFunction(info) {
+function selectRegionFunction(info, regList, regSelect) {
   varSelectRegion = 0;
-  regionsList.classList.add('none');
-  regionsList.innerHTML = '';
-  regionSelect.innerHTML = "".concat(info.regionName, "<i class=\"fas fa-caret-down\"></i>");
+  regList.classList.add('none');
+  regList.innerHTML = '';
+  regSelect.innerHTML = "".concat(info.regionName, "<i class=\"fas fa-caret-down\"></i>");
   countrySelect.classList.remove('disable');
   citySelect.classList.add('disable');
   address.disabled = true;
@@ -1816,10 +1818,12 @@ function closeWindowEditContact(event) {
   event.preventDefault();
   darkImageEditCtc.classList.add('none');
   selectCompanyEdit.classList.add('none');
+  regionsListEdit.classList.add('none');
   main.classList.remove('height-add-ctc');
   compLbl.style.top = '0px';
   compLblEdit.style.top = '0px';
   varSelectCompany = 0;
+  varSelectRegion = 0;
 } //select company
 
 
@@ -1832,6 +1836,17 @@ companyEdit.addEventListener('click', function () {
     selectCompanyEdit.innerHTML = '';
     compLblEdit.style.top = '0px';
     varSelectCompany = 0;
+  }
+}); //select region
+
+regionSelectEdit.addEventListener('click', function () {
+  if (varSelectRegion === 0) {
+    regionsListEdit.innerHTML = '';
+    getRegions(regionsListEdit, regionSelectEdit);
+  } else if (varSelectRegion === 1) {
+    regionsListEdit.classList.add('none');
+    regionsListEdit.innerHTML = '';
+    varSelectRegion = 0;
   }
 });
 /* async function editContact(info, contactList) {  
