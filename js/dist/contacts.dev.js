@@ -89,6 +89,7 @@ var compLblEdit = document.getElementById('compLblEdit');
 var selectCompanyEdit = document.getElementById('selectCompanyEdit');
 var regionsListEdit = document.getElementById('regionsListEdit');
 var countriesListEdit = document.getElementById('countriesListEdit');
+var citiesListEdit = document.getElementById('citiesListEdit');
 var contIdArray = [];
 var dataCheckbox = [];
 var channelsDB = [];
@@ -1174,28 +1175,31 @@ function selectCityFunction(info, citList, citSelect) {
 
 interestSelect.addEventListener('click', function () {
   if (varSelectInterest === 0) {
-    showInterest();
+    var intC = 'int';
+    showInterest(interestsList, interestSelect, intC);
   } else if (varSelectInterest === 1) {
     interestsList.classList.add('none');
     varSelectInterest = 0;
   }
 });
 
-function showInterest() {
-  interestsList.classList.remove('none');
+function showInterest(intList, intSelect, intC) {
+  intList.classList.remove('none');
   varSelectInterest = 1;
-  var intArray = document.querySelectorAll('.int');
+  var intArray = document.querySelectorAll(".".concat(intC));
+  /* '.int' */
+
   intArray.forEach(function (element) {
     element.addEventListener('click', function () {
-      return selectInterestFunction(element.innerText);
+      return selectInterestFunction(element.innerText, intList, intSelect);
     });
   });
 }
 
-function selectInterestFunction(interest) {
+function selectInterestFunction(interest, intList, intSelect) {
   varSelectInterest = 0;
-  interestsList.classList.add('none');
-  interestSelect.innerHTML = "".concat(interest, "<i class=\"fas fa-caret-down\"></i>");
+  intList.classList.add('none');
+  intSelect.innerHTML = "".concat(interest, "<i class=\"fas fa-caret-down\"></i>");
 } //contact channels
 //telephone
 
@@ -1487,6 +1491,8 @@ function closeWindowNewContact(event) {
   prefFacebookList.classList.add('none');
   prefLinkedinList.classList.add('none');
   selectCompany.classList.add('none');
+  interestsList.classList.add('none');
+  interestsListEdit.classList.add('none');
   firstname.classList.remove('border-wrong');
   msgFirst.classList.remove('visible');
   lastname.classList.remove('border-wrong');
@@ -1510,6 +1516,7 @@ function closeWindowNewContact(event) {
   varEnablePrefF = 0;
   varEnablePrefL = 0;
   varSelectCompany = 0;
+  varSelectInterest = 0;
   /* getContacts() */
 } //save contact
 
@@ -1823,12 +1830,15 @@ function closeWindowEditContact(event) {
   regionsListEdit.classList.add('none');
   countriesList.classList.add('none');
   countrySelect.classList.add('disable');
+  interestsList.classList.add('none');
+  interestsListEdit.classList.add('none');
   main.classList.remove('height-add-ctc');
   compLbl.style.top = '0px';
   compLblEdit.style.top = '0px';
   varSelectCompany = 0;
   varSelectRegion = 0;
   varEnableCountry = 0;
+  varSelectInterest = 0;
 } //select company
 
 
@@ -1864,8 +1874,7 @@ countrySelectEdit.addEventListener('click', function () {
     countriesListEdit.innerHTML = '';
     varSelectCountry = 0;
   }
-});
-var citiesListEdit = document.getElementById('citiesListEdit'); //select city
+}); //select city
 
 citySelectEdit.addEventListener('click', function () {
   if (varSelectCity === 0) {
@@ -1875,6 +1884,17 @@ citySelectEdit.addEventListener('click', function () {
     citiesListEdit.classList.add('none');
     citiesListEdit.innerHTML = '';
     varSelectCity = 0;
+  }
+});
+var interestsListEdit = document.getElementById('interestsListEdit'); //select interest
+
+interestSelectEdit.addEventListener('click', function () {
+  if (varSelectInterest === 0) {
+    var intC = 'int-edit';
+    showInterest(interestsListEdit, interestSelectEdit, intC);
+  } else if (varSelectInterest === 1) {
+    interestsListEdit.classList.add('none');
+    varSelectInterest = 0;
   }
 });
 /* async function editContact(info, contactList) {  

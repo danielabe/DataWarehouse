@@ -87,6 +87,7 @@ const compLblEdit = document.getElementById('compLblEdit')
 const selectCompanyEdit = document.getElementById('selectCompanyEdit')
 const regionsListEdit = document.getElementById('regionsListEdit')
 const countriesListEdit = document.getElementById('countriesListEdit')
+const citiesListEdit = document.getElementById('citiesListEdit')
 
 let contIdArray = []
 let dataCheckbox = []
@@ -928,26 +929,27 @@ function selectCityFunction(info, citList, citSelect) {
 //select interest
 interestSelect.addEventListener('click', () => {
     if(varSelectInterest === 0) {
-        showInterest()
+        const intC = 'int'
+        showInterest(interestsList, interestSelect, intC)
     } else if(varSelectInterest === 1) {
         interestsList.classList.add('none')
         varSelectInterest = 0
     }
 })
 
-function showInterest() {
-    interestsList.classList.remove('none')
+function showInterest(intList, intSelect, intC) {
+    intList.classList.remove('none')
     varSelectInterest = 1
-    const intArray = document.querySelectorAll('.int')
+    const intArray = document.querySelectorAll(`.${intC}`)/* '.int' */
     intArray.forEach(element => {
-        element.addEventListener('click', () => selectInterestFunction(element.innerText))
+        element.addEventListener('click', () => selectInterestFunction(element.innerText, intList, intSelect))
     })
 }
 
-function selectInterestFunction(interest) {
+function selectInterestFunction(interest, intList, intSelect) {
     varSelectInterest = 0
-    interestsList.classList.add('none')
-    interestSelect.innerHTML = `${interest}<i class="fas fa-caret-down"></i>`
+    intList.classList.add('none')
+    intSelect.innerHTML = `${interest}<i class="fas fa-caret-down"></i>`
 }
 
 //contact channels
@@ -1216,6 +1218,8 @@ function closeWindowNewContact(event) {
     prefFacebookList.classList.add('none')
     prefLinkedinList.classList.add('none')
     selectCompany.classList.add('none')
+    interestsList.classList.add('none')
+    interestsListEdit.classList.add('none')
     
     firstname.classList.remove('border-wrong')
     msgFirst.classList.remove('visible')
@@ -1241,6 +1245,7 @@ function closeWindowNewContact(event) {
     varEnablePrefF = 0
     varEnablePrefL = 0
     varSelectCompany = 0
+    varSelectInterest = 0
     /* getContacts() */
 }
 
@@ -1477,12 +1482,15 @@ function closeWindowEditContact(event) {
     regionsListEdit.classList.add('none')
     countriesList.classList.add('none')
     countrySelect.classList.add('disable')
+    interestsList.classList.add('none')
+    interestsListEdit.classList.add('none')
     main.classList.remove('height-add-ctc')
     compLbl.style.top = '0px'
     compLblEdit.style.top = '0px'
     varSelectCompany = 0
     varSelectRegion = 0
     varEnableCountry = 0
+    varSelectInterest = 0
 }
 
 //select company
@@ -1521,7 +1529,7 @@ countrySelectEdit.addEventListener('click', () => {
         varSelectCountry = 0
     }
 })
-const citiesListEdit = document.getElementById('citiesListEdit')
+
 //select city
 citySelectEdit.addEventListener('click', () => {
     if(varSelectCity === 0) {
@@ -1533,7 +1541,17 @@ citySelectEdit.addEventListener('click', () => {
         varSelectCity = 0
     }
 })
-
+const interestsListEdit = document.getElementById('interestsListEdit')
+//select interest
+interestSelectEdit.addEventListener('click', () => {
+    if(varSelectInterest === 0) {
+        const intC = 'int-edit'
+        showInterest(interestsListEdit, interestSelectEdit, intC)
+    } else if(varSelectInterest === 1) {
+        interestsListEdit.classList.add('none')
+        varSelectInterest = 0
+    }
+})
 /* async function editContact(info, contactList) {  
     const options = {                   
         method: 'PUT',  
