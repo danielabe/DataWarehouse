@@ -826,7 +826,7 @@ function getAllChannels(sChannel, chan) {
             });
           });
           chanArray.forEach(function (el, i) {
-            console.log(channelsDB[i].channelName);
+            /* console.log(channelsDB[i].channelName) */
             el.innerText = channelsDB[i].channelName;
             /* el.addEventListener('click', () => console.log(channelsDB[i].channelId)) */
           });
@@ -998,13 +998,21 @@ function selectRegionFunction(info, regList, regSelect) {
   regSelect.innerHTML = "".concat(info.regionName, "<i class=\"fas fa-caret-down\"></i>");
   countrySelect.classList.remove('disable');
   citySelect.classList.add('disable');
+  citySelectEdit.classList.add('disable');
   address.disabled = true;
   address.classList.add('disable');
+  addressEdit.disabled = true;
+  addressEdit.classList.add('disable');
   countrySelect.innerHTML = "Seleccionar pa\xEDs<i class=\"fas fa-caret-down\"></i>";
+  countrySelectEdit.innerHTML = "Seleccionar pa\xEDs<i class=\"fas fa-caret-down\"></i>";
   citySelect.innerHTML = "Seleccionar ciudad<i class=\"fas fa-caret-down\"></i>";
+  citySelectEdit.innerHTML = "Seleccionar ciudad<i class=\"fas fa-caret-down\"></i>";
   countriesList.classList.add('none');
   citiesList.classList.add('none');
+  countriesListEdit.classList.add('none');
+  citiesListEdit.classList.add('none');
   varEnableCity = 0;
+  varSelectCity = 0;
   varSelectCountry = 0;
   varEnableCountry = 1;
   varRegId = +info.regionId;
@@ -1086,10 +1094,15 @@ function selectCountryFunction(info, countList, countSelect) {
   countList.innerHTML = '';
   countSelect.innerHTML = "".concat(info.countryName, "<i class=\"fas fa-caret-down\"></i>");
   citySelect.classList.remove('disable');
+  citySelectEdit.classList.remove('disable');
   address.disabled = true;
+  addressEdit.disabled = true;
   address.classList.add('disable');
+  addressEdit.classList.add('disable');
   citySelect.innerHTML = "Seleccionar ciudad<i class=\"fas fa-caret-down\"></i>";
+  citySelectEdit.innerHTML = "Seleccionar ciudad<i class=\"fas fa-caret-down\"></i>";
   citiesList.classList.add('none');
+  citiesListEdit.classList.add('none');
   varEnableCity = 1;
   varCountId = +info.countryId;
 } //select city
@@ -1168,7 +1181,9 @@ function selectCityFunction(info, citList, citSelect) {
   citList.innerHTML = '';
   citSelect.innerHTML = "".concat(info.cityName, "<i class=\"fas fa-caret-down\"></i>");
   address.disabled = false;
+  addressEdit.disabled = false;
   address.classList.remove('disable');
+  addressEdit.classList.remove('disable');
   varCityId = +info.cityId;
 } //select interest
 
@@ -1721,6 +1736,16 @@ function contactEdition(info) {
     while (1) {
       switch (_context12.prev = _context12.next) {
         case 0:
+          console.log(info.cityName);
+          varRegId = +info.regionId;
+          varCountId = +info.countryId;
+          varEnableCity = 1;
+
+          if (info.cityName !== '') {
+            addressEdit.classList.remove('disable');
+            addressEdit.disabled = false;
+          }
+
           darkImageEditCtc.classList.remove('none');
           main.classList.add('height-add-ctc');
           sChannel = 's-channel-edit';
@@ -1732,20 +1757,20 @@ function contactEdition(info) {
               Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
             }
           };
-          _context12.next = 8;
+          _context12.next = 13;
           return regeneratorRuntime.awrap(fetch("http://localhost:3000/contacts/".concat(info.contactId), options));
 
-        case 8:
+        case 13:
           response = _context12.sent;
-          _context12.next = 11;
+          _context12.next = 16;
           return regeneratorRuntime.awrap(response.json());
 
-        case 11:
+        case 16:
           data = _context12.sent;
           console.log(data);
           loadData(data);
 
-        case 14:
+        case 19:
         case "end":
           return _context12.stop();
       }
@@ -1830,6 +1855,7 @@ function closeWindowEditContact(event) {
   regionsListEdit.classList.add('none');
   countriesList.classList.add('none');
   countrySelect.classList.add('disable');
+  citySelect.classList.add('disable');
   interestsList.classList.add('none');
   interestsListEdit.classList.add('none');
   main.classList.remove('height-add-ctc');
@@ -1837,8 +1863,10 @@ function closeWindowEditContact(event) {
   compLblEdit.style.top = '0px';
   varSelectCompany = 0;
   varSelectRegion = 0;
-  varEnableCountry = 0;
+  varSelectCity = 0;
   varSelectInterest = 0;
+  varEnableCountry = 0;
+  varEnableCity = 0;
 } //select company
 
 
@@ -1877,13 +1905,15 @@ countrySelectEdit.addEventListener('click', function () {
 }); //select city
 
 citySelectEdit.addEventListener('click', function () {
-  if (varSelectCity === 0) {
-    citiesListEdit.innerHTML = '';
-    getCities(citiesListEdit, citySelectEdit);
-  } else if (varSelectCity === 1) {
-    citiesListEdit.classList.add('none');
-    citiesListEdit.innerHTML = '';
-    varSelectCity = 0;
+  if (varEnableCity === 1) {
+    if (varSelectCity === 0) {
+      citiesListEdit.innerHTML = '';
+      getCities(citiesListEdit, citySelectEdit);
+    } else if (varSelectCity === 1) {
+      citiesListEdit.classList.add('none');
+      citiesListEdit.innerHTML = '';
+      varSelectCity = 0;
+    }
   }
 });
 var interestsListEdit = document.getElementById('interestsListEdit'); //select interest

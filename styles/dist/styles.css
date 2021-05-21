@@ -825,7 +825,7 @@ progress::-moz-progress-bar {
 }
 
 .index-slct {
-  z-index: 1;
+  z-index: 6;
 }
 
 .disable {

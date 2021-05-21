@@ -671,7 +671,7 @@ async function getAllChannels(sChannel, chan) {
         el.addEventListener('click', () => console.log(channelsDB[i].channelId))
     })
     chanArray.forEach((el, i) => {
-        console.log(channelsDB[i].channelName)
+        /* console.log(channelsDB[i].channelName) */
         el.innerText = channelsDB[i].channelName
         /* el.addEventListener('click', () => console.log(channelsDB[i].channelId)) */
     })
@@ -744,7 +744,7 @@ function selectCompanyFunction(info, slctCompany, compan) {
 //select region
 regionSelect.addEventListener('click', () => {
     if(varSelectRegion === 0) {
-        getRegions( regionsList, regionSelect)
+        getRegions(regionsList, regionSelect)
     } else if(varSelectRegion === 1) {
         regionsList.classList.add('none')
         regionsList.innerHTML = ''
@@ -793,14 +793,22 @@ function selectRegionFunction(info, regList, regSelect) {
 
     countrySelect.classList.remove('disable')
     citySelect.classList.add('disable')
+    citySelectEdit.classList.add('disable')
     address.disabled = true
     address.classList.add('disable')
+    addressEdit.disabled = true
+    addressEdit.classList.add('disable')
     countrySelect.innerHTML = `Seleccionar país<i class="fas fa-caret-down"></i>`
+    countrySelectEdit.innerHTML = `Seleccionar país<i class="fas fa-caret-down"></i>`
     citySelect.innerHTML = `Seleccionar ciudad<i class="fas fa-caret-down"></i>`
+    citySelectEdit.innerHTML = `Seleccionar ciudad<i class="fas fa-caret-down"></i>`
     countriesList.classList.add('none')
     citiesList.classList.add('none')
+    countriesListEdit.classList.add('none')
+    citiesListEdit.classList.add('none')
 
     varEnableCity = 0
+    varSelectCity = 0
     varSelectCountry = 0
     varEnableCountry = 1
     varRegId = +info.regionId
@@ -861,10 +869,15 @@ function selectCountryFunction(info, countList, countSelect) {
     countSelect.innerHTML = `${info.countryName}<i class="fas fa-caret-down"></i>`
 
     citySelect.classList.remove('disable')
+    citySelectEdit.classList.remove('disable')
     address.disabled = true
+    addressEdit.disabled = true
     address.classList.add('disable')
+    addressEdit.classList.add('disable')
     citySelect.innerHTML = `Seleccionar ciudad<i class="fas fa-caret-down"></i>`
+    citySelectEdit.innerHTML = `Seleccionar ciudad<i class="fas fa-caret-down"></i>`
     citiesList.classList.add('none')
+    citiesListEdit.classList.add('none')
 
     varEnableCity = 1
     varCountId = +info.countryId
@@ -922,7 +935,9 @@ function selectCityFunction(info, citList, citSelect) {
     citList.innerHTML = ''
     citSelect.innerHTML = `${info.cityName}<i class="fas fa-caret-down"></i>`
     address.disabled = false
+    addressEdit.disabled = false
     address.classList.remove('disable')
+    addressEdit.classList.remove('disable')
     varCityId = +info.cityId
 }
 
@@ -1395,6 +1410,14 @@ function validateData(contact) {
 
 //edit contact
 async function contactEdition(info) {
+    console.log(info.cityName)
+    varRegId = +info.regionId
+    varCountId = +info.countryId
+    varEnableCity = 1
+    if(info.cityName !== '') {
+        addressEdit.classList.remove('disable')
+        addressEdit.disabled = false
+    }
     darkImageEditCtc.classList.remove('none')
     main.classList.add('height-add-ctc')
     const sChannel = 's-channel-edit'
@@ -1482,6 +1505,7 @@ function closeWindowEditContact(event) {
     regionsListEdit.classList.add('none')
     countriesList.classList.add('none')
     countrySelect.classList.add('disable')
+    citySelect.classList.add('disable')
     interestsList.classList.add('none')
     interestsListEdit.classList.add('none')
     main.classList.remove('height-add-ctc')
@@ -1489,8 +1513,10 @@ function closeWindowEditContact(event) {
     compLblEdit.style.top = '0px'
     varSelectCompany = 0
     varSelectRegion = 0
-    varEnableCountry = 0
+    varSelectCity = 0
     varSelectInterest = 0
+    varEnableCountry = 0
+    varEnableCity = 0
 }
 
 //select company
@@ -1532,13 +1558,15 @@ countrySelectEdit.addEventListener('click', () => {
 
 //select city
 citySelectEdit.addEventListener('click', () => {
-    if(varSelectCity === 0) {
-        citiesListEdit.innerHTML = ''
-        getCities(citiesListEdit, citySelectEdit)
-    } else if(varSelectCity === 1) {
-        citiesListEdit.classList.add('none')
-        citiesListEdit.innerHTML = ''
-        varSelectCity = 0
+    if(varEnableCity === 1) {
+        if(varSelectCity === 0) {
+            citiesListEdit.innerHTML = ''
+            getCities(citiesListEdit, citySelectEdit)
+        } else if(varSelectCity === 1) {
+            citiesListEdit.classList.add('none')
+            citiesListEdit.innerHTML = ''
+            varSelectCity = 0
+        }
     }
 })
 const interestsListEdit = document.getElementById('interestsListEdit')
