@@ -85,6 +85,8 @@ var selectFacebookEdit = document.getElementById('selectFacebookEdit');
 var link = document.getElementById('link');
 var linkedinEdit = document.getElementById('linkedinEdit');
 var selectLinkedinEdit = document.getElementById('selectLinkedinEdit');
+var compLblEdit = document.getElementById('compLblEdit');
+var selectCompanyEdit = document.getElementById('selectCompanyEdit');
 var contIdArray = [];
 var dataCheckbox = [];
 var channelsDB = [];
@@ -837,7 +839,8 @@ function getAllChannels(sChannel, chan) {
 
 company.addEventListener('click', function () {
   if (varSelectCompany === 0) {
-    getCompanies();
+    selectCompany.innerHTML = '';
+    getCompanies(selectCompany, company, compLbl);
   } else if (varSelectCompany === 1) {
     selectCompany.classList.add('none');
     selectCompany.innerHTML = '';
@@ -846,7 +849,7 @@ company.addEventListener('click', function () {
   }
 });
 
-function getCompanies() {
+function getCompanies(slctCompany, compan, compLb) {
   var options, response, data;
   return regeneratorRuntime.async(function getCompanies$(_context7) {
     while (1) {
@@ -868,7 +871,7 @@ function getCompanies() {
 
         case 6:
           data = _context7.sent;
-          renderSelectCompanies(data);
+          renderSelectCompanies(data, slctCompany, compan, compLb);
 
         case 8:
         case "end":
@@ -878,12 +881,14 @@ function getCompanies() {
   });
 }
 
-function renderSelectCompanies(data) {
+function renderSelectCompanies(data, slctCompany, compan, compLb) {
   varSelectCompany = 1;
-  selectCompany.classList.remove('none');
+  slctCompany.classList.remove('none');
   var hcomp = (data.length * 24 + 6) / 2;
   console.log(hcomp);
-  compLbl.style.top = "".concat(hcomp, "px");
+  compLb.style.top = "".concat(hcomp, "px");
+  /* compLblEdit.style.top = `${hcomp}px` */
+
   data.forEach(function (element) {
     var info = {
       companyId: element.company_id,
@@ -895,21 +900,22 @@ function renderSelectCompanies(data) {
       regionId: element.region_id,
       regionName: element.region_name
     };
-    var companyItem = document.createElement('li');
-    companyItem.innerText = info.companyName;
-    companyItem.classList.add('sug-comp');
-    selectCompany.appendChild(companyItem);
-    companyItem.addEventListener('click', function () {
-      return selectCompanyFunction(info);
+    var compItem = document.createElement('li');
+    compItem.innerText = info.companyName;
+    compItem.classList.add('sug-comp');
+    slctCompany.appendChild(compItem);
+    compItem.addEventListener('click', function () {
+      return selectCompanyFunction(info, slctCompany, compan);
     });
   });
 }
 
-function selectCompanyFunction(info) {
-  selectCompany.classList.add('none');
-  selectCompany.innerHTML = '';
+function selectCompanyFunction(info, slctCompany, compan) {
+  slctCompany.classList.add('none');
+  slctCompany.innerHTML = '';
   compLbl.style.top = '0px';
-  company.innerHTML = "".concat(info.companyName, "<i class=\"fas fa-caret-down\"></i>");
+  compLblEdit.style.top = '0px';
+  compan.innerHTML = "".concat(info.companyName, "<i class=\"fas fa-caret-down\"></i>");
   varSelectCompany = 0;
   varCompanyId = info.companyId;
 } //select region
@@ -1441,6 +1447,8 @@ function closeWindowNewContact(event) {
   instagram.value = '';
   facebook.value = '';
   linkedin.value = '';
+  compLbl.style.top = '0px';
+  compLblEdit.style.top = '0px';
   company.innerHTML = 'Seleccionar compañía<i class="fas fa-caret-down"></i>';
   regionSelect.innerHTML = 'Seleccionar región<i class="fas fa-caret-down"></i>';
   countrySelect.innerHTML = 'Seleccionar país<i class="fas fa-caret-down"></i>';
@@ -1474,6 +1482,7 @@ function closeWindowNewContact(event) {
   prefInstagramList.classList.add('none');
   prefFacebookList.classList.add('none');
   prefLinkedinList.classList.add('none');
+  selectCompany.classList.add('none');
   firstname.classList.remove('border-wrong');
   msgFirst.classList.remove('visible');
   lastname.classList.remove('border-wrong');
@@ -1496,6 +1505,7 @@ function closeWindowNewContact(event) {
   varEnablePrefI = 0;
   varEnablePrefF = 0;
   varEnablePrefL = 0;
+  varSelectCompany = 0;
   /* getContacts() */
 } //save contact
 
@@ -1805,8 +1815,25 @@ closeEditCtc.addEventListener('click', function (event) {
 function closeWindowEditContact(event) {
   event.preventDefault();
   darkImageEditCtc.classList.add('none');
+  selectCompanyEdit.classList.add('none');
   main.classList.remove('height-add-ctc');
-}
+  compLbl.style.top = '0px';
+  compLblEdit.style.top = '0px';
+  varSelectCompany = 0;
+} //select company
+
+
+companyEdit.addEventListener('click', function () {
+  if (varSelectCompany === 0) {
+    selectCompanyEdit.innerHTML = '';
+    getCompanies(selectCompanyEdit, companyEdit, compLblEdit);
+  } else if (varSelectCompany === 1) {
+    selectCompanyEdit.classList.add('none');
+    selectCompanyEdit.innerHTML = '';
+    compLblEdit.style.top = '0px';
+    varSelectCompany = 0;
+  }
+});
 /* async function editContact(info, contactList) {  
     const options = {                   
         method: 'PUT',  

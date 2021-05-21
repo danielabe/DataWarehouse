@@ -83,6 +83,8 @@ const selectFacebookEdit = document.getElementById('selectFacebookEdit')
 const link = document.getElementById('link')
 const linkedinEdit = document.getElementById('linkedinEdit')
 const selectLinkedinEdit = document.getElementById('selectLinkedinEdit')
+const compLblEdit = document.getElementById('compLblEdit')
+const selectCompanyEdit = document.getElementById('selectCompanyEdit')
 
 let contIdArray = []
 let dataCheckbox = []
@@ -675,7 +677,8 @@ async function getAllChannels(sChannel, chan) {
 //select company
 company.addEventListener('click', () => {
     if(varSelectCompany === 0) {
-        getCompanies()
+        selectCompany.innerHTML = ''
+        getCompanies( selectCompany, company, compLbl)
     } else if(varSelectCompany === 1) {
         selectCompany.classList.add('none')
         selectCompany.innerHTML = ''
@@ -684,7 +687,7 @@ company.addEventListener('click', () => {
     }
 })
 
-async function getCompanies() {
+async function getCompanies( slctCompany, compan, compLb) {
     const options = {
         method: 'GET',
         headers: {
@@ -693,16 +696,17 @@ async function getCompanies() {
     }
     const response = await fetch('http://localhost:3000/companies', options)
     const data = await response.json()
-    renderSelectCompanies(data)
+    renderSelectCompanies(data, slctCompany, compan, compLb)
 }
 
-function renderSelectCompanies(data) {
+function renderSelectCompanies(data, slctCompany, compan, compLb) {
     varSelectCompany = 1
-    selectCompany.classList.remove('none')
+    slctCompany.classList.remove('none')
 
     const hcomp = (data.length * 24 + 6) / 2
     console.log(hcomp)
-    compLbl.style.top = `${hcomp}px`
+    compLb.style.top = `${hcomp}px`
+    /* compLblEdit.style.top = `${hcomp}px` */
 
     data.forEach(element => {
         const info = {
@@ -715,20 +719,21 @@ function renderSelectCompanies(data) {
             regionId: element.region_id,
             regionName: element.region_name
         }
-        const companyItem = document.createElement('li')
-        companyItem.innerText = info.companyName
-        companyItem.classList.add('sug-comp')
-        selectCompany.appendChild(companyItem)
+        const compItem = document.createElement('li')
+        compItem.innerText = info.companyName
+        compItem.classList.add('sug-comp')
+        slctCompany.appendChild(compItem)
 
-        companyItem.addEventListener('click', () => selectCompanyFunction(info))
+        compItem.addEventListener('click', () => selectCompanyFunction(info, slctCompany, compan))
     })
 }
 
-function selectCompanyFunction(info) {
-    selectCompany.classList.add('none')
-    selectCompany.innerHTML = ''
+function selectCompanyFunction(info, slctCompany, compan) {
+    slctCompany.classList.add('none')
+    slctCompany.innerHTML = ''
     compLbl.style.top = '0px'
-    company.innerHTML = `${info.companyName}<i class="fas fa-caret-down"></i>`
+    compLblEdit.style.top = '0px'
+    compan.innerHTML = `${info.companyName}<i class="fas fa-caret-down"></i>`
     varSelectCompany = 0
     varCompanyId = info.companyId
 }
@@ -1172,6 +1177,8 @@ function closeWindowNewContact(event) {
     instagram.value = ''
     facebook.value = ''
     linkedin.value = ''
+    compLbl.style.top = '0px'
+    compLblEdit.style.top = '0px'
     company.innerHTML = 'Seleccionar compañía<i class="fas fa-caret-down"></i>'
     regionSelect.innerHTML = 'Seleccionar región<i class="fas fa-caret-down"></i>'
     countrySelect.innerHTML = 'Seleccionar país<i class="fas fa-caret-down"></i>'
@@ -1206,6 +1213,7 @@ function closeWindowNewContact(event) {
     prefInstagramList.classList.add('none')
     prefFacebookList.classList.add('none')
     prefLinkedinList.classList.add('none')
+    selectCompany.classList.add('none')
     
     firstname.classList.remove('border-wrong')
     msgFirst.classList.remove('visible')
@@ -1230,6 +1238,7 @@ function closeWindowNewContact(event) {
     varEnablePrefI = 0
     varEnablePrefF = 0
     varEnablePrefL = 0
+    varSelectCompany = 0
     /* getContacts() */
 }
 
@@ -1396,7 +1405,6 @@ async function contactEdition(info) {
     loadData(data)
 }
 
-
 function loadData(data) {
     firstnameEdit.value = data.firstname
     lastnameEdit.value = data.lastname
@@ -1463,8 +1471,26 @@ closeEditCtc.addEventListener('click', (event) => closeWindowEditContact(event))
 function closeWindowEditContact(event) {
     event.preventDefault()
     darkImageEditCtc.classList.add('none')
+    selectCompanyEdit.classList.add('none')
     main.classList.remove('height-add-ctc')
+    compLbl.style.top = '0px'
+    compLblEdit.style.top = '0px'
+    varSelectCompany = 0
 }
+
+//select company
+companyEdit.addEventListener('click', () => {
+    if(varSelectCompany === 0) {
+        selectCompanyEdit.innerHTML = ''
+        getCompanies( selectCompanyEdit, companyEdit, compLblEdit)
+    } else if(varSelectCompany === 1) {
+        selectCompanyEdit.classList.add('none')
+        selectCompanyEdit.innerHTML = ''
+        compLblEdit.style.top = '0px'
+        varSelectCompany = 0
+    }
+})
+
 
 /* async function editContact(info, contactList) {  
     const options = {                   
