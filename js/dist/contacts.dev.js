@@ -1954,6 +1954,9 @@ interestSelectEdit.addEventListener('click', function () {
 }); //select preferences
 //telephone
 
+telephoneEdit.addEventListener('keyup', function () {
+  return enablePrefTel(telephoneEdit, selectTelephoneEdit);
+});
 selectTelephoneEdit.addEventListener('click', function () {
   if (varEnablePrefT === 1) {
     if (varPrefTel === 0) {
@@ -1966,6 +1969,9 @@ selectTelephoneEdit.addEventListener('click', function () {
   }
 }); //whatsapp
 
+whatsappEdit.addEventListener('keyup', function () {
+  return enablePrefWsp(whatsappEdit, selectWhatsappEdit);
+});
 selectWhatsappEdit.addEventListener('click', function () {
   if (varEnablePrefW === 1) {
     if (varPrefWsp === 0) {
@@ -1978,6 +1984,9 @@ selectWhatsappEdit.addEventListener('click', function () {
   }
 }); //instagram
 
+instagramEdit.addEventListener('keyup', function () {
+  return enablePrefInst(instagramEdit, selectInstagramEdit);
+});
 selectInstagramEdit.addEventListener('click', function () {
   if (varEnablePrefI === 1) {
     if (varPrefInst === 0) {
@@ -1990,6 +1999,9 @@ selectInstagramEdit.addEventListener('click', function () {
   }
 }); //facebook
 
+facebookEdit.addEventListener('keyup', function () {
+  return enablePrefFace(facebookEdit, selectFacebookEdit);
+});
 selectFacebookEdit.addEventListener('click', function () {
   if (varEnablePrefF === 1) {
     if (varPrefFace === 0) {
@@ -2002,6 +2014,9 @@ selectFacebookEdit.addEventListener('click', function () {
   }
 }); //linkedin
 
+linkedinEdit.addEventListener('keyup', function () {
+  return enablePrefLink(linkedinEdit, selectLinkedinEdit);
+});
 selectLinkedinEdit.addEventListener('click', function () {
   if (varEnablePrefL === 1) {
     if (varPrefLink === 0) {
@@ -2012,8 +2027,7 @@ selectLinkedinEdit.addEventListener('click', function () {
       varPrefLink = 0;
     }
   }
-}); //habilitar preferencia
-
+});
 /* async function editContact(info, contactList) {  
     const options = {                   
         method: 'PUT',  

@@ -1609,6 +1609,8 @@ interestSelectEdit.addEventListener('click', () => {
 
 //select preferences
 //telephone
+telephoneEdit.addEventListener('keyup', () => enablePrefTel(telephoneEdit, selectTelephoneEdit))
+
 selectTelephoneEdit.addEventListener('click', () => {
     if(varEnablePrefT === 1) {
         if(varPrefTel === 0) {
@@ -1622,6 +1624,8 @@ selectTelephoneEdit.addEventListener('click', () => {
 })
 
 //whatsapp
+whatsappEdit.addEventListener('keyup', () => enablePrefWsp(whatsappEdit, selectWhatsappEdit))
+
 selectWhatsappEdit.addEventListener('click', () => {
     if(varEnablePrefW === 1) {
         if(varPrefWsp === 0) {
@@ -1635,6 +1639,8 @@ selectWhatsappEdit.addEventListener('click', () => {
 })
 
 //instagram
+instagramEdit.addEventListener('keyup', () => enablePrefInst(instagramEdit, selectInstagramEdit))
+
 selectInstagramEdit.addEventListener('click', () => {
     if(varEnablePrefI === 1) {
         if(varPrefInst === 0) {
@@ -1648,6 +1654,8 @@ selectInstagramEdit.addEventListener('click', () => {
 })
 
 //facebook
+facebookEdit.addEventListener('keyup', () => enablePrefFace(facebookEdit, selectFacebookEdit))
+
 selectFacebookEdit.addEventListener('click', () => {
     if(varEnablePrefF === 1) {
         if(varPrefFace === 0) {
@@ -1661,6 +1669,8 @@ selectFacebookEdit.addEventListener('click', () => {
 })
 
 //linkedin
+linkedinEdit.addEventListener('keyup', () => enablePrefLink(linkedinEdit, selectLinkedinEdit))
+
 selectLinkedinEdit.addEventListener('click', () => {
     if(varEnablePrefL === 1) {
         if(varPrefLink === 0) {
@@ -1673,7 +1683,7 @@ selectLinkedinEdit.addEventListener('click', () => {
     }
 })
 
-//habilitar preferencia
+
 /* async function editContact(info, contactList) {  
     const options = {                   
         method: 'PUT',  
