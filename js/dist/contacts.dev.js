@@ -105,6 +105,7 @@ var msgAddressEdit = document.getElementById('msgAddressEdit');
 var contIdArray = [];
 var dataCheckbox = [];
 var channelsDB = [];
+var cId = {};
 var varSortName = 0;
 var varSortCountry = 0;
 var varSortCompany = 0;
@@ -265,6 +266,9 @@ function renderResults(data) {
               interest: element.interest,
               varSelectContact: 0
             };
+            cId = {
+              contactId: info.contactId
+            };
             row = document.createElement('li');
             checkbox = document.createElement('i');
             contact = document.createElement('div');
@@ -332,7 +336,7 @@ function renderResults(data) {
               return outRow(ellipsis, trash, pen);
             });
             trash.addEventListener('click', function () {
-              return modalDelete(info, contactsList);
+              return modalDelete();
             });
             pen.addEventListener('click', function () {
               return contactEdition(info);
@@ -341,7 +345,7 @@ function renderResults(data) {
               return selectContact(checkbox, info, data, row);
             });
 
-          case 48:
+          case 49:
           case "end":
             return _context2.stop();
         }
@@ -351,25 +355,25 @@ function renderResults(data) {
 } //delete contact
 
 
-function modalDelete(info, contactsList) {
+function modalDelete() {
   window.scrollTo(0, 0);
   body.classList.add('modal');
   darkImageContacts.classList.remove('none');
   cancelDltContBtn.addEventListener('click', function () {
     body.classList.remove('modal');
     darkImageContacts.classList.add('none');
+    darkImageEditCtc.style.visibility = 'visible';
   });
-  deleteContactBtn.addEventListener('click', function () {
-    body.classList.remove('modal');
-    darkImageContacts.classList.add('none');
-    /* contactsList.innerHTML = '' */
-
-    if (varDelete === 0) {
-      deleteContact(info, contactsList);
-    } else if (varDelete === 1) {
-      deleteContacts();
-    }
-  });
+  /* deleteContactBtn.addEventListener('click', () => {
+      body.classList.remove('modal')
+      darkImageContacts.classList.add('none')
+      //contactsList.innerHTML = ''
+      if(varDelete === 0) {
+          deleteContact(info)
+      } else if (varDelete === 1) {
+          deleteContacts()
+      }
+  }) */
 }
 
 function deleteContact(info
@@ -386,26 +390,35 @@ function deleteContact(info
               Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
             }
           };
-          _context3.next = 3;
+          _context3.prev = 1;
+          _context3.next = 4;
           return regeneratorRuntime.awrap(fetch("http://localhost:3000/contacts/".concat(info.contactId), options));
 
-        case 3:
+        case 4:
           response = _context3.sent;
-          _context3.next = 6;
+          _context3.next = 7;
           return regeneratorRuntime.awrap(response.json());
 
-        case 6:
+        case 7:
           data = _context3.sent;
-
-          /* getContacts() */
           checkAfterSortAndSearch(); //no se si funciona el data, con o sin data va igual, no se si es correcto
 
-        case 8:
+          darkImageEditCtc.style.visibility = 'visible';
+          main.classList.remove('height-add-ctc');
+          _context3.next = 16;
+          break;
+
+        case 13:
+          _context3.prev = 13;
+          _context3.t0 = _context3["catch"](1);
+          return _context3.abrupt("return", _context3.t0);
+
+        case 16:
         case "end":
           return _context3.stop();
       }
     }
-  });
+  }, null, null, [[1, 13]]);
 }
 
 dltCtcBtn.addEventListener('click', function () {
@@ -839,9 +852,7 @@ function getAllChannels(sChannel, chan) {
             });
           });
           chanArray.forEach(function (el, i) {
-            /* console.log(channelsDB[i].channelName) */
             el.innerText = channelsDB[i].channelName;
-            /* el.addEventListener('click', () => console.log(channelsDB[i].channelId)) */
           });
 
         case 14:
@@ -946,7 +957,6 @@ regionSelect.addEventListener('click', function () {
     varSelectRegion = 0;
   }
 });
-/* getRegions( regionsListEdit, regionSelectEdit, regionLblEdit) */
 
 function getRegions(regList, regSelect) {
   var options, response, data;
@@ -1132,7 +1142,6 @@ citySelect.addEventListener('click', function () {
     }
   }
 });
-/* getCities(citiesListEdit, citySelectEdit) */
 
 function getCities(citList, citSelect) {
   var options, response, data;
@@ -1550,7 +1559,6 @@ function closeWindowNewContact(event) {
   varEnablePrefL = 0;
   varSelectCompany = 0;
   varSelectInterest = 0;
-  /* getContacts() */
 } //save contact
 
 
@@ -1597,9 +1605,6 @@ function addContact(event) {
             firstname: firstname.value,
             lastname: lastname.value,
             email: email.value,
-
-            /* region_id: varRegId,
-            country_id: varCountId, */
             city_id: varCityId,
             address: address.value,
             company_id: varCompanyId,
@@ -1623,7 +1628,6 @@ function addContact(event) {
         case 11:
           response = _context11.sent;
 
-          /* console.log(response.text()) */
           if (response.status === 409) {
             email.classList.add('border-wrong');
             msgEmail.classList.add('visible');
@@ -1874,7 +1878,6 @@ function loadData(data) {
 closeEditCtc.addEventListener('click', function (event) {
   return closeWindowEditContact(event);
 });
-/* deleteContactEdit.addEventListener('click', (event) => closeWindowEditContact(event)) */
 
 function closeWindowEditContact(event) {
   event.preventDefault();
@@ -1921,6 +1924,10 @@ function closeWindowEditContact(event) {
   varEnablePrefI = 0;
   varEnablePrefF = 0;
   varEnablePrefL = 0;
+  varCompanyId = null;
+  varRegId = null;
+  varCountId = null;
+  varCityId = null;
 } //select company
 
 
@@ -2061,9 +2068,7 @@ saveContactEdit.addEventListener('click', function (event) {
   return editContact(event);
 });
 
-function editContact(event
-/* , info, contactList */
-) {
+function editContact(event) {
   var modifiedContact, options, response, data;
   return regeneratorRuntime.async(function editContact$(_context13) {
     while (1) {
@@ -2107,15 +2112,37 @@ function editContact(event
 
         case 11:
           data = _context13.sent;
-          console.log(data); //getUsers()
+          console.log(data);
+          closeWindowEditContact(event);
 
-        case 13:
+        case 14:
         case "end":
           return _context13.stop();
       }
     }
   });
-} //ui kit
+} //delete contact (contact edition)
+
+
+deleteContactEdit.addEventListener('click', function (event) {
+  event.preventDefault();
+  cId = {
+    contactId: varEditContact
+  };
+  darkImageEditCtc.style.visibility = 'hidden';
+  modalDelete();
+});
+deleteContactBtn.addEventListener('click', function () {
+  body.classList.remove('modal');
+  darkImageContacts.classList.add('none');
+  darkImageEditCtc.classList.add('none');
+
+  if (varDelete === 0) {
+    deleteContact(cId);
+  } else if (varDelete === 1) {
+    deleteContacts();
+  }
+}); //ui kit
 //inicio
 //nuevo contacto
 //editar contacto

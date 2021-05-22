@@ -916,6 +916,11 @@ progress::-moz-progress-bar {
   justify-content: space-between;
 }
 
+.btn-red {
+  width: 130px;
+  color: #F03738;
+}
+
 .none {
   display: none;
 }

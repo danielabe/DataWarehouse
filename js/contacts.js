@@ -104,6 +104,7 @@ const msgAddressEdit = document.getElementById('msgAddressEdit')
 let contIdArray = []
 let dataCheckbox = []
 let channelsDB = []
+let cId = {}
 
 let varSortName = 0
 let varSortCountry = 0
@@ -233,6 +234,9 @@ function renderResults(data) {
             interest: element.interest,
             varSelectContact : 0
         }
+        cId = {
+            contactId: info.contactId
+        }
         
         const row = document.createElement('li')
         const checkbox = document.createElement('i')
@@ -305,7 +309,7 @@ function renderResults(data) {
         row.addEventListener('mouseover', () => hoverRow(ellipsis, trash, pen))
         row.addEventListener('mouseout', () => outRow(ellipsis, trash, pen))
 
-        trash.addEventListener('click', () => modalDelete(info, contactsList))
+        trash.addEventListener('click', () => modalDelete())
         pen.addEventListener('click', () => contactEdition(info))
 
         checkbox.addEventListener('click', () => selectContact(checkbox, info, data, row))
@@ -313,7 +317,7 @@ function renderResults(data) {
 }
 
 //delete contact
-function modalDelete(info, contactsList) {
+function modalDelete() {
     window.scrollTo(0, 0)
     body.classList.add('modal')
     darkImageContacts.classList.remove('none')
@@ -321,18 +325,19 @@ function modalDelete(info, contactsList) {
     cancelDltContBtn.addEventListener('click', () => {
         body.classList.remove('modal')
         darkImageContacts.classList.add('none')
+        darkImageEditCtc.style.visibility = 'visible'
     })
 
-    deleteContactBtn.addEventListener('click', () => {
+    /* deleteContactBtn.addEventListener('click', () => {
         body.classList.remove('modal')
         darkImageContacts.classList.add('none')
-        /* contactsList.innerHTML = '' */
+        //contactsList.innerHTML = ''
         if(varDelete === 0) {
-            deleteContact(info, contactsList)
+            deleteContact(info)
         } else if (varDelete === 1) {
             deleteContacts()
         }
-    })
+    }) */
 }
 
 async function deleteContact(info/* , contactsList */) {
@@ -342,15 +347,20 @@ async function deleteContact(info/* , contactsList */) {
             Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
         }
     }
-    const response = await fetch(`http://localhost:3000/contacts/${info.contactId}`, options)
-    const data = await response.json()
-    /* getContacts() */
-    checkAfterSortAndSearch() //no se si funciona el data, con o sin data va igual, no se si es correcto
+    try {
+        const response = await fetch(`http://localhost:3000/contacts/${info.contactId}`, options)
+        const data = await response.json()
+        checkAfterSortAndSearch() //no se si funciona el data, con o sin data va igual, no se si es correcto
+        darkImageEditCtc.style.visibility = 'visible'
+        main.classList.remove('height-add-ctc')
+    } catch(reason) {
+        return reason
+    }
 }
 
 dltCtcBtn.addEventListener('click', () => {
     varDelete = 1
-    modalDelete(/* info *//* , contactsList */)
+    modalDelete()
 })
 
 function deleteContacts() {
@@ -684,9 +694,7 @@ async function getAllChannels(sChannel, chan) {
         el.addEventListener('click', () => console.log(channelsDB[i].channelId))
     })
     chanArray.forEach((el, i) => {
-        /* console.log(channelsDB[i].channelName) */
         el.innerText = channelsDB[i].channelName
-        /* el.addEventListener('click', () => console.log(channelsDB[i].channelId)) */
     })
 }
 
@@ -764,7 +772,7 @@ regionSelect.addEventListener('click', () => {
         varSelectRegion = 0
     }
 })
-/* getRegions( regionsListEdit, regionSelectEdit, regionLblEdit) */
+
 async function getRegions(regList, regSelect) {
     const options = {
         method: 'GET',
@@ -908,7 +916,7 @@ citySelect.addEventListener('click', () => {
         }
     }
 })
-/* getCities(citiesListEdit, citySelectEdit) */
+
 async function getCities(citList, citSelect) {
     const options = {
         method: 'GET',
@@ -1279,7 +1287,6 @@ function closeWindowNewContact(event) {
     varEnablePrefL = 0
     varSelectCompany = 0
     varSelectInterest = 0
-    /* getContacts() */
 }
 
 //save contact
@@ -1306,8 +1313,6 @@ async function addContact(event) {
         firstname: firstname.value,
         lastname: lastname.value,
         email: email.value,
-        /* region_id: varRegId,
-        country_id: varCountId, */
         city_id: varCityId,
         address: address.value,
         company_id: varCompanyId,
@@ -1329,7 +1334,6 @@ async function addContact(event) {
     }
     try {
         const response = await fetch('http://localhost:3000/contacts', options)
-        /* console.log(response.text()) */
         if(response.status === 409) {
             email.classList.add('border-wrong')
             msgEmail.classList.add('visible')
@@ -1527,7 +1531,6 @@ function loadData(data) {
 
 //close window edit contact 
 closeEditCtc.addEventListener('click', (event) => closeWindowEditContact(event))
-/* deleteContactEdit.addEventListener('click', (event) => closeWindowEditContact(event)) */
 
 function closeWindowEditContact(event) {
     event.preventDefault()
@@ -1576,6 +1579,11 @@ function closeWindowEditContact(event) {
     varEnablePrefI = 0
     varEnablePrefF = 0
     varEnablePrefL = 0
+
+    varCompanyId = null
+    varRegId = null
+    varCountId = null
+    varCityId = null
 }
 
 //select company
@@ -1719,7 +1727,7 @@ selectLinkedinEdit.addEventListener('click', () => {
 //save edited contact
 saveContactEdit.addEventListener('click', (event) => editContact(event))
 
-async function editContact(event/* , info, contactList */) {
+async function editContact(event) {
     event.preventDefault()  
     const modifiedContact = {
         firstname: firstnameEdit.value,
@@ -1751,8 +1759,31 @@ async function editContact(event/* , info, contactList */) {
     }
     const data = await response.json()
     console.log(data)
-    //getUsers()
+    closeWindowEditContact(event)
 }
+
+//delete contact (contact edition)
+deleteContactEdit.addEventListener('click', (event) => {
+    event.preventDefault()
+    cId = {
+        contactId: varEditContact
+    }
+    darkImageEditCtc.style.visibility = 'hidden'
+    modalDelete()
+})
+
+deleteContactBtn.addEventListener('click', () => {
+    body.classList.remove('modal')
+    darkImageContacts.classList.add('none')
+    darkImageEditCtc.classList.add('none')
+    if(varDelete === 0) {
+        deleteContact(cId)
+    } else if (varDelete === 1) {
+        deleteContacts()
+    }
+})
+
+
 
 //ui kit
 //inicio
