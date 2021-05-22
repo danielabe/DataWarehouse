@@ -1114,7 +1114,8 @@ function enablePrefFace(faceb, selectFaceb) {
 selectFacebook.addEventListener('click', () => {
     if(varEnablePrefF === 1) {
         if(varPrefFace === 0) {
-            showPrefFace()
+            const preference = 'pref-face'
+            showPrefFace(prefFacebookList, preference, selectFacebook)
         } else if(varPrefFace === 1) {
             prefFacebookList.classList.add('none')
             varPrefFace = 0
@@ -1122,19 +1123,19 @@ selectFacebook.addEventListener('click', () => {
     }
 })
 
-function showPrefFace() {
-    prefFacebookList.classList.remove('none')
+function showPrefFace(prefFaceList, preference, selectFace) {
+    prefFaceList.classList.remove('none')
     varPrefFace = 1
-    const prefArray = document.querySelectorAll('.pref-face')
+    const prefArray = document.querySelectorAll(`.${preference}`)
     prefArray.forEach(element => {
-        element.addEventListener('click', () => selectPrefFaceFunction(element.innerText))
+        element.addEventListener('click', () => selectPrefFaceFunction(element.innerText, prefFaceList, selectFace))
     })
 }
 
-function selectPrefFaceFunction(pref) {
+function selectPrefFaceFunction(pref, prefFaceList, selectFace) {
     varPrefFace = 0
-    prefFacebookList.classList.add('none')
-    preferenceIcons(pref, selectFacebook)
+    prefFaceList.classList.add('none')
+    preferenceIcons(pref, selectFace)
 }
 
 //linkedin
@@ -1539,6 +1540,7 @@ function closeWindowEditContact(event) {
     varEnablePrefT = 0
     varEnablePrefW = 0
     varEnablePrefI = 0
+    varEnablePrefF = 0
 }
 
 //select company
@@ -1643,6 +1645,19 @@ selectInstagramEdit.addEventListener('click', () => {
     }
 })
 
+//facebook
+selectFacebookEdit.addEventListener('click', () => {
+    if(varEnablePrefF === 1) {
+        if(varPrefFace === 0) {
+            const preference = 'pref-face-edit'
+            showPrefFace(prefFacebookListEdit, preference, selectFacebookEdit)
+        } else if(varPrefFace === 1) {
+            prefFacebookListEdit.classList.add('none')
+            varPrefFace = 0
+        }
+    }
+})
+//habilitar preferencia
 /* async function editContact(info, contactList) {  
     const options = {                   
         method: 'PUT',  
