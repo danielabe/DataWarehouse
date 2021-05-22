@@ -90,6 +90,9 @@ var selectCompanyEdit = document.getElementById('selectCompanyEdit');
 var regionsListEdit = document.getElementById('regionsListEdit');
 var countriesListEdit = document.getElementById('countriesListEdit');
 var citiesListEdit = document.getElementById('citiesListEdit');
+var prefTelephoneListEdit = document.getElementById('prefTelephoneListEdit');
+var prefWhatsappListEdit = document.getElementById('prefWhatsappListEdit');
+var interestsListEdit = document.getElementById('interestsListEdit');
 var contIdArray = [];
 var dataCheckbox = [];
 var channelsDB = [];
@@ -1282,7 +1285,8 @@ function enablePrefWsp(whats, selectWhats) {
 selectWhatsapp.addEventListener('click', function () {
   if (varEnablePrefW === 1) {
     if (varPrefWsp === 0) {
-      showPrefWsp();
+      var preference = 'pref-wsp';
+      showPrefWsp(prefWhatsappList, preference, selectWhatsapp);
     } else if (varPrefWsp === 1) {
       prefWhatsappList.classList.add('none');
       varPrefWsp = 0;
@@ -1290,21 +1294,21 @@ selectWhatsapp.addEventListener('click', function () {
   }
 });
 
-function showPrefWsp() {
-  prefWhatsappList.classList.remove('none');
+function showPrefWsp(prefWhatsList, preference, selectWhats) {
+  prefWhatsList.classList.remove('none');
   varPrefWsp = 1;
-  var prefArray = document.querySelectorAll('.pref-wsp');
+  var prefArray = document.querySelectorAll(".".concat(preference));
   prefArray.forEach(function (element) {
     element.addEventListener('click', function () {
-      return selectPrefWspFunction(element.innerText);
+      return selectPrefWspFunction(element.innerText, prefWhatsList, selectWhats);
     });
   });
 }
 
-function selectPrefWspFunction(pref) {
+function selectPrefWspFunction(pref, prefWhatsList, selectWhats) {
   varPrefWsp = 0;
-  prefWhatsappList.classList.add('none');
-  preferenceIcons(pref, selectWhatsapp);
+  prefWhatsList.classList.add('none');
+  preferenceIcons(pref, selectWhats);
 } //instagram
 
 
@@ -1879,6 +1883,7 @@ function closeWindowEditContact(event) {
   varEnableCountry = 0;
   varEnableCity = 0;
   varEnablePrefT = 0;
+  varEnablePrefW = 0;
 } //select company
 
 
@@ -1927,8 +1932,7 @@ citySelectEdit.addEventListener('click', function () {
       varSelectCity = 0;
     }
   }
-});
-var interestsListEdit = document.getElementById('interestsListEdit'); //select interest
+}); //select interest
 
 interestSelectEdit.addEventListener('click', function () {
   if (varSelectInterest === 0) {
@@ -1938,8 +1942,7 @@ interestSelectEdit.addEventListener('click', function () {
     interestsListEdit.classList.add('none');
     varSelectInterest = 0;
   }
-});
-var prefTelephoneListEdit = document.getElementById('prefTelephoneListEdit'); //select preferences
+}); //select preferences
 //telephone
 
 selectTelephoneEdit.addEventListener('click', function () {
@@ -1950,6 +1953,18 @@ selectTelephoneEdit.addEventListener('click', function () {
     } else if (varPrefTel === 1) {
       prefTelephoneListEdit.classList.add('none');
       varPrefTel = 0;
+    }
+  }
+}); //whatsapp
+
+selectWhatsappEdit.addEventListener('click', function () {
+  if (varEnablePrefW === 1) {
+    if (varPrefWsp === 0) {
+      var preference = 'pref-wsp-edit';
+      showPrefWsp(prefWhatsappListEdit, preference, selectWhatsappEdit);
+    } else if (varPrefWsp === 1) {
+      prefWhatsappListEdit.classList.add('none');
+      varPrefWsp = 0;
     }
   }
 });
