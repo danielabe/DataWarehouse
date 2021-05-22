@@ -96,6 +96,12 @@ var prefWhatsappListEdit = document.getElementById('prefWhatsappListEdit');
 var prefInstagramListEdit = document.getElementById('prefInstagramListEdit');
 var prefFacabookListEdit = document.getElementById('prefFacabookListEdit');
 var prefLinkedinListEdit = document.getElementById('prefLinkedinListEdit');
+var saveContactEdit = document.getElementById('saveContactEdit');
+var msgFirstEdit = document.getElementById('msgFirstEdit');
+var msgLastEdit = document.getElementById('msgLastEdit');
+var msgPosEdit = document.getElementById('msgPosEdit');
+var msgEmailEdit = document.getElementById('msgEmailEdit');
+var msgAddressEdit = document.getElementById('msgAddressEdit');
 var contIdArray = [];
 var dataCheckbox = [];
 var channelsDB = [];
@@ -125,6 +131,7 @@ var varEnablePrefL = 0;
 var varRegId;
 var varCountId;
 var varCityId;
+var varEditContact;
 var varCompanyId = null;
 var varCheckboxAll = 'unselected'; //show contacts 
 
@@ -1557,6 +1564,7 @@ function addContact(event) {
     while (1) {
       switch (_context11.prev = _context11.next) {
         case 0:
+          msgEmail.innerText = 'Error en datos ingresados';
           event.preventDefault();
           channels = [{
             channel_id: channelsDB[0].channelId,
@@ -1599,7 +1607,7 @@ function addContact(event) {
             interest: +interestSelect.innerText.slice(0, -1),
             preferred_channels: filteredChannels
           };
-          validateData(contact);
+          validateData(contact, firstname, msgFirst, lastname, msgLast, position, msgPos, email, msgEmail, company, selectCompany, regionSelect, regionsList, countrySelect, countriesList, citySelect, citiesList, address, msgAddress);
           options = {
             method: 'POST',
             body: JSON.stringify(contact),
@@ -1608,11 +1616,11 @@ function addContact(event) {
               Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
             }
           };
-          _context11.prev = 7;
-          _context11.next = 10;
+          _context11.prev = 8;
+          _context11.next = 11;
           return regeneratorRuntime.awrap(fetch('http://localhost:3000/contacts', options));
 
-        case 10:
+        case 11:
           response = _context11.sent;
 
           /* console.log(response.text()) */
@@ -1622,60 +1630,60 @@ function addContact(event) {
             msgEmail.innerText = 'El email ya existe';
           }
 
-          _context11.next = 14;
+          _context11.next = 15;
           return regeneratorRuntime.awrap(response.json());
 
-        case 14:
+        case 15:
           data = _context11.sent;
           console.log(data);
-          _context11.next = 21;
+          _context11.next = 22;
           break;
 
-        case 18:
-          _context11.prev = 18;
-          _context11.t0 = _context11["catch"](7);
+        case 19:
+          _context11.prev = 19;
+          _context11.t0 = _context11["catch"](8);
           return _context11.abrupt("return", _context11.t0);
 
-        case 21:
+        case 22:
           closeWindowNewContact(event);
 
-        case 22:
+        case 23:
         case "end":
           return _context11.stop();
       }
     }
-  }, null, null, [[7, 18]]);
+  }, null, null, [[8, 19]]);
 }
 
-function validateData(contact) {
+function validateData(contact, first, msgFirst, last, msgLast, pos, msgPos, email, msgEmail, comp, selectComp, regSelect, regList, countSelect, countList, citSelect, citList, address, msgAddress) {
   if (contact.firstname === '') {
-    firstname.classList.add('border-wrong');
+    first.classList.add('border-wrong');
     msgFirst.classList.add('visible');
-    firstname.addEventListener('keyup', function () {
-      if (firstname.value !== '') {
-        firstname.classList.remove('border-wrong');
+    first.addEventListener('keyup', function () {
+      if (first.value !== '') {
+        first.classList.remove('border-wrong');
         msgFirst.classList.remove('visible');
       }
     });
   }
 
   if (contact.lastname === '') {
-    lastname.classList.add('border-wrong');
+    last.classList.add('border-wrong');
     msgLast.classList.add('visible');
-    lastname.addEventListener('keyup', function () {
-      if (lastname.value !== '') {
-        lastname.classList.remove('border-wrong');
+    last.addEventListener('keyup', function () {
+      if (last.value !== '') {
+        last.classList.remove('border-wrong');
         msgLast.classList.remove('visible');
       }
     });
   }
 
   if (contact.position === '') {
-    position.classList.add('border-wrong');
+    pos.classList.add('border-wrong');
     msgPos.classList.add('visible');
-    position.addEventListener('keyup', function () {
-      if (position.value !== '') {
-        position.classList.remove('border-wrong');
+    pos.addEventListener('keyup', function () {
+      if (pos.value !== '') {
+        pos.classList.remove('border-wrong');
         msgPos.classList.remove('visible');
       }
     });
@@ -1693,37 +1701,37 @@ function validateData(contact) {
   }
 
   if (contact.company_id === null) {
-    company.classList.add('border-wrong');
-    selectCompany.addEventListener('click', function () {
-      if (company.innerText !== 'Seleccionar compañía') {
-        company.classList.remove('border-wrong');
+    comp.classList.add('border-wrong');
+    selectComp.addEventListener('click', function () {
+      if (comp.innerText !== 'Seleccionar compañía') {
+        comp.classList.remove('border-wrong');
       }
     });
   }
 
-  if (regionSelect.innerText === 'Seleccionar región') {
-    regionSelect.classList.add('border-wrong');
-    regionsList.addEventListener('click', function () {
-      if (regionSelect.innerText !== 'Seleccionar región') {
-        regionSelect.classList.remove('border-wrong');
+  if (regSelect.innerText === 'Seleccionar región') {
+    regSelect.classList.add('border-wrong');
+    regList.addEventListener('click', function () {
+      if (regSelect.innerText !== 'Seleccionar región') {
+        regSelect.classList.remove('border-wrong');
       }
     });
   }
 
-  if (countrySelect.innerText === 'Seleccionar país') {
-    countrySelect.classList.add('border-wrong');
-    countriesList.addEventListener('click', function () {
-      if (countrySelect.innerText !== 'Seleccionar país') {
-        countrySelect.classList.remove('border-wrong');
+  if (countSelect.innerText === 'Seleccionar país') {
+    countSelect.classList.add('border-wrong');
+    countList.addEventListener('click', function () {
+      if (countSelect.innerText !== 'Seleccionar país') {
+        countSelect.classList.remove('border-wrong');
       }
     });
   }
 
-  if (contact.city_id === undefined) {
-    citySelect.classList.add('border-wrong');
-    citiesList.addEventListener('click', function () {
-      if (citySelect.innerText !== 'Seleccionar ciudad') {
-        citySelect.classList.remove('border-wrong');
+  if (contact.city_id === undefined || contact.city_id === null) {
+    citSelect.classList.add('border-wrong');
+    citList.addEventListener('click', function () {
+      if (citSelect.innerText !== 'Seleccionar ciudad') {
+        citSelect.classList.remove('border-wrong');
       }
     });
   }
@@ -1750,7 +1758,11 @@ function contactEdition(info) {
           console.log(info.cityName);
           varRegId = +info.regionId;
           varCountId = +info.countryId;
+          varCityId = +info.cityId;
+          varCompanyId = +info.companyId;
+          varEditContact = info.contactId;
           varEnableCity = 1;
+          console.log(info.cityName);
 
           if (info.cityName !== '') {
             addressEdit.classList.remove('disable');
@@ -1768,15 +1780,15 @@ function contactEdition(info) {
               Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
             }
           };
-          _context12.next = 13;
+          _context12.next = 17;
           return regeneratorRuntime.awrap(fetch("http://localhost:3000/contacts/".concat(info.contactId), options));
 
-        case 13:
+        case 17:
           response = _context12.sent;
-          _context12.next = 16;
+          _context12.next = 20;
           return regeneratorRuntime.awrap(response.json());
 
-        case 16:
+        case 20:
           data = _context12.sent;
           console.log(data);
           loadData(data);
@@ -1786,7 +1798,7 @@ function contactEdition(info) {
           enablePrefFace(facebookEdit, selectFacebookEdit);
           enablePrefLink(linkedinEdit, selectLinkedinEdit);
 
-        case 24:
+        case 28:
         case "end":
           return _context12.stop();
       }
@@ -1875,6 +1887,22 @@ function closeWindowEditContact(event) {
   interestsList.classList.add('none');
   interestsListEdit.classList.add('none');
   main.classList.remove('height-add-ctc');
+  firstnameEdit.classList.remove('border-wrong');
+  msgFirstEdit.classList.remove('visible');
+  lastnameEdit.classList.remove('border-wrong');
+  msgLastEdit.classList.remove('visible');
+  positionEdit.classList.remove('border-wrong');
+  msgPosEdit.classList.remove('visible');
+  emailEdit.classList.remove('border-wrong');
+  msgEmailEdit.classList.remove('visible');
+  msgEmailEdit.innerText = 'Error en datos ingresados';
+  companyEdit.classList.remove('border-wrong');
+  regionSelectEdit.classList.remove('border-wrong');
+  countrySelectEdit.classList.remove('border-wrong');
+  citySelectEdit.classList.remove('border-wrong');
+  addressEdit.classList.remove('border-wrong');
+  msgAddressEdit.classList.remove('visible');
+  citySelectEdit.classList.remove('disable');
   telephoneEdit.value = '';
   whatsappEdit.value = '';
   instagramEdit.value = '';
@@ -2027,20 +2055,67 @@ selectLinkedinEdit.addEventListener('click', function () {
       varPrefLink = 0;
     }
   }
+}); //save edited contact
+
+saveContactEdit.addEventListener('click', function (event) {
+  return editContact(event);
 });
-/* async function editContact(info, contactList) {  
-    const options = {                   
-        method: 'PUT',  
-        headers: {
-            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
-        }
+
+function editContact(event
+/* , info, contactList */
+) {
+  var modifiedContact, options, response, data;
+  return regeneratorRuntime.async(function editContact$(_context13) {
+    while (1) {
+      switch (_context13.prev = _context13.next) {
+        case 0:
+          event.preventDefault();
+          modifiedContact = {
+            firstname: firstnameEdit.value,
+            lastname: lastnameEdit.value,
+            email: emailEdit.value,
+            city_id: varCityId,
+            address: addressEdit.value,
+            company_id: varCompanyId,
+            position: positionEdit.value,
+            interest: +interestSelectEdit.innerText.slice(0, -1)
+          };
+          console.log(modifiedContact);
+          validateData(modifiedContact, firstnameEdit, msgFirstEdit, lastnameEdit, msgLastEdit, positionEdit, msgPosEdit, emailEdit, msgEmailEdit, companyEdit, selectCompanyEdit, regionSelectEdit, regionsListEdit, countrySelectEdit, countriesListEdit, citySelectEdit, citiesListEdit, addressEdit, msgAddressEdit);
+          options = {
+            method: 'PUT',
+            body: JSON.stringify(modifiedContact),
+            headers: {
+              Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token'))),
+              "Content-Type": "application/json"
+            }
+          };
+          _context13.next = 7;
+          return regeneratorRuntime.awrap(fetch("http://localhost:3000/contacts/".concat(varEditContact), options));
+
+        case 7:
+          response = _context13.sent;
+
+          if (response.status === 409) {
+            emailEdit.classList.add('border-wrong');
+            msgEmailEdit.classList.add('visible');
+            msgEmailEdit.innerText = 'El email ya existe';
+          }
+
+          _context13.next = 11;
+          return regeneratorRuntime.awrap(response.json());
+
+        case 11:
+          data = _context13.sent;
+          console.log(data); //getUsers()
+
+        case 13:
+        case "end":
+          return _context13.stop();
+      }
     }
-    const response = await fetch(`http://localhost:3000/contacts/${info.contactId}`, options)
-    const data = await response.json()
-    console.log(data)
-    //getUsers()
-} */
-//ui kit
+  });
+} //ui kit
 //inicio
 //nuevo contacto
 //editar contacto

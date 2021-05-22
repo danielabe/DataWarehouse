@@ -1835,7 +1835,7 @@ function validateEmailContactsPutQuery(req, res, next) {
 
           email = req.body.email;
           _context59.next = 4;
-          return regeneratorRuntime.awrap(db.query("SELECT email FROM contacts", {
+          return regeneratorRuntime.awrap(db.query("SELECT email FROM contacts WHERE contact_id != ".concat(req.params.contactId), {
             type: QueryTypes.SELECT
           }));
 

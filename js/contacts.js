@@ -94,6 +94,12 @@ const prefWhatsappListEdit = document.getElementById('prefWhatsappListEdit')
 const prefInstagramListEdit = document.getElementById('prefInstagramListEdit')
 const prefFacabookListEdit = document.getElementById('prefFacabookListEdit')
 const prefLinkedinListEdit = document.getElementById('prefLinkedinListEdit')
+const saveContactEdit = document.getElementById('saveContactEdit')
+const msgFirstEdit = document.getElementById('msgFirstEdit')
+const msgLastEdit = document.getElementById('msgLastEdit')
+const msgPosEdit = document.getElementById('msgPosEdit')
+const msgEmailEdit = document.getElementById('msgEmailEdit')
+const msgAddressEdit = document.getElementById('msgAddressEdit')
 
 let contIdArray = []
 let dataCheckbox = []
@@ -126,6 +132,7 @@ let varEnablePrefL = 0
 let varRegId
 let varCountId
 let varCityId
+let varEditContact
 let varCompanyId = null
 
 let varCheckboxAll = 'unselected'
@@ -1279,6 +1286,7 @@ function closeWindowNewContact(event) {
 saveContact.addEventListener('click', (event) => addContact(event))
 
 async function addContact(event) {
+    msgEmail.innerText = 'Error en datos ingresados'
     event.preventDefault()
     const channels = [
         { channel_id: channelsDB[0].channelId, user_account: telephone.value, preference: selectTelephone.innerText },
@@ -1308,7 +1316,9 @@ async function addContact(event) {
         preferred_channels: filteredChannels
     }
     
-    validateData(contact)
+    validateData(contact, firstname, msgFirst, lastname, msgLast, position, msgPos, email, msgEmail, 
+        company, selectCompany, regionSelect, regionsList, countrySelect, countriesList, citySelect, 
+        citiesList, address, msgAddress)
     const options = {
         method: 'POST',
         body: JSON.stringify(contact),
@@ -1334,33 +1344,34 @@ async function addContact(event) {
     closeWindowNewContact(event)
 }
 
-function validateData(contact) {
+function validateData(contact, first, msgFirst, last, msgLast, pos, msgPos, email, msgEmail, comp, 
+    selectComp, regSelect, regList, countSelect, countList, citSelect, citList, address, msgAddress) {
     if(contact.firstname === '') {
-        firstname.classList.add('border-wrong')
+        first.classList.add('border-wrong')
         msgFirst.classList.add('visible')
-        firstname.addEventListener('keyup', () => {
-            if(firstname.value !== '') {
-                firstname.classList.remove('border-wrong')
+        first.addEventListener('keyup', () => {
+            if(first.value !== '') {
+                first.classList.remove('border-wrong')
                 msgFirst.classList.remove('visible')
             }
         })
     }
     if(contact.lastname === '') {
-        lastname.classList.add('border-wrong')
+        last.classList.add('border-wrong')
         msgLast.classList.add('visible')
-        lastname.addEventListener('keyup', () => {
-            if(lastname.value !== '') {
-                lastname.classList.remove('border-wrong')
+        last.addEventListener('keyup', () => {
+            if(last.value !== '') {
+                last.classList.remove('border-wrong')
                 msgLast.classList.remove('visible')
             }
         })
     }
     if(contact.position === '') {
-        position.classList.add('border-wrong')
+        pos.classList.add('border-wrong')
         msgPos.classList.add('visible')
-        position.addEventListener('keyup', () => {
-            if(position.value !== '') {
-                position.classList.remove('border-wrong')
+        pos.addEventListener('keyup', () => {
+            if(pos.value !== '') {
+                pos.classList.remove('border-wrong')
                 msgPos.classList.remove('visible')
             }
         })
@@ -1376,34 +1387,34 @@ function validateData(contact) {
         })
     }
     if(contact.company_id === null) {
-        company.classList.add('border-wrong')
-        selectCompany.addEventListener('click', () => {
-            if(company.innerText !== 'Seleccionar compañía') {
-                company.classList.remove('border-wrong')
+        comp.classList.add('border-wrong')
+        selectComp.addEventListener('click', () => {
+            if(comp.innerText !== 'Seleccionar compañía') {
+                comp.classList.remove('border-wrong')
             }
         })
     }
-    if(regionSelect.innerText === 'Seleccionar región') {
-        regionSelect.classList.add('border-wrong')
-        regionsList.addEventListener('click', () => {
-            if(regionSelect.innerText !== 'Seleccionar región') {
-                regionSelect.classList.remove('border-wrong')
+    if(regSelect.innerText === 'Seleccionar región') {
+        regSelect.classList.add('border-wrong')
+        regList.addEventListener('click', () => {
+            if(regSelect.innerText !== 'Seleccionar región') {
+                regSelect.classList.remove('border-wrong')
             }
         })
     }
-    if(countrySelect.innerText === 'Seleccionar país') {
-        countrySelect.classList.add('border-wrong')
-        countriesList.addEventListener('click', () => {
-            if(countrySelect.innerText !== 'Seleccionar país') {
-                countrySelect.classList.remove('border-wrong')
+    if(countSelect.innerText === 'Seleccionar país') {
+        countSelect.classList.add('border-wrong')
+        countList.addEventListener('click', () => {
+            if(countSelect.innerText !== 'Seleccionar país') {
+                countSelect.classList.remove('border-wrong')
             }
         })
     }
-    if(contact.city_id === undefined) {
-        citySelect.classList.add('border-wrong')
-        citiesList.addEventListener('click', () => {
-            if(citySelect.innerText !== 'Seleccionar ciudad') {
-                citySelect.classList.remove('border-wrong')
+    if(contact.city_id === undefined || contact.city_id === null) {
+        citSelect.classList.add('border-wrong')
+        citList.addEventListener('click', () => {
+            if(citSelect.innerText !== 'Seleccionar ciudad') {
+                citSelect.classList.remove('border-wrong')
             }
         })
     }
@@ -1424,7 +1435,11 @@ async function contactEdition(info) {
     console.log(info.cityName)
     varRegId = +info.regionId
     varCountId = +info.countryId
+    varCityId = +info.cityId
+    varCompanyId = +info.companyId
+    varEditContact = info.contactId
     varEnableCity = 1
+    console.log(info.cityName)
     if(info.cityName !== '') {
         addressEdit.classList.remove('disable')
         addressEdit.disabled = false
@@ -1524,7 +1539,25 @@ function closeWindowEditContact(event) {
     citySelect.classList.add('disable')
     interestsList.classList.add('none')
     interestsListEdit.classList.add('none')
+
     main.classList.remove('height-add-ctc')
+    firstnameEdit.classList.remove('border-wrong')
+    msgFirstEdit.classList.remove('visible')
+    lastnameEdit.classList.remove('border-wrong')
+    msgLastEdit.classList.remove('visible')
+    positionEdit.classList.remove('border-wrong')
+    msgPosEdit.classList.remove('visible')
+    emailEdit.classList.remove('border-wrong')
+    msgEmailEdit.classList.remove('visible')
+    msgEmailEdit.innerText = 'Error en datos ingresados'
+    companyEdit.classList.remove('border-wrong')
+    regionSelectEdit.classList.remove('border-wrong')
+    countrySelectEdit.classList.remove('border-wrong')
+    citySelectEdit.classList.remove('border-wrong')
+    addressEdit.classList.remove('border-wrong')
+    msgAddressEdit.classList.remove('visible')
+    citySelectEdit.classList.remove('disable')
+
     telephoneEdit.value = ''
     whatsappEdit.value = ''
     instagramEdit.value = ''
@@ -1683,19 +1716,43 @@ selectLinkedinEdit.addEventListener('click', () => {
     }
 })
 
+//save edited contact
+saveContactEdit.addEventListener('click', (event) => editContact(event))
 
-/* async function editContact(info, contactList) {  
+async function editContact(event/* , info, contactList */) {
+    event.preventDefault()  
+    const modifiedContact = {
+        firstname: firstnameEdit.value,
+        lastname: lastnameEdit.value,
+        email: emailEdit.value,
+        city_id: varCityId,
+        address: addressEdit.value,
+        company_id: varCompanyId,
+        position: positionEdit.value,
+        interest: +interestSelectEdit.innerText.slice(0, -1),
+    }
+    console.log(modifiedContact)
+    validateData(modifiedContact, firstnameEdit, msgFirstEdit, lastnameEdit, msgLastEdit, positionEdit, 
+        msgPosEdit, emailEdit, msgEmailEdit, companyEdit, selectCompanyEdit, regionSelectEdit, regionsListEdit,
+        countrySelectEdit, countriesListEdit, citySelectEdit, citiesListEdit, addressEdit, msgAddressEdit)
     const options = {                   
         method: 'PUT',  
+        body: JSON.stringify(modifiedContact),
         headers: {
-            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
+            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`,
+            "Content-Type": "application/json"
         }
     }
-    const response = await fetch(`http://localhost:3000/contacts/${info.contactId}`, options)
+    const response = await fetch(`http://localhost:3000/contacts/${varEditContact}`, options)
+    if(response.status === 409) {
+        emailEdit.classList.add('border-wrong')
+        msgEmailEdit.classList.add('visible')
+        msgEmailEdit.innerText = 'El email ya existe'
+    }
     const data = await response.json()
     console.log(data)
     //getUsers()
-} */
+}
 
 //ui kit
 //inicio

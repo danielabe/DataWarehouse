@@ -756,7 +756,7 @@ async function getContact(contactId, req, res) {
 async function validateEmailContactsPutQuery(req, res, next) {
     if(req.body.email) {
         const email = req.body.email
-        const emails = await db.query(`SELECT email FROM contacts`, {
+        const emails = await db.query(`SELECT email FROM contacts WHERE contact_id != ${req.params.contactId}`, {
             type: QueryTypes.SELECT
         })
         const emailsArray = emails.map(contact => contact.email)
