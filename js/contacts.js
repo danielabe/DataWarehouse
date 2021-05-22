@@ -1155,7 +1155,8 @@ function enablePrefLink(linked, selectLinked) {
 selectLinkedin.addEventListener('click', () => {
     if(varEnablePrefL === 1) {
         if(varPrefLink === 0) {
-            showPrefLink()
+            const preference = 'pref-link'
+            showPrefLink(prefLinkedinList, preference, selectLinkedin)
         } else if(varPrefLink === 1) {
             prefLinkedinList.classList.add('none')
             varPrefLink = 0
@@ -1163,19 +1164,19 @@ selectLinkedin.addEventListener('click', () => {
     }
 })
 
-function showPrefLink() {
-    prefLinkedinList.classList.remove('none')
+function showPrefLink(prefLinkList, preference, selectLink) {
+    prefLinkList.classList.remove('none')
     varPrefLink = 1
-    const prefArray = document.querySelectorAll('.pref-link')
+    const prefArray = document.querySelectorAll(`.${preference}`)
     prefArray.forEach(element => {
-        element.addEventListener('click', () => selectPrefLinkFunction(element.innerText))
+        element.addEventListener('click', () => selectPrefLinkFunction(element.innerText, prefLinkList, selectLink))
     })
 }
 
-function selectPrefLinkFunction(pref) {
+function selectPrefLinkFunction(pref, prefLinkList, selectLink) {
     varPrefLink = 0
-    prefLinkedinList.classList.add('none')
-    preferenceIcons(pref, selectLinkedin)
+    prefLinkList.classList.add('none')
+    preferenceIcons(pref, selectLink)
 }
 
 function preferenceIcons(pref, select) {
@@ -1541,6 +1542,7 @@ function closeWindowEditContact(event) {
     varEnablePrefW = 0
     varEnablePrefI = 0
     varEnablePrefF = 0
+    varEnablePrefL = 0
 }
 
 //select company
@@ -1657,6 +1659,20 @@ selectFacebookEdit.addEventListener('click', () => {
         }
     }
 })
+
+//linkedin
+selectLinkedinEdit.addEventListener('click', () => {
+    if(varEnablePrefL === 1) {
+        if(varPrefLink === 0) {
+            const preference = 'pref-link-edit'
+            showPrefLink(prefLinkedinListEdit, preference, selectLinkedinEdit)
+        } else if(varPrefLink === 1) {
+            prefLinkedinListEdit.classList.add('none')
+            varPrefLink = 0
+        }
+    }
+})
+
 //habilitar preferencia
 /* async function editContact(info, contactList) {  
     const options = {                   
