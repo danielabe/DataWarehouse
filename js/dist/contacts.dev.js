@@ -2069,12 +2069,39 @@ saveContactEdit.addEventListener('click', function (event) {
 });
 
 function editContact(event) {
-  var modifiedContact, options, response, data;
+  var channels, filteredChannels, modifiedContact, options, response, data;
   return regeneratorRuntime.async(function editContact$(_context13) {
     while (1) {
       switch (_context13.prev = _context13.next) {
         case 0:
           event.preventDefault();
+          channels = [{
+            channel_id: channelsDB[0].channelId,
+            user_account: telephoneEdit.value,
+            preference: selectTelephoneEdit.innerText
+          }, {
+            channel_id: channelsDB[1].channelId,
+            user_account: whatsappEdit.value,
+            preference: selectWhatsappEdit.innerText
+          }, {
+            channel_id: channelsDB[2].channelId,
+            user_account: instagramEdit.value,
+            preference: selectInstagramEdit.innerText
+          }, {
+            channel_id: channelsDB[3].channelId,
+            user_account: facebookEdit.value,
+            preference: selectFacebookEdit.innerText
+          }, {
+            channel_id: channelsDB[4].channelId,
+            user_account: linkedinEdit.value,
+            preference: selectLinkedinEdit.innerText
+          }];
+          filteredChannels = [];
+          channels.forEach(function (chan) {
+            if (chan.user_account !== '') {
+              filteredChannels = filteredChannels.concat(chan);
+            }
+          });
           modifiedContact = {
             firstname: firstnameEdit.value,
             lastname: lastnameEdit.value,
@@ -2083,9 +2110,9 @@ function editContact(event) {
             address: addressEdit.value,
             company_id: varCompanyId,
             position: positionEdit.value,
-            interest: +interestSelectEdit.innerText.slice(0, -1)
+            interest: +interestSelectEdit.innerText.slice(0, -1),
+            preferred_channels: filteredChannels
           };
-          console.log(modifiedContact);
           validateData(modifiedContact, firstnameEdit, msgFirstEdit, lastnameEdit, msgLastEdit, positionEdit, msgPosEdit, emailEdit, msgEmailEdit, companyEdit, selectCompanyEdit, regionSelectEdit, regionsListEdit, countrySelectEdit, countriesListEdit, citySelectEdit, citiesListEdit, addressEdit, msgAddressEdit);
           options = {
             method: 'PUT',
@@ -2095,10 +2122,10 @@ function editContact(event) {
               "Content-Type": "application/json"
             }
           };
-          _context13.next = 7;
+          _context13.next = 9;
           return regeneratorRuntime.awrap(fetch("http://localhost:3000/contacts/".concat(varEditContact), options));
 
-        case 7:
+        case 9:
           response = _context13.sent;
 
           if (response.status === 409) {
@@ -2107,15 +2134,15 @@ function editContact(event) {
             msgEmailEdit.innerText = 'El email ya existe';
           }
 
-          _context13.next = 11;
+          _context13.next = 13;
           return regeneratorRuntime.awrap(response.json());
 
-        case 11:
+        case 13:
           data = _context13.sent;
           console.log(data);
           closeWindowEditContact(event);
 
-        case 14:
+        case 16:
         case "end":
           return _context13.stop();
       }

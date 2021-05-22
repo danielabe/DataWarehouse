@@ -1,6 +1,7 @@
 const { QueryTypes } = require("sequelize")
 const { db } = require("./db")
 const jwt = require('jsonwebtoken')
+const { query } = require("express")
 
 const authorizationPassword = 'tmo$Q$bG5xR56'
 
@@ -811,7 +812,7 @@ async function modifycontact(req, res) {
         company_id: req.body.company_id || contact[0].company_id,
         position: req.body.position || contact[0].position,
         interest: req.body.interest || contact[0].interest,
-        /* preferred_channels: req.body.preferred_channels */ /* || chan[0].preferred_channels */
+        /* preferred_channels: req.body.preferred_channels || chan[0].preferred_channels */
     }
     const modified = await db.query(`
     UPDATE contacts SET firstname = :firstname, lastname = :lastname, email = :email, city_id = :city_id, 
@@ -821,6 +822,18 @@ async function modifycontact(req, res) {
         replacements: modifiedContact,
         type: QueryTypes.UPDATE
     })
+    const deleteChannels = await db.query(`
+    DELETE FROM contacts_channels WHERE contact_id = ${req.params.contactId}
+    `, { type: QueryTypes.DELETE })
+
+    req.body.preferred_channels.forEach(async chan => { 
+        await db.query(`
+    INSERT INTO contacts_channels (contact_id, channel_id, user_account, preference) 
+    VALUES (${req.params.contactId}, ${chan.channel_id}, '${chan.user_account}', '${chan.preference}')
+    `, {
+        replacements: req.body.preferred_channels,
+        type: QueryTypes.INSERT
+    })})
     
     const contactRes = await db.query(`
     SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,

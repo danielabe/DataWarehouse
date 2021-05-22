@@ -1729,6 +1729,19 @@ saveContactEdit.addEventListener('click', (event) => editContact(event))
 
 async function editContact(event) {
     event.preventDefault()  
+    const channels = [
+        { channel_id: channelsDB[0].channelId, user_account: telephoneEdit.value, preference: selectTelephoneEdit.innerText },
+        { channel_id: channelsDB[1].channelId, user_account: whatsappEdit.value, preference: selectWhatsappEdit.innerText },
+        { channel_id: channelsDB[2].channelId, user_account: instagramEdit.value, preference: selectInstagramEdit.innerText },
+        { channel_id: channelsDB[3].channelId, user_account: facebookEdit.value, preference: selectFacebookEdit.innerText },
+        { channel_id: channelsDB[4].channelId, user_account: linkedinEdit.value, preference: selectLinkedinEdit.innerText }
+    ]
+    let filteredChannels = []
+    channels.forEach(chan => {
+        if(chan.user_account !== '') {
+            filteredChannels = filteredChannels.concat(chan)
+        }
+    })
     const modifiedContact = {
         firstname: firstnameEdit.value,
         lastname: lastnameEdit.value,
@@ -1738,8 +1751,9 @@ async function editContact(event) {
         company_id: varCompanyId,
         position: positionEdit.value,
         interest: +interestSelectEdit.innerText.slice(0, -1),
+        preferred_channels: filteredChannels
     }
-    console.log(modifiedContact)
+
     validateData(modifiedContact, firstnameEdit, msgFirstEdit, lastnameEdit, msgLastEdit, positionEdit, 
         msgPosEdit, emailEdit, msgEmailEdit, companyEdit, selectCompanyEdit, regionSelectEdit, regionsListEdit,
         countrySelectEdit, countriesListEdit, citySelectEdit, citiesListEdit, addressEdit, msgAddressEdit)
