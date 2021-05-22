@@ -88,9 +88,12 @@ const selectCompanyEdit = document.getElementById('selectCompanyEdit')
 const regionsListEdit = document.getElementById('regionsListEdit')
 const countriesListEdit = document.getElementById('countriesListEdit')
 const citiesListEdit = document.getElementById('citiesListEdit')
+const interestsListEdit = document.getElementById('interestsListEdit')
 const prefTelephoneListEdit = document.getElementById('prefTelephoneListEdit')
 const prefWhatsappListEdit = document.getElementById('prefWhatsappListEdit')
-const interestsListEdit = document.getElementById('interestsListEdit')
+const prefInstagramListEdit = document.getElementById('prefInstagramListEdit')
+const prefFacabookListEdit = document.getElementById('prefFacabookListEdit')
+const prefLinkedinListEdit = document.getElementById('prefLinkedinListEdit')
 
 let contIdArray = []
 let dataCheckbox = []
@@ -1070,7 +1073,8 @@ function enablePrefInst(instag, selectInstag) {
 selectInstagram.addEventListener('click', () => {
     if(varEnablePrefI === 1) {
         if(varPrefInst === 0) {
-            showPrefInst()
+            const preference = 'pref-inst'
+            showPrefInst(prefInstagramList, preference, selectInstagram)
         } else if(varPrefInst === 1) {
             prefInstagramList.classList.add('none')
             varPrefInst = 0
@@ -1078,19 +1082,19 @@ selectInstagram.addEventListener('click', () => {
     }
 })
 
-function showPrefInst() {
-    prefInstagramList.classList.remove('none')
+function showPrefInst(prefInstList, preference, selectInst) {
+    prefInstList.classList.remove('none')
     varPrefInst = 1
-    const prefArray = document.querySelectorAll('.pref-inst')
+    const prefArray = document.querySelectorAll(`.${preference}`)
     prefArray.forEach(element => {
-        element.addEventListener('click', () => selectPrefInstFunction(element.innerText))
+        element.addEventListener('click', () => selectPrefInstFunction(element.innerText, prefInstList, selectInst))
     })
 }
 
-function selectPrefInstFunction(pref) {
+function selectPrefInstFunction(pref, prefInstList, selectInst) {
     varPrefInst = 0
-    prefInstagramList.classList.add('none')
-    preferenceIcons(pref, selectInstagram)
+    prefInstList.classList.add('none')
+    preferenceIcons(pref, selectInst)
 }
 
 //facebook
@@ -1534,6 +1538,7 @@ function closeWindowEditContact(event) {
     varEnableCity = 0
     varEnablePrefT = 0
     varEnablePrefW = 0
+    varEnablePrefI = 0
 }
 
 //select company
@@ -1621,6 +1626,19 @@ selectWhatsappEdit.addEventListener('click', () => {
         } else if(varPrefWsp === 1) {
             prefWhatsappListEdit.classList.add('none')
             varPrefWsp = 0
+        }
+    }
+})
+
+//instagram
+selectInstagramEdit.addEventListener('click', () => {
+    if(varEnablePrefI === 1) {
+        if(varPrefInst === 0) {
+            const preference = 'pref-inst-edit'
+            showPrefInst(prefInstagramListEdit, preference, selectInstagramEdit)
+        } else if(varPrefInst === 1) {
+            prefInstagramListEdit.classList.add('none')
+            varPrefInst = 0
         }
     }
 })

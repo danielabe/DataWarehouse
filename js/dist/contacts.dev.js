@@ -90,9 +90,12 @@ var selectCompanyEdit = document.getElementById('selectCompanyEdit');
 var regionsListEdit = document.getElementById('regionsListEdit');
 var countriesListEdit = document.getElementById('countriesListEdit');
 var citiesListEdit = document.getElementById('citiesListEdit');
+var interestsListEdit = document.getElementById('interestsListEdit');
 var prefTelephoneListEdit = document.getElementById('prefTelephoneListEdit');
 var prefWhatsappListEdit = document.getElementById('prefWhatsappListEdit');
-var interestsListEdit = document.getElementById('interestsListEdit');
+var prefInstagramListEdit = document.getElementById('prefInstagramListEdit');
+var prefFacabookListEdit = document.getElementById('prefFacabookListEdit');
+var prefLinkedinListEdit = document.getElementById('prefLinkedinListEdit');
 var contIdArray = [];
 var dataCheckbox = [];
 var channelsDB = [];
@@ -1330,7 +1333,8 @@ function enablePrefInst(instag, selectInstag) {
 selectInstagram.addEventListener('click', function () {
   if (varEnablePrefI === 1) {
     if (varPrefInst === 0) {
-      showPrefInst();
+      var preference = 'pref-inst';
+      showPrefInst(prefInstagramList, preference, selectInstagram);
     } else if (varPrefInst === 1) {
       prefInstagramList.classList.add('none');
       varPrefInst = 0;
@@ -1338,21 +1342,21 @@ selectInstagram.addEventListener('click', function () {
   }
 });
 
-function showPrefInst() {
-  prefInstagramList.classList.remove('none');
+function showPrefInst(prefInstList, preference, selectInst) {
+  prefInstList.classList.remove('none');
   varPrefInst = 1;
-  var prefArray = document.querySelectorAll('.pref-inst');
+  var prefArray = document.querySelectorAll(".".concat(preference));
   prefArray.forEach(function (element) {
     element.addEventListener('click', function () {
-      return selectPrefInstFunction(element.innerText);
+      return selectPrefInstFunction(element.innerText, prefInstList, selectInst);
     });
   });
 }
 
-function selectPrefInstFunction(pref) {
+function selectPrefInstFunction(pref, prefInstList, selectInst) {
   varPrefInst = 0;
-  prefInstagramList.classList.add('none');
-  preferenceIcons(pref, selectInstagram);
+  prefInstList.classList.add('none');
+  preferenceIcons(pref, selectInst);
 } //facebook
 
 
@@ -1884,6 +1888,7 @@ function closeWindowEditContact(event) {
   varEnableCity = 0;
   varEnablePrefT = 0;
   varEnablePrefW = 0;
+  varEnablePrefI = 0;
 } //select company
 
 
@@ -1965,6 +1970,18 @@ selectWhatsappEdit.addEventListener('click', function () {
     } else if (varPrefWsp === 1) {
       prefWhatsappListEdit.classList.add('none');
       varPrefWsp = 0;
+    }
+  }
+}); //instagram
+
+selectInstagramEdit.addEventListener('click', function () {
+  if (varEnablePrefI === 1) {
+    if (varPrefInst === 0) {
+      var preference = 'pref-inst-edit';
+      showPrefInst(prefInstagramListEdit, preference, selectInstagramEdit);
+    } else if (varPrefInst === 1) {
+      prefInstagramListEdit.classList.add('none');
+      varPrefInst = 0;
     }
   }
 });
