@@ -969,15 +969,15 @@ function selectInterestFunction(interest, intList, intSelect) {
 
 //contact channels
 //telephone
-telephone.addEventListener('keyup', () => enablePrefTel())
+telephone.addEventListener('keyup', () => enablePrefTel(telephone, selectTelephone))
 
-function enablePrefTel() {
-    if(telephone.value !== '') {
-        selectTelephone.classList.remove('disable')
+function enablePrefTel(teleph, selectTeleph) {
+    if(teleph.value !== '') {
+        selectTeleph.classList.remove('disable')
         varEnablePrefT = 1
-    } else if(telephone.value === '') {
-        selectTelephone.classList.add('disable')
-        selectTelephone.innerHTML = `Sin preferencia<i class="fas fa-caret-down"></i>`
+    } else if(teleph.value === '') {
+        selectTeleph.classList.add('disable')
+        selectTeleph.innerHTML = `Sin preferencia<i class="fas fa-caret-down"></i>`
         varEnablePrefT = 0
     }
 }
@@ -1009,15 +1009,15 @@ function selectPrefTelFunction(pref) {
 }
 
 //whatsapp
-whatsapp.addEventListener('keyup', () => enablePrefWsp())
+whatsapp.addEventListener('keyup', () => enablePrefWsp(whatsapp, selectWhatsapp))
 
-function enablePrefWsp() {
-    if(whatsapp.value !== '') {
-        selectWhatsapp.classList.remove('disable')
+function enablePrefWsp(whats, selectWhats) {
+    if(whats.value !== '') {
+        selectWhats.classList.remove('disable')
         varEnablePrefW = 1
-    } else if(whatsapp.value === '') {
-        selectWhatsapp.classList.add('disable')
-        selectWhatsapp.innerHTML = `Sin preferencia<i class="fas fa-caret-down"></i>`
+    } else if(whats.value === '') {
+        selectWhats.classList.add('disable')
+        selectWhats.innerHTML = `Sin preferencia<i class="fas fa-caret-down"></i>`
         varEnablePrefW = 0
     }
 }
@@ -1049,15 +1049,15 @@ function selectPrefWspFunction(pref) {
 }
 
 //instagram
-instagram.addEventListener('keyup', () => enablePrefInst())
+instagram.addEventListener('keyup', () => enablePrefInst(instagram, selectInstagram))
 
-function enablePrefInst() {
-    if(instagram.value !== '') {
-        selectInstagram.classList.remove('disable')
+function enablePrefInst(instag, selectInstag) {
+    if(instag.value !== '') {
+        selectInstag.classList.remove('disable')
         varEnablePrefI = 1
-    } else if(instagram.value === '') {
-        selectInstagram.classList.add('disable')
-        selectInstagram.innerHTML = `Sin preferencia<i class="fas fa-caret-down"></i>`
+    } else if(instag.value === '') {
+        selectInstag.classList.add('disable')
+        selectInstag.innerHTML = `Sin preferencia<i class="fas fa-caret-down"></i>`
         varEnablePrefI = 0
     }
 }
@@ -1089,15 +1089,15 @@ function selectPrefInstFunction(pref) {
 }
 
 //facebook
-facebook.addEventListener('keyup', () => enablePrefFace())
+facebook.addEventListener('keyup', () => enablePrefFace(facebook, selectFacebook))
 
-function enablePrefFace() {
-    if(facebook.value !== '') {
-        selectFacebook.classList.remove('disable')
+function enablePrefFace(faceb, selectFaceb) {
+    if(faceb.value !== '') {
+        selectFaceb.classList.remove('disable')
         varEnablePrefF = 1
-    } else if(facebook.value === '') {
-        selectFacebook.classList.add('disable')
-        selectFacebook.innerHTML = `Sin preferencia<i class="fas fa-caret-down"></i>`
+    } else if(faceb.value === '') {
+        selectFaceb.classList.add('disable')
+        selectFaceb.innerHTML = `Sin preferencia<i class="fas fa-caret-down"></i>`
         varEnablePrefF = 0
     }
 }
@@ -1129,15 +1129,15 @@ function selectPrefFaceFunction(pref) {
 }
 
 //linkedin
-linkedin.addEventListener('keyup', () => enablePrefLink())
+linkedin.addEventListener('keyup', () => enablePrefLink(linkedin, selectLinkedin))
 
-function enablePrefLink() {
-    if(linkedin.value !== '') {
-        selectLinkedin.classList.remove('disable')
+function enablePrefLink(linked, selectLinked) {
+    if(linked.value !== '') {
+        selectLinked.classList.remove('disable')
         varEnablePrefL = 1
-    } else if(linkedin.value === '') {
-        selectLinkedin.classList.add('disable')
-        selectLinkedin.innerHTML = `Sin preferencia<i class="fas fa-caret-down"></i>`
+    } else if(linked.value === '') {
+        selectLinked.classList.add('disable')
+        selectLinked.innerHTML = `Sin preferencia<i class="fas fa-caret-down"></i>`
         varEnablePrefL = 0
     }
 }
@@ -1433,6 +1433,11 @@ async function contactEdition(info) {
     const data = await response.json()
     console.log(data)
     loadData(data)
+    enablePrefTel(telephoneEdit, selectTelephoneEdit)
+    enablePrefWsp(whatsappEdit, selectWhatsappEdit)
+    enablePrefInst(instagramEdit, selectInstagramEdit)
+    enablePrefFace(facebookEdit, selectFacebookEdit)
+    enablePrefLink(linkedinEdit, selectLinkedinEdit)
 }
 
 function loadData(data) {
@@ -1465,31 +1470,31 @@ function loadData(data) {
     data.preferred_channels.forEach((chan, i) => {
         if(chan.channel_name === tel.innerText) {
             telephoneEdit.value = data.preferred_channels[i].user_account
-            selectTelephoneEdit.innerHTML = `${data.preferred_channels[i].preference}<i class="fas fa-caret-down"></i>`
+            preferenceIcons(data.preferred_channels[i].preference, selectTelephoneEdit)
         }
     })
     data.preferred_channels.forEach((chan, i) => {
         if(chan.channel_name === wsp.innerText) {
             whatsappEdit.value = data.preferred_channels[i].user_account
-            selectWhatsappEdit.innerHTML = `${data.preferred_channels[i].preference}<i class="fas fa-caret-down"></i>`
+            preferenceIcons(data.preferred_channels[i].preference, selectWhatsappEdit)
         }
     })
     data.preferred_channels.forEach((chan, i) => {
         if(chan.channel_name === inst.innerText) {
             instagramEdit.value = data.preferred_channels[i].user_account
-            selectInstagramEdit.innerHTML = `${data.preferred_channels[i].preference}<i class="fas fa-caret-down"></i>`
+            preferenceIcons(data.preferred_channels[i].preference, selectInstagramEdit)
         }
     })
     data.preferred_channels.forEach((chan, i) => {
         if(chan.channel_name === face.innerText) {
             facebookEdit.value = data.preferred_channels[i].user_account
-            selectFacebookEdit.innerHTML = `${data.preferred_channels[i].preference}<i class="fas fa-caret-down"></i>`
+            preferenceIcons(data.preferred_channels[i].preference, selectFacebookEdit)
         }
     })
     data.preferred_channels.forEach((chan, i) => {
         if(chan.channel_name === link.innerText) {
             linkedinEdit.value = data.preferred_channels[i].user_account
-            selectLinkedinEdit.innerHTML = `${data.preferred_channels[i].preference}<i class="fas fa-caret-down"></i>`
+            preferenceIcons(data.preferred_channels[i].preference, selectLinkedinEdit)
         }
     })
 }
@@ -1509,6 +1514,11 @@ function closeWindowEditContact(event) {
     interestsList.classList.add('none')
     interestsListEdit.classList.add('none')
     main.classList.remove('height-add-ctc')
+    telephoneEdit.value = ''
+    whatsappEdit.value = ''
+    instagramEdit.value = ''
+    facebookEdit.value = ''
+    linkedinEdit.value = ''
     compLbl.style.top = '0px'
     compLblEdit.style.top = '0px'
     varSelectCompany = 0
