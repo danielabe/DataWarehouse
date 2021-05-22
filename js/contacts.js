@@ -985,7 +985,8 @@ function enablePrefTel(teleph, selectTeleph) {
 selectTelephone.addEventListener('click', () => {
     if(varEnablePrefT === 1) {
         if(varPrefTel === 0) {
-            showPrefTel()
+            const preference = 'pref-tel'
+            showPrefTel(prefTelephoneList, preference, selectTelephone)
         } else if(varPrefTel === 1) {
             prefTelephoneList.classList.add('none')
             varPrefTel = 0
@@ -993,19 +994,19 @@ selectTelephone.addEventListener('click', () => {
     }
 })
 
-function showPrefTel() {
-    prefTelephoneList.classList.remove('none')
+function showPrefTel(prefTelList, preference, selectTeleph) {
+    prefTelList.classList.remove('none')
     varPrefTel = 1
-    const prefArray = document.querySelectorAll('.pref-tel')
+    const prefArray = document.querySelectorAll(`.${preference}`)
     prefArray.forEach(element => {
-        element.addEventListener('click', () => selectPrefTelFunction(element.innerText))
+        element.addEventListener('click', () => selectPrefTelFunction(element.innerText, prefTelList, selectTeleph))
     })
 }
 
-function selectPrefTelFunction(pref) {
+function selectPrefTelFunction(pref, prefTelList, selectTeleph) {
     varPrefTel = 0
-    prefTelephoneList.classList.add('none')
-    preferenceIcons(pref, selectTelephone)
+    prefTelList.classList.add('none')
+    preferenceIcons(pref, selectTeleph)
 }
 
 //whatsapp
@@ -1527,6 +1528,7 @@ function closeWindowEditContact(event) {
     varSelectInterest = 0
     varEnableCountry = 0
     varEnableCity = 0
+    varEnablePrefT = 0
 }
 
 //select company
@@ -1588,6 +1590,20 @@ interestSelectEdit.addEventListener('click', () => {
     } else if(varSelectInterest === 1) {
         interestsListEdit.classList.add('none')
         varSelectInterest = 0
+    }
+})
+const prefTelephoneListEdit = document.getElementById('prefTelephoneListEdit')
+//select preferences
+//telephone
+selectTelephoneEdit.addEventListener('click', () => {
+    if(varEnablePrefT === 1) {
+        if(varPrefTel === 0) {
+            const preference = 'pref-tel-edit'
+            showPrefTel(prefTelephoneListEdit, preference, selectTelephoneEdit)
+        } else if(varPrefTel === 1) {
+            prefTelephoneListEdit.classList.add('none')
+            varPrefTel = 0
+        }
     }
 })
 /* async function editContact(info, contactList) {  
