@@ -212,6 +212,9 @@ main {
 .btn {
   width: 100px;
 }
+.btn:hover {
+  cursor: pointer;
+}
 
 .add-reg {
   width: 120px;
@@ -230,7 +233,7 @@ main {
 }
 
 .reg-title {
-  width: 400px;
+  /* width: 400px; */
   font-size: 20px;
   font-weight: 400;
 }
@@ -275,11 +278,17 @@ main {
 .edit {
   width: 50px;
   margin: 0 5px 0 5px;
+  /* background-color: #0683F9; */
 }
 
 .delete {
   width: 60px;
   margin: 0 5px 0 5px;
+  background-color: #F03738;
+  /* #F03738 */
+}
+.delete:hover {
+  background-color: #bb3e3f;
 }
 
 .city-container {

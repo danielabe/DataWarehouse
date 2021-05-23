@@ -38,16 +38,27 @@ function getLocations() {
           data.forEach(function (reg) {
             var region = document.createElement('li');
             var countryList = document.createElement('ul');
+            var btnEditRegion = document.createElement('button');
+            var btnDeleteRegion = document.createElement('button');
             var btnAddCountry = document.createElement('button');
+            var regionAndButtons = document.createElement('div');
             var regContainer = document.createElement('div');
             var regTitle = document.createElement('h4');
             regTitle.innerText = reg.region_name;
+            btnEditRegion.innerText = 'Edit';
+            btnDeleteRegion.innerText = 'Delete';
             btnAddCountry.innerText = 'Add country';
             region.classList.add('l-item');
+            btnEditRegion.classList = 'btn edit';
+            btnDeleteRegion.classList = 'btn delete';
             btnAddCountry.classList = 'btn add';
             regContainer.classList.add('reg-container');
             regTitle.classList.add('reg-title');
-            regContainer.appendChild(regTitle);
+            regionAndButtons.classList.add('count-btn');
+            regionAndButtons.appendChild(regTitle);
+            regionAndButtons.appendChild(btnEditRegion);
+            regionAndButtons.appendChild(btnDeleteRegion);
+            regContainer.appendChild(regionAndButtons);
             regContainer.appendChild(btnAddCountry);
             region.appendChild(regContainer);
             region.appendChild(countryList);

@@ -24,19 +24,30 @@ async function getLocations() {
     data.forEach(reg => {
         const region = document.createElement('li')
         const countryList = document.createElement('ul')
+        const btnEditRegion = document.createElement('button')
+        const btnDeleteRegion = document.createElement('button')
         const btnAddCountry = document.createElement('button')
+        const regionAndButtons = document.createElement('div')
         const regContainer = document.createElement('div')
         const regTitle = document.createElement('h4')
 
         regTitle.innerText = reg.region_name
+        btnEditRegion.innerText = 'Edit'
+        btnDeleteRegion.innerText = 'Delete'
         btnAddCountry.innerText = 'Add country'
 
         region.classList.add('l-item')
+        btnEditRegion.classList = 'btn edit'
+        btnDeleteRegion.classList = 'btn delete'
         btnAddCountry.classList = 'btn add'
         regContainer.classList.add('reg-container')
         regTitle.classList.add('reg-title')
+        regionAndButtons.classList.add('count-btn')
 
-        regContainer.appendChild(regTitle)
+        regionAndButtons.appendChild(regTitle)
+        regionAndButtons.appendChild(btnEditRegion)
+        regionAndButtons.appendChild(btnDeleteRegion)
+        regContainer.appendChild(regionAndButtons)
         regContainer.appendChild(btnAddCountry)
         region.appendChild(regContainer)
         region.appendChild(countryList)
