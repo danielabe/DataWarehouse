@@ -865,11 +865,21 @@ async function deleteContact(contactId, req, res) {
         replacements: [contactId],
         type: QueryTypes.SELECT 
     })
+    const channels = await db.query(`SELECT * FROM contacts_channels WHERE contact_id = ?`, {
+        replacements: [contactId],
+        type: QueryTypes.SELECT 
+    })
     const deleted = await db.query(`DELETE FROM contacts WHERE contact_id = ?`, {
         replacements: [contactId],
         type: QueryTypes.DELETE
     })
-    res.status(200).json(contact)
+    const deletedChannels = await db.query(`DELETE FROM contacts_channels WHERE contact_id = ?`, {
+        replacements: [contactId],
+        type: QueryTypes.DELETE
+    })
+    /* res.status(200).json(contact) */
+    const contactAndChannels = Object.assign( {} , contact[0], { preferred_channels: channels})
+    res.status(200).json(Object.assign( contactAndChannels ))
 }
 
 async function validateChannelIdAddQuery(req, res, next) {

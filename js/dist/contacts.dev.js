@@ -401,24 +401,25 @@ function deleteContact(info
 
         case 7:
           data = _context3.sent;
+          console.log(data);
           checkAfterSortAndSearch(); //no se si funciona el data, con o sin data va igual, no se si es correcto
 
           darkImageEditCtc.style.visibility = 'visible';
           main.classList.remove('height-add-ctc');
-          _context3.next = 16;
+          _context3.next = 17;
           break;
 
-        case 13:
-          _context3.prev = 13;
+        case 14:
+          _context3.prev = 14;
           _context3.t0 = _context3["catch"](1);
           return _context3.abrupt("return", _context3.t0);
 
-        case 16:
+        case 17:
         case "end":
           return _context3.stop();
       }
     }
-  }, null, null, [[1, 13]]);
+  }, null, null, [[1, 14]]);
 }
 
 dltCtcBtn.addEventListener('click', function () {
@@ -2174,6 +2175,6 @@ deleteContactBtn.addEventListener('click', function () {
 //nuevo contacto
 //editar contacto
 //editar canales de contacto
-//borrar canales al borrar contacto 
+//corregir swagger, put de contactos y delte de contactos
 //no refresca al eliminar, crear contacto, provocaba error al ordenar
 //si tengo ganas cambiar los id de los canalaes en el html

@@ -350,6 +350,7 @@ async function deleteContact(info/* , contactsList */) {
     try {
         const response = await fetch(`http://localhost:3000/contacts/${info.contactId}`, options)
         const data = await response.json()
+        console.log(data)
         checkAfterSortAndSearch() //no se si funciona el data, con o sin data va igual, no se si es correcto
         darkImageEditCtc.style.visibility = 'visible'
         main.classList.remove('height-add-ctc')
@@ -1807,6 +1808,6 @@ deleteContactBtn.addEventListener('click', () => {
 
 
 
-//borrar canales al borrar contacto 
+//corregir swagger, put de contactos y delte de contactos
 //no refresca al eliminar, crear contacto, provocaba error al ordenar
 //si tengo ganas cambiar los id de los canalaes en el html

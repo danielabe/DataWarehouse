@@ -1044,7 +1044,7 @@ paths:
         description: "Contact modified"
         required: true
         schema:
-          $ref: "#/definitions/NewContact"
+          $ref: "#/definitions/NewContactPut"
       responses:
         "200":
           description: "Contact successfully modified"

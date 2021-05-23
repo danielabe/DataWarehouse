@@ -2041,7 +2041,7 @@ function modifycontact(req, res) {
 }
 
 function deleteContact(contactId, req, res) {
-  var contact, deleted;
+  var contact, channels, deleted, deletedChannels, contactAndChannels;
   return regeneratorRuntime.async(function deleteContact$(_context64) {
     while (1) {
       switch (_context64.prev = _context64.next) {
@@ -2055,16 +2055,37 @@ function deleteContact(contactId, req, res) {
         case 2:
           contact = _context64.sent;
           _context64.next = 5;
+          return regeneratorRuntime.awrap(db.query("SELECT * FROM contacts_channels WHERE contact_id = ?", {
+            replacements: [contactId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 5:
+          channels = _context64.sent;
+          _context64.next = 8;
           return regeneratorRuntime.awrap(db.query("DELETE FROM contacts WHERE contact_id = ?", {
             replacements: [contactId],
             type: QueryTypes.DELETE
           }));
 
-        case 5:
+        case 8:
           deleted = _context64.sent;
-          res.status(200).json(contact);
+          _context64.next = 11;
+          return regeneratorRuntime.awrap(db.query("DELETE FROM contacts_channels WHERE contact_id = ?", {
+            replacements: [contactId],
+            type: QueryTypes.DELETE
+          }));
 
-        case 7:
+        case 11:
+          deletedChannels = _context64.sent;
+
+          /* res.status(200).json(contact) */
+          contactAndChannels = Object.assign({}, contact[0], {
+            preferred_channels: channels
+          });
+          res.status(200).json(Object.assign(contactAndChannels));
+
+        case 14:
         case "end":
           return _context64.stop();
       }
