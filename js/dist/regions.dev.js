@@ -54,7 +54,7 @@ function getLocations() {
             btnAddCountry.classList = 'btn add';
             regContainer.classList.add('reg-container');
             regTitle.classList.add('reg-title');
-            regionAndButtons.classList.add('count-btn');
+            regionAndButtons.classList.add('reg-btn');
             regionAndButtons.appendChild(regTitle);
             regionAndButtons.appendChild(btnEditRegion);
             regionAndButtons.appendChild(btnDeleteRegion);

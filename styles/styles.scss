@@ -239,7 +239,7 @@ main {
 }
 
 .reg-title {
-    /* width: 400px; */
+    width: 180px;
     font-size: 20px;
     font-weight: 400;
 }
@@ -256,7 +256,7 @@ main {
 }
 
 .count-title {
-    width: 130px;
+    width: 180px;
     font-size: 20px;
     font-weight: 400;
 }
@@ -283,12 +283,14 @@ main {
 
 .edit {
     width: 50px;
+    height: 27px;
     margin: 0 5px 0 5px;
     /* background-color: #0683F9; */
 }
 
 .delete {
     width: 60px;
+    height: 27px;
     margin: 0 5px 0 5px;
     background-color: #F03738; /* #F03738 */
     &:hover {
@@ -303,7 +305,7 @@ main {
 }
 
 .city-title {
-    width: 130px;
+    width: 180px;
     font-size: 20px;
     font-weight: 400;
 }
@@ -937,6 +939,12 @@ progress::-moz-progress-bar {
 .btn-red {
     width: 130px;
     color: #F03738;
+}
+
+.reg-btn {
+    display: flex;
+    width: min-content;
+    /* margin: 10px 0 10px 30px; */
 }
 
 .none {
