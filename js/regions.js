@@ -8,7 +8,9 @@ const saveRegion = document.getElementById('saveRegion')
 const cancelRegion = document.getElementById('cancelRegion')
 const newRegForm = document.getElementById('newRegForm')
 const msgContainer = document.getElementById('msgContainer')
+const closeNewRegion = document.getElementById('closeNewRegion')
 
+//show regions, countries and cities
 async function getLocations() {
     regionList.innerHTML = ''
     const options = {
@@ -109,13 +111,13 @@ async function getLocations() {
     })
 }
 
+//add region
 addRegBtn.addEventListener('click', () => {
     window.scrollTo(0, 0)
     body.classList.add('modal')
     darkImage.classList.remove('none')
     
     newRegion.addEventListener('keyup', () => disabledBtn())
-    
 })
 
 function disabledBtn() {
@@ -128,14 +130,10 @@ function disabledBtn() {
 
 saveRegion.addEventListener('click', () => addRegion())
 
-cancelRegion.addEventListener('click', () => {
-    body.classList.remove('modal')
-    darkImage.classList.add('none')
-})
 
 async function addRegion() {
     const region = { region_name: newRegion.value }
-
+    
     const options = {
         method: 'POST',
         body: JSON.stringify(region),
@@ -166,4 +164,14 @@ async function addRegion() {
     } catch(reason) {
         return reason
     }
+}
+
+//close window new region
+closeNewRegion.addEventListener('click', (event) => closeWindowNewRegion(event))
+cancelRegion.addEventListener('click', (event) => closeWindowNewRegion(event))
+
+function closeWindowNewRegion(event) {
+    event.preventDefault()
+    body.classList.remove('modal')
+    darkImage.classList.add('none')
 }

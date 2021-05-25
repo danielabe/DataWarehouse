@@ -10,6 +10,7 @@ var saveRegion = document.getElementById('saveRegion');
 var cancelRegion = document.getElementById('cancelRegion');
 var newRegForm = document.getElementById('newRegForm');
 var msgContainer = document.getElementById('msgContainer');
+var closeNewRegion = document.getElementById('closeNewRegion'); //show regions, countries and cities
 
 function getLocations() {
   var options, response, data;
@@ -117,7 +118,8 @@ function getLocations() {
       }
     }
   });
-}
+} //add region
+
 
 addRegBtn.addEventListener('click', function () {
   window.scrollTo(0, 0);
@@ -138,10 +140,6 @@ function disabledBtn() {
 
 saveRegion.addEventListener('click', function () {
   return addRegion();
-});
-cancelRegion.addEventListener('click', function () {
-  body.classList.remove('modal');
-  darkImage.classList.add('none');
 });
 
 function addRegion() {
@@ -206,4 +204,18 @@ function addRegion() {
       }
     }
   }, null, null, [[2, 14]]);
+} //close window new region
+
+
+closeNewRegion.addEventListener('click', function (event) {
+  return closeWindowNewRegion(event);
+});
+cancelRegion.addEventListener('click', function (event) {
+  return closeWindowNewRegion(event);
+});
+
+function closeWindowNewRegion(event) {
+  event.preventDefault();
+  body.classList.remove('modal');
+  darkImage.classList.add('none');
 }
