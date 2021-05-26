@@ -81,6 +81,9 @@ function getLocations() {
             btnEditRegion.addEventListener('click', function () {
               return regionEdition(reg);
             });
+            btnAddCountry.addEventListener('click', function () {
+              return addCountry(reg);
+            });
             reg.countries.forEach(function (count) {
               var country = document.createElement('li');
               var countContainer = document.createElement('div');
@@ -428,4 +431,56 @@ function editRegion() {
       }
     }
   }, null, null, [[4, 16]]);
+} //add country 
+
+
+var darkImageNewCountry = document.getElementById('darkImageNewCountry');
+
+function addCountry(reg
+/* , event */
+) {
+  return regeneratorRuntime.async(function addCountry$(_context5) {
+    while (1) {
+      switch (_context5.prev = _context5.next) {
+        case 0:
+          console.log(reg);
+          darkImageNewCountry.classList.remove('none');
+          body.classList.add('modal');
+          /* const country = { 
+              region_id: reg.region_id,
+              country_name: 
+          } */
+
+          /* const options = {
+              method: 'POST',
+              body: JSON.stringify(country),
+              headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
+              }
+          } */
+
+          /* validateRegion(newRegion, msgNReg) */
+
+          /* try {
+              const response = await fetch('http://localhost:3000/countries', options)
+              // if(response.status === 409) {
+              //     newRegion.classList.add('border-wrong')
+              //     msgNReg.classList.add('visible')
+              //     msgNReg.innerText = 'La región ya existe'
+              // }
+              const data = await response.json()
+              console.log(data)
+              closeWindowNewRegion(event)
+              getLocations()
+          } catch(reason) {
+              return reason
+          } */
+
+        case 3:
+        case "end":
+          return _context5.stop();
+      }
+    }
+  });
 }

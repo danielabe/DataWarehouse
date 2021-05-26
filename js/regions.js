@@ -70,6 +70,8 @@ async function getLocations() {
         btnDeleteRegion.addEventListener('click', () => modalDeleteRegion(reg.region_id))
         btnEditRegion.addEventListener('click', () => regionEdition(reg))
 
+        btnAddCountry.addEventListener('click', () => addCountry(reg))
+
         reg.countries.forEach(count => {
             const country = document.createElement('li')
             const countContainer = document.createElement('div')
@@ -331,5 +333,39 @@ async function editRegion() {
     } catch (reason) {
         return reason
     }
+}
 
+//add country 
+const darkImageNewCountry = document.getElementById('darkImageNewCountry')
+async function addCountry(reg/* , event */) {
+    console.log(reg)
+    darkImageNewCountry.classList.remove('none')
+    body.classList.add('modal')
+    /* const country = { 
+        region_id: reg.region_id,
+        country_name: 
+    } */
+    /* const options = {
+        method: 'POST',
+        body: JSON.stringify(country),
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
+        }
+    } */
+    /* validateRegion(newRegion, msgNReg) */
+    /* try {
+        const response = await fetch('http://localhost:3000/countries', options)
+        // if(response.status === 409) {
+        //     newRegion.classList.add('border-wrong')
+        //     msgNReg.classList.add('visible')
+        //     msgNReg.innerText = 'La región ya existe'
+        // }
+        const data = await response.json()
+        console.log(data)
+        closeWindowNewRegion(event)
+        getLocations()
+    } catch(reason) {
+        return reason
+    } */
 }
