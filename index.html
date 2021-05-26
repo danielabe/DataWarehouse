@@ -214,27 +214,27 @@
                 </form>
                 <form id="newCtcForm" class="new-form new-ctc-form">
                     <label class="form-lbl pad" for="firstname">
-                        <p>Nombre <span class="red-asterisk">*</span></p>
+                        <p>Nombre<span class="red-asterisk">*</span></p>
                         <input id="firstname" class="field ncnt-input" type="text">
                         <p id="msgFirst" class="msg-container">Este campo es obligatorio</p>
                     </label>
                     <label class="form-lbl pad" for="lastname">
-                        <p>Apellido <span class="red-asterisk">*</span></p>
+                        <p>Apellido<span class="red-asterisk">*</span></p>
                         <input id="lastname" class="field ncnt-input" type="text">
                         <p id="msgLast" class="msg-container">Este campo es obligatorio</p>
                     </label>
                     <label class="form-lbl pad" for="position">
-                        <p>Cargo <span class="red-asterisk">*</span></p>
+                        <p>Cargo<span class="red-asterisk">*</span></p>
                         <input id="position" class="field ncnt-input" type="text">
                         <p id="msgPos" class="msg-container">Este campo es obligatorio</p>
                     </label>
                     <label class="form-lbl pad" for="email">
-                        <p>Email <span class="red-asterisk">*</span></p>
+                        <p>Email<span class="red-asterisk">*</span></p>
                         <input id="email" class="field ncnt-input" type="text">
                         <p id="msgEmail" class="msg-container">Error en datos ingresados</p>
                     </label>
                     <div id="compLbl" class="form-lbl comp-lbl">
-                        <p>Compañía <span class="red-asterisk">*</span></p>
+                        <p>Compañía<span class="red-asterisk">*</span></p>
                         <p id="company" class="field ncnt-input select-company">
                             Seleccionar compañía<i class="fas fa-caret-down"></i>
                         </p>
@@ -462,10 +462,11 @@
                     <button id="cancelRegion" class="btn-white">Cancelar</button>
                     <button id="saveRegion" class="btn-grey">Guardar región</button>
                 </div>
-                <form id="newRegForm" class="new-form">
+                <form id="newRegForm" class="new-form pad">
                     <label class="nr-lbl" for="newRegion">Nombre de la región<span class="red-asterisk">*</span></label>
                     <input id="newRegion" class="field nr-input" type="text">
-                    <div id="msgContainer" class="msg-container"></div>
+                    <p id="msgNReg" class="msg-container reg-msg">Este campo es obligatorio</p>
+                    <!-- <div id="msgContainer" class="msg-container"></div> -->
                 </form>
             </div>
         </section>

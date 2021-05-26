@@ -129,9 +129,9 @@ async function validateRegionNameQuery(req, res, next) {
         type: QueryTypes.SELECT
     })
     const regionsArray = regions.map(region => region.region_name)
-    if(req.body.region_name.length >= 2 && req.body.region_name.length <= 64) {
+    if(req.body.region_name.length >= 1 && req.body.region_name.length <= 64) {
         if(regionsArray.every(name => name !== region)) next()
-        else res.status(400).send("The region already exists").end()
+        else res.status(409).send("The region already exists").end()
     } else res.status(400).send("The region name length is wrong").end()
 }
 

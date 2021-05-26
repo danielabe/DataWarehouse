@@ -125,25 +125,22 @@ addRegBtn.addEventListener('click', function () {
   window.scrollTo(0, 0);
   body.classList.add('modal');
   darkImage.classList.remove('none');
-  newRegion.addEventListener('keyup', function () {
-    return disabledBtn();
-  });
+  /* newRegion.addEventListener('keyup', () => disabledBtn()) */
+});
+/* function disabledBtn() {
+    if(newRegion.value !== '') {
+        saveRegion.classList.add('blue')
+    }
+    if(newRegion.value === '')
+        saveRegion.classList.remove('blue')
+} */
+
+saveRegion.addEventListener('click', function (event) {
+  return addRegion(event);
 });
 
-function disabledBtn() {
-  if (newRegion.value !== '') {
-    saveRegion.classList.add('blue');
-  }
-
-  if (newRegion.value === '') saveRegion.classList.remove('blue');
-}
-
-saveRegion.addEventListener('click', function () {
-  return addRegion();
-});
-
-function addRegion() {
-  var region, options, response, msgError, data;
+function addRegion(event) {
+  var region, options, response, data;
   return regeneratorRuntime.async(function addRegion$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
@@ -159,29 +156,36 @@ function addRegion() {
               Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
             }
           };
-          _context2.prev = 2;
-          _context2.next = 5;
+          validateRegion();
+          _context2.prev = 3;
+          _context2.next = 6;
           return regeneratorRuntime.awrap(fetch('http://localhost:3000/regions', options));
 
-        case 5:
+        case 6:
           response = _context2.sent;
 
-          if (response.status === 400) {
-            msgContainer.innerHTML = '';
-            msgError = document.createElement('p');
-            msgContainer.appendChild(msgError);
+          /* console.log(response.text()) */
 
-            if (newRegion.value.length < 2 || newRegion.value.length > 64) {
-              msgError.innerText = 'Nombre incorrecto';
-            } else {
-              msgError.innerText = 'La región ya existe';
-            }
-          }
+          /* if(response.status === 400) {
+              msgContainer.innerHTML = ''
+              const msgError = document.createElement('p')
+              msgContainer.appendChild(msgError)
+              if(newRegion.value.length < 2 || newRegion.value.length > 64) {
+                  msgError.innerText = 'Nombre incorrecto'
+              } else {
+                  msgError.innerText = 'La región ya existe'
+              }
+          } */
 
-          if (response.status === 201) {
-            body.classList.remove('modal');
-            darkImage.classList.add('none');
-            getLocations();
+          /* if(response.status === 201) {
+              body.classList.remove('modal')
+              darkImage.classList.add('none')
+              getLocations()
+          } */
+          if (response.status === 409) {
+            newRegion.classList.add('border-wrong');
+            msgNReg.classList.add('visible');
+            msgNReg.innerText = 'La región ya existe';
           }
 
           _context2.next = 10;
@@ -190,20 +194,37 @@ function addRegion() {
         case 10:
           data = _context2.sent;
           console.log(data);
-          _context2.next = 17;
+          closeWindowNewRegion(event);
+          getLocations();
+          _context2.next = 19;
           break;
 
-        case 14:
-          _context2.prev = 14;
-          _context2.t0 = _context2["catch"](2);
+        case 16:
+          _context2.prev = 16;
+          _context2.t0 = _context2["catch"](3);
           return _context2.abrupt("return", _context2.t0);
 
-        case 17:
+        case 19:
         case "end":
           return _context2.stop();
       }
     }
-  }, null, null, [[2, 14]]);
+  }, null, null, [[3, 16]]);
+}
+
+var msgNReg = document.getElementById('msgNReg'); //validate region
+
+function validateRegion() {
+  if (newRegion.value === '') {
+    newRegion.classList.add('border-wrong');
+    msgNReg.classList.add('visible');
+    newRegion.addEventListener('keyup', function () {
+      if (newRegion.value !== '') {
+        newRegion.classList.remove('border-wrong');
+        msgNReg.classList.remove('visible');
+      }
+    });
+  }
 } //close window new region
 
 
@@ -216,6 +237,10 @@ cancelRegion.addEventListener('click', function (event) {
 
 function closeWindowNewRegion(event) {
   event.preventDefault();
-  body.classList.remove('modal');
   darkImage.classList.add('none');
+  body.classList.remove('modal');
+  msgNReg.classList.remove('visible');
+  newRegion.classList.remove('border-wrong');
+  newRegion.value = '';
+  msgNReg.innerText = 'Este campo es obligatorio';
 }

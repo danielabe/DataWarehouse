@@ -339,10 +339,10 @@ function validateRegionNameQuery(req, res, next) {
             return region.region_name;
           });
 
-          if (req.body.region_name.length >= 2 && req.body.region_name.length <= 64) {
+          if (req.body.region_name.length >= 1 && req.body.region_name.length <= 64) {
             if (regionsArray.every(function (name) {
               return name !== region;
-            })) next();else res.status(400).send("The region already exists").end();
+            })) next();else res.status(409).send("The region already exists").end();
           } else res.status(400).send("The region name length is wrong").end();
 
         case 6:

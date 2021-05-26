@@ -385,6 +385,7 @@ main {
 
 .nr-input {
     width: 50%;
+    padding-left: 8px;
     font-size: 14px;
 }
 
@@ -945,6 +946,10 @@ progress::-moz-progress-bar {
     display: flex;
     width: min-content;
     /* margin: 10px 0 10px 30px; */
+}
+
+.reg-msg {
+    width: 50%;
 }
 
 .none {
