@@ -337,6 +337,9 @@ async function editRegion() {
 
 //add country 
 const darkImageNewCountry = document.getElementById('darkImageNewCountry')
+const closeNewCountry = document.getElementById('closeNewCountry')
+const cancelCountry = document.getElementById('cancelCountry')
+
 async function addCountry(reg/* , event */) {
     console.log(reg)
     darkImageNewCountry.classList.remove('none')
@@ -368,4 +371,12 @@ async function addCountry(reg/* , event */) {
     } catch(reason) {
         return reason
     } */
+}
+
+closeNewCountry.addEventListener('click', () => closeWindowNewCountry())
+cancelCountry.addEventListener('click', () => closeWindowNewCountry())
+
+function closeWindowNewCountry() {
+    darkImageNewCountry.classList.add('none')
+    body.classList.remove('modal')
 }

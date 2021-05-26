@@ -435,6 +435,8 @@ function editRegion() {
 
 
 var darkImageNewCountry = document.getElementById('darkImageNewCountry');
+var closeNewCountry = document.getElementById('closeNewCountry');
+var cancelCountry = document.getElementById('cancelCountry');
 
 function addCountry(reg
 /* , event */
@@ -483,4 +485,16 @@ function addCountry(reg
       }
     }
   });
+}
+
+closeNewCountry.addEventListener('click', function () {
+  return closeWindowNewCountry();
+});
+cancelCountry.addEventListener('click', function () {
+  return closeWindowNewCountry();
+});
+
+function closeWindowNewCountry() {
+  darkImageNewCountry.classList.add('none');
+  body.classList.remove('modal');
 }
