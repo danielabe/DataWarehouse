@@ -168,17 +168,17 @@ async function getRegion(regionId, req, res) {
 }
 
 async function validateRegionNamePutQuery(req, res, next) {
-    if(req.body.region_name){
+    /* if(req.body.region_name){ */
         const region = req.body.region_name
         const regions = await db.query(`SELECT region_name FROM regions`, {
             type: QueryTypes.SELECT
         })
         const regionsArray = regions.map(region => region.region_name)
-        if(req.body.region_name.length >= 2 && req.body.region_name.length <= 64) {
+        if(req.body.region_name.length >= 1 && req.body.region_name.length <= 64) {
             if(regionsArray.every(name => name !== region)) next()
-            else res.status(400).send("The region already exists").end()
+            else res.status(409).send("The region already exists").end()
         } else res.status(400).send("The region name length is wrong").end()
-    } else next()
+    /* } else next() */
 }
 
 async function modifyRegion(regionId, req, res) {
@@ -262,7 +262,7 @@ async function validateCountryNameQuery(req, res, next) {
         type: QueryTypes.SELECT
     })
     const countriesArray = countries.map(country => country.country_name)
-    if(req.body.country_name.length >= 2 && req.body.country_name.length <= 64) {
+    if(req.body.country_name.length >= 1 && req.body.country_name.length <= 64) {
         if(countriesArray.every(name => name !== country)) next()
         else res.status(400).send("The country already exists").end()
     } else res.status(400).send("The country name length is wrong").end()
@@ -306,7 +306,7 @@ async function validateCountryNamePutQuery(req, res, next) {
             type: QueryTypes.SELECT
         })
         const countriesArray = countries.map(country => country.country_name)
-        if(req.body.country_name.length >= 2 && req.body.country_name.length <= 64) {
+        if(req.body.country_name.length >= 1 && req.body.country_name.length <= 64) {
             if(countriesArray.every(name => name !== country)) next()
             else res.status(400).send("The country already exists").end()
         } else res.status(400).send("The country name length is wrong").end()
@@ -378,7 +378,7 @@ async function validateCityNameQuery(req, res, next) {
         type: QueryTypes.SELECT
     })
     const citiesArray = cities.map(city => city.city_name)
-    if(req.body.city_name.length >= 2 && req.body.city_name.length <= 64) {
+    if(req.body.city_name.length >= 1 && req.body.city_name.length <= 64) {
         if(citiesArray.every(name => name !== city)) next()
         else res.status(400).send("The city already exists").end()
     } else res.status(400).send("The city name length is wrong").end()
@@ -434,7 +434,7 @@ async function validateCityNamePutQuery(req, res, next) {
             type: QueryTypes.SELECT
         })
         const citiesArray = cities.map(city => city.city_name)
-        if(req.body.city_name.length >= 2 && req.body.city_name.length <= 64) {
+        if(req.body.city_name.length >= 1 && req.body.city_name.length <= 64) {
             if(citiesArray.every(name => name !== city)) next()
             else res.status(400).send("The city already exists").end()
         } else res.status(400).send("The city name length is wrong").end()
@@ -492,7 +492,7 @@ async function validateCompanyNameQuery(req, res, next) {
         type: QueryTypes.SELECT
     })
     const companiesArray = companies.map(company => company.company_name)
-    if(req.body.company_name.length >= 2 && req.body.company_name.length <= 64) {
+    if(req.body.company_name.length >= 1 && req.body.company_name.length <= 64) {
         if(companiesArray.every(name => name !== company)) next()
         else res.status(400).send("The company already exists").end()
     } else res.status(400).send("The company name length is wrong").end()
@@ -546,7 +546,7 @@ async function validateCompanyNamePutQuery(req, res, next) {
             type: QueryTypes.SELECT
         })
         const companiesArray = companies.map(company => company.company_name)
-        if(req.body.company_name.length >= 2 && req.body.company_name.length <= 64) {
+        if(req.body.company_name.length >= 1 && req.body.company_name.length <= 64) {
             if(companiesArray.every(name => name !== company)) next()
             else res.status(400).send("The company already exists").end()
         } else res.status(400).send("The company name length is wrong").end()
@@ -994,7 +994,7 @@ async function validateChannelNameQuery(req, res, next) {
         type: QueryTypes.SELECT
     })
     const channelsArray = channels.map(channel => channel.channel_name)
-    if(req.body.channel_name.length >= 2 && req.body.channel_name.length <= 64) {
+    if(req.body.channel_name.length >= 1 && req.body.channel_name.length <= 64) {
         if(channelsArray.every(name => name !== channel)) next()
         else res.status(400).send("The channel already exists").end()
     } else res.status(400).send("The channel name length is wrong").end()
@@ -1038,7 +1038,7 @@ async function validateChannelNamePutQuery(req, res, next) {
             type: QueryTypes.SELECT
         })
         const channelsArray = channels.map(channel => channel.channel_name)
-        if(req.body.channel_name.length >= 2 && req.body.channel_name.length <= 64) {
+        if(req.body.channel_name.length >= 1 && req.body.channel_name.length <= 64) {
             if(channelsArray.every(name => name !== channel)) next()
             else res.status(400).send("The channel already exists").end()
         } else res.status(400).send("The channel name length is wrong").end()

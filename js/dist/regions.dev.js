@@ -15,7 +15,13 @@ var msgNReg = document.getElementById('msgNReg');
 var darkImageRegions = document.getElementById('darkImageRegions');
 var cancelDltRegBtn = document.getElementById('cancelDltRegBtn');
 var deleteRegBtn = document.getElementById('deleteRegBtn');
-var varRegionId = null; //show regions, countries and cities
+var darkImageEditReg = document.getElementById('darkImageEditReg');
+var regionEdit = document.getElementById('regionEdit');
+var closeEditRegion = document.getElementById('closeEditRegion');
+var deleteRegEdit = document.getElementById('deleteRegEdit');
+var msgEReg = document.getElementById('msgEReg');
+var varRegionId = null;
+var varEditRegion = 0; //show regions, countries and cities
 
 function getLocations() {
   var options, response, data;
@@ -71,6 +77,9 @@ function getLocations() {
             regionList.appendChild(region);
             btnDeleteRegion.addEventListener('click', function () {
               return modalDeleteRegion(reg.region_id);
+            });
+            btnEditRegion.addEventListener('click', function () {
+              return regionEdition(reg);
             });
             reg.countries.forEach(function (count) {
               var country = document.createElement('li');
@@ -164,7 +173,7 @@ function addRegion(event) {
               Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
             }
           };
-          validateRegion();
+          validateRegion(newRegion, msgNReg);
           _context2.prev = 3;
           _context2.next = 6;
           return regeneratorRuntime.awrap(fetch('http://localhost:3000/regions', options));
@@ -203,14 +212,15 @@ function addRegion(event) {
 } //validate region
 
 
-function validateRegion() {
-  if (newRegion.value === '') {
-    newRegion.classList.add('border-wrong');
-    msgNReg.classList.add('visible');
-    newRegion.addEventListener('keyup', function () {
-      if (newRegion.value !== '') {
-        newRegion.classList.remove('border-wrong');
-        msgNReg.classList.remove('visible');
+function validateRegion(reg, msg) {
+  //newRegion, msgNReg
+  if (reg.value === '') {
+    reg.classList.add('border-wrong');
+    msg.classList.add('visible');
+    reg.addEventListener('keyup', function () {
+      if (reg.value !== '') {
+        reg.classList.remove('border-wrong');
+        msg.classList.remove('visible');
       }
     });
   }
@@ -244,8 +254,29 @@ function modalDeleteRegion(regionId) {
 }
 
 cancelDltRegBtn.addEventListener('click', function () {
-  return cancelReg();
+  /* window.scrollTo(0, 0)
+  body.classList.add('modal')
+  darkImageEditReg.style.visibility = 'visible' */
+  cancelDeleteReg();
 });
+
+function cancelDeleteReg() {
+  if (varEditRegion === 0) {
+    console.log('despues de no edition');
+    body.classList.remove('modal');
+    darkImageEditReg.style.visibility = 'hidden';
+    darkImageEditReg.classList.add('none');
+  } else if (varEditRegion === 1) {
+    console.log('despues de edition');
+    window.scrollTo(0, 0);
+    body.classList.add('modal');
+    darkImageEditReg.style.visibility = 'visible';
+    darkImageEditReg.classList.remove('none');
+  }
+
+  darkImageRegions.classList.add('none');
+  console.log(varRegionId);
+}
 
 function cancelReg() {
   body.classList.remove('modal');
@@ -301,4 +332,100 @@ function deleteRegion(regId) {
       }
     }
   }, null, null, [[1, 14]]);
+} //edit region
+
+
+function regionEdition(reg) {
+  console.log(reg);
+  window.scrollTo(0, 0);
+  darkImageEditReg.classList.remove('none');
+  darkImageEditReg.style.visibility = 'visible';
+  body.classList.add('modal');
+  /* main.classList.add('height-add-ctc') */
+
+  regionEdit.value = reg.region_name;
+  varRegionId = reg.region_id;
+  varEditRegion = 1;
+} //close window edit region
+
+
+closeEditRegion.addEventListener('click', function () {
+  return closeWindowEditRegion();
+});
+
+function closeWindowEditRegion() {
+  /* event.preventDefault() */
+  darkImageEditReg.classList.add('none');
+  body.classList.remove('modal');
+  regionEdit.classList.remove('border-wrong');
+  msgEReg.classList.remove('visible');
+  varEditRegion = 0;
+  msgEReg.innerText = 'Este campo es obligatorio';
+}
+
+deleteRegEdit.addEventListener('click', function () {
+  darkImageEditReg.style.visibility = 'hidden';
+  darkImageEditReg.style.visibility = 'visible';
+  darkImageEditReg.classList.add('none');
+  modalDeleteRegion(varRegionId);
+}); //save edited region
+
+var saveRegionEdit = document.getElementById('saveRegionEdit');
+saveRegionEdit.addEventListener('click', function () {
+  return editRegion();
+});
+
+function editRegion() {
+  var modifiedRegion, options, response, data;
+  return regeneratorRuntime.async(function editRegion$(_context4) {
+    while (1) {
+      switch (_context4.prev = _context4.next) {
+        case 0:
+          modifiedRegion = {
+            region_name: regionEdit.value
+          };
+          msgEReg.innerText = 'Este campo es obligatorio';
+          validateRegion(regionEdit, msgEReg);
+          options = {
+            method: 'PUT',
+            body: JSON.stringify(modifiedRegion),
+            headers: {
+              Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token'))),
+              "Content-Type": "application/json"
+            }
+          };
+          _context4.prev = 4;
+          _context4.next = 7;
+          return regeneratorRuntime.awrap(fetch("http://localhost:3000/regions/".concat(varRegionId), options));
+
+        case 7:
+          response = _context4.sent;
+
+          if (response.status === 409) {
+            regionEdit.classList.add('border-wrong');
+            msgEReg.classList.add('visible');
+            msgEReg.innerText = 'La región ya existe';
+          }
+
+          _context4.next = 11;
+          return regeneratorRuntime.awrap(response.json());
+
+        case 11:
+          data = _context4.sent;
+          console.log(data);
+          closeWindowEditRegion();
+          _context4.next = 19;
+          break;
+
+        case 16:
+          _context4.prev = 16;
+          _context4.t0 = _context4["catch"](4);
+          return _context4.abrupt("return", _context4.t0);
+
+        case 19:
+        case "end":
+          return _context4.stop();
+      }
+    }
+  }, null, null, [[4, 16]]);
 }

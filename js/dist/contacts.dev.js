@@ -2177,6 +2177,7 @@ deleteContactBtn.addEventListener('click', function () {
 //editar canales de contacto
 //corregir swagger, put de contactos y delte de contactos
 //queries.js else res.status(409).send("The region already exists").end() ahora es 409
+//queries.js else res.status(409).send("The region already exists").end() ahora es 409
 //ordenar no funciona 
 //no refresca al eliminar, crear contacto, provocaba error al ordenar
 //si tengo ganas cambiar los id de los canalaes en el html

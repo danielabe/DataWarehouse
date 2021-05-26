@@ -441,36 +441,28 @@ function validateRegionNamePutQuery(req, res, next) {
     while (1) {
       switch (_context15.prev = _context15.next) {
         case 0:
-          if (!req.body.region_name) {
-            _context15.next = 9;
-            break;
-          }
-
+          /* if(req.body.region_name){ */
           region = req.body.region_name;
-          _context15.next = 4;
+          _context15.next = 3;
           return regeneratorRuntime.awrap(db.query("SELECT region_name FROM regions", {
             type: QueryTypes.SELECT
           }));
 
-        case 4:
+        case 3:
           regions = _context15.sent;
           regionsArray = regions.map(function (region) {
             return region.region_name;
           });
 
-          if (req.body.region_name.length >= 2 && req.body.region_name.length <= 64) {
+          if (req.body.region_name.length >= 1 && req.body.region_name.length <= 64) {
             if (regionsArray.every(function (name) {
               return name !== region;
-            })) next();else res.status(400).send("The region already exists").end();
+            })) next();else res.status(409).send("The region already exists").end();
           } else res.status(400).send("The region name length is wrong").end();
+          /* } else next() */
 
-          _context15.next = 10;
-          break;
 
-        case 9:
-          next();
-
-        case 10:
+        case 6:
         case "end":
           return _context15.stop();
       }
@@ -691,7 +683,7 @@ function validateCountryNameQuery(req, res, next) {
             return country.country_name;
           });
 
-          if (req.body.country_name.length >= 2 && req.body.country_name.length <= 64) {
+          if (req.body.country_name.length >= 1 && req.body.country_name.length <= 64) {
             if (countriesArray.every(function (name) {
               return name !== country;
             })) next();else res.status(400).send("The country already exists").end();
@@ -810,7 +802,7 @@ function validateCountryNamePutQuery(req, res, next) {
             return country.country_name;
           });
 
-          if (req.body.country_name.length >= 2 && req.body.country_name.length <= 64) {
+          if (req.body.country_name.length >= 1 && req.body.country_name.length <= 64) {
             if (countriesArray.every(function (name) {
               return name !== country;
             })) next();else res.status(400).send("The country already exists").end();
@@ -1003,7 +995,7 @@ function validateCityNameQuery(req, res, next) {
             return city.city_name;
           });
 
-          if (req.body.city_name.length >= 2 && req.body.city_name.length <= 64) {
+          if (req.body.city_name.length >= 1 && req.body.city_name.length <= 64) {
             if (citiesArray.every(function (name) {
               return name !== city;
             })) next();else res.status(400).send("The city already exists").end();
@@ -1159,7 +1151,7 @@ function validateCityNamePutQuery(req, res, next) {
             return city.city_name;
           });
 
-          if (req.body.city_name.length >= 2 && req.body.city_name.length <= 64) {
+          if (req.body.city_name.length >= 1 && req.body.city_name.length <= 64) {
             if (citiesArray.every(function (name) {
               return name !== city;
             })) next();else res.status(400).send("The city already exists").end();
@@ -1290,7 +1282,7 @@ function validateCompanyNameQuery(req, res, next) {
             return company.company_name;
           });
 
-          if (req.body.company_name.length >= 2 && req.body.company_name.length <= 64) {
+          if (req.body.company_name.length >= 1 && req.body.company_name.length <= 64) {
             if (companiesArray.every(function (name) {
               return name !== company;
             })) next();else res.status(400).send("The company already exists").end();
@@ -1410,7 +1402,7 @@ function validateCompanyNamePutQuery(req, res, next) {
             return company.company_name;
           });
 
-          if (req.body.company_name.length >= 2 && req.body.company_name.length <= 64) {
+          if (req.body.company_name.length >= 1 && req.body.company_name.length <= 64) {
             if (companiesArray.every(function (name) {
               return name !== company;
             })) next();else res.status(400).send("The company already exists").end();
@@ -2304,7 +2296,7 @@ function validateChannelNameQuery(req, res, next) {
             return channel.channel_name;
           });
 
-          if (req.body.channel_name.length >= 2 && req.body.channel_name.length <= 64) {
+          if (req.body.channel_name.length >= 1 && req.body.channel_name.length <= 64) {
             if (channelsArray.every(function (name) {
               return name !== channel;
             })) next();else res.status(400).send("The channel already exists").end();
@@ -2422,7 +2414,7 @@ function validateChannelNamePutQuery(req, res, next) {
             return channel.channel_name;
           });
 
-          if (req.body.channel_name.length >= 2 && req.body.channel_name.length <= 64) {
+          if (req.body.channel_name.length >= 1 && req.body.channel_name.length <= 64) {
             if (channelsArray.every(function (name) {
               return name !== channel;
             })) next();else res.status(400).send("The channel already exists").end();

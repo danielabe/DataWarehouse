@@ -13,8 +13,14 @@ const msgNReg = document.getElementById('msgNReg')
 const darkImageRegions = document.getElementById('darkImageRegions')
 const cancelDltRegBtn = document.getElementById('cancelDltRegBtn')
 const deleteRegBtn = document.getElementById('deleteRegBtn')
+const darkImageEditReg = document.getElementById('darkImageEditReg')
+const regionEdit = document.getElementById('regionEdit')
+const closeEditRegion = document.getElementById('closeEditRegion')
+const deleteRegEdit = document.getElementById('deleteRegEdit')
+const msgEReg = document.getElementById('msgEReg')
 
 let varRegionId = null
+let varEditRegion = 0
 
 //show regions, countries and cities
 async function getLocations() {
@@ -62,6 +68,7 @@ async function getLocations() {
         regionList.appendChild(region)
 
         btnDeleteRegion.addEventListener('click', () => modalDeleteRegion(reg.region_id))
+        btnEditRegion.addEventListener('click', () => regionEdition(reg))
 
         reg.countries.forEach(count => {
             const country = document.createElement('li')
@@ -148,7 +155,7 @@ async function addRegion(event) {
             Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
         }
     }
-    validateRegion()
+    validateRegion(newRegion, msgNReg)
     try {
         const response = await fetch('http://localhost:3000/regions', options)
         if(response.status === 409) {
@@ -166,14 +173,14 @@ async function addRegion(event) {
 }
 
 //validate region
-function validateRegion() {
-    if(newRegion.value === '') {
-        newRegion.classList.add('border-wrong')
-        msgNReg.classList.add('visible')
-        newRegion.addEventListener('keyup', () => {
-            if(newRegion.value !== '') {
-                newRegion.classList.remove('border-wrong')
-                msgNReg.classList.remove('visible')
+function validateRegion(reg, msg) { //newRegion, msgNReg
+    if(reg.value === '') {
+        reg.classList.add('border-wrong')
+        msg.classList.add('visible')
+        reg.addEventListener('keyup', () => {
+            if(reg.value !== '') {
+                reg.classList.remove('border-wrong')
+                msg.classList.remove('visible')
             }
         })
     }
@@ -203,7 +210,31 @@ function modalDeleteRegion(regionId) {
     darkImageRegions.classList.remove('none')
 }
 
-cancelDltRegBtn.addEventListener('click', () => cancelReg())
+cancelDltRegBtn.addEventListener('click', () => {
+    /* window.scrollTo(0, 0)
+    body.classList.add('modal')
+    darkImageEditReg.style.visibility = 'visible' */
+    cancelDeleteReg()
+})
+
+function cancelDeleteReg() {
+    if(varEditRegion === 0) {
+        console.log('despues de no edition')
+        body.classList.remove('modal')
+        darkImageEditReg.style.visibility = 'hidden'
+        darkImageEditReg.classList.add('none')
+    } else if(varEditRegion === 1) {
+        console.log('despues de edition')
+        window.scrollTo(0, 0)
+        body.classList.add('modal')
+        darkImageEditReg.style.visibility = 'visible'
+        darkImageEditReg.classList.remove('none')
+        
+
+    }
+    darkImageRegions.classList.add('none')
+    console.log(varRegionId)
+}
 
 function cancelReg() {
     body.classList.remove('modal')
@@ -235,4 +266,70 @@ async function deleteRegion(regId) {
     } catch(reason) {
         return reason
     }
+}
+
+//edit region
+function regionEdition(reg) {
+    console.log(reg)
+    window.scrollTo(0, 0)
+    darkImageEditReg.classList.remove('none')
+    darkImageEditReg.style.visibility = 'visible'
+    body.classList.add('modal')
+    /* main.classList.add('height-add-ctc') */
+    regionEdit.value = reg.region_name
+    varRegionId = reg.region_id
+    varEditRegion = 1
+}
+
+//close window edit region
+closeEditRegion.addEventListener('click', () => closeWindowEditRegion())
+
+function closeWindowEditRegion() {
+    /* event.preventDefault() */
+    darkImageEditReg.classList.add('none')
+    body.classList.remove('modal')
+    regionEdit.classList.remove('border-wrong')
+    msgEReg.classList.remove('visible')
+    varEditRegion = 0
+    msgEReg.innerText = 'Este campo es obligatorio'
+}
+
+deleteRegEdit.addEventListener('click', () => {
+    darkImageEditReg.style.visibility = 'hidden'
+    darkImageEditReg.style.visibility = 'visible'
+    darkImageEditReg.classList.add('none')
+    modalDeleteRegion(varRegionId)
+})
+
+//save edited region
+const saveRegionEdit = document.getElementById('saveRegionEdit')
+
+saveRegionEdit.addEventListener('click', () => editRegion())
+
+async function editRegion() {
+    const modifiedRegion = { region_name: regionEdit.value}
+    msgEReg.innerText = 'Este campo es obligatorio'
+    validateRegion(regionEdit, msgEReg)
+    const options = {                   
+        method: 'PUT',  
+        body: JSON.stringify(modifiedRegion),
+        headers: {
+            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`,
+            "Content-Type": "application/json"
+        }
+    }
+    try {
+        const response = await fetch(`http://localhost:3000/regions/${varRegionId}`, options)
+        if(response.status === 409) {
+            regionEdit.classList.add('border-wrong')
+            msgEReg.classList.add('visible')
+            msgEReg.innerText = 'La región ya existe'
+        }
+        const data = await response.json()
+        console.log(data)
+        closeWindowEditRegion()
+    } catch (reason) {
+        return reason
+    }
+
 }
