@@ -9,6 +9,12 @@ const cancelRegion = document.getElementById('cancelRegion')
 const newRegForm = document.getElementById('newRegForm')
 const msgContainer = document.getElementById('msgContainer')
 const closeNewRegion = document.getElementById('closeNewRegion')
+const msgNReg = document.getElementById('msgNReg')
+const darkImageRegions = document.getElementById('darkImageRegions')
+const cancelDltRegBtn = document.getElementById('cancelDltRegBtn')
+const deleteRegBtn = document.getElementById('deleteRegBtn')
+
+let varRegionId = null
 
 //show regions, countries and cities
 async function getLocations() {
@@ -54,6 +60,8 @@ async function getLocations() {
         region.appendChild(regContainer)
         region.appendChild(countryList)
         regionList.appendChild(region)
+
+        btnDeleteRegion.addEventListener('click', () => modalDeleteRegion(reg.region_id))
 
         reg.countries.forEach(count => {
             const country = document.createElement('li')
@@ -130,7 +138,6 @@ addRegBtn.addEventListener('click', () => {
 
 saveRegion.addEventListener('click', (event) => addRegion(event))
 
-
 async function addRegion(event) {
     const region = { region_name: newRegion.value }
     const options = {
@@ -144,22 +151,6 @@ async function addRegion(event) {
     validateRegion()
     try {
         const response = await fetch('http://localhost:3000/regions', options)
-        /* console.log(response.text()) */
-        /* if(response.status === 400) {
-            msgContainer.innerHTML = ''
-            const msgError = document.createElement('p')
-            msgContainer.appendChild(msgError)
-            if(newRegion.value.length < 2 || newRegion.value.length > 64) {
-                msgError.innerText = 'Nombre incorrecto'
-            } else {
-                msgError.innerText = 'La región ya existe'
-            }
-        } */
-        /* if(response.status === 201) {
-            body.classList.remove('modal')
-            darkImage.classList.add('none')
-            getLocations()
-        } */
         if(response.status === 409) {
             newRegion.classList.add('border-wrong')
             msgNReg.classList.add('visible')
@@ -173,7 +164,7 @@ async function addRegion(event) {
         return reason
     }
 }
-const msgNReg = document.getElementById('msgNReg')
+
 //validate region
 function validateRegion() {
     if(newRegion.value === '') {
@@ -201,4 +192,47 @@ function closeWindowNewRegion(event) {
 
     newRegion.value = ''
     msgNReg.innerText = 'Este campo es obligatorio'
+}
+
+//delete region 
+function modalDeleteRegion(regionId) {
+    console.log(regionId)
+    varRegionId = regionId
+    window.scrollTo(0, 0)
+    body.classList.add('modal')
+    darkImageRegions.classList.remove('none')
+}
+
+cancelDltRegBtn.addEventListener('click', () => cancelReg())
+
+function cancelReg() {
+    body.classList.remove('modal')
+    darkImageRegions.classList.add('none')
+    varRegionId = null
+    console.log(varRegionId)
+}
+
+deleteRegBtn.addEventListener('click', () => {
+    body.classList.remove('modal')
+    darkImageRegions.classList.add('none')
+    deleteRegion(varRegionId)
+})
+
+async function deleteRegion(regId) {
+    const options = {
+        method: 'DELETE',
+        headers: {
+            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
+        }
+    }
+    try {
+        console.log(varRegionId)
+        const response = await fetch(`http://localhost:3000/regions/${regId}`, options)
+        const data = await response.json()
+        console.log(data)
+        cancelReg()
+        getLocations()
+    } catch(reason) {
+        return reason
+    }
 }

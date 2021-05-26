@@ -10,7 +10,12 @@ var saveRegion = document.getElementById('saveRegion');
 var cancelRegion = document.getElementById('cancelRegion');
 var newRegForm = document.getElementById('newRegForm');
 var msgContainer = document.getElementById('msgContainer');
-var closeNewRegion = document.getElementById('closeNewRegion'); //show regions, countries and cities
+var closeNewRegion = document.getElementById('closeNewRegion');
+var msgNReg = document.getElementById('msgNReg');
+var darkImageRegions = document.getElementById('darkImageRegions');
+var cancelDltRegBtn = document.getElementById('cancelDltRegBtn');
+var deleteRegBtn = document.getElementById('deleteRegBtn');
+var varRegionId = null; //show regions, countries and cities
 
 function getLocations() {
   var options, response, data;
@@ -64,6 +69,9 @@ function getLocations() {
             region.appendChild(regContainer);
             region.appendChild(countryList);
             regionList.appendChild(region);
+            btnDeleteRegion.addEventListener('click', function () {
+              return modalDeleteRegion(reg.region_id);
+            });
             reg.countries.forEach(function (count) {
               var country = document.createElement('li');
               var countContainer = document.createElement('div');
@@ -164,24 +172,6 @@ function addRegion(event) {
         case 6:
           response = _context2.sent;
 
-          /* console.log(response.text()) */
-
-          /* if(response.status === 400) {
-              msgContainer.innerHTML = ''
-              const msgError = document.createElement('p')
-              msgContainer.appendChild(msgError)
-              if(newRegion.value.length < 2 || newRegion.value.length > 64) {
-                  msgError.innerText = 'Nombre incorrecto'
-              } else {
-                  msgError.innerText = 'La región ya existe'
-              }
-          } */
-
-          /* if(response.status === 201) {
-              body.classList.remove('modal')
-              darkImage.classList.add('none')
-              getLocations()
-          } */
           if (response.status === 409) {
             newRegion.classList.add('border-wrong');
             msgNReg.classList.add('visible');
@@ -210,9 +200,8 @@ function addRegion(event) {
       }
     }
   }, null, null, [[3, 16]]);
-}
+} //validate region
 
-var msgNReg = document.getElementById('msgNReg'); //validate region
 
 function validateRegion() {
   if (newRegion.value === '') {
@@ -243,4 +232,73 @@ function closeWindowNewRegion(event) {
   newRegion.classList.remove('border-wrong');
   newRegion.value = '';
   msgNReg.innerText = 'Este campo es obligatorio';
+} //delete region 
+
+
+function modalDeleteRegion(regionId) {
+  console.log(regionId);
+  varRegionId = regionId;
+  window.scrollTo(0, 0);
+  body.classList.add('modal');
+  darkImageRegions.classList.remove('none');
+}
+
+cancelDltRegBtn.addEventListener('click', function () {
+  return cancelReg();
+});
+
+function cancelReg() {
+  body.classList.remove('modal');
+  darkImageRegions.classList.add('none');
+  varRegionId = null;
+  console.log(varRegionId);
+}
+
+deleteRegBtn.addEventListener('click', function () {
+  body.classList.remove('modal');
+  darkImageRegions.classList.add('none');
+  deleteRegion(varRegionId);
+});
+
+function deleteRegion(regId) {
+  var options, response, data;
+  return regeneratorRuntime.async(function deleteRegion$(_context3) {
+    while (1) {
+      switch (_context3.prev = _context3.next) {
+        case 0:
+          options = {
+            method: 'DELETE',
+            headers: {
+              Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
+            }
+          };
+          _context3.prev = 1;
+          console.log(varRegionId);
+          _context3.next = 5;
+          return regeneratorRuntime.awrap(fetch("http://localhost:3000/regions/".concat(regId), options));
+
+        case 5:
+          response = _context3.sent;
+          _context3.next = 8;
+          return regeneratorRuntime.awrap(response.json());
+
+        case 8:
+          data = _context3.sent;
+          console.log(data);
+          cancelReg();
+          getLocations();
+          _context3.next = 17;
+          break;
+
+        case 14:
+          _context3.prev = 14;
+          _context3.t0 = _context3["catch"](1);
+          return _context3.abrupt("return", _context3.t0);
+
+        case 17:
+        case "end":
+          return _context3.stop();
+      }
+    }
+  }, null, null, [[1, 14]]);
 }
