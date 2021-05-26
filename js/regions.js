@@ -18,6 +18,12 @@ const regionEdit = document.getElementById('regionEdit')
 const closeEditRegion = document.getElementById('closeEditRegion')
 const deleteRegEdit = document.getElementById('deleteRegEdit')
 const msgEReg = document.getElementById('msgEReg')
+const darkImageNewCountry = document.getElementById('darkImageNewCountry')
+const closeNewCountry = document.getElementById('closeNewCountry')
+const cancelCountry = document.getElementById('cancelCountry')
+const newCountry = document.getElementById('newCountry')
+const msgNCount = document.getElementById('msgNCount')
+const saveCountry = document.getElementById('saveCountry')
 
 let varRegionId = null
 let varEditRegion = 0
@@ -70,7 +76,14 @@ async function getLocations() {
         btnDeleteRegion.addEventListener('click', () => modalDeleteRegion(reg.region_id))
         btnEditRegion.addEventListener('click', () => regionEdition(reg))
 
-        btnAddCountry.addEventListener('click', () => addCountry(reg))
+        btnAddCountry.addEventListener('click', () => {
+            darkImageNewCountry.classList.remove('none')
+            window.scrollTo(0, 0)
+            body.classList.add('modal')
+            varRegionId = +reg.region_id
+            console.log(varRegionId)
+        })
+
 
         reg.countries.forEach(count => {
             const country = document.createElement('li')
@@ -157,7 +170,7 @@ async function addRegion(event) {
             Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
         }
     }
-    validateRegion(newRegion, msgNReg)
+    validateLocation(newRegion, msgNReg)
     try {
         const response = await fetch('http://localhost:3000/regions', options)
         if(response.status === 409) {
@@ -175,13 +188,13 @@ async function addRegion(event) {
 }
 
 //validate region
-function validateRegion(reg, msg) { //newRegion, msgNReg
-    if(reg.value === '') {
-        reg.classList.add('border-wrong')
+function validateLocation(location, msg) { //newRegion, msgNReg
+    if(location.value === '') {
+        location.classList.add('border-wrong')
         msg.classList.add('visible')
-        reg.addEventListener('keyup', () => {
-            if(reg.value !== '') {
-                reg.classList.remove('border-wrong')
+        location.addEventListener('keyup', () => {
+            if(location.value !== '') {
+                location.classList.remove('border-wrong')
                 msg.classList.remove('visible')
             }
         })
@@ -311,7 +324,7 @@ saveRegionEdit.addEventListener('click', () => editRegion())
 async function editRegion() {
     const modifiedRegion = { region_name: regionEdit.value}
     msgEReg.innerText = 'Este campo es obligatorio'
-    validateRegion(regionEdit, msgEReg)
+    validateLocation(regionEdit, msgEReg)
     const options = {                   
         method: 'PUT',  
         body: JSON.stringify(modifiedRegion),
@@ -336,47 +349,50 @@ async function editRegion() {
 }
 
 //add country 
-const darkImageNewCountry = document.getElementById('darkImageNewCountry')
-const closeNewCountry = document.getElementById('closeNewCountry')
-const cancelCountry = document.getElementById('cancelCountry')
-
-async function addCountry(reg/* , event */) {
-    console.log(reg)
-    darkImageNewCountry.classList.remove('none')
-    body.classList.add('modal')
-    /* const country = { 
-        region_id: reg.region_id,
-        country_name: 
-    } */
-    /* const options = {
+async function addCountry(event, reg) {
+    event.preventDefault()
+    const country = { 
+        region_id: +reg,
+        country_name: newCountry.value
+    }
+    const options = {
         method: 'POST',
         body: JSON.stringify(country),
         headers: {
             "Content-Type": "application/json",
             Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
         }
-    } */
-    /* validateRegion(newRegion, msgNReg) */
-    /* try {
+    }
+    msgNCount.innerText = 'Este campo es obligatorio'
+    validateLocation(newCountry, msgNCount)
+    try {
         const response = await fetch('http://localhost:3000/countries', options)
-        // if(response.status === 409) {
-        //     newRegion.classList.add('border-wrong')
-        //     msgNReg.classList.add('visible')
-        //     msgNReg.innerText = 'La región ya existe'
-        // }
+        if(response.status === 409) {
+            newCountry.classList.add('border-wrong')
+            msgNCount.classList.add('visible')
+            msgNCount.innerText = 'El país ya existe'
+        }
         const data = await response.json()
         console.log(data)
-        closeWindowNewRegion(event)
+        closeWindowNewCountry()
         getLocations()
     } catch(reason) {
         return reason
-    } */
+    }
 }
 
+//close new country window
 closeNewCountry.addEventListener('click', () => closeWindowNewCountry())
 cancelCountry.addEventListener('click', () => closeWindowNewCountry())
 
 function closeWindowNewCountry() {
     darkImageNewCountry.classList.add('none')
+    newCountry.classList.remove('border-wrong')
+    msgNCount.classList.remove('visible')
     body.classList.remove('modal')
+    newCountry.value = ''
+    msgNCount.innerText = 'Este campo es obligatorio'
+    varRegionId = null
 }
+
+saveCountry.addEventListener('click', (event) => addCountry(event, varRegionId))

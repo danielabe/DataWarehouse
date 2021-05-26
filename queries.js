@@ -148,7 +148,7 @@ async function createRegion(newRegion, req, res) {
 }
 
 async function validateRegionIdQuery(req, res, next) {
-    const regionId = +req.params.regionId || req.body.region_id
+    const regionId = +req.params.regionId || +req.body.region_id
     const regions = await db.query(`SELECT region_id FROM regions`, {
         type: QueryTypes.SELECT
     })
@@ -264,7 +264,7 @@ async function validateCountryNameQuery(req, res, next) {
     const countriesArray = countries.map(country => country.country_name)
     if(req.body.country_name.length >= 1 && req.body.country_name.length <= 64) {
         if(countriesArray.every(name => name !== country)) next()
-        else res.status(400).send("The country already exists").end()
+        else res.status(409).send("The country already exists").end()
     } else res.status(400).send("The country name length is wrong").end()
 }
 

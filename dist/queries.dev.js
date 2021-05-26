@@ -390,7 +390,7 @@ function validateRegionIdQuery(req, res, next) {
     while (1) {
       switch (_context13.prev = _context13.next) {
         case 0:
-          regionId = +req.params.regionId || req.body.region_id;
+          regionId = +req.params.regionId || +req.body.region_id;
           _context13.next = 3;
           return regeneratorRuntime.awrap(db.query("SELECT region_id FROM regions", {
             type: QueryTypes.SELECT
@@ -686,7 +686,7 @@ function validateCountryNameQuery(req, res, next) {
           if (req.body.country_name.length >= 1 && req.body.country_name.length <= 64) {
             if (countriesArray.every(function (name) {
               return name !== country;
-            })) next();else res.status(400).send("The country already exists").end();
+            })) next();else res.status(409).send("The country already exists").end();
           } else res.status(400).send("The country name length is wrong").end();
 
         case 6:

@@ -20,6 +20,12 @@ var regionEdit = document.getElementById('regionEdit');
 var closeEditRegion = document.getElementById('closeEditRegion');
 var deleteRegEdit = document.getElementById('deleteRegEdit');
 var msgEReg = document.getElementById('msgEReg');
+var darkImageNewCountry = document.getElementById('darkImageNewCountry');
+var closeNewCountry = document.getElementById('closeNewCountry');
+var cancelCountry = document.getElementById('cancelCountry');
+var newCountry = document.getElementById('newCountry');
+var msgNCount = document.getElementById('msgNCount');
+var saveCountry = document.getElementById('saveCountry');
 var varRegionId = null;
 var varEditRegion = 0; //show regions, countries and cities
 
@@ -82,7 +88,11 @@ function getLocations() {
               return regionEdition(reg);
             });
             btnAddCountry.addEventListener('click', function () {
-              return addCountry(reg);
+              darkImageNewCountry.classList.remove('none');
+              window.scrollTo(0, 0);
+              body.classList.add('modal');
+              varRegionId = +reg.region_id;
+              console.log(varRegionId);
             });
             reg.countries.forEach(function (count) {
               var country = document.createElement('li');
@@ -176,7 +186,7 @@ function addRegion(event) {
               Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
             }
           };
-          validateRegion(newRegion, msgNReg);
+          validateLocation(newRegion, msgNReg);
           _context2.prev = 3;
           _context2.next = 6;
           return regeneratorRuntime.awrap(fetch('http://localhost:3000/regions', options));
@@ -215,14 +225,14 @@ function addRegion(event) {
 } //validate region
 
 
-function validateRegion(reg, msg) {
+function validateLocation(location, msg) {
   //newRegion, msgNReg
-  if (reg.value === '') {
-    reg.classList.add('border-wrong');
+  if (location.value === '') {
+    location.classList.add('border-wrong');
     msg.classList.add('visible');
-    reg.addEventListener('keyup', function () {
-      if (reg.value !== '') {
-        reg.classList.remove('border-wrong');
+    location.addEventListener('keyup', function () {
+      if (location.value !== '') {
+        location.classList.remove('border-wrong');
         msg.classList.remove('visible');
       }
     });
@@ -388,7 +398,7 @@ function editRegion() {
             region_name: regionEdit.value
           };
           msgEReg.innerText = 'Este campo es obligatorio';
-          validateRegion(regionEdit, msgEReg);
+          validateLocation(regionEdit, msgEReg);
           options = {
             method: 'PUT',
             body: JSON.stringify(modifiedRegion),
@@ -434,58 +444,64 @@ function editRegion() {
 } //add country 
 
 
-var darkImageNewCountry = document.getElementById('darkImageNewCountry');
-var closeNewCountry = document.getElementById('closeNewCountry');
-var cancelCountry = document.getElementById('cancelCountry');
-
-function addCountry(reg
-/* , event */
-) {
+function addCountry(event, reg) {
+  var country, options, response, data;
   return regeneratorRuntime.async(function addCountry$(_context5) {
     while (1) {
       switch (_context5.prev = _context5.next) {
         case 0:
-          console.log(reg);
-          darkImageNewCountry.classList.remove('none');
-          body.classList.add('modal');
-          /* const country = { 
-              region_id: reg.region_id,
-              country_name: 
-          } */
+          event.preventDefault();
+          country = {
+            region_id: +reg,
+            country_name: newCountry.value
+          };
+          options = {
+            method: 'POST',
+            body: JSON.stringify(country),
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
+            }
+          };
+          msgNCount.innerText = 'Este campo es obligatorio';
+          validateLocation(newCountry, msgNCount);
+          _context5.prev = 5;
+          _context5.next = 8;
+          return regeneratorRuntime.awrap(fetch('http://localhost:3000/countries', options));
 
-          /* const options = {
-              method: 'POST',
-              body: JSON.stringify(country),
-              headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
-              }
-          } */
+        case 8:
+          response = _context5.sent;
 
-          /* validateRegion(newRegion, msgNReg) */
+          if (response.status === 409) {
+            newCountry.classList.add('border-wrong');
+            msgNCount.classList.add('visible');
+            msgNCount.innerText = 'El país ya existe';
+          }
 
-          /* try {
-              const response = await fetch('http://localhost:3000/countries', options)
-              // if(response.status === 409) {
-              //     newRegion.classList.add('border-wrong')
-              //     msgNReg.classList.add('visible')
-              //     msgNReg.innerText = 'La región ya existe'
-              // }
-              const data = await response.json()
-              console.log(data)
-              closeWindowNewRegion(event)
-              getLocations()
-          } catch(reason) {
-              return reason
-          } */
+          _context5.next = 12;
+          return regeneratorRuntime.awrap(response.json());
 
-        case 3:
+        case 12:
+          data = _context5.sent;
+          console.log(data);
+          closeWindowNewCountry();
+          getLocations();
+          _context5.next = 21;
+          break;
+
+        case 18:
+          _context5.prev = 18;
+          _context5.t0 = _context5["catch"](5);
+          return _context5.abrupt("return", _context5.t0);
+
+        case 21:
         case "end":
           return _context5.stop();
       }
     }
-  });
-}
+  }, null, null, [[5, 18]]);
+} //close new country window
+
 
 closeNewCountry.addEventListener('click', function () {
   return closeWindowNewCountry();
@@ -496,5 +512,14 @@ cancelCountry.addEventListener('click', function () {
 
 function closeWindowNewCountry() {
   darkImageNewCountry.classList.add('none');
+  newCountry.classList.remove('border-wrong');
+  msgNCount.classList.remove('visible');
   body.classList.remove('modal');
+  newCountry.value = '';
+  msgNCount.innerText = 'Este campo es obligatorio';
+  varRegionId = null;
 }
+
+saveCountry.addEventListener('click', function (event) {
+  return addCountry(event, varRegionId);
+});
