@@ -42,11 +42,20 @@ var cancelCity = document.getElementById('cancelCity');
 var newCity = document.getElementById('newCity');
 var msgNCit = document.getElementById('msgNCit');
 var saveCity = document.getElementById('saveCity');
+var darkImageCities = document.getElementById('darkImageCities');
+var cancelDltCitBtn = document.getElementById('cancelDltCitBtn');
+var darkImageEditCity = document.getElementById('darkImageEditCity');
+var deleteCitBtn = document.getElementById('deleteCitBtn');
+var cityEdit = document.getElementById('cityEdit');
+var closeEditCity = document.getElementById('closeEditCity');
+var msgECit = document.getElementById('msgECit');
+var saveCityEdit = document.getElementById('saveCityEdit');
 var varRegionId = null;
 var varCountryId = null;
 var varCitId = null;
 var varEditRegion = 0;
-var varEditCountry = 0; //show regions, countries and cities
+var varEditCountry = 0;
+var varEditCity = 0; //show regions, countries and cities
 
 function getLocations() {
   var options, response, data;
@@ -173,6 +182,9 @@ function getLocations() {
                 cityList.appendChild(city);
                 btnDeleteCity.addEventListener('click', function () {
                   return modalDeleteCity(cit.city_id);
+                });
+                btnEditCity.addEventListener('click', function () {
+                  return cityEdition(cit);
                 });
               });
             });
@@ -803,7 +815,7 @@ function addCity(event, count) {
       }
     }
   }, null, null, [[5, 18]]);
-} //close new country window
+} //close new city window
 
 
 closeNewCity.addEventListener('click', function () {
@@ -827,11 +839,6 @@ saveCity.addEventListener('click', function (event) {
   return addCity(event, varCountryId);
 }); //delete city
 
-var darkImageCities = document.getElementById('darkImageCities');
-var cancelDltCitBtn = document.getElementById('cancelDltCitBtn');
-var darkImageEditCity = document.getElementById('darkImageEditCity');
-var deleteCitBtn = document.getElementById('deleteCitBtn');
-
 function modalDeleteCity(cityId) {
   console.log(cityId);
   varCitId = cityId;
@@ -848,19 +855,18 @@ cancelDltCitBtn.addEventListener('click', function () {
 });
 
 function cancelDeleteCity() {
-  /* if(varEditCity === 0) { */
-  console.log('despues de no edition');
-  body.classList.remove('modal');
-  /* darkImageEditCity.style.visibility = 'hidden'
-  darkImageEditCity.classList.add('none') */
-
-  /* } else if(varEditCity === 1) {
-      console.log('despues de edition')
-      window.scrollTo(0, 0)
-      body.classList.add('modal')
-      darkImageEditCity.style.visibility = 'visible'
-      darkImageEditCity.classList.remove('none')
-  } */
+  if (varEditCity === 0) {
+    console.log('despues de no edition');
+    body.classList.remove('modal');
+    darkImageEditCity.style.visibility = 'hidden';
+    darkImageEditCity.classList.add('none');
+  } else if (varEditCity === 1) {
+    console.log('despues de edition');
+    window.scrollTo(0, 0);
+    body.classList.add('modal');
+    darkImageEditCity.style.visibility = 'visible';
+    darkImageEditCity.classList.remove('none');
+  }
 
   darkImageCities.classList.add('none');
   /* console.log(varRegionId) */
@@ -921,4 +927,101 @@ function cancelCit() {
   darkImageCities.classList.add('none');
   varCitId = null;
   console.log(varCitId);
+} //edit city
+
+
+function cityEdition(cit) {
+  console.log(cit);
+  window.scrollTo(0, 0);
+  darkImageEditCity.classList.remove('none');
+  darkImageEditCity.style.visibility = 'visible';
+  body.classList.add('modal');
+  /* main.classList.add('height-add-ctc') */
+
+  cityEdit.value = cit.city_name;
+  varCitId = cit.city_id;
+  varEditCity = 1;
+} //close window edit country
+
+
+closeEditCity.addEventListener('click', function () {
+  return closeWindowEditCity();
+});
+
+function closeWindowEditCity() {
+  /* event.preventDefault() */
+  darkImageEditCity.classList.add('none');
+  body.classList.remove('modal');
+  cityEdit.classList.remove('border-wrong');
+  msgECit.classList.remove('visible');
+  varEditCity = 0;
+  msgECit.innerText = 'Este campo es obligatorio';
+  varCitId = null;
+}
+
+deleteCitEdit.addEventListener('click', function () {
+  darkImageEditCity.style.visibility = 'visible';
+  darkImageEditCity.classList.add('none');
+  modalDeleteCity(varCitId);
+}); //save edited city
+
+saveCityEdit.addEventListener('click', function () {
+  return editCity();
+});
+
+function editCity() {
+  var modifiedCity, options, response, data;
+  return regeneratorRuntime.async(function editCity$(_context10) {
+    while (1) {
+      switch (_context10.prev = _context10.next) {
+        case 0:
+          modifiedCity = {
+            city_name: cityEdit.value
+          };
+          msgECit.innerText = 'Este campo es obligatorio';
+          validateLocation(cityEdit, msgECit);
+          options = {
+            method: 'PUT',
+            body: JSON.stringify(modifiedCity),
+            headers: {
+              Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token'))),
+              "Content-Type": "application/json"
+            }
+          };
+          _context10.prev = 4;
+          _context10.next = 7;
+          return regeneratorRuntime.awrap(fetch("http://localhost:3000/cities/".concat(varCitId), options));
+
+        case 7:
+          response = _context10.sent;
+
+          if (response.status === 409) {
+            cityEdit.classList.add('border-wrong');
+            msgECit.classList.add('visible');
+            msgECit.innerText = 'La ciudad ya existe';
+          }
+
+          _context10.next = 11;
+          return regeneratorRuntime.awrap(response.json());
+
+        case 11:
+          data = _context10.sent;
+          console.log(data);
+          closeWindowEditCity();
+          getLocations();
+          console.log(varCitId);
+          _context10.next = 21;
+          break;
+
+        case 18:
+          _context10.prev = 18;
+          _context10.t0 = _context10["catch"](4);
+          return _context10.abrupt("return", _context10.t0);
+
+        case 21:
+        case "end":
+          return _context10.stop();
+      }
+    }
+  }, null, null, [[4, 18]]);
 }

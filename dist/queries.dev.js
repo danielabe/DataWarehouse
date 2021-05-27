@@ -1126,18 +1126,14 @@ function validateCityNamePutQuery(req, res, next) {
     while (1) {
       switch (_context37.prev = _context37.next) {
         case 0:
-          if (!req.body.city_name) {
-            _context37.next = 9;
-            break;
-          }
-
+          /* if(req.body.city_name){ */
           city = req.body.city_name;
-          _context37.next = 4;
+          _context37.next = 3;
           return regeneratorRuntime.awrap(db.query("SELECT city_name FROM cities", {
             type: QueryTypes.SELECT
           }));
 
-        case 4:
+        case 3:
           cities = _context37.sent;
           citiesArray = cities.map(function (city) {
             return city.city_name;
@@ -1146,16 +1142,12 @@ function validateCityNamePutQuery(req, res, next) {
           if (req.body.city_name.length >= 1 && req.body.city_name.length <= 64) {
             if (citiesArray.every(function (name) {
               return name !== city;
-            })) next();else res.status(400).send("The city already exists").end();
+            })) next();else res.status(409).send("The city already exists").end();
           } else res.status(400).send("The city name length is wrong").end();
+          /* } else next() */
 
-          _context37.next = 10;
-          break;
 
-        case 9:
-          next();
-
-        case 10:
+        case 6:
         case "end":
           return _context37.stop();
       }

@@ -428,7 +428,7 @@ async function validateCountryIdCityQuery(req, res, next) {
 }
 
 async function validateCityNamePutQuery(req, res, next) {
-    if(req.body.city_name){
+    /* if(req.body.city_name){ */
         const city = req.body.city_name
         const cities = await db.query(`SELECT city_name FROM cities`, {
             type: QueryTypes.SELECT
@@ -436,9 +436,9 @@ async function validateCityNamePutQuery(req, res, next) {
         const citiesArray = cities.map(city => city.city_name)
         if(req.body.city_name.length >= 1 && req.body.city_name.length <= 64) {
             if(citiesArray.every(name => name !== city)) next()
-            else res.status(400).send("The city already exists").end()
+            else res.status(409).send("The city already exists").end()
         } else res.status(400).send("The city name length is wrong").end()
-    } else next()
+    /* } else next() */
 }
 
 async function modifyCity(cityId, req, res) {

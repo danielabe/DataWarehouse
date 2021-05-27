@@ -40,12 +40,21 @@ const cancelCity = document.getElementById('cancelCity')
 const newCity = document.getElementById('newCity')
 const msgNCit = document.getElementById('msgNCit')
 const saveCity = document.getElementById('saveCity')
+const darkImageCities = document.getElementById('darkImageCities')
+const cancelDltCitBtn = document.getElementById('cancelDltCitBtn')
+const darkImageEditCity = document.getElementById('darkImageEditCity')
+const deleteCitBtn = document.getElementById('deleteCitBtn')
+const cityEdit = document.getElementById('cityEdit')
+const closeEditCity = document.getElementById('closeEditCity')
+const msgECit = document.getElementById('msgECit')
+const saveCityEdit = document.getElementById('saveCityEdit')
 
 let varRegionId = null
 let varCountryId = null
 let varCitId = null
 let varEditRegion = 0
 let varEditCountry = 0
+let varEditCity = 0
 
 //show regions, countries and cities
 async function getLocations() {
@@ -169,6 +178,7 @@ async function getLocations() {
                 cityList.appendChild(city)
 
                 btnDeleteCity.addEventListener('click', () => modalDeleteCity(cit.city_id))
+                btnEditCity.addEventListener('click', () => cityEdition(cit))
             })
         })
     })
@@ -592,7 +602,7 @@ async function addCity(event, count) {
     }
 }
 
-//close new country window
+//close new city window
 closeNewCity.addEventListener('click', () => closeWindowNewCity())
 cancelCity.addEventListener('click', () => closeWindowNewCity())
 
@@ -609,10 +619,6 @@ function closeWindowNewCity() {
 saveCity.addEventListener('click', (event) => addCity(event, varCountryId))
 
 //delete city
-const darkImageCities = document.getElementById('darkImageCities')
-const cancelDltCitBtn = document.getElementById('cancelDltCitBtn')
-const darkImageEditCity = document.getElementById('darkImageEditCity')
-const deleteCitBtn = document.getElementById('deleteCitBtn')
 function modalDeleteCity(cityId) {
     console.log(cityId)
     varCitId = cityId
@@ -629,18 +635,18 @@ cancelDltCitBtn.addEventListener('click', () => {
 })
 
 function cancelDeleteCity() {
-    /* if(varEditCity === 0) { */
+    if(varEditCity === 0) {
         console.log('despues de no edition')
         body.classList.remove('modal')
-        /* darkImageEditCity.style.visibility = 'hidden'
-        darkImageEditCity.classList.add('none') */
-    /* } else if(varEditCity === 1) {
+        darkImageEditCity.style.visibility = 'hidden'
+        darkImageEditCity.classList.add('none')
+    } else if(varEditCity === 1) {
         console.log('despues de edition')
         window.scrollTo(0, 0)
         body.classList.add('modal')
         darkImageEditCity.style.visibility = 'visible'
         darkImageEditCity.classList.remove('none')
-    } */
+    }
     darkImageCities.classList.add('none')
     /* console.log(varRegionId) */
 }
@@ -676,4 +682,68 @@ function cancelCit() {
     darkImageCities.classList.add('none')
     varCitId = null
     console.log(varCitId)
+}
+//edit city
+function cityEdition(cit) {
+    console.log(cit)
+    window.scrollTo(0, 0)
+    darkImageEditCity.classList.remove('none')
+    darkImageEditCity.style.visibility = 'visible'
+    body.classList.add('modal')
+    /* main.classList.add('height-add-ctc') */
+    cityEdit.value = cit.city_name
+    varCitId = cit.city_id
+    varEditCity = 1
+}
+
+//close window edit country
+closeEditCity.addEventListener('click', () => closeWindowEditCity())
+
+function closeWindowEditCity() {
+    /* event.preventDefault() */
+    darkImageEditCity.classList.add('none')
+    body.classList.remove('modal')
+    cityEdit.classList.remove('border-wrong')
+    msgECit.classList.remove('visible')
+    varEditCity = 0
+    msgECit.innerText = 'Este campo es obligatorio'
+    varCitId = null
+}
+
+deleteCitEdit.addEventListener('click', () => {
+    darkImageEditCity.style.visibility = 'visible'
+    darkImageEditCity.classList.add('none')
+    modalDeleteCity(varCitId)
+})
+
+//save edited city
+saveCityEdit.addEventListener('click', () => editCity())
+
+async function editCity() {
+    const modifiedCity = { city_name: cityEdit.value}
+    msgECit.innerText = 'Este campo es obligatorio'
+    validateLocation(cityEdit, msgECit)
+    const options = {                   
+        method: 'PUT',  
+        body: JSON.stringify(modifiedCity),
+        headers: {
+            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`,
+            "Content-Type": "application/json"
+        }
+    }
+    try {
+        const response = await fetch(`http://localhost:3000/cities/${varCitId}`, options)
+        if(response.status === 409) {
+            cityEdit.classList.add('border-wrong')
+            msgECit.classList.add('visible')
+            msgECit.innerText = 'La ciudad ya existe'
+        }
+        const data = await response.json()
+        console.log(data)
+        closeWindowEditCity()
+        getLocations()
+        console.log(varCitId)
+    } catch (reason) {
+        return reason
+    }
 }
