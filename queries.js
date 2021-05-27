@@ -300,7 +300,7 @@ async function getCountry(countryId, req, res) {
 }
 
 async function validateCountryNamePutQuery(req, res, next) {
-    if(req.body.country_name){
+    /* if(req.body.country_name){ */
         const country = req.body.country_name
         const countries = await db.query(`SELECT country_name FROM countries`, {
             type: QueryTypes.SELECT
@@ -308,9 +308,9 @@ async function validateCountryNamePutQuery(req, res, next) {
         const countriesArray = countries.map(country => country.country_name)
         if(req.body.country_name.length >= 1 && req.body.country_name.length <= 64) {
             if(countriesArray.every(name => name !== country)) next()
-            else res.status(400).send("The country already exists").end()
+            else res.status(409).send("The country already exists").end()
         } else res.status(400).send("The country name length is wrong").end()
-    } else next()
+    /* } else next() */
 }
 
 async function modifyCountry(countryId, req, res) {

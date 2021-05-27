@@ -28,6 +28,12 @@ const darkImageCountries = document.getElementById('darkImageCountries')
 const cancelDltCountBtn = document.getElementById('cancelDltCountBtn')
 const darkImageEditCount = document.getElementById('darkImageEditCount')
 const deleteCountBtn = document.getElementById('deleteCountBtn')
+const closeEditCountry = document.getElementById('closeEditCountry')
+const countryEdit = document.getElementById('countryEdit')
+const msgECount = document.getElementById('msgECount')
+const deleteCountEdit = document.getElementById('deleteCountEdit')
+const saveRegionEdit = document.getElementById('saveRegionEdit')
+const saveCountryEdit = document.getElementById('saveCountryEdit')
 
 let varRegionId = null
 let varCountryId = null
@@ -36,6 +42,7 @@ let varEditCountry = 0
 
 //show regions, countries and cities
 async function getLocations() {
+    console.log(varCountryId)
     regionList.innerHTML = ''
     const options = {
         method: 'GET',
@@ -83,9 +90,9 @@ async function getLocations() {
         btnEditRegion.addEventListener('click', () => regionEdition(reg))
 
         btnAddCountry.addEventListener('click', () => {
-            darkImageNewCountry.classList.remove('none')
             window.scrollTo(0, 0)
             body.classList.add('modal')
+            darkImageNewCountry.classList.remove('none')
             varRegionId = +reg.region_id
             console.log(varRegionId)
         })
@@ -124,6 +131,7 @@ async function getLocations() {
             countryList.appendChild(country)
 
             btnDeleteCountry.addEventListener('click', () => modalDeleteCountry(count.country_id))
+            btnEditCountry.addEventListener('click', () => countryEdition(count))
 
             count.cities.forEach(cit => {
                 const city = document.createElement('li')
@@ -318,15 +326,13 @@ function closeWindowEditRegion() {
 }
 
 deleteRegEdit.addEventListener('click', () => {
-    darkImageEditReg.style.visibility = 'hidden'
+    /* darkImageEditReg.style.visibility = 'hidden' */
     darkImageEditReg.style.visibility = 'visible'
     darkImageEditReg.classList.add('none')
     modalDeleteRegion(varRegionId)
 })
 
 //save edited region
-const saveRegionEdit = document.getElementById('saveRegionEdit')
-
 saveRegionEdit.addEventListener('click', () => editRegion())
 
 async function editRegion() {
@@ -469,4 +475,69 @@ function cancelCount() {
     darkImageCountries.classList.add('none')
     varCountryId = null
     console.log(varCountryId)
+}
+
+//edit country
+function countryEdition(count) {
+    console.log(count)
+    window.scrollTo(0, 0)
+    darkImageEditCount.classList.remove('none')
+    darkImageEditCount.style.visibility = 'visible'
+    body.classList.add('modal')
+    /* main.classList.add('height-add-ctc') */
+    countryEdit.value = count.country_name
+    varCountryId = count.country_id
+    varEditCountry = 1
+}
+
+//close window edit country
+closeEditCountry.addEventListener('click', () => closeWindowEditCountry())
+
+function closeWindowEditCountry() {
+    /* event.preventDefault() */
+    darkImageEditCount.classList.add('none')
+    body.classList.remove('modal')
+    countryEdit.classList.remove('border-wrong')
+    msgECount.classList.remove('visible')
+    varEditCountry = 0
+    msgECount.innerText = 'Este campo es obligatorio'
+    varCountryId = null
+}
+
+deleteCountEdit.addEventListener('click', () => {
+    darkImageEditCount.style.visibility = 'visible'
+    darkImageEditCount.classList.add('none')
+    modalDeleteCountry(varCountryId)
+})
+
+//save edited country
+saveCountryEdit.addEventListener('click', () => editCountry())
+
+async function editCountry() {
+    const modifiedCountry = { country_name: countryEdit.value}
+    msgECount.innerText = 'Este campo es obligatorio'
+    validateLocation(countryEdit, msgECount)
+    const options = {                   
+        method: 'PUT',  
+        body: JSON.stringify(modifiedCountry),
+        headers: {
+            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`,
+            "Content-Type": "application/json"
+        }
+    }
+    try {
+        const response = await fetch(`http://localhost:3000/countries/${varCountryId}`, options)
+        if(response.status === 409) {
+            countryEdit.classList.add('border-wrong')
+            msgECount.classList.add('visible')
+            msgECount.innerText = 'El país ya existe'
+        }
+        const data = await response.json()
+        console.log(data)
+        closeWindowEditCountry()
+        getLocations()
+        console.log(varCountryId)
+    } catch (reason) {
+        return reason
+    }
 }

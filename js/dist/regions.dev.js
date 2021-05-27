@@ -30,6 +30,12 @@ var darkImageCountries = document.getElementById('darkImageCountries');
 var cancelDltCountBtn = document.getElementById('cancelDltCountBtn');
 var darkImageEditCount = document.getElementById('darkImageEditCount');
 var deleteCountBtn = document.getElementById('deleteCountBtn');
+var closeEditCountry = document.getElementById('closeEditCountry');
+var countryEdit = document.getElementById('countryEdit');
+var msgECount = document.getElementById('msgECount');
+var deleteCountEdit = document.getElementById('deleteCountEdit');
+var saveRegionEdit = document.getElementById('saveRegionEdit');
+var saveCountryEdit = document.getElementById('saveCountryEdit');
 var varRegionId = null;
 var varCountryId = null;
 var varEditRegion = 0;
@@ -41,6 +47,7 @@ function getLocations() {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
+          console.log(varCountryId);
           regionList.innerHTML = '';
           options = {
             method: 'GET',
@@ -48,15 +55,15 @@ function getLocations() {
               Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
             }
           };
-          _context.next = 4;
+          _context.next = 5;
           return regeneratorRuntime.awrap(fetch('http://localhost:3000/regionsCountriesCities', options));
 
-        case 4:
+        case 5:
           response = _context.sent;
-          _context.next = 7;
+          _context.next = 8;
           return regeneratorRuntime.awrap(response.json());
 
-        case 7:
+        case 8:
           data = _context.sent;
           console.log(data);
           data.forEach(function (reg) {
@@ -94,9 +101,9 @@ function getLocations() {
               return regionEdition(reg);
             });
             btnAddCountry.addEventListener('click', function () {
-              darkImageNewCountry.classList.remove('none');
               window.scrollTo(0, 0);
               body.classList.add('modal');
+              darkImageNewCountry.classList.remove('none');
               varRegionId = +reg.region_id;
               console.log(varRegionId);
             });
@@ -131,6 +138,9 @@ function getLocations() {
               btnDeleteCountry.addEventListener('click', function () {
                 return modalDeleteCountry(count.country_id);
               });
+              btnEditCountry.addEventListener('click', function () {
+                return countryEdition(count);
+              });
               count.cities.forEach(function (cit) {
                 var city = document.createElement('li');
                 var cityTitle = document.createElement('h6');
@@ -151,7 +161,7 @@ function getLocations() {
             });
           });
 
-        case 10:
+        case 11:
         case "end":
           return _context.stop();
       }
@@ -386,13 +396,12 @@ function closeWindowEditRegion() {
 }
 
 deleteRegEdit.addEventListener('click', function () {
-  darkImageEditReg.style.visibility = 'hidden';
+  /* darkImageEditReg.style.visibility = 'hidden' */
   darkImageEditReg.style.visibility = 'visible';
   darkImageEditReg.classList.add('none');
   modalDeleteRegion(varRegionId);
 }); //save edited region
 
-var saveRegionEdit = document.getElementById('saveRegionEdit');
 saveRegionEdit.addEventListener('click', function () {
   return editRegion();
 });
@@ -621,4 +630,101 @@ function cancelCount() {
   darkImageCountries.classList.add('none');
   varCountryId = null;
   console.log(varCountryId);
+} //edit country
+
+
+function countryEdition(count) {
+  console.log(count);
+  window.scrollTo(0, 0);
+  darkImageEditCount.classList.remove('none');
+  darkImageEditCount.style.visibility = 'visible';
+  body.classList.add('modal');
+  /* main.classList.add('height-add-ctc') */
+
+  countryEdit.value = count.country_name;
+  varCountryId = count.country_id;
+  varEditCountry = 1;
+} //close window edit country
+
+
+closeEditCountry.addEventListener('click', function () {
+  return closeWindowEditCountry();
+});
+
+function closeWindowEditCountry() {
+  /* event.preventDefault() */
+  darkImageEditCount.classList.add('none');
+  body.classList.remove('modal');
+  countryEdit.classList.remove('border-wrong');
+  msgECount.classList.remove('visible');
+  varEditCountry = 0;
+  msgECount.innerText = 'Este campo es obligatorio';
+  varCountryId = null;
+}
+
+deleteCountEdit.addEventListener('click', function () {
+  darkImageEditCount.style.visibility = 'visible';
+  darkImageEditCount.classList.add('none');
+  modalDeleteCountry(varCountryId);
+}); //save edited country
+
+saveCountryEdit.addEventListener('click', function () {
+  return editCountry();
+});
+
+function editCountry() {
+  var modifiedCountry, options, response, data;
+  return regeneratorRuntime.async(function editCountry$(_context7) {
+    while (1) {
+      switch (_context7.prev = _context7.next) {
+        case 0:
+          modifiedCountry = {
+            country_name: countryEdit.value
+          };
+          msgECount.innerText = 'Este campo es obligatorio';
+          validateLocation(countryEdit, msgECount);
+          options = {
+            method: 'PUT',
+            body: JSON.stringify(modifiedCountry),
+            headers: {
+              Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token'))),
+              "Content-Type": "application/json"
+            }
+          };
+          _context7.prev = 4;
+          _context7.next = 7;
+          return regeneratorRuntime.awrap(fetch("http://localhost:3000/countries/".concat(varCountryId), options));
+
+        case 7:
+          response = _context7.sent;
+
+          if (response.status === 409) {
+            countryEdit.classList.add('border-wrong');
+            msgECount.classList.add('visible');
+            msgECount.innerText = 'El país ya existe';
+          }
+
+          _context7.next = 11;
+          return regeneratorRuntime.awrap(response.json());
+
+        case 11:
+          data = _context7.sent;
+          console.log(data);
+          closeWindowEditCountry();
+          getLocations();
+          console.log(varCountryId);
+          _context7.next = 21;
+          break;
+
+        case 18:
+          _context7.prev = 18;
+          _context7.t0 = _context7["catch"](4);
+          return _context7.abrupt("return", _context7.t0);
+
+        case 21:
+        case "end":
+          return _context7.stop();
+      }
+    }
+  }, null, null, [[4, 18]]);
 }

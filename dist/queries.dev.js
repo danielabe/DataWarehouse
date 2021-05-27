@@ -785,18 +785,14 @@ function validateCountryNamePutQuery(req, res, next) {
     while (1) {
       switch (_context26.prev = _context26.next) {
         case 0:
-          if (!req.body.country_name) {
-            _context26.next = 9;
-            break;
-          }
-
+          /* if(req.body.country_name){ */
           country = req.body.country_name;
-          _context26.next = 4;
+          _context26.next = 3;
           return regeneratorRuntime.awrap(db.query("SELECT country_name FROM countries", {
             type: QueryTypes.SELECT
           }));
 
-        case 4:
+        case 3:
           countries = _context26.sent;
           countriesArray = countries.map(function (country) {
             return country.country_name;
@@ -805,16 +801,12 @@ function validateCountryNamePutQuery(req, res, next) {
           if (req.body.country_name.length >= 1 && req.body.country_name.length <= 64) {
             if (countriesArray.every(function (name) {
               return name !== country;
-            })) next();else res.status(400).send("The country already exists").end();
+            })) next();else res.status(409).send("The country already exists").end();
           } else res.status(400).send("The country name length is wrong").end();
+          /* } else next() */
 
-          _context26.next = 10;
-          break;
 
-        case 9:
-          next();
-
-        case 10:
+        case 6:
         case "end":
           return _context26.stop();
       }
