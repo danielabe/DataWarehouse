@@ -476,8 +476,8 @@ async function deleteCity(cityId, req, res) {
 //companies
 async function getCompanies(req, res) {
     const companies = await db.query(`
-    SELECT company_id, company_name, c.city_id, city_name, ci.country_id, country_name, 
-    co.region_id, region_name, address
+    SELECT company_id, company_name, c.email, c.city_id, city_name, ci.country_id, country_name, 
+    co.region_id, region_name, address, telephone
     FROM companies c
     JOIN cities ci ON ci.city_id = c.city_id
     JOIN countries co ON co.country_id = ci.country_id
@@ -615,7 +615,7 @@ async function deleteCompany(companyId, req, res) {
 //contacts
 async function getContacts(req, res) {
     const contacts = await db.query(`
-    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,
+    SELECT contact_id, firstname, lastname, cont.email, cont.city_id, ci.city_name, ci.country_id,
     co.country_name, co.region_id, re.region_name, cont.address, cont.company_id, comp.company_name,
     position, interest
     FROM contacts cont 
@@ -691,7 +691,7 @@ async function addChannelsContacts(newContact, contactId, req, res) {
 
 async function getContactInserted(contactId, req, res) {
     const contact = await db.query(`
-    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,
+    SELECT contact_id, firstname, lastname, cont.email, cont.city_id, ci.city_name, ci.country_id,
     co.country_name, co.region_id, re.region_name, cont.address, cont.company_id, comp.company_name,
     position, interest
     FROM contacts cont 
@@ -730,7 +730,7 @@ async function validateContactIdQuery(req, res, next) {
 
 async function getContact(contactId, req, res) {
     const contact = await db.query(`
-    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,
+    SELECT contact_id, firstname, lastname, cont.email, cont.city_id, ci.city_name, ci.country_id,
     co.country_name, co.region_id, re.region_name, cont.address, cont.company_id, comp.company_name,
     position, interest
     FROM contacts cont 
@@ -836,7 +836,7 @@ async function modifycontact(req, res) {
     })})
     
     const contactRes = await db.query(`
-    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,
+    SELECT contact_id, firstname, lastname, cont.email, cont.city_id, ci.city_name, ci.country_id,
     co.country_name, co.region_id, re.region_name, cont.company_id, cont.address, comp.company_name,
     position, interest
     FROM contacts cont 
@@ -953,7 +953,7 @@ async function deleteChannelContact(newContChan, req, res) {
 async function getResults(req, res) {
     const searchValue = req.body.search_value
     const contacts = await db.query(`
-    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,
+    SELECT contact_id, firstname, lastname, cont.email, cont.city_id, ci.city_name, ci.country_id,
     co.country_name, co.region_id, re.region_name, cont.address, cont.company_id, comp.company_name,
     position, interest
     FROM contacts cont 

@@ -1232,7 +1232,7 @@ function getCompanies(req, res) {
       switch (_context40.prev = _context40.next) {
         case 0:
           _context40.next = 2;
-          return regeneratorRuntime.awrap(db.query("\n    SELECT company_id, company_name, c.city_id, city_name, ci.country_id, country_name, \n    co.region_id, region_name, address\n    FROM companies c\n    JOIN cities ci ON ci.city_id = c.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    ", {
+          return regeneratorRuntime.awrap(db.query("\n    SELECT company_id, company_name, c.email, c.city_id, city_name, ci.country_id, country_name, \n    co.region_id, region_name, address, telephone\n    FROM companies c\n    JOIN cities ci ON ci.city_id = c.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    ", {
             type: QueryTypes.SELECT
           }));
 
@@ -1529,7 +1529,7 @@ function getContacts(req, res) {
       switch (_context49.prev = _context49.next) {
         case 0:
           _context49.next = 2;
-          return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.address, cont.company_id, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    ", {
+          return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, cont.email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.address, cont.company_id, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    ", {
             type: QueryTypes.SELECT
           }));
 
@@ -1696,7 +1696,7 @@ function getContactInserted(contactId, req, res) {
       switch (_context55.prev = _context55.next) {
         case 0:
           _context55.next = 2;
-          return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.address, cont.company_id, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    WHERE contact_id = ?\n    ", {
+          return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, cont.email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.address, cont.company_id, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    WHERE contact_id = ?\n    ", {
             replacements: [contactId],
             type: QueryTypes.SELECT
           }));
@@ -1773,7 +1773,7 @@ function getContact(contactId, req, res) {
       switch (_context58.prev = _context58.next) {
         case 0:
           _context58.next = 2;
-          return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.address, cont.company_id, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    WHERE contact_id = ?\n    ", {
+          return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, cont.email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.address, cont.company_id, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    WHERE contact_id = ?\n    ", {
             replacements: [contactId],
             type: QueryTypes.SELECT
           }));
@@ -1988,7 +1988,7 @@ function modifycontact(req, res) {
             });
           });
           _context63.next = 13;
-          return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.company_id, cont.address, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    WHERE contact_id = ?\n    ", {
+          return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, cont.email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.company_id, cont.address, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    WHERE contact_id = ?\n    ", {
             replacements: [req.params.contactId],
             type: QueryTypes.SELECT
           }));
@@ -2206,7 +2206,7 @@ function getResults(req, res) {
         case 0:
           searchValue = req.body.search_value;
           _context69.next = 3;
-          return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.address, cont.company_id, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    WHERE firstname LIKE '%".concat(searchValue, "%' OR lastname LIKE '%").concat(searchValue, "%' OR email LIKE '%").concat(searchValue, "%'\n    OR ci.city_name LIKE '").concat(searchValue, "%' OR co.country_name LIKE '").concat(searchValue, "%' OR re.region_name LIKE '").concat(searchValue, "%'\n    OR cont.address LIKE '").concat(searchValue, "%' OR comp.company_name LIKE '").concat(searchValue, "%' OR position LIKE '%").concat(searchValue, "%'\n    OR interest LIKE '").concat(searchValue, "%'\n    "), {
+          return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, cont.email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.address, cont.company_id, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    WHERE firstname LIKE '%".concat(searchValue, "%' OR lastname LIKE '%").concat(searchValue, "%' OR email LIKE '%").concat(searchValue, "%'\n    OR ci.city_name LIKE '").concat(searchValue, "%' OR co.country_name LIKE '").concat(searchValue, "%' OR re.region_name LIKE '").concat(searchValue, "%'\n    OR cont.address LIKE '").concat(searchValue, "%' OR comp.company_name LIKE '").concat(searchValue, "%' OR position LIKE '%").concat(searchValue, "%'\n    OR interest LIKE '").concat(searchValue, "%'\n    "), {
             replacements: [searchValue],
             type: QueryTypes.SELECT
           }));

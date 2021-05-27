@@ -514,7 +514,6 @@ main {
     width: 95.9%;
     margin: 4.5px 0px 0px 0px;
     border: 1px solid rgba(0, 0, 0, 0.1);
-   
 }
 
 .fa-square {
@@ -958,6 +957,30 @@ progress::-moz-progress-bar {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+}
+
+.head-comp {
+    display: grid;
+    grid-template: repeat(1, 1fr)/20% 20% 20% 20% 20%;
+    width: 95.9%;
+    margin: 20px 0px 0px 0px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.row-companies {
+    display: grid;
+    grid-template: repeat(1, 1fr)/20% 20% 20% 20% 20%;
+    /* width: 95.9%; */
+}
+
+.comp-item {
+    align-items: flex-start;
+}
+
+.companies-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .none {
