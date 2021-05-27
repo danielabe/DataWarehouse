@@ -24,9 +24,15 @@ const cancelCountry = document.getElementById('cancelCountry')
 const newCountry = document.getElementById('newCountry')
 const msgNCount = document.getElementById('msgNCount')
 const saveCountry = document.getElementById('saveCountry')
+const darkImageCountries = document.getElementById('darkImageCountries')
+const cancelDltCountBtn = document.getElementById('cancelDltCountBtn')
+const darkImageEditCount = document.getElementById('darkImageEditCount')
+const deleteCountBtn = document.getElementById('deleteCountBtn')
 
 let varRegionId = null
+let varCountryId = null
 let varEditRegion = 0
+let varEditCountry = 0
 
 //show regions, countries and cities
 async function getLocations() {
@@ -116,6 +122,8 @@ async function getLocations() {
             country.appendChild(countContainer)
             country.appendChild(cityList)
             countryList.appendChild(country)
+
+            btnDeleteCountry.addEventListener('click', () => modalDeleteCountry(count.country_id))
 
             count.cities.forEach(cit => {
                 const city = document.createElement('li')
@@ -396,3 +404,69 @@ function closeWindowNewCountry() {
 }
 
 saveCountry.addEventListener('click', (event) => addCountry(event, varRegionId))
+
+//delete country
+function modalDeleteCountry(countryId) {
+    console.log(countryId)
+    varCountryId = countryId
+    window.scrollTo(0, 0)
+    body.classList.add('modal')
+    darkImageCountries.classList.remove('none')
+}
+
+cancelDltCountBtn.addEventListener('click', () => {
+    /* window.scrollTo(0, 0)
+    body.classList.add('modal')
+    darkImageEditReg.style.visibility = 'visible' */
+    cancelDeleteCount()
+})
+
+function cancelDeleteCount() {
+    if(varEditCountry === 0) {
+        console.log('despues de no edition')
+        body.classList.remove('modal')
+        darkImageEditCount.style.visibility = 'hidden'
+        darkImageEditCount.classList.add('none')
+    } else if(varEditCountry === 1) {
+        console.log('despues de edition')
+        window.scrollTo(0, 0)
+        body.classList.add('modal')
+        darkImageEditCount.style.visibility = 'visible'
+        darkImageEditCount.classList.remove('none')
+    }
+    darkImageCountries.classList.add('none')
+    /* console.log(varRegionId) */
+}
+
+deleteCountBtn.addEventListener('click', () => {
+    body.classList.remove('modal')
+    darkImageCountries.classList.add('none')
+    deleteCountry(varCountryId)
+})
+
+async function deleteCountry(countId) {
+    const options = {
+        method: 'DELETE',
+        headers: {
+            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
+        }
+    }
+    try {
+        console.log(varCountryId)
+        console.log(countId)
+        const response = await fetch(`http://localhost:3000/countries/${countId}`, options)
+        const data = await response.json()
+        console.log(data)
+        cancelCount()
+        getLocations()
+    } catch(reason) {
+        return reason
+    }
+}
+
+function cancelCount() {
+    body.classList.remove('modal')
+    darkImageCountries.classList.add('none')
+    varCountryId = null
+    console.log(varCountryId)
+}

@@ -511,6 +511,32 @@
                     <!-- <div id="msgContainer" class="msg-container"></div> -->
                 </form>
             </div>
+            <div id="darkImageEditCount" class="dark-image none">
+                <div class="head-window">
+                    <p class="wind-title">Editar región</p>
+                    <i id="closeEditCountry" class="fas fa-times"></i>
+                </div>
+                <div class="window-white">
+                    <button id="deleteCountEdit" class="btn-white btn-red">Eliminar región</button>
+                    <button id="saveCountryEdit" class="btn-grey btn-green">Guardar región</button>
+                </div>
+                <form id="editCountForm" class="new-form pad">
+                    <label class="nr-lbl" for="countryEdit">Nombre de la región<span class="red-asterisk">*</span></label>
+                    <input id="countryEdit" class="field nr-input" type="text">
+                    <p id="msgECount" class="msg-container reg-msg">Este campo es obligatorio</p>
+                    <!-- <div id="msgContainer" class="msg-container"></div> -->
+                </form>
+            </div>
+            <div id="darkImageCountries" class="dark-image dk-img-cont none">
+                <div class="window-del-cont">
+                    <!-- <img class="delete-contact" src="styles/images/delete-contact.png" alt="Contact"/> -->
+                    <p class="msg-modal">¿Seguro que deseas eliminar este país?</p>
+                    <div class="btn-dlt-cont">
+                        <button id="cancelDltCountBtn" class="btn-modal-cancel">Cancelar</button>
+                        <button id="deleteCountBtn" class="btn-modal-dlt">Eliminar</button>
+                    </div>
+                </div>
+            </div>
         </section>
     </main>
     <footer>

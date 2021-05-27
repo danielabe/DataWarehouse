@@ -26,8 +26,14 @@ var cancelCountry = document.getElementById('cancelCountry');
 var newCountry = document.getElementById('newCountry');
 var msgNCount = document.getElementById('msgNCount');
 var saveCountry = document.getElementById('saveCountry');
+var darkImageCountries = document.getElementById('darkImageCountries');
+var cancelDltCountBtn = document.getElementById('cancelDltCountBtn');
+var darkImageEditCount = document.getElementById('darkImageEditCount');
+var deleteCountBtn = document.getElementById('deleteCountBtn');
 var varRegionId = null;
-var varEditRegion = 0; //show regions, countries and cities
+var varCountryId = null;
+var varEditRegion = 0;
+var varEditCountry = 0; //show regions, countries and cities
 
 function getLocations() {
   var options, response, data;
@@ -122,6 +128,9 @@ function getLocations() {
               country.appendChild(countContainer);
               country.appendChild(cityList);
               countryList.appendChild(country);
+              btnDeleteCountry.addEventListener('click', function () {
+                return modalDeleteCountry(count.country_id);
+              });
               count.cities.forEach(function (cit) {
                 var city = document.createElement('li');
                 var cityTitle = document.createElement('h6');
@@ -522,4 +531,94 @@ function closeWindowNewCountry() {
 
 saveCountry.addEventListener('click', function (event) {
   return addCountry(event, varRegionId);
+}); //delete country
+
+function modalDeleteCountry(countryId) {
+  console.log(countryId);
+  varCountryId = countryId;
+  window.scrollTo(0, 0);
+  body.classList.add('modal');
+  darkImageCountries.classList.remove('none');
+}
+
+cancelDltCountBtn.addEventListener('click', function () {
+  /* window.scrollTo(0, 0)
+  body.classList.add('modal')
+  darkImageEditReg.style.visibility = 'visible' */
+  cancelDeleteCount();
 });
+
+function cancelDeleteCount() {
+  if (varEditCountry === 0) {
+    console.log('despues de no edition');
+    body.classList.remove('modal');
+    darkImageEditCount.style.visibility = 'hidden';
+    darkImageEditCount.classList.add('none');
+  } else if (varEditCountry === 1) {
+    console.log('despues de edition');
+    window.scrollTo(0, 0);
+    body.classList.add('modal');
+    darkImageEditCount.style.visibility = 'visible';
+    darkImageEditCount.classList.remove('none');
+  }
+
+  darkImageCountries.classList.add('none');
+  /* console.log(varRegionId) */
+}
+
+deleteCountBtn.addEventListener('click', function () {
+  body.classList.remove('modal');
+  darkImageCountries.classList.add('none');
+  deleteCountry(varCountryId);
+});
+
+function deleteCountry(countId) {
+  var options, response, data;
+  return regeneratorRuntime.async(function deleteCountry$(_context6) {
+    while (1) {
+      switch (_context6.prev = _context6.next) {
+        case 0:
+          options = {
+            method: 'DELETE',
+            headers: {
+              Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
+            }
+          };
+          _context6.prev = 1;
+          console.log(varCountryId);
+          console.log(countId);
+          _context6.next = 6;
+          return regeneratorRuntime.awrap(fetch("http://localhost:3000/countries/".concat(countId), options));
+
+        case 6:
+          response = _context6.sent;
+          _context6.next = 9;
+          return regeneratorRuntime.awrap(response.json());
+
+        case 9:
+          data = _context6.sent;
+          console.log(data);
+          cancelCount();
+          getLocations();
+          _context6.next = 18;
+          break;
+
+        case 15:
+          _context6.prev = 15;
+          _context6.t0 = _context6["catch"](1);
+          return _context6.abrupt("return", _context6.t0);
+
+        case 18:
+        case "end":
+          return _context6.stop();
+      }
+    }
+  }, null, null, [[1, 15]]);
+}
+
+function cancelCount() {
+  body.classList.remove('modal');
+  darkImageCountries.classList.add('none');
+  varCountryId = null;
+  console.log(varCountryId);
+}
