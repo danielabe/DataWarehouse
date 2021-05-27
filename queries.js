@@ -380,7 +380,7 @@ async function validateCityNameQuery(req, res, next) {
     const citiesArray = cities.map(city => city.city_name)
     if(req.body.city_name.length >= 1 && req.body.city_name.length <= 64) {
         if(citiesArray.every(name => name !== city)) next()
-        else res.status(400).send("The city already exists").end()
+        else res.status(409).send("The city already exists").end()
     } else res.status(400).send("The city name length is wrong").end()
 }
 

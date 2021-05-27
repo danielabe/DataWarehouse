@@ -36,8 +36,16 @@ var msgECount = document.getElementById('msgECount');
 var deleteCountEdit = document.getElementById('deleteCountEdit');
 var saveRegionEdit = document.getElementById('saveRegionEdit');
 var saveCountryEdit = document.getElementById('saveCountryEdit');
+var darkImageNewCity = document.getElementById('darkImageNewCity');
+var closeNewCity = document.getElementById('closeNewCity');
+var cancelCity = document.getElementById('cancelCity');
+var newCity = document.getElementById('newCity');
+var msgNCit = document.getElementById('msgNCit');
+var saveCity = document.getElementById('saveCity');
 var varRegionId = null;
 var varCountryId = null;
+/* let varCityId = null */
+
 var varEditRegion = 0;
 var varEditCountry = 0; //show regions, countries and cities
 
@@ -140,6 +148,13 @@ function getLocations() {
               });
               btnEditCountry.addEventListener('click', function () {
                 return countryEdition(count);
+              });
+              btnAddCity.addEventListener('click', function () {
+                window.scrollTo(0, 0);
+                body.classList.add('modal');
+                darkImageNewCity.classList.remove('none');
+                varCountryId = +count.country_id;
+                console.log(varCountryId);
               });
               count.cities.forEach(function (cit) {
                 var city = document.createElement('li');
@@ -727,4 +742,85 @@ function editCountry() {
       }
     }
   }, null, null, [[4, 18]]);
+} //add city
+
+
+function addCity(event, count) {
+  var city, options, response, data;
+  return regeneratorRuntime.async(function addCity$(_context8) {
+    while (1) {
+      switch (_context8.prev = _context8.next) {
+        case 0:
+          event.preventDefault();
+          city = {
+            country_id: +count,
+            city_name: newCity.value
+          };
+          options = {
+            method: 'POST',
+            body: JSON.stringify(city),
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
+            }
+          };
+          msgNCit.innerText = 'Este campo es obligatorio';
+          validateLocation(newCity, msgNCit);
+          _context8.prev = 5;
+          _context8.next = 8;
+          return regeneratorRuntime.awrap(fetch('http://localhost:3000/cities', options));
+
+        case 8:
+          response = _context8.sent;
+
+          if (response.status === 409) {
+            newCity.classList.add('border-wrong');
+            msgNCit.classList.add('visible');
+            msgNCit.innerText = 'La ciudad ya existe';
+          }
+
+          _context8.next = 12;
+          return regeneratorRuntime.awrap(response.json());
+
+        case 12:
+          data = _context8.sent;
+          console.log(data);
+          closeWindowNewCity();
+          getLocations();
+          _context8.next = 21;
+          break;
+
+        case 18:
+          _context8.prev = 18;
+          _context8.t0 = _context8["catch"](5);
+          return _context8.abrupt("return", _context8.t0);
+
+        case 21:
+        case "end":
+          return _context8.stop();
+      }
+    }
+  }, null, null, [[5, 18]]);
+} //close new country window
+
+
+closeNewCity.addEventListener('click', function () {
+  return closeWindowNewCity();
+});
+cancelCity.addEventListener('click', function () {
+  return closeWindowNewCity();
+});
+
+function closeWindowNewCity() {
+  darkImageNewCity.classList.add('none');
+  newCity.classList.remove('border-wrong');
+  msgNCit.classList.remove('visible');
+  body.classList.remove('modal');
+  newCity.value = '';
+  msgNCit.innerText = 'Este campo es obligatorio';
+  varCountryId = null;
 }
+
+saveCity.addEventListener('click', function (event) {
+  return addCity(event, varCountryId);
+});

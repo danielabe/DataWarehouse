@@ -990,7 +990,7 @@ function validateCityNameQuery(req, res, next) {
           if (req.body.city_name.length >= 1 && req.body.city_name.length <= 64) {
             if (citiesArray.every(function (name) {
               return name !== city;
-            })) next();else res.status(400).send("The city already exists").end();
+            })) next();else res.status(409).send("The city already exists").end();
           } else res.status(400).send("The city name length is wrong").end();
 
         case 6:

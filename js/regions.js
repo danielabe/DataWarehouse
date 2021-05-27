@@ -34,9 +34,16 @@ const msgECount = document.getElementById('msgECount')
 const deleteCountEdit = document.getElementById('deleteCountEdit')
 const saveRegionEdit = document.getElementById('saveRegionEdit')
 const saveCountryEdit = document.getElementById('saveCountryEdit')
+const darkImageNewCity = document.getElementById('darkImageNewCity')
+const closeNewCity = document.getElementById('closeNewCity')
+const cancelCity = document.getElementById('cancelCity')
+const newCity = document.getElementById('newCity')
+const msgNCit = document.getElementById('msgNCit')
+const saveCity = document.getElementById('saveCity')
 
 let varRegionId = null
 let varCountryId = null
+/* let varCityId = null */
 let varEditRegion = 0
 let varEditCountry = 0
 
@@ -132,6 +139,14 @@ async function getLocations() {
 
             btnDeleteCountry.addEventListener('click', () => modalDeleteCountry(count.country_id))
             btnEditCountry.addEventListener('click', () => countryEdition(count))
+
+            btnAddCity.addEventListener('click', () => {
+                window.scrollTo(0, 0)
+                body.classList.add('modal')
+                darkImageNewCity.classList.remove('none')
+                varCountryId = +count.country_id
+                console.log(varCountryId)
+            })
 
             count.cities.forEach(cit => {
                 const city = document.createElement('li')
@@ -541,3 +556,53 @@ async function editCountry() {
         return reason
     }
 }
+
+//add city
+async function addCity(event, count) {
+    event.preventDefault()
+    const city = { 
+        country_id: +count,
+        city_name: newCity.value
+    }
+    const options = {
+        method: 'POST',
+        body: JSON.stringify(city),
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
+        }
+    }
+    msgNCit.innerText = 'Este campo es obligatorio'
+    validateLocation(newCity, msgNCit)
+    try {
+        const response = await fetch('http://localhost:3000/cities', options)
+        if(response.status === 409) {
+            newCity.classList.add('border-wrong')
+            msgNCit.classList.add('visible')
+            msgNCit.innerText = 'La ciudad ya existe'
+        }
+        const data = await response.json()
+        console.log(data)
+        closeWindowNewCity()
+        getLocations()
+    } catch(reason) {
+        return reason
+    }
+}
+
+//close new country window
+closeNewCity.addEventListener('click', () => closeWindowNewCity())
+cancelCity.addEventListener('click', () => closeWindowNewCity())
+
+function closeWindowNewCity() {
+    darkImageNewCity.classList.add('none')
+    newCity.classList.remove('border-wrong')
+    msgNCit.classList.remove('visible')
+    body.classList.remove('modal')
+    newCity.value = ''
+    msgNCit.innerText = 'Este campo es obligatorio'
+    varCountryId = null
+}
+
+saveCity.addEventListener('click', (event) => addCity(event, varCountryId))
+
