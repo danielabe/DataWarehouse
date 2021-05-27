@@ -43,7 +43,7 @@ const saveCity = document.getElementById('saveCity')
 
 let varRegionId = null
 let varCountryId = null
-/* let varCityId = null */
+let varCitId = null
 let varEditRegion = 0
 let varEditCountry = 0
 
@@ -167,6 +167,8 @@ async function getLocations() {
                 city.appendChild(btnEditCity)
                 city.appendChild(btnDeleteCity)
                 cityList.appendChild(city)
+
+                btnDeleteCity.addEventListener('click', () => modalDeleteCity(cit.city_id))
             })
         })
     })
@@ -606,3 +608,72 @@ function closeWindowNewCity() {
 
 saveCity.addEventListener('click', (event) => addCity(event, varCountryId))
 
+//delete city
+const darkImageCities = document.getElementById('darkImageCities')
+const cancelDltCitBtn = document.getElementById('cancelDltCitBtn')
+const darkImageEditCity = document.getElementById('darkImageEditCity')
+const deleteCitBtn = document.getElementById('deleteCitBtn')
+function modalDeleteCity(cityId) {
+    console.log(cityId)
+    varCitId = cityId
+    window.scrollTo(0, 0)
+    body.classList.add('modal')
+    darkImageCities.classList.remove('none')
+}
+
+cancelDltCitBtn.addEventListener('click', () => {
+    /* window.scrollTo(0, 0)
+    body.classList.add('modal')
+    darkImageEditReg.style.visibility = 'visible' */
+    cancelDeleteCity()
+})
+
+function cancelDeleteCity() {
+    /* if(varEditCity === 0) { */
+        console.log('despues de no edition')
+        body.classList.remove('modal')
+        /* darkImageEditCity.style.visibility = 'hidden'
+        darkImageEditCity.classList.add('none') */
+    /* } else if(varEditCity === 1) {
+        console.log('despues de edition')
+        window.scrollTo(0, 0)
+        body.classList.add('modal')
+        darkImageEditCity.style.visibility = 'visible'
+        darkImageEditCity.classList.remove('none')
+    } */
+    darkImageCities.classList.add('none')
+    /* console.log(varRegionId) */
+}
+
+deleteCitBtn.addEventListener('click', () => {
+    body.classList.remove('modal')
+    darkImageCities.classList.add('none')
+    deleteCity(varCitId)
+})
+
+async function deleteCity(citId) {
+    const options = {
+        method: 'DELETE',
+        headers: {
+            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
+        }
+    }
+    try {
+        console.log(varCitId)
+        console.log(citId)
+        const response = await fetch(`http://localhost:3000/cities/${citId}`, options)
+        const data = await response.json()
+        console.log(data)
+        cancelCit()
+        getLocations()
+    } catch(reason) {
+        return reason
+    }
+}
+
+function cancelCit() {
+    body.classList.remove('modal')
+    darkImageCities.classList.add('none')
+    varCitId = null
+    console.log(varCitId)
+}

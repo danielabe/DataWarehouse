@@ -44,8 +44,7 @@ var msgNCit = document.getElementById('msgNCit');
 var saveCity = document.getElementById('saveCity');
 var varRegionId = null;
 var varCountryId = null;
-/* let varCityId = null */
-
+var varCitId = null;
 var varEditRegion = 0;
 var varEditCountry = 0; //show regions, countries and cities
 
@@ -172,6 +171,9 @@ function getLocations() {
                 city.appendChild(btnEditCity);
                 city.appendChild(btnDeleteCity);
                 cityList.appendChild(city);
+                btnDeleteCity.addEventListener('click', function () {
+                  return modalDeleteCity(cit.city_id);
+                });
               });
             });
           });
@@ -823,4 +825,100 @@ function closeWindowNewCity() {
 
 saveCity.addEventListener('click', function (event) {
   return addCity(event, varCountryId);
+}); //delete city
+
+var darkImageCities = document.getElementById('darkImageCities');
+var cancelDltCitBtn = document.getElementById('cancelDltCitBtn');
+var darkImageEditCity = document.getElementById('darkImageEditCity');
+var deleteCitBtn = document.getElementById('deleteCitBtn');
+
+function modalDeleteCity(cityId) {
+  console.log(cityId);
+  varCitId = cityId;
+  window.scrollTo(0, 0);
+  body.classList.add('modal');
+  darkImageCities.classList.remove('none');
+}
+
+cancelDltCitBtn.addEventListener('click', function () {
+  /* window.scrollTo(0, 0)
+  body.classList.add('modal')
+  darkImageEditReg.style.visibility = 'visible' */
+  cancelDeleteCity();
 });
+
+function cancelDeleteCity() {
+  /* if(varEditCity === 0) { */
+  console.log('despues de no edition');
+  body.classList.remove('modal');
+  /* darkImageEditCity.style.visibility = 'hidden'
+  darkImageEditCity.classList.add('none') */
+
+  /* } else if(varEditCity === 1) {
+      console.log('despues de edition')
+      window.scrollTo(0, 0)
+      body.classList.add('modal')
+      darkImageEditCity.style.visibility = 'visible'
+      darkImageEditCity.classList.remove('none')
+  } */
+
+  darkImageCities.classList.add('none');
+  /* console.log(varRegionId) */
+}
+
+deleteCitBtn.addEventListener('click', function () {
+  body.classList.remove('modal');
+  darkImageCities.classList.add('none');
+  deleteCity(varCitId);
+});
+
+function deleteCity(citId) {
+  var options, response, data;
+  return regeneratorRuntime.async(function deleteCity$(_context9) {
+    while (1) {
+      switch (_context9.prev = _context9.next) {
+        case 0:
+          options = {
+            method: 'DELETE',
+            headers: {
+              Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
+            }
+          };
+          _context9.prev = 1;
+          console.log(varCitId);
+          console.log(citId);
+          _context9.next = 6;
+          return regeneratorRuntime.awrap(fetch("http://localhost:3000/cities/".concat(citId), options));
+
+        case 6:
+          response = _context9.sent;
+          _context9.next = 9;
+          return regeneratorRuntime.awrap(response.json());
+
+        case 9:
+          data = _context9.sent;
+          console.log(data);
+          cancelCit();
+          getLocations();
+          _context9.next = 18;
+          break;
+
+        case 15:
+          _context9.prev = 15;
+          _context9.t0 = _context9["catch"](1);
+          return _context9.abrupt("return", _context9.t0);
+
+        case 18:
+        case "end":
+          return _context9.stop();
+      }
+    }
+  }, null, null, [[1, 15]]);
+}
+
+function cancelCit() {
+  body.classList.remove('modal');
+  darkImageCities.classList.add('none');
+  varCitId = null;
+  console.log(varCitId);
+}
