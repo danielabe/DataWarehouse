@@ -352,13 +352,14 @@ function validateAddress(req, res, next) {
   if (address.length >= 1 && address.length <= 64) next();else res.status(400).send("The address is wrong").end();
 }
 
-function validateCompanyId(req, res, next) {
-  return regeneratorRuntime.async(function validateCompanyId$(_context16) {
+function validateEmailCompanies(req, res, next) {
+  var email;
+  return regeneratorRuntime.async(function validateEmailCompanies$(_context16) {
     while (1) {
       switch (_context16.prev = _context16.next) {
         case 0:
-          _context16.next = 2;
-          return regeneratorRuntime.awrap(validateCompanyIdQuery(req, res, next));
+          email = req.body.email;
+          if (/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(email)) next();else res.status(400).send("The email is wrong").end();
 
         case 2:
         case "end":
@@ -368,13 +369,18 @@ function validateCompanyId(req, res, next) {
   });
 }
 
-function validateCompanyNamePut(req, res, next) {
-  return regeneratorRuntime.async(function validateCompanyNamePut$(_context17) {
+function validateTelephone(req, res, next) {
+  var telephone = req.body.telephone;
+  if (telephone.length >= 1 && telephone.length <= 64) next();else res.status(400).send("The telephone is wrong").end();
+}
+
+function validateCompanyId(req, res, next) {
+  return regeneratorRuntime.async(function validateCompanyId$(_context17) {
     while (1) {
       switch (_context17.prev = _context17.next) {
         case 0:
           _context17.next = 2;
-          return regeneratorRuntime.awrap(validateCompanyNamePutQuery(req, res, next));
+          return regeneratorRuntime.awrap(validateCompanyIdQuery(req, res, next));
 
         case 2:
         case "end":
@@ -384,13 +390,13 @@ function validateCompanyNamePut(req, res, next) {
   });
 }
 
-function validateCityIdPut(req, res, next) {
-  return regeneratorRuntime.async(function validateCityIdPut$(_context18) {
+function validateCompanyNamePut(req, res, next) {
+  return regeneratorRuntime.async(function validateCompanyNamePut$(_context18) {
     while (1) {
       switch (_context18.prev = _context18.next) {
         case 0:
           _context18.next = 2;
-          return regeneratorRuntime.awrap(validateCityIdPutQuery(req, res, next));
+          return regeneratorRuntime.awrap(validateCompanyNamePutQuery(req, res, next));
 
         case 2:
         case "end":
@@ -400,11 +406,27 @@ function validateCityIdPut(req, res, next) {
   });
 }
 
-function validateAddressPut(req, res, next) {
-  var address;
-  return regeneratorRuntime.async(function validateAddressPut$(_context19) {
+function validateCityIdPut(req, res, next) {
+  return regeneratorRuntime.async(function validateCityIdPut$(_context19) {
     while (1) {
       switch (_context19.prev = _context19.next) {
+        case 0:
+          _context19.next = 2;
+          return regeneratorRuntime.awrap(validateCityIdPutQuery(req, res, next));
+
+        case 2:
+        case "end":
+          return _context19.stop();
+      }
+    }
+  });
+}
+
+function validateAddressPut(req, res, next) {
+  var address;
+  return regeneratorRuntime.async(function validateAddressPut$(_context20) {
+    while (1) {
+      switch (_context20.prev = _context20.next) {
         case 0:
           if (req.body.address) {
             address = req.body.address;
@@ -413,7 +435,7 @@ function validateAddressPut(req, res, next) {
 
         case 1:
         case "end":
-          return _context19.stop();
+          return _context20.stop();
       }
     }
   });
@@ -421,16 +443,16 @@ function validateAddressPut(req, res, next) {
 
 
 function validateEmailContacts(req, res, next) {
-  return regeneratorRuntime.async(function validateEmailContacts$(_context20) {
+  return regeneratorRuntime.async(function validateEmailContacts$(_context21) {
     while (1) {
-      switch (_context20.prev = _context20.next) {
+      switch (_context21.prev = _context21.next) {
         case 0:
-          _context20.next = 2;
+          _context21.next = 2;
           return regeneratorRuntime.awrap(validateEmailContactsQuery(req, res, next));
 
         case 2:
         case "end":
-          return _context20.stop();
+          return _context21.stop();
       }
     }
   });
@@ -447,32 +469,32 @@ function validateInterest(req, res, next) {
 }
 
 function validateChannelId(req, res, next) {
-  return regeneratorRuntime.async(function validateChannelId$(_context21) {
+  return regeneratorRuntime.async(function validateChannelId$(_context22) {
     while (1) {
-      switch (_context21.prev = _context21.next) {
+      switch (_context22.prev = _context22.next) {
         case 0:
-          _context21.next = 2;
+          _context22.next = 2;
           return regeneratorRuntime.awrap(validateChannelIdQuery(req, res, next));
 
         case 2:
         case "end":
-          return _context21.stop();
+          return _context22.stop();
       }
     }
   });
 }
 
 function validateContactId(req, res, next) {
-  return regeneratorRuntime.async(function validateContactId$(_context22) {
+  return regeneratorRuntime.async(function validateContactId$(_context23) {
     while (1) {
-      switch (_context22.prev = _context22.next) {
+      switch (_context23.prev = _context23.next) {
         case 0:
-          _context22.next = 2;
+          _context23.next = 2;
           return regeneratorRuntime.awrap(validateContactIdQuery(req, res, next));
 
         case 2:
         case "end":
-          return _context22.stop();
+          return _context23.stop();
       }
     }
   });
@@ -487,9 +509,9 @@ function validateUserAccount(req, res, next) {
 
 function validatePreference(req, res, next) {
   var channelsBody;
-  return regeneratorRuntime.async(function validatePreference$(_context23) {
+  return regeneratorRuntime.async(function validatePreference$(_context24) {
     while (1) {
-      switch (_context23.prev = _context23.next) {
+      switch (_context24.prev = _context24.next) {
         case 0:
           channelsBody = req.body.preferred_channels;
           channelsBody.every(function (element) {
@@ -499,39 +521,39 @@ function validatePreference(req, res, next) {
 
         case 2:
         case "end":
-          return _context23.stop();
-      }
-    }
-  });
-}
-
-function validateEmailContactsPut(req, res, next) {
-  return regeneratorRuntime.async(function validateEmailContactsPut$(_context24) {
-    while (1) {
-      switch (_context24.prev = _context24.next) {
-        case 0:
-          _context24.next = 2;
-          return regeneratorRuntime.awrap(validateEmailContactsPutQuery(req, res, next));
-
-        case 2:
-        case "end":
           return _context24.stop();
       }
     }
   });
 }
 
-function validateCompanyIdPut(req, res, next) {
-  return regeneratorRuntime.async(function validateCompanyIdPut$(_context25) {
+function validateEmailContactsPut(req, res, next) {
+  return regeneratorRuntime.async(function validateEmailContactsPut$(_context25) {
     while (1) {
       switch (_context25.prev = _context25.next) {
         case 0:
           _context25.next = 2;
-          return regeneratorRuntime.awrap(validateCompanyIdPutQuery(req, res, next));
+          return regeneratorRuntime.awrap(validateEmailContactsPutQuery(req, res, next));
 
         case 2:
         case "end":
           return _context25.stop();
+      }
+    }
+  });
+}
+
+function validateCompanyIdPut(req, res, next) {
+  return regeneratorRuntime.async(function validateCompanyIdPut$(_context26) {
+    while (1) {
+      switch (_context26.prev = _context26.next) {
+        case 0:
+          _context26.next = 2;
+          return regeneratorRuntime.awrap(validateCompanyIdPutQuery(req, res, next));
+
+        case 2:
+        case "end":
+          return _context26.stop();
       }
     }
   });
@@ -552,28 +574,12 @@ function validateInterestPut(req, res, next) {
 }
 
 function validateChannelIdPut(req, res, next) {
-  return regeneratorRuntime.async(function validateChannelIdPut$(_context26) {
-    while (1) {
-      switch (_context26.prev = _context26.next) {
-        case 0:
-          _context26.next = 2;
-          return regeneratorRuntime.awrap(validateChannelIdPutQuery(req, res, next));
-
-        case 2:
-        case "end":
-          return _context26.stop();
-      }
-    }
-  });
-}
-
-function validateChannelIdAdd(req, res, next) {
-  return regeneratorRuntime.async(function validateChannelIdAdd$(_context27) {
+  return regeneratorRuntime.async(function validateChannelIdPut$(_context27) {
     while (1) {
       switch (_context27.prev = _context27.next) {
         case 0:
           _context27.next = 2;
-          return regeneratorRuntime.awrap(validateChannelIdAddQuery(req, res, next));
+          return regeneratorRuntime.awrap(validateChannelIdPutQuery(req, res, next));
 
         case 2:
         case "end":
@@ -583,13 +589,13 @@ function validateChannelIdAdd(req, res, next) {
   });
 }
 
-function validateChannelIdDel(req, res, next) {
-  return regeneratorRuntime.async(function validateChannelIdDel$(_context28) {
+function validateChannelIdAdd(req, res, next) {
+  return regeneratorRuntime.async(function validateChannelIdAdd$(_context28) {
     while (1) {
       switch (_context28.prev = _context28.next) {
         case 0:
           _context28.next = 2;
-          return regeneratorRuntime.awrap(validateChannelIdDelQuery(req, res, next));
+          return regeneratorRuntime.awrap(validateChannelIdAddQuery(req, res, next));
 
         case 2:
         case "end":
@@ -599,13 +605,13 @@ function validateChannelIdDel(req, res, next) {
   });
 }
 
-function validateChannelName(req, res, next) {
-  return regeneratorRuntime.async(function validateChannelName$(_context29) {
+function validateChannelIdDel(req, res, next) {
+  return regeneratorRuntime.async(function validateChannelIdDel$(_context29) {
     while (1) {
       switch (_context29.prev = _context29.next) {
         case 0:
           _context29.next = 2;
-          return regeneratorRuntime.awrap(validateChannelNameQuery(req, res, next));
+          return regeneratorRuntime.awrap(validateChannelIdDelQuery(req, res, next));
 
         case 2:
         case "end":
@@ -615,13 +621,13 @@ function validateChannelName(req, res, next) {
   });
 }
 
-function validateChannelIdEx(req, res, next) {
-  return regeneratorRuntime.async(function validateChannelIdEx$(_context30) {
+function validateChannelName(req, res, next) {
+  return regeneratorRuntime.async(function validateChannelName$(_context30) {
     while (1) {
       switch (_context30.prev = _context30.next) {
         case 0:
           _context30.next = 2;
-          return regeneratorRuntime.awrap(validateChannelIdExQuery(req, res, next));
+          return regeneratorRuntime.awrap(validateChannelNameQuery(req, res, next));
 
         case 2:
         case "end":
@@ -631,17 +637,33 @@ function validateChannelIdEx(req, res, next) {
   });
 }
 
-function validateChannelNamePut(req, res, next) {
-  return regeneratorRuntime.async(function validateChannelNamePut$(_context31) {
+function validateChannelIdEx(req, res, next) {
+  return regeneratorRuntime.async(function validateChannelIdEx$(_context31) {
     while (1) {
       switch (_context31.prev = _context31.next) {
         case 0:
           _context31.next = 2;
-          return regeneratorRuntime.awrap(validateChannelNamePutQuery(req, res, next));
+          return regeneratorRuntime.awrap(validateChannelIdExQuery(req, res, next));
 
         case 2:
         case "end":
           return _context31.stop();
+      }
+    }
+  });
+}
+
+function validateChannelNamePut(req, res, next) {
+  return regeneratorRuntime.async(function validateChannelNamePut$(_context32) {
+    while (1) {
+      switch (_context32.prev = _context32.next) {
+        case 0:
+          _context32.next = 2;
+          return regeneratorRuntime.awrap(validateChannelNamePutQuery(req, res, next));
+
+        case 2:
+        case "end":
+          return _context32.stop();
       }
     }
   });
@@ -673,7 +695,9 @@ module.exports = {
   validateCityNamePut: validateCityNamePut,
   validateCompanyName: validateCompanyName,
   validateAddress: validateAddress,
+  validateEmailCompanies: validateEmailCompanies,
   validateCompanyId: validateCompanyId,
+  validateTelephone: validateTelephone,
   validateCompanyNamePut: validateCompanyNamePut,
   validateCityIdPut: validateCityIdPut,
   validateAddressPut: validateAddressPut,

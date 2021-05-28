@@ -116,6 +116,7 @@ function closeWindowNewCompany(event) {
     compTelephone.value = ''
     compAddress.value = ''
     companySlt.innerHTML = 'Seleccionar ciudad<i class="fas fa-caret-down"></i>'
+    msgCompanyName.innerText = 'Este campo es obligatorio'
     
     body.classList.remove('modal')
     companyName.classList.remove('border-wrong')
@@ -162,10 +163,11 @@ async function addCompany(event) {
     }
     try {
         const response = await fetch('http://localhost:3000/companies', options)
+        /* console.log(response.text()) */
         if(response.status === 409) {
-            email.classList.add('border-wrong')
-            msgEmail.classList.add('visible')
-            msgEmail.innerText = 'El email ya existe'//no controlar esto
+            companyName.classList.add('border-wrong')
+            msgCompanyName.classList.add('visible')
+            msgCompanyName.innerText = 'La empresa ya existe'//no controlar esto
         }
         
         const data = await response.json()
@@ -192,7 +194,7 @@ function validateCompanyData(company, compName, msgCom, compEmail, msgEmail, com
         compEmail.classList.add('border-wrong')
         msgEmail.classList.add('visible')
         compEmail.addEventListener('keyup', () => {
-            if(email.value !== '' && (/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(compEmail.value))) {
+            if(compEmail.value !== '' && (/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(compEmail.value))) {
                 compEmail.classList.remove('border-wrong')
                 msgEmail.classList.remove('visible')
             }

@@ -23,7 +23,8 @@ const { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLast
     validatePosition, validateInterest, validateChannelId, validateContactId, validateUserAccount, 
     validatePreference, validateEmailContactsPut, validateCompanyIdPut, validatePositionPut, 
     validateInterestPut, validateChannelIdPut, validateChannelIdAdd, validateChannelIdDel, 
-    validateChannelName, validateChannelIdEx, validateChannelNamePut } = require('./functions.js')
+    validateChannelName, validateChannelIdEx, validateChannelNamePut, validateEmailCompanies,
+    validateTelephone } = require('./functions.js')
 
 app.use(express.json())
 app.use(helmet())
@@ -184,7 +185,7 @@ app.get('/companies', async (req, res) => {
     getCompanies(req, res)                                 
 })
 
-app.post('/companies', validateCompanyName, validateCityId, validateAddress, /* validateEmailCompanies, */ async (req, res) => {
+app.post('/companies', validateCompanyName, validateEmailCompanies, validateAddress, validateTelephone, validateCityId, async (req, res) => {
     const newCompany = { //chequear si ahora funciona con el const
         company_name: req.body.company_name, 
         city_id: req.body.city_id, 

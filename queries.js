@@ -494,7 +494,7 @@ async function validateCompanyNameQuery(req, res, next) {
     const companiesArray = companies.map(company => company.company_name)
     if(req.body.company_name.length >= 1 && req.body.company_name.length <= 64) {
         if(companiesArray.every(name => name !== company)) next()
-        else res.status(400).send("The company already exists").end()
+        else res.status(409).send("The company already exists").end()
     } else res.status(400).send("The company name length is wrong").end()
 }
 

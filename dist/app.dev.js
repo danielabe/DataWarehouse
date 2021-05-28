@@ -104,7 +104,9 @@ var _require2 = require('./functions.js'),
     validateChannelIdDel = _require2.validateChannelIdDel,
     validateChannelName = _require2.validateChannelName,
     validateChannelIdEx = _require2.validateChannelIdEx,
-    validateChannelNamePut = _require2.validateChannelNamePut;
+    validateChannelNamePut = _require2.validateChannelNamePut,
+    validateEmailCompanies = _require2.validateEmailCompanies,
+    validateTelephone = _require2.validateTelephone;
 
 app.use(express.json());
 app.use(helmet());
@@ -540,9 +542,7 @@ app.get('/companies', function _callee26(req, res) {
     }
   });
 });
-app.post('/companies', validateCompanyName, validateCityId, validateAddress,
-/* validateEmailCompanies, */
-function _callee27(req, res) {
+app.post('/companies', validateCompanyName, validateEmailCompanies, validateAddress, validateTelephone, validateCityId, function _callee27(req, res) {
   var newCompany;
   return regeneratorRuntime.async(function _callee27$(_context27) {
     while (1) {

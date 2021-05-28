@@ -11,7 +11,7 @@ const { validateLoginQuery, validateEmailQuery, validateUserIdQuery,
     validateEmailContactsQuery, validateChannelIdQuery, validateContactIdQuery,
     validateEmailContactsPutQuery, validateCompanyIdPutQuery, validateChannelIdPutQuery,
     validateChannelIdAddQuery, validateChannelIdDelQuery, validateChannelNameQuery,
-    validateChannelIdExQuery, validateChannelNamePutQuery } = require('./queries.js')
+    validateChannelIdExQuery, validateChannelNamePutQuery} = require('./queries.js')
 
 //users
 async function validateLogin(req, res, next) {
@@ -156,6 +156,18 @@ function validateAddress(req, res, next) {
     else res.status(400).send("The address is wrong").end()
 }
 
+async function validateEmailCompanies(req, res, next) {
+    const email = req.body.email
+    if(/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(email)) next()
+    else res.status(400).send("The email is wrong").end()
+}
+
+function validateTelephone(req, res, next) {
+    const telephone = req.body.telephone
+    if(telephone.length >= 1 && telephone.length <= 64) next()
+    else res.status(400).send("The telephone is wrong").end()
+}
+
 async function validateCompanyId(req, res, next) {
     await validateCompanyIdQuery(req, res, next)
 }
@@ -274,7 +286,8 @@ module.exports = { validateLogin, verifyToken, filterAdmin, validateFirstname, v
     validateLastnamePut, validatePasswordPut, validateRegionName, validateRegionId, 
     validateRegionNamePut, validateCountryName, validateCountryId, validateCountryNamePut,
     validateRegionIdCountry, validateCityName, validateCityId, validateCountryIdCity,
-    validateCityNamePut, validateCompanyName, validateAddress,validateCompanyId, 
+    validateCityNamePut, validateCompanyName, validateAddress, validateEmailCompanies, 
+    validateCompanyId, validateTelephone,
     validateCompanyNamePut, validateCityIdPut, validateAddressPut, validateEmailContacts,
     validatePosition, validateInterest, validateChannelId, validateUserAccount, validatePreference, 
     validateContactId, validateEmailContactsPut, validateCompanyIdPut, validatePositionPut, 

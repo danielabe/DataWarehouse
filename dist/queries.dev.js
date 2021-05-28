@@ -1269,7 +1269,7 @@ function validateCompanyNameQuery(req, res, next) {
           if (req.body.company_name.length >= 1 && req.body.company_name.length <= 64) {
             if (companiesArray.every(function (name) {
               return name !== company;
-            })) next();else res.status(400).send("The company already exists").end();
+            })) next();else res.status(409).send("The company already exists").end();
           } else res.status(400).send("The company name length is wrong").end();
 
         case 6:
