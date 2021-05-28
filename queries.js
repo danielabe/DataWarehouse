@@ -500,8 +500,8 @@ async function validateCompanyNameQuery(req, res, next) {
 
 async function createCompany(newCompany, req, res) {
     const inserted = await db.query(`
-    INSERT INTO companies (company_name, city_id, address)
-    VALUES (:company_name, :city_id, :address)
+    INSERT INTO companies (company_name, city_id, address, email, telephone)
+    VALUES (:company_name, :city_id, :address, :email, :telephone)
     `, {
         replacements: newCompany,
         type: QueryTypes.INSERT

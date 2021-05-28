@@ -1287,7 +1287,7 @@ function createCompany(newCompany, req, res) {
       switch (_context42.prev = _context42.next) {
         case 0:
           _context42.next = 2;
-          return regeneratorRuntime.awrap(db.query("\n    INSERT INTO companies (company_name, city_id, address)\n    VALUES (:company_name, :city_id, :address)\n    ", {
+          return regeneratorRuntime.awrap(db.query("\n    INSERT INTO companies (company_name, city_id, address, email, telephone)\n    VALUES (:company_name, :city_id, :address, :email, :telephone)\n    ", {
             replacements: newCompany,
             type: QueryTypes.INSERT
           }));

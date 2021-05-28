@@ -184,11 +184,13 @@ app.get('/companies', async (req, res) => {
     getCompanies(req, res)                                 
 })
 
-app.post('/companies', validateCompanyName, validateCityId, validateAddress, async (req, res) => {
+app.post('/companies', validateCompanyName, validateCityId, validateAddress, /* validateEmailCompanies, */ async (req, res) => {
     const newCompany = { //chequear si ahora funciona con el const
         company_name: req.body.company_name, 
         city_id: req.body.city_id, 
-        address: req.body.address
+        address: req.body.address,
+        email: req.body.email,
+        telephone: req.body.telephone
     }
     createCompany(newCompany, req, res)
 })

@@ -81,9 +81,9 @@ async function getLocations() {
         const regTitle = document.createElement('h4')
 
         regTitle.innerText = reg.region_name
-        btnEditRegion.innerText = 'Edit'
-        btnDeleteRegion.innerText = 'Delete'
-        btnAddCountry.innerText = 'Add country'
+        btnEditRegion.innerText = 'Editar'
+        btnDeleteRegion.innerText = 'Eliminar'
+        btnAddCountry.innerText = 'Agregar país'
 
         region.classList.add('l-item')
         btnEditRegion.classList = 'btn edit'
@@ -125,9 +125,9 @@ async function getLocations() {
             const cityList = document.createElement('ul')
 
             countTitle.innerText = count.country_name
-            btnEditCountry.innerText = 'Edit'
-            btnDeleteCountry.innerText = 'Delete'
-            btnAddCity.innerText = 'Add city'
+            btnEditCountry.innerText = 'Editar'
+            btnDeleteCountry.innerText = 'Eliminar'
+            btnAddCity.innerText = 'Agregar ciudad'
 
             country.classList.add('l-item')
             btnEditCountry.classList = 'btn edit'
@@ -164,8 +164,8 @@ async function getLocations() {
                 const btnDeleteCity = document.createElement('button')
 
                 cityTitle.innerText = cit.city_name
-                btnEditCity.innerText = 'Edit'
-                btnDeleteCity.innerText = 'Delete'
+                btnEditCity.innerText = 'Editar'
+                btnDeleteCity.innerText = 'Eliminar'
 
                 city.classList = 'l-item city-container'
                 cityTitle.classList.add('city-title')

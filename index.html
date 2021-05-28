@@ -271,7 +271,7 @@
                             </div>
                             <ul id="citiesListEdit" class="company-list none"></ul>
                         </div>
-                        <label class="form-lbl" for="address">
+                        <label class="form-lbl" for="addressEdit">
                             <p>Dirección</p>
                             <input id="addressEdit" class="field ncnt-input" type="text" placeholder="Ingresa una dirección">
                             <p id="msgAddressEdit" class="msg-container">Este campo es obligatorio</p>
@@ -433,7 +433,10 @@
             </div>
         </section>
         <section id="companiesSection" class="companies-section none">
-            <h2 class="t2">Compañías</h2>
+            <div class="comp-title-container">
+                <h2 class="t2">Compañías</h2>
+                <button id="newCompanyBtn" class="new-contact-btn">Agregar compañía</button>
+            </div>
             <ul id="headComp" class="head-comp">
                 <li class="u-item h-item">Nombre</li>
                 <li class="u-item h-item">País</li>
@@ -442,6 +445,46 @@
                 <li class="u-item h-item h-act">Acciones</li>
             </ul>
             <ul id="companiesList" class="users-list"></ul>
+            <div id="darkImageNewCompany" class="dark-image none">
+                <div class="head-window">
+                    <p class="wind-title">Nueva compañía</p>
+                    <i id="closeNewComp" class="fas fa-times"></i>
+                </div>
+                <form class="window-white company-window">
+                    <button id="cancelCompany" class="btn-white">Cancelar</button>
+                    <button id="saveCompany" class="btn-grey">Guardar compañía</button>
+                </form>
+                <form id="newCompanyForm" class="new-form new-comp-form">
+                    <label class="form-lbl pad" for="companyName">
+                        <p>Nombre<span class="red-asterisk">*</span></p>
+                        <input id="companyName" class="field ncnt-input" type="text">
+                        <p id="msgCompanyName" class="msg-container">Este campo es obligatorio</p>
+                    </label>
+                    <label class="form-lbl pad" for="companyEmail">
+                        <p>Email<span class="red-asterisk">*</span></p>
+                        <input id="companyEmail" class="field ncnt-input" type="text">
+                        <p id="msgCompanyEmail" class="msg-container">Este campo es obligatorio</p>
+                    </label>
+                    <label class="form-lbl pad" for="compAddress">
+                        <p>Dirección<span class="red-asterisk">*</span></p>
+                        <input id="compAddress" class="field ncnt-input" type="text">
+                        <p id="msgCompAddress" class="msg-container">Este campo es obligatorio</p>
+                    </label>
+                    <label class="form-lbl pad" for="compTelephone">
+                        <p>Teléfono<span class="red-asterisk">*</span></p>
+                        <input id="compTelephone" class="field ncnt-input" type="text">
+                        <p id="msgCompTelephone" class="msg-container">Este campo es obligatorio</p>
+                    </label>
+                    <div id="companyCity" class="form-lbl comp-lbl">
+                        <p>Ciudad<span class="red-asterisk">*</span></p>
+                        <div id="companySlt" class="field ncnt-input select-company">
+                            Seleccionar ciudad<i class="fas fa-caret-down"></i>
+                        </div>
+                        <!-- <p id="msgLast" class="msg-container">Este campo es obligatorio</p> -->
+                        <ul id="companyList" class="company-list none"></ul>
+                    </div>
+                </form>
+            </div>
         </section>
         <section id="usersSection" class="users none">
             <h2 class="t2">Usuarios</h2>

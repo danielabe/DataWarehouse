@@ -703,7 +703,7 @@ async function getAllChannels(sChannel, chan) {
 company.addEventListener('click', () => {
     if(varSelectCompany === 0) {
         selectCompany.innerHTML = ''
-        getCompanies( selectCompany, company, compLbl)
+        getCompanies(selectCompany, company, compLbl)
     } else if(varSelectCompany === 1) {
         selectCompany.classList.add('none')
         selectCompany.innerHTML = ''
@@ -1591,7 +1591,7 @@ function closeWindowEditContact(event) {
 companyEdit.addEventListener('click', () => {
     if(varSelectCompany === 0) {
         selectCompanyEdit.innerHTML = ''
-        getCompanies( selectCompanyEdit, companyEdit, compLblEdit)
+        getCompanies(selectCompanyEdit, companyEdit, compLblEdit)
     } else if(varSelectCompany === 1) {
         selectCompanyEdit.classList.add('none')
         selectCompanyEdit.innerHTML = ''
@@ -1816,5 +1816,6 @@ deleteContactBtn.addEventListener('click', () => {
 //queries.js else res.status(409).send("The city already exists").end() ahora es 409
 //queries.js else res.status(409).send("The city already exists").end() ahora es 409
 //ordenar no funciona 
+//borrar ubicaciones?
 //no refresca al eliminar, crear contacto, provocaba error al ordenar
 //si tengo ganas cambiar los id de los canalaes en el html

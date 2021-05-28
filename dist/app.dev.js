@@ -540,7 +540,9 @@ app.get('/companies', function _callee26(req, res) {
     }
   });
 });
-app.post('/companies', validateCompanyName, validateCityId, validateAddress, function _callee27(req, res) {
+app.post('/companies', validateCompanyName, validateCityId, validateAddress,
+/* validateEmailCompanies, */
+function _callee27(req, res) {
   var newCompany;
   return regeneratorRuntime.async(function _callee27$(_context27) {
     while (1) {
@@ -550,7 +552,9 @@ app.post('/companies', validateCompanyName, validateCityId, validateAddress, fun
             //chequear si ahora funciona con el const
             company_name: req.body.company_name,
             city_id: req.body.city_id,
-            address: req.body.address
+            address: req.body.address,
+            email: req.body.email,
+            telephone: req.body.telephone
           };
           createCompany(newCompany, req, res);
 

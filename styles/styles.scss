@@ -128,7 +128,8 @@ main {
 }
 
 .t2 {
-    padding: 39.6px 0 0 29.4px;
+    width: 95.9%;
+    padding: 39.6px 0 0 0;
     font-size: 24px;
     color:  rgb(51, 51, 51);
 }
@@ -279,24 +280,27 @@ main {
 
 .add {
     align-self: center;
-    width: 60px;
+    width: 70px;
     height: 40px;
 }
 
 .edit {
-    width: 50px;
+    width: 60px;
     height: 27px;
     margin: 0 5px 0 5px;
     /* background-color: #0683F9; */
 }
 
 .delete {
-    width: 60px;
+    width: 70px;
     height: 27px;
     margin: 0 5px 0 5px;
     background-color: #bb3e3f; /* #F03738 */
     &:hover {
         background-color: #F03738;
+    }
+    &:active {
+        background: #afafaf;
     }
 }
 
@@ -971,6 +975,9 @@ progress::-moz-progress-bar {
     display: grid;
     grid-template: repeat(1, 1fr)/20% 20% 20% 20% 20%;
     /* width: 95.9%; */
+    &:hover {
+        background: rgba(0,0,0,0.05);
+    }
 }
 
 .comp-item {
@@ -981,6 +988,23 @@ progress::-moz-progress-bar {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.comp-title-container {
+    display: flex;
+    align-items: flex-end;
+    width: 95.9%
+}
+
+.company-window {
+    /* height: 300px; */
+}
+
+.new-comp-form {
+    flex-direction: row;
+    justify-content: space-around;
+    top: -214px;
+    padding-left: 2%;
 }
 
 .none {
