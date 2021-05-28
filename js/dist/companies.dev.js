@@ -117,10 +117,13 @@ function renderCompanies(data) {
             row.addEventListener('mouseout', function () {
               return outRow(ellipsis, trash, pen);
             });
-            /* trash.addEventListener('click', () => modalDelete())
+            trash.addEventListener('click', function () {
+              return modalDeleteCompany(info.companyId);
+            });
+            /* 
             pen.addEventListener('click', () => contactEdition(info)) */
 
-          case 34:
+          case 35:
           case "end":
             return _context2.stop();
         }
@@ -369,4 +372,101 @@ function selectCityCompFunction(info, citList, citSelect) {
   citList.innerHTML = '';
   citSelect.innerHTML = "".concat(info.cityName, "<i class=\"fas fa-caret-down\"></i>");
   varCompCityId = +info.cityId;
-} //validar mail para empresas!
+} //delete company
+
+
+var darkImageCompanies = document.getElementById('darkImageCompanies');
+var cancelDltCompBtn = document.getElementById('cancelDltCompBtn');
+var deleteCompBtn = document.getElementById('deleteCompBtn');
+var varCompId = null;
+var varEditCompany = 0;
+
+function modalDeleteCompany(companyId) {
+  console.log(companyId);
+  varCompId = companyId; ///
+
+  window.scrollTo(0, 0);
+  body.classList.add('modal');
+  darkImageCompanies.classList.remove('none');
+}
+
+cancelDltCompBtn.addEventListener('click', function () {
+  /* window.scrollTo(0, 0)
+  body.classList.add('modal')
+  darkImageEditReg.style.visibility = 'visible' */
+  cancelDeleteComp();
+});
+
+function cancelDeleteComp() {
+  if (varEditCompany === 0) {
+    console.log('despues de no edition');
+    body.classList.remove('modal');
+    /* darkImageEditComp.style.visibility = 'hidden'
+    darkImageEditComp.classList.add('none') */
+  } else if (varEditCompany === 1) {
+    console.log('despues de edition');
+    window.scrollTo(0, 0);
+    body.classList.add('modal');
+    /* darkImageEditComp.style.visibility = 'visible'
+    darkImageEditComp.classList.remove('none') */
+  }
+
+  darkImageCompanies.classList.add('none');
+  console.log(varRegionId);
+}
+
+function cancelComp() {
+  body.classList.remove('modal');
+  darkImageCompanies.classList.add('none');
+  varCompId = null;
+  console.log(varCompId);
+}
+
+deleteCompBtn.addEventListener('click', function () {
+  body.classList.remove('modal');
+  darkImageCompanies.classList.add('none');
+  deleteCompany(varCompId);
+});
+
+function deleteCompany(compId) {
+  var options, response, data;
+  return regeneratorRuntime.async(function deleteCompany$(_context5) {
+    while (1) {
+      switch (_context5.prev = _context5.next) {
+        case 0:
+          options = {
+            method: 'DELETE',
+            headers: {
+              Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
+            }
+          };
+          _context5.prev = 1;
+          console.log(varRegionId);
+          _context5.next = 5;
+          return regeneratorRuntime.awrap(fetch("http://localhost:3000/companies/".concat(compId), options));
+
+        case 5:
+          response = _context5.sent;
+          _context5.next = 8;
+          return regeneratorRuntime.awrap(response.json());
+
+        case 8:
+          data = _context5.sent;
+          console.log(data);
+          cancelComp();
+          showCompanies();
+          _context5.next = 17;
+          break;
+
+        case 14:
+          _context5.prev = 14;
+          _context5.t0 = _context5["catch"](1);
+          return _context5.abrupt("return", _context5.t0);
+
+        case 17:
+        case "end":
+          return _context5.stop();
+      }
+    }
+  }, null, null, [[1, 14]]);
+}

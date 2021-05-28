@@ -92,7 +92,8 @@ function renderCompanies(data) {
         row.addEventListener('mouseover', () => hoverRow(ellipsis, trash, pen))
         row.addEventListener('mouseout', () => outRow(ellipsis, trash, pen))
 
-        /* trash.addEventListener('click', () => modalDelete())
+        trash.addEventListener('click', () => modalDeleteCompany(info.companyId))
+        /* 
         pen.addEventListener('click', () => contactEdition(info)) */
     })
 }
@@ -290,4 +291,73 @@ function selectCityCompFunction(info, citList, citSelect) {
 }
 
 
-//validar mail para empresas!
+//delete company
+const darkImageCompanies = document.getElementById('darkImageCompanies')
+const cancelDltCompBtn = document.getElementById('cancelDltCompBtn')
+const deleteCompBtn = document.getElementById('deleteCompBtn')
+let varCompId = null
+let varEditCompany = 0
+
+function modalDeleteCompany(companyId) {
+    console.log(companyId)
+    varCompId = companyId///
+    window.scrollTo(0, 0)
+    body.classList.add('modal')
+    darkImageCompanies.classList.remove('none')
+}
+
+cancelDltCompBtn.addEventListener('click', () => {
+    /* window.scrollTo(0, 0)
+    body.classList.add('modal')
+    darkImageEditReg.style.visibility = 'visible' */
+    cancelDeleteComp()
+})
+
+function cancelDeleteComp() {
+    if(varEditCompany === 0) {
+        console.log('despues de no edition')
+        body.classList.remove('modal')
+        /* darkImageEditComp.style.visibility = 'hidden'
+        darkImageEditComp.classList.add('none') */
+    } else if(varEditCompany === 1) {
+        console.log('despues de edition')
+        window.scrollTo(0, 0)
+        body.classList.add('modal')
+        /* darkImageEditComp.style.visibility = 'visible'
+        darkImageEditComp.classList.remove('none') */
+    }
+    darkImageCompanies.classList.add('none')
+    console.log(varRegionId)
+}
+
+function cancelComp() {
+    body.classList.remove('modal')
+    darkImageCompanies.classList.add('none')
+    varCompId = null
+    console.log(varCompId)
+}
+
+deleteCompBtn.addEventListener('click', () => {
+    body.classList.remove('modal')
+    darkImageCompanies.classList.add('none')
+    deleteCompany(varCompId)
+})
+
+async function deleteCompany(compId) {
+    const options = {
+        method: 'DELETE',
+        headers: {
+            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
+        }
+    }
+    try {
+        console.log(varRegionId)
+        const response = await fetch(`http://localhost:3000/companies/${compId}`, options)
+        const data = await response.json()
+        console.log(data)
+        cancelComp()
+        showCompanies()
+    } catch(reason) {
+        return reason
+    }
+}
