@@ -17,7 +17,27 @@ var companyEmail = document.getElementById('companyEmail');
 var compAddress = document.getElementById('compAddress');
 var compTelephone = document.getElementById('compTelephone');
 var companyCity = document.getElementById('companyCity');
+var darkImageCompanies = document.getElementById('darkImageCompanies');
+var cancelDltCompBtn = document.getElementById('cancelDltCompBtn');
+var deleteCompBtn = document.getElementById('deleteCompBtn');
+var darkImageEditComp = document.getElementById('darkImageEditComp');
+var companyNameEdit = document.getElementById('companyNameEdit');
+var companyEmailEdit = document.getElementById('companyEmailEdit');
+var compAddressEdit = document.getElementById('compAddressEdit');
+var compTelephoneEdit = document.getElementById('compTelephoneEdit');
+var companySltEdit = document.getElementById('companySltEdit');
+var closeEditComp = document.getElementById('closeEditComp');
+var companyListEdit = document.getElementById('companyListEdit');
+var msgCompanyNameEdit = document.getElementById('msgCompanyNameEdit');
+var msgCompanyEmailEdit = document.getElementById('msgCompanyEmailEdit');
+var msgCompAddressEdit = document.getElementById('msgCompAddressEdit');
+var msgCompTelephoneEdit = document.getElementById('msgCompTelephoneEdit');
+var companyCityEdit = document.getElementById('companyCityEdit');
+var saveEditCompany = document.getElementById('saveEditCompany');
+var deleteEditCompany = document.getElementById('deleteEditCompany');
 var varSelectCityComp = 0;
+var varEditCompany = 0;
+var varCompId = null;
 var varCompCityId = null; //show companies
 
 companies.addEventListener('click', function () {
@@ -376,14 +396,6 @@ function selectCityCompFunction(info, citList, citSelect) {
 } //delete company
 
 
-var darkImageCompanies = document.getElementById('darkImageCompanies');
-var cancelDltCompBtn = document.getElementById('cancelDltCompBtn');
-var deleteCompBtn = document.getElementById('deleteCompBtn');
-var darkImageEditComp = document.getElementById('darkImageEditComp');
-var companyNameEdit = document.getElementById('companyNameEdit');
-var varCompId = null;
-var varEditCompany = 0;
-
 function modalDeleteCompany(companyId) {
   console.log(companyId);
   varCompId = companyId; ///
@@ -487,41 +499,37 @@ function companyEdition(info) {
           varEditContact = info.contactId */
 
           console.log(info.cityName);
+          window.scrollTo(0, 0);
+          body.classList.add('modal');
           darkImageEditComp.classList.remove('none');
-          main.classList.add('height-add-ctc');
+          /* main.classList.add('height-add-ctc') */
+
           options = {
             method: 'GET',
             headers: {
               Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
             }
           };
-          _context6.next = 8;
+          _context6.next = 9;
           return regeneratorRuntime.awrap(fetch("http://localhost:3000/companies/".concat(info.companyId), options));
 
-        case 8:
+        case 9:
           response = _context6.sent;
-          _context6.next = 11;
+          _context6.next = 12;
           return regeneratorRuntime.awrap(response.json());
 
-        case 11:
+        case 12:
           data = _context6.sent;
           console.log(data);
           loadDataCompany(data);
 
-        case 14:
+        case 15:
         case "end":
           return _context6.stop();
       }
     }
   });
 }
-
-var companyEmailEdit = document.getElementById('companyEmailEdit');
-var compAddressEdit = document.getElementById('compAddressEdit');
-var compTelephoneEdit = document.getElementById('compTelephoneEdit');
-var companySltEdit = document.getElementById('companySltEdit');
-var closeEditComp = document.getElementById('closeEditComp');
-var companyListEdit = document.getElementById('companyListEdit');
 
 function loadDataCompany(data) {
   companyNameEdit.value = data.company_name;
@@ -540,17 +548,12 @@ function loadDataCompany(data) {
 closeEditComp.addEventListener('click', function (event) {
   return closeWindowEditCompany(event);
 });
-var msgCompanyNameEdit = document.getElementById('msgCompanyNameEdit');
-var msgCompanyEmailEdit = document.getElementById('msgCompanyEmailEdit');
-var msgCompAddressEdit = document.getElementById('msgCompAddressEdit');
-var msgCompTelephoneEdit = document.getElementById('msgCompTelephoneEdit');
-var companyCityEdit = document.getElementById('companyCityEdit');
-var saveEditCompany = document.getElementById('saveEditCompany');
 
 function closeWindowEditCompany(event) {
   event.preventDefault();
   darkImageEditComp.classList.add('none');
   companyListEdit.classList.add('none');
+  body.classList.remove('modal');
   /* main.classList.remove('height-add-ctc') */
 
   companyNameEdit.classList.remove('border-wrong');
@@ -636,9 +639,8 @@ function editCompany(event) {
       }
     }
   });
-}
+} //delete contact (contact edition)
 
-var deleteEditCompany = document.getElementById('deleteEditCompany'); //delete contact (contact edition)
 
 deleteEditCompany.addEventListener('click', function (event) {
   event.preventDefault();

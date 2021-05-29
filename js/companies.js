@@ -15,9 +15,29 @@ const companyEmail = document.getElementById('companyEmail')
 const compAddress = document.getElementById('compAddress')
 const compTelephone = document.getElementById('compTelephone')
 const companyCity = document.getElementById('companyCity')
+const darkImageCompanies = document.getElementById('darkImageCompanies')
+const cancelDltCompBtn = document.getElementById('cancelDltCompBtn')
+const deleteCompBtn = document.getElementById('deleteCompBtn')
+const darkImageEditComp = document.getElementById('darkImageEditComp')
+const companyNameEdit = document.getElementById('companyNameEdit')
+const companyEmailEdit = document.getElementById('companyEmailEdit')
+const compAddressEdit = document.getElementById('compAddressEdit')
+const compTelephoneEdit = document.getElementById('compTelephoneEdit')
+const companySltEdit = document.getElementById('companySltEdit')
+const closeEditComp = document.getElementById('closeEditComp')
+const companyListEdit = document.getElementById('companyListEdit')
+const msgCompanyNameEdit = document.getElementById('msgCompanyNameEdit')
+const msgCompanyEmailEdit = document.getElementById('msgCompanyEmailEdit')
+const msgCompAddressEdit = document.getElementById('msgCompAddressEdit')
+const msgCompTelephoneEdit = document.getElementById('msgCompTelephoneEdit')
+const companyCityEdit = document.getElementById('companyCityEdit')
+const saveEditCompany = document.getElementById('saveEditCompany')
+const deleteEditCompany = document.getElementById('deleteEditCompany')
 
 let varSelectCityComp = 0
+let varEditCompany = 0
 
+let varCompId = null
 let varCompCityId = null
 
 //show companies
@@ -292,16 +312,6 @@ function selectCityCompFunction(info, citList, citSelect) {
 
 
 //delete company
-const darkImageCompanies = document.getElementById('darkImageCompanies')
-const cancelDltCompBtn = document.getElementById('cancelDltCompBtn')
-const deleteCompBtn = document.getElementById('deleteCompBtn')
-const darkImageEditComp = document.getElementById('darkImageEditComp')
-const companyNameEdit = document.getElementById('companyNameEdit')
-
-let varCompId = null
-
-let varEditCompany = 0
-
 function modalDeleteCompany(companyId) {
     console.log(companyId)
     varCompId = companyId///
@@ -373,9 +383,10 @@ async function companyEdition(info) {
     /* varCompanyId = +info.companyId
     varEditContact = info.contactId */
     console.log(info.cityName)
-    
+    window.scrollTo(0, 0)
+    body.classList.add('modal')
     darkImageEditComp.classList.remove('none')
-    main.classList.add('height-add-ctc')
+    /* main.classList.add('height-add-ctc') */
     
     const options = {                   
         method: 'GET',  
@@ -388,12 +399,7 @@ async function companyEdition(info) {
     console.log(data)
     loadDataCompany(data)
 }
-const companyEmailEdit = document.getElementById('companyEmailEdit')
-const compAddressEdit = document.getElementById('compAddressEdit')
-const compTelephoneEdit = document.getElementById('compTelephoneEdit')
-const companySltEdit = document.getElementById('companySltEdit')
-const closeEditComp = document.getElementById('closeEditComp')
-const companyListEdit = document.getElementById('companyListEdit')
+
 function loadDataCompany(data) {
     companyNameEdit.value = data.company_name
     companyEmailEdit.value = data.email
@@ -409,16 +415,12 @@ function loadDataCompany(data) {
 
 //close window edit company
 closeEditComp.addEventListener('click', (event) => closeWindowEditCompany(event))
-const msgCompanyNameEdit = document.getElementById('msgCompanyNameEdit')
-const msgCompanyEmailEdit = document.getElementById('msgCompanyEmailEdit')
-const msgCompAddressEdit = document.getElementById('msgCompAddressEdit')
-const msgCompTelephoneEdit = document.getElementById('msgCompTelephoneEdit')
-const companyCityEdit = document.getElementById('companyCityEdit')
-const saveEditCompany = document.getElementById('saveEditCompany')
+
 function closeWindowEditCompany(event) {
     event.preventDefault()
     darkImageEditComp.classList.add('none')
     companyListEdit.classList.add('none')
+    body.classList.remove('modal')
 
     /* main.classList.remove('height-add-ctc') */
     companyNameEdit.classList.remove('border-wrong')
@@ -486,7 +488,7 @@ async function editCompany(event) {
     console.log(data)
     closeWindowEditCompany(event)
 }
-const deleteEditCompany = document.getElementById('deleteEditCompany')
+
 //delete contact (contact edition)
 deleteEditCompany.addEventListener('click', (event) => {
     event.preventDefault()
