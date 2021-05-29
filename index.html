@@ -485,6 +485,46 @@
                     </div>
                 </form>
             </div>
+            <div id="darkImageEditComp" class="dark-image none">
+                <div class="head-window">
+                    <p class="wind-title">Editar compañía</p>
+                    <i id="closeEditComp" class="fas fa-times"></i>
+                </div>
+                <form class="window-white company-window">
+                    <button id="deleteEditCompany" class="btn-white btn-red">Eliminar compañía</button>
+                    <button id="saveEditCompany" class="btn-grey btn-green">Guardar compañía</button>
+                </form>
+                <form id="editCompanyForm" class="new-form new-comp-form">
+                    <label class="form-lbl pad" for="companyName">
+                        <p>Nombre<span class="red-asterisk">*</span></p>
+                        <input id="companyNameEdit" class="field ncnt-input" type="text">
+                        <p id="msgCompanyNameEdit" class="msg-container">Este campo es obligatorio</p>
+                    </label>
+                    <label class="form-lbl pad" for="companyEmailEdit">
+                        <p>Email<span class="red-asterisk">*</span></p>
+                        <input id="companyEmailEdit" class="field ncnt-input" type="text">
+                        <p id="msgCompanyEmailEdit" class="msg-container">Error en datos ingresados</p>
+                    </label>
+                    <label class="form-lbl pad" for="compAddressEdit">
+                        <p>Dirección<span class="red-asterisk">*</span></p>
+                        <input id="compAddressEdit" class="field ncnt-input" type="text">
+                        <p id="msgCompAddressEdit" class="msg-container">Este campo es obligatorio</p>
+                    </label>
+                    <label class="form-lbl pad" for="compTelephoneEdit">
+                        <p>Teléfono<span class="red-asterisk">*</span></p>
+                        <input id="compTelephoneEdit" class="field ncnt-input" type="text">
+                        <p id="msgCompTelephoneEdit" class="msg-container">Este campo es obligatorio</p>
+                    </label>
+                    <div id="companyCityEdit" class="form-lbl comp-lbl">
+                        <p>Ciudad<span class="red-asterisk">*</span></p>
+                        <div id="companySltEdit" class="field ncnt-input select-company">
+                            Seleccionar ciudad<i class="fas fa-caret-down"></i>
+                        </div>
+                        <!-- <p id="msgLast" class="msg-container">Este campo es obligatorio</p> -->
+                        <ul id="companyListEdit" class="company-list none"></ul>
+                    </div>
+                </form>
+            </div>
             <div id="darkImageCompanies" class="dark-image dk-img-cont none">
                 <div class="window-del-cont">
                     <img class="delete-contact" src="styles/images/delete.png" alt="Contact"/>

@@ -1838,7 +1838,7 @@ function loadData(data) {
   }
 
   if (data.city_name === '') {
-    citySelectEdit.innerHTML = 'Seleccionar país<i class="fas fa-caret-down"></i>';
+    citySelectEdit.innerHTML = 'Seleccionar ciudad<i class="fas fa-caret-down"></i>';
   } else {
     citySelectEdit.innerHTML = "".concat(data.city_name, "<i class=\"fas fa-caret-down\"></i>");
   }

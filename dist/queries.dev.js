@@ -1346,7 +1346,7 @@ function getCompany(companyId, req, res) {
       switch (_context44.prev = _context44.next) {
         case 0:
           _context44.next = 2;
-          return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM companies WHERE company_id = ?\n    ", {
+          return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM companies comp\n    JOIN cities ci ON ci.city_id = comp.city_id\n    WHERE company_id = ?\n    ", {
             replacements: [companyId],
             type: QueryTypes.SELECT
           }));

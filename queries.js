@@ -531,7 +531,9 @@ async function validateCompanyIdQuery(req, res, next) {
 
 async function getCompany(companyId, req, res) {
     const company = await db.query(`
-    SELECT * FROM companies WHERE company_id = ?
+    SELECT * FROM companies comp
+    JOIN cities ci ON ci.city_id = comp.city_id
+    WHERE company_id = ?
     `, { 
         replacements: [companyId],
         type: QueryTypes.SELECT 

@@ -1494,7 +1494,7 @@ function loadData(data) {
         countrySelectEdit.innerHTML = `${data.country_name}<i class="fas fa-caret-down"></i>`
     }
     if(data.city_name === '') {
-        citySelectEdit.innerHTML = 'Seleccionar país<i class="fas fa-caret-down"></i>'
+        citySelectEdit.innerHTML = 'Seleccionar ciudad<i class="fas fa-caret-down"></i>'
     } else {
         citySelectEdit.innerHTML = `${data.city_name}<i class="fas fa-caret-down"></i>`
     }

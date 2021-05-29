@@ -287,8 +287,6 @@ function cancelDeleteReg() {
         body.classList.add('modal')
         darkImageEditReg.style.visibility = 'visible'
         darkImageEditReg.classList.remove('none')
-        
-
     }
     darkImageRegions.classList.add('none')
     console.log(varRegionId)

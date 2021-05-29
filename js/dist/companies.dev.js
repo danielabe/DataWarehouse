@@ -120,10 +120,11 @@ function renderCompanies(data) {
             trash.addEventListener('click', function () {
               return modalDeleteCompany(info.companyId);
             });
-            /* 
-            pen.addEventListener('click', () => contactEdition(info)) */
+            pen.addEventListener('click', function () {
+              return companyEdition(info);
+            });
 
-          case 35:
+          case 36:
           case "end":
             return _context2.stop();
         }
@@ -212,7 +213,7 @@ function addCompany(event) {
           if (response.status === 409) {
             companyName.classList.add('border-wrong');
             msgCompanyName.classList.add('visible');
-            msgCompanyName.innerText = 'La empresa ya existe'; //no controlar esto
+            msgCompanyName.innerText = 'La empresa ya existe';
           }
 
           _context3.next = 12;
@@ -378,6 +379,8 @@ function selectCityCompFunction(info, citList, citSelect) {
 var darkImageCompanies = document.getElementById('darkImageCompanies');
 var cancelDltCompBtn = document.getElementById('cancelDltCompBtn');
 var deleteCompBtn = document.getElementById('deleteCompBtn');
+var darkImageEditComp = document.getElementById('darkImageEditComp');
+var companyNameEdit = document.getElementById('companyNameEdit');
 var varCompId = null;
 var varEditCompany = 0;
 
@@ -401,14 +404,14 @@ function cancelDeleteComp() {
   if (varEditCompany === 0) {
     console.log('despues de no edition');
     body.classList.remove('modal');
-    /* darkImageEditComp.style.visibility = 'hidden'
-    darkImageEditComp.classList.add('none') */
+    darkImageEditComp.style.visibility = 'hidden';
+    darkImageEditComp.classList.add('none');
   } else if (varEditCompany === 1) {
     console.log('despues de edition');
     window.scrollTo(0, 0);
     body.classList.add('modal');
-    /* darkImageEditComp.style.visibility = 'visible'
-    darkImageEditComp.classList.remove('none') */
+    darkImageEditComp.style.visibility = 'visible';
+    darkImageEditComp.classList.remove('none');
   }
 
   darkImageCompanies.classList.add('none');
@@ -469,4 +472,182 @@ function deleteCompany(compId) {
       }
     }
   }, null, null, [[1, 14]]);
+} //edit company
+
+
+function companyEdition(info) {
+  var options, response, data;
+  return regeneratorRuntime.async(function companyEdition$(_context6) {
+    while (1) {
+      switch (_context6.prev = _context6.next) {
+        case 0:
+          console.log(info.companyName);
+          varCompCityId = +info.cityId;
+          /* varCompanyId = +info.companyId
+          varEditContact = info.contactId */
+
+          console.log(info.cityName);
+          darkImageEditComp.classList.remove('none');
+          main.classList.add('height-add-ctc');
+          options = {
+            method: 'GET',
+            headers: {
+              Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
+            }
+          };
+          _context6.next = 8;
+          return regeneratorRuntime.awrap(fetch("http://localhost:3000/companies/".concat(info.companyId), options));
+
+        case 8:
+          response = _context6.sent;
+          _context6.next = 11;
+          return regeneratorRuntime.awrap(response.json());
+
+        case 11:
+          data = _context6.sent;
+          console.log(data);
+          loadDataCompany(data);
+
+        case 14:
+        case "end":
+          return _context6.stop();
+      }
+    }
+  });
 }
+
+var companyEmailEdit = document.getElementById('companyEmailEdit');
+var compAddressEdit = document.getElementById('compAddressEdit');
+var compTelephoneEdit = document.getElementById('compTelephoneEdit');
+var companySltEdit = document.getElementById('companySltEdit');
+var closeEditComp = document.getElementById('closeEditComp');
+var companyListEdit = document.getElementById('companyListEdit');
+
+function loadDataCompany(data) {
+  companyNameEdit.value = data.company_name;
+  companyEmailEdit.value = data.email;
+  compAddressEdit.value = data.address;
+  compTelephoneEdit.value = data.telephone;
+
+  if (data.city_name === '') {
+    companySltEdit.innerHTML = 'Seleccionar ciudad<i class="fas fa-caret-down"></i>';
+  } else {
+    companySltEdit.innerHTML = "".concat(data.city_name, "<i class=\"fas fa-caret-down\"></i>");
+  }
+} //close window edit company
+
+
+closeEditComp.addEventListener('click', function (event) {
+  return closeWindowEditCompany(event);
+});
+var msgCompanyNameEdit = document.getElementById('msgCompanyNameEdit');
+var msgCompanyEmailEdit = document.getElementById('msgCompanyEmailEdit');
+var msgCompAddressEdit = document.getElementById('msgCompAddressEdit');
+var msgCompTelephoneEdit = document.getElementById('msgCompTelephoneEdit');
+var companyCityEdit = document.getElementById('companyCityEdit');
+var saveEditCompany = document.getElementById('saveEditCompany');
+
+function closeWindowEditCompany(event) {
+  event.preventDefault();
+  darkImageEditComp.classList.add('none');
+  companyListEdit.classList.add('none');
+  /* main.classList.remove('height-add-ctc') */
+
+  companyNameEdit.classList.remove('border-wrong');
+  msgCompanyNameEdit.classList.remove('visible');
+  companyEmailEdit.classList.remove('border-wrong');
+  msgCompanyEmailEdit.classList.remove('visible');
+  compAddressEdit.classList.remove('border-wrong');
+  msgCompAddressEdit.classList.remove('visible');
+  compTelephoneEdit.classList.remove('border-wrong');
+  msgCompTelephoneEdit.classList.remove('visible');
+  companySltEdit.classList.remove('border-wrong');
+  msgCompanyEmailEdit.innerText = 'Error en datos ingresados';
+  /* compLbl.style.top = '0px'
+   */
+
+  companyCityEdit.style.top = '0px';
+  varSelectCityComp = 0;
+  /* varCityId = null */
+} //select city
+
+
+companySltEdit.addEventListener('click', function () {
+  if (varSelectCityComp === 0) {
+    companyListEdit.innerHTML = '';
+    getCitiesComp(companyListEdit, companySltEdit);
+  } else if (varSelectCityComp === 1) {
+    companyListEdit.classList.add('none');
+    companyListEdit.innerHTML = '';
+    varSelectCityComp = 0;
+  }
+}); //save edited contact
+
+saveEditCompany.addEventListener('click', function (event) {
+  return editCompany(event);
+});
+
+function editCompany(event) {
+  var modifiedCompany, options, response, data;
+  return regeneratorRuntime.async(function editCompany$(_context7) {
+    while (1) {
+      switch (_context7.prev = _context7.next) {
+        case 0:
+          event.preventDefault();
+          modifiedCompany = {
+            company_name: companyNameEdit.value,
+            email: companyEmailEdit.value,
+            address: compAddressEdit.value,
+            telephone: compTelephoneEdit.value,
+            city_id: varCompCityId
+          };
+          validateCompanyData(company, companyNameEdit, msgCompanyNameEdit, companyEmailEdit, msgCompanyEmailEdit, compAddressEdit, msgCompAddressEdit, compTelephoneEdit, msgCompTelephoneEdit, companySltEdit, companyListEdit);
+          options = {
+            method: 'PUT',
+            body: JSON.stringify(modifiedCompany),
+            headers: {
+              Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token'))),
+              "Content-Type": "application/json"
+            }
+          };
+          _context7.next = 6;
+          return regeneratorRuntime.awrap(fetch("http://localhost:3000/companies/".concat(varEditContact), options));
+
+        case 6:
+          response = _context7.sent;
+
+          if (response.status === 409) {
+            companyNameEdit.classList.add('border-wrong');
+            msgCompanyNameEdit.classList.add('visible');
+            msgCompanyNameEdit.innerText = 'La empresa ya existe';
+          }
+
+          _context7.next = 10;
+          return regeneratorRuntime.awrap(response.json());
+
+        case 10:
+          data = _context7.sent;
+          console.log(data);
+          closeWindowEditCompany(event);
+
+        case 13:
+        case "end":
+          return _context7.stop();
+      }
+    }
+  });
+}
+
+var deleteEditCompany = document.getElementById('deleteEditCompany'); //delete contact (contact edition)
+
+deleteEditCompany.addEventListener('click', function (event) {
+  event.preventDefault();
+  darkImageEditComp.style.visibility = 'hidden';
+  modalDeleteCompany(varCompId);
+});
+deleteContactBtn.addEventListener('click', function () {
+  body.classList.remove('modal');
+  darkImageContacts.classList.add('none');
+  darkImageEditCtc.classList.add('none');
+  deleteCompany(varCompId);
+});

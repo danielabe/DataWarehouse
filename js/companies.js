@@ -93,8 +93,8 @@ function renderCompanies(data) {
         row.addEventListener('mouseout', () => outRow(ellipsis, trash, pen))
 
         trash.addEventListener('click', () => modalDeleteCompany(info.companyId))
-        /* 
-        pen.addEventListener('click', () => contactEdition(info)) */
+        pen.addEventListener('click', () => companyEdition(info))
+
     })
 }
 
@@ -168,7 +168,7 @@ async function addCompany(event) {
         if(response.status === 409) {
             companyName.classList.add('border-wrong')
             msgCompanyName.classList.add('visible')
-            msgCompanyName.innerText = 'La empresa ya existe'//no controlar esto
+            msgCompanyName.innerText = 'La empresa ya existe'
         }
         
         const data = await response.json()
@@ -295,7 +295,11 @@ function selectCityCompFunction(info, citList, citSelect) {
 const darkImageCompanies = document.getElementById('darkImageCompanies')
 const cancelDltCompBtn = document.getElementById('cancelDltCompBtn')
 const deleteCompBtn = document.getElementById('deleteCompBtn')
+const darkImageEditComp = document.getElementById('darkImageEditComp')
+const companyNameEdit = document.getElementById('companyNameEdit')
+
 let varCompId = null
+
 let varEditCompany = 0
 
 function modalDeleteCompany(companyId) {
@@ -317,14 +321,14 @@ function cancelDeleteComp() {
     if(varEditCompany === 0) {
         console.log('despues de no edition')
         body.classList.remove('modal')
-        /* darkImageEditComp.style.visibility = 'hidden'
-        darkImageEditComp.classList.add('none') */
+        darkImageEditComp.style.visibility = 'hidden'
+        darkImageEditComp.classList.add('none')
     } else if(varEditCompany === 1) {
         console.log('despues de edition')
         window.scrollTo(0, 0)
         body.classList.add('modal')
-        /* darkImageEditComp.style.visibility = 'visible'
-        darkImageEditComp.classList.remove('none') */
+        darkImageEditComp.style.visibility = 'visible'
+        darkImageEditComp.classList.remove('none')
     }
     darkImageCompanies.classList.add('none')
     console.log(varRegionId)
@@ -361,3 +365,138 @@ async function deleteCompany(compId) {
         return reason
     }
 }
+
+//edit company
+async function companyEdition(info) {
+    console.log(info.companyName)
+    varCompCityId = +info.cityId
+    /* varCompanyId = +info.companyId
+    varEditContact = info.contactId */
+    console.log(info.cityName)
+    
+    darkImageEditComp.classList.remove('none')
+    main.classList.add('height-add-ctc')
+    
+    const options = {                   
+        method: 'GET',  
+        headers: {
+            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
+        }
+    }
+    const response = await fetch(`http://localhost:3000/companies/${info.companyId}`, options)
+    const data = await response.json()
+    console.log(data)
+    loadDataCompany(data)
+}
+const companyEmailEdit = document.getElementById('companyEmailEdit')
+const compAddressEdit = document.getElementById('compAddressEdit')
+const compTelephoneEdit = document.getElementById('compTelephoneEdit')
+const companySltEdit = document.getElementById('companySltEdit')
+const closeEditComp = document.getElementById('closeEditComp')
+const companyListEdit = document.getElementById('companyListEdit')
+function loadDataCompany(data) {
+    companyNameEdit.value = data.company_name
+    companyEmailEdit.value = data.email
+    compAddressEdit.value = data.address
+    compTelephoneEdit.value = data.telephone
+    
+    if(data.city_name === '') {
+        companySltEdit.innerHTML = 'Seleccionar ciudad<i class="fas fa-caret-down"></i>'
+    } else {
+        companySltEdit.innerHTML = `${data.city_name}<i class="fas fa-caret-down"></i>`
+    }
+}
+
+//close window edit company
+closeEditComp.addEventListener('click', (event) => closeWindowEditCompany(event))
+const msgCompanyNameEdit = document.getElementById('msgCompanyNameEdit')
+const msgCompanyEmailEdit = document.getElementById('msgCompanyEmailEdit')
+const msgCompAddressEdit = document.getElementById('msgCompAddressEdit')
+const msgCompTelephoneEdit = document.getElementById('msgCompTelephoneEdit')
+const companyCityEdit = document.getElementById('companyCityEdit')
+const saveEditCompany = document.getElementById('saveEditCompany')
+function closeWindowEditCompany(event) {
+    event.preventDefault()
+    darkImageEditComp.classList.add('none')
+    companyListEdit.classList.add('none')
+
+    /* main.classList.remove('height-add-ctc') */
+    companyNameEdit.classList.remove('border-wrong')
+    msgCompanyNameEdit.classList.remove('visible')
+    companyEmailEdit.classList.remove('border-wrong')
+    msgCompanyEmailEdit.classList.remove('visible')
+    compAddressEdit.classList.remove('border-wrong')
+    msgCompAddressEdit.classList.remove('visible')
+    compTelephoneEdit.classList.remove('border-wrong')
+    msgCompTelephoneEdit.classList.remove('visible')
+    companySltEdit.classList.remove('border-wrong')
+
+    msgCompanyEmailEdit.innerText = 'Error en datos ingresados'
+
+    /* compLbl.style.top = '0px'
+     */
+    companyCityEdit.style.top = '0px'
+    varSelectCityComp = 0
+
+    /* varCityId = null */
+}
+
+//select city
+companySltEdit.addEventListener('click', () => {
+        if(varSelectCityComp === 0) {
+            companyListEdit.innerHTML = ''
+            getCitiesComp(companyListEdit, companySltEdit)
+        } else if(varSelectCityComp === 1) {
+            companyListEdit.classList.add('none')
+            companyListEdit.innerHTML = ''
+            varSelectCityComp = 0
+        }
+})
+
+//save edited contact
+saveEditCompany.addEventListener('click', (event) => editCompany(event))
+
+async function editCompany(event) {
+    event.preventDefault()  
+    const modifiedCompany = {
+        company_name: companyNameEdit.value,
+        email: companyEmailEdit.value,
+        address: compAddressEdit.value,
+        telephone: compTelephoneEdit.value,
+        city_id: varCompCityId,
+    }
+
+    validateCompanyData(company, companyNameEdit, msgCompanyNameEdit, companyEmailEdit, msgCompanyEmailEdit, 
+        compAddressEdit, msgCompAddressEdit, compTelephoneEdit, msgCompTelephoneEdit, companySltEdit, companyListEdit)
+    const options = {                   
+        method: 'PUT',  
+        body: JSON.stringify(modifiedCompany),
+        headers: {
+            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`,
+            "Content-Type": "application/json"
+        }
+    }
+    const response = await fetch(`http://localhost:3000/companies/${varEditContact}`, options)
+    if(response.status === 409) {
+        companyNameEdit.classList.add('border-wrong')
+        msgCompanyNameEdit.classList.add('visible')
+        msgCompanyNameEdit.innerText = 'La empresa ya existe'
+    }
+    const data = await response.json()
+    console.log(data)
+    closeWindowEditCompany(event)
+}
+const deleteEditCompany = document.getElementById('deleteEditCompany')
+//delete contact (contact edition)
+deleteEditCompany.addEventListener('click', (event) => {
+    event.preventDefault()
+    darkImageEditComp.style.visibility = 'hidden'
+    modalDeleteCompany(varCompId)
+})
+
+deleteContactBtn.addEventListener('click', () => {
+    body.classList.remove('modal')
+    darkImageContacts.classList.add('none')
+    darkImageEditCtc.classList.add('none')
+    deleteCompany(varCompId)
+})
