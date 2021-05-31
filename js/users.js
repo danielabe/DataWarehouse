@@ -103,6 +103,15 @@ async function editUser(info, usersList) {  //esta funcion la voy a hacer luego,
 
 //add user
 const darkImageNewUser = document.getElementById('darkImageNewUser')
+const closeNewUser = document.getElementById('closeNewUser')
+const cancelUser = document.getElementById('cancelUser')
+const userName = document.getElementById('userName')
+const userLastname = document.getElementById('userLastname')
+const userEmail = document.getElementById('userEmail')
+const userPass = document.getElementById('userPass')
+const userPassRep = document.getElementById('userPassRep')
+const perfilSlt = document.getElementById('perfilSlt')
+const perfilList = document.getElementById('perfilList')
 newUserBtn.addEventListener('click', () => {
     window.scrollTo(0, 0)
     /* body.classList.add('modal') */
@@ -110,3 +119,34 @@ newUserBtn.addEventListener('click', () => {
     /* companyCity.style.top = '0px' */
 })
 
+closeNewUser.addEventListener('click', (event) => closeWindowNewUser(event))
+cancelUser.addEventListener('click', (event) => closeWindowNewUser(event))
+
+function closeWindowNewUser(event) {
+    event.preventDefault()
+    userName.value = ''
+    userLastname.value = ''
+    userEmail.value = ''
+    userPass.value = ''
+    userPassRep.value = ''
+    perfilSlt.innerHTML = 'Seleccionar perfil<i class="fas fa-caret-down"></i>'
+    /* msgCompanyName.innerText = 'Este campo es obligatorio' */
+    
+    /* body.classList.remove('modal') */
+    companyName.classList.remove('border-wrong')
+    msgCompanyName.classList.remove('visible')
+    companyEmail.classList.remove('border-wrong')
+    msgCompanyEmail.classList.remove('visible')
+    compAddress.classList.remove('border-wrong')
+    msgCompAddress.classList.remove('visible')
+    compTelephone.classList.remove('border-wrong')
+    msgCompTelephone.classList.remove('visible')
+    companySlt.classList.remove('border-wrong')
+    
+    darkImageNewUser.classList.add('none')
+    perfilList.classList.add('none')
+    /* companyCity.style.top = '0px' */
+
+    /* varCompCityId = null
+    varSelectCityComp = 0 */
+}
