@@ -544,7 +544,7 @@ async function getCompany(companyId, req, res) {
 async function validateCompanyNamePutQuery(req, res, next) {
     if(req.body.company_name){
         const company = req.body.company_name
-        const companies = await db.query(`SELECT company_name FROM companies`, {
+        const companies = await db.query(`SELECT company_name FROM companies WHERE company_id != ${req.params.companyId}`, {
             type: QueryTypes.SELECT
         })
         const companiesArray = companies.map(company => company.company_name)
@@ -575,11 +575,14 @@ async function modifyCompany(companyId, req, res) {
     const newcompany = {
         company_id: companyId,
         company_name: req.body.company_name || company[0].company_name,
-        city_id: req.body.city_id || company[0].city_id,
-        address: req.body.address || company[0].address
+        email: req.body.email || company[0].email,
+        address: req.body.address || company[0].address,
+        telephone: req.body.telephone || company[0].telephone,
+        city_id: req.body.city_id || company[0].city_id
     }
     const modified = await db.query(`
-    UPDATE companies SET company_name = :company_name, city_id = :city_id, address = :address
+    UPDATE companies SET company_name = :company_name, city_id = :city_id, address = :address, 
+    email = :email, telephone = :telephone
     WHERE company_id = :company_id
     `, {
         replacements: newcompany,

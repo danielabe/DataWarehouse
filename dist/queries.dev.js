@@ -1376,7 +1376,7 @@ function validateCompanyNamePutQuery(req, res, next) {
 
           company = req.body.company_name;
           _context45.next = 4;
-          return regeneratorRuntime.awrap(db.query("SELECT company_name FROM companies", {
+          return regeneratorRuntime.awrap(db.query("SELECT company_name FROM companies WHERE company_id != ".concat(req.params.companyId), {
             type: QueryTypes.SELECT
           }));
 
@@ -1460,11 +1460,13 @@ function modifyCompany(companyId, req, res) {
           newcompany = {
             company_id: companyId,
             company_name: req.body.company_name || company[0].company_name,
-            city_id: req.body.city_id || company[0].city_id,
-            address: req.body.address || company[0].address
+            email: req.body.email || company[0].email,
+            address: req.body.address || company[0].address,
+            telephone: req.body.telephone || company[0].telephone,
+            city_id: req.body.city_id || company[0].city_id
           };
           _context47.next = 6;
-          return regeneratorRuntime.awrap(db.query("\n    UPDATE companies SET company_name = :company_name, city_id = :city_id, address = :address\n    WHERE company_id = :company_id\n    ", {
+          return regeneratorRuntime.awrap(db.query("\n    UPDATE companies SET company_name = :company_name, city_id = :city_id, address = :address, \n    email = :email, telephone = :telephone\n    WHERE company_id = :company_id\n    ", {
             replacements: newcompany,
             type: QueryTypes.UPDATE
           }));

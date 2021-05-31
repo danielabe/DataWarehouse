@@ -99,3 +99,8 @@ async function editUser(info, usersList) {  //esta funcion la voy a hacer luego,
     console.log(data)
     getUsers()
 }
+
+//new user
+const newUserBtn = document.getElementById('newUserBtn')
+
+newUserBtn.addEventListener('click', () => console.log('new user'))

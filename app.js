@@ -201,8 +201,8 @@ app.get('/companies/:companyId', validateCompanyId, async (req, res) => {
     getCompany(companyId, req, res)
 }) 
 
-app.put('/companies/:companyId', validateCompanyId, validateCompanyNamePut, 
-validateCityIdPut, validateAddressPut, async (req, res) => {
+app.put('/companies/:companyId', validateCompanyId, validateCompanyNamePut, validateEmailCompanies, 
+validateAddressPut, validateTelephone, validateCityIdPut,  async (req, res) => {
     const companyId = +req.params.companyId
     modifyCompany(companyId, req, res)
 })

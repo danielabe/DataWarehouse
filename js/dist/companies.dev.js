@@ -117,7 +117,7 @@ function renderCompanies(data) {
             company.classList = 'u-item col-item';
             country.classList = 'u-item col-item';
             address.classList = 'u-item col-item comp-item';
-            telephone.classList = 'u-item col-item';
+            telephone.classList = 'u-item col-item comp-item';
             actions.classList = 'u-item action';
             ellipsis.classList = 'fas fa-ellipsis-h';
             trash.classList = 'fas fa-trash none';
@@ -262,7 +262,8 @@ function addCompany(event) {
 }
 
 function validateCompanyData(company, compName, msgCom, compEmail, msgEmail, comAddress, msgAddress, compTeleph, msgCompTeleph, compSlt, compList) {
-  if (company.company_name === '') {
+  if (compName.value === '') {
+    //cambiar por values, cambiar en contactos y otros
     compName.classList.add('border-wrong');
     msgCom.classList.add('visible');
     compName.addEventListener('keyup', function () {
@@ -273,7 +274,7 @@ function validateCompanyData(company, compName, msgCom, compEmail, msgEmail, com
     });
   }
 
-  if (company.email === '' || !/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(compEmail.value)) {
+  if (compEmail.value === '' || !/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(compEmail.value)) {
     compEmail.classList.add('border-wrong');
     msgEmail.classList.add('visible');
     compEmail.addEventListener('keyup', function () {
@@ -284,7 +285,7 @@ function validateCompanyData(company, compName, msgCom, compEmail, msgEmail, com
     });
   }
 
-  if (company.address === '') {
+  if (comAddress.value === '') {
     comAddress.classList.add('border-wrong');
     msgAddress.classList.add('visible');
     comAddress.addEventListener('keyup', function () {
@@ -295,7 +296,7 @@ function validateCompanyData(company, compName, msgCom, compEmail, msgEmail, com
     });
   }
 
-  if (company.telephone === '') {
+  if (compTeleph.value === '') {
     compTeleph.classList.add('border-wrong');
     msgCompTeleph.classList.add('visible');
     compTeleph.addEventListener('keyup', function () {
@@ -305,6 +306,8 @@ function validateCompanyData(company, compName, msgCom, compEmail, msgEmail, com
       }
     });
   }
+
+  console.log(company.city_id);
 
   if (company.city_id === undefined || company.city_id === null) {
     compSlt.classList.add('border-wrong');
@@ -322,7 +325,7 @@ function validateCompanyData(company, compName, msgCom, compEmail, msgEmail, com
 
 companySlt.addEventListener('click', function () {
   if (varSelectCityComp === 0) {
-    getCitiesComp(companyList, companySlt);
+    getCitiesComp(companyList, companySlt, companyCity);
   } else if (varSelectCityComp === 1) {
     companyList.classList.add('none');
     companyCity.style.top = '0px';
@@ -331,7 +334,7 @@ companySlt.addEventListener('click', function () {
   }
 });
 
-function getCitiesComp(citList, citSelect) {
+function getCitiesComp(citList, citSelect, compCity) {
   var options, response, data;
   return regeneratorRuntime.async(function getCitiesComp$(_context4) {
     while (1) {
@@ -354,7 +357,7 @@ function getCitiesComp(citList, citSelect) {
         case 6:
           data = _context4.sent;
           console.log(data);
-          renderSelectCitiesComp(data, citList, citSelect);
+          renderSelectCitiesComp(data, citList, citSelect, compCity);
 
         case 9:
         case "end":
@@ -364,13 +367,13 @@ function getCitiesComp(citList, citSelect) {
   });
 }
 
-function renderSelectCitiesComp(data, citList, citSelect) {
+function renderSelectCitiesComp(data, citList, citSelect, compCity) {
   varSelectCityComp = 1;
   citList.innerHTML = '';
   citList.classList.remove('none');
   var hcit = (data.length * 24 + 6) / 2;
   console.log(hcit);
-  companyCity.style.top = "".concat(hcit, "px");
+  compCity.style.top = "".concat(hcit, "px");
   data.forEach(function (element) {
     var info = {
       cityId: element.city_id,
@@ -381,15 +384,15 @@ function renderSelectCitiesComp(data, citList, citSelect) {
     cityItem.classList.add('sug-comp');
     citList.appendChild(cityItem);
     cityItem.addEventListener('click', function () {
-      return selectCityCompFunction(info, citList, citSelect);
+      return selectCityCompFunction(info, citList, citSelect, compCity);
     });
   });
 }
 
-function selectCityCompFunction(info, citList, citSelect) {
+function selectCityCompFunction(info, citList, citSelect, compCity) {
   varSelectCityComp = 0;
   citList.classList.add('none');
-  companyCity.style.top = '0px';
+  compCity.style.top = '0px';
   citList.innerHTML = '';
   citSelect.innerHTML = "".concat(info.cityName, "<i class=\"fas fa-caret-down\"></i>");
   varCompCityId = +info.cityId;
@@ -495,6 +498,7 @@ function companyEdition(info) {
         case 0:
           console.log(info.companyName);
           varCompCityId = +info.cityId;
+          varCompId = +info.companyId;
           /* varCompanyId = +info.companyId
           varEditContact = info.contactId */
 
@@ -502,6 +506,8 @@ function companyEdition(info) {
           window.scrollTo(0, 0);
           body.classList.add('modal');
           darkImageEditComp.classList.remove('none');
+          darkImageEditComp.style.visibility = 'visible';
+          companyCityEdit.style.top = '0px';
           /* main.classList.add('height-add-ctc') */
 
           options = {
@@ -510,20 +516,20 @@ function companyEdition(info) {
               Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
             }
           };
-          _context6.next = 9;
-          return regeneratorRuntime.awrap(fetch("http://localhost:3000/companies/".concat(info.companyId), options));
-
-        case 9:
-          response = _context6.sent;
           _context6.next = 12;
-          return regeneratorRuntime.awrap(response.json());
+          return regeneratorRuntime.awrap(fetch("http://localhost:3000/companies/".concat(varCompId), options));
 
         case 12:
+          response = _context6.sent;
+          _context6.next = 15;
+          return regeneratorRuntime.awrap(response.json());
+
+        case 15:
           data = _context6.sent;
           console.log(data);
           loadDataCompany(data);
 
-        case 15:
+        case 18:
         case "end":
           return _context6.stop();
       }
@@ -578,9 +584,10 @@ function closeWindowEditCompany(event) {
 companySltEdit.addEventListener('click', function () {
   if (varSelectCityComp === 0) {
     companyListEdit.innerHTML = '';
-    getCitiesComp(companyListEdit, companySltEdit);
+    getCitiesComp(companyListEdit, companySltEdit, companyCityEdit);
   } else if (varSelectCityComp === 1) {
     companyListEdit.classList.add('none');
+    companyCityEdit.style.top = '0px';
     companyListEdit.innerHTML = '';
     varSelectCityComp = 0;
   }
@@ -604,7 +611,7 @@ function editCompany(event) {
             telephone: compTelephoneEdit.value,
             city_id: varCompCityId
           };
-          validateCompanyData(company, companyNameEdit, msgCompanyNameEdit, companyEmailEdit, msgCompanyEmailEdit, compAddressEdit, msgCompAddressEdit, compTelephoneEdit, msgCompTelephoneEdit, companySltEdit, companyListEdit);
+          validateCompanyData(modifiedCompany, companyNameEdit, msgCompanyNameEdit, companyEmailEdit, msgCompanyEmailEdit, compAddressEdit, msgCompAddressEdit, compTelephoneEdit, msgCompTelephoneEdit, companySltEdit, companyListEdit);
           options = {
             method: 'PUT',
             body: JSON.stringify(modifiedCompany),
@@ -614,11 +621,12 @@ function editCompany(event) {
             }
           };
           _context7.next = 6;
-          return regeneratorRuntime.awrap(fetch("http://localhost:3000/companies/".concat(varEditContact), options));
+          return regeneratorRuntime.awrap(fetch("http://localhost:3000/companies/".concat(varCompId), options));
 
         case 6:
           response = _context7.sent;
 
+          /* console.log(response.text()) */
           if (response.status === 409) {
             companyNameEdit.classList.add('border-wrong');
             msgCompanyNameEdit.classList.add('visible');
@@ -632,8 +640,9 @@ function editCompany(event) {
           data = _context7.sent;
           console.log(data);
           closeWindowEditCompany(event);
+          showCompanies();
 
-        case 13:
+        case 14:
         case "end":
           return _context7.stop();
       }

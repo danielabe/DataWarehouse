@@ -165,4 +165,10 @@ function editUser(info, usersList) {
       }
     }
   });
-}
+} //new user
+
+
+var newUserBtn = document.getElementById('newUserBtn');
+newUserBtn.addEventListener('click', function () {
+  return console.log('new user');
+});

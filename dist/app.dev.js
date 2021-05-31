@@ -581,7 +581,7 @@ app.get('/companies/:companyId', validateCompanyId, function _callee28(req, res)
     }
   });
 });
-app.put('/companies/:companyId', validateCompanyId, validateCompanyNamePut, validateCityIdPut, validateAddressPut, function _callee29(req, res) {
+app.put('/companies/:companyId', validateCompanyId, validateCompanyNamePut, validateEmailCompanies, validateAddressPut, validateTelephone, validateCityIdPut, function _callee29(req, res) {
   var companyId;
   return regeneratorRuntime.async(function _callee29$(_context29) {
     while (1) {

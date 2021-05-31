@@ -93,7 +93,7 @@ function renderCompanies(data) {
         company.classList = 'u-item col-item'        
         country.classList = 'u-item col-item'     
         address.classList = 'u-item col-item comp-item'     
-        telephone.classList = 'u-item col-item'     
+        telephone.classList = 'u-item col-item comp-item'     
         actions.classList = 'u-item action'
         ellipsis.classList = 'fas fa-ellipsis-h'
         trash.classList = 'fas fa-trash none'
@@ -201,7 +201,7 @@ async function addCompany(event) {
 
 function validateCompanyData(company, compName, msgCom, compEmail, msgEmail, comAddress, msgAddress, 
     compTeleph, msgCompTeleph, compSlt, compList) {
-    if(company.company_name === '') {
+    if(compName.value === '') {//cambiar por values, cambiar en contactos y otros
         compName.classList.add('border-wrong')
         msgCom.classList.add('visible')
         compName.addEventListener('keyup', () => {
@@ -211,7 +211,7 @@ function validateCompanyData(company, compName, msgCom, compEmail, msgEmail, com
             }
         })
     }
-    if(company.email === '' || !(/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(compEmail.value))) {
+    if(compEmail.value === '' || !(/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(compEmail.value))) {
         compEmail.classList.add('border-wrong')
         msgEmail.classList.add('visible')
         compEmail.addEventListener('keyup', () => {
@@ -221,7 +221,7 @@ function validateCompanyData(company, compName, msgCom, compEmail, msgEmail, com
             }
         })
     }
-    if(company.address === '') {
+    if(comAddress.value === '') {
         comAddress.classList.add('border-wrong')
         msgAddress.classList.add('visible')
         comAddress.addEventListener('keyup', () => {
@@ -231,7 +231,7 @@ function validateCompanyData(company, compName, msgCom, compEmail, msgEmail, com
             }
         })
     }
-    if(company.telephone === '') {
+    if(compTeleph.value === '') {
         compTeleph.classList.add('border-wrong')
         msgCompTeleph.classList.add('visible')
         compTeleph.addEventListener('keyup', () => {
@@ -241,6 +241,7 @@ function validateCompanyData(company, compName, msgCom, compEmail, msgEmail, com
             }
         })
     }
+    console.log(company.city_id)
     if(company.city_id === undefined || company.city_id === null) {
         compSlt.classList.add('border-wrong')
         compList.addEventListener('click', () => {
@@ -256,7 +257,7 @@ function validateCompanyData(company, compName, msgCom, compEmail, msgEmail, com
 //select city 
 companySlt.addEventListener('click', () => {
     if(varSelectCityComp === 0) {
-        getCitiesComp(companyList, companySlt)
+        getCitiesComp(companyList, companySlt, companyCity)
     } else if(varSelectCityComp === 1) {
         companyList.classList.add('none')
         companyCity.style.top = '0px'
@@ -265,7 +266,7 @@ companySlt.addEventListener('click', () => {
     }
 })
 
-async function getCitiesComp(citList, citSelect) {
+async function getCitiesComp(citList, citSelect, compCity) {
     const options = {
         method: 'GET',
         headers: {
@@ -275,17 +276,17 @@ async function getCitiesComp(citList, citSelect) {
     const response = await fetch(`http://localhost:3000/cities`, options)
     const data = await response.json()
     console.log(data)
-    renderSelectCitiesComp(data, citList, citSelect)
+    renderSelectCitiesComp(data, citList, citSelect, compCity)
 }
 
-function renderSelectCitiesComp(data, citList, citSelect) {
+function renderSelectCitiesComp(data, citList, citSelect, compCity) {
     varSelectCityComp = 1
     citList.innerHTML = ''
     citList.classList.remove('none')
 
     const hcit = (data.length * 24 + 6) / 2
     console.log(hcit)
-    companyCity.style.top = `${hcit}px`
+    compCity.style.top = `${hcit}px`
 
     data.forEach(element => {
         const info = {
@@ -297,14 +298,14 @@ function renderSelectCitiesComp(data, citList, citSelect) {
         cityItem.classList.add('sug-comp')
         citList.appendChild(cityItem)
 
-        cityItem.addEventListener('click', () => selectCityCompFunction(info, citList, citSelect))
+        cityItem.addEventListener('click', () => selectCityCompFunction(info, citList, citSelect, compCity))
     })
 }
 
-function selectCityCompFunction(info, citList, citSelect) {
+function selectCityCompFunction(info, citList, citSelect, compCity) {
     varSelectCityComp = 0
     citList.classList.add('none')
-    companyCity.style.top = '0px'
+    compCity.style.top = '0px'
     citList.innerHTML = ''
     citSelect.innerHTML = `${info.cityName}<i class="fas fa-caret-down"></i>`
     varCompCityId = +info.cityId
@@ -380,12 +381,15 @@ async function deleteCompany(compId) {
 async function companyEdition(info) {
     console.log(info.companyName)
     varCompCityId = +info.cityId
+    varCompId = +info.companyId
     /* varCompanyId = +info.companyId
     varEditContact = info.contactId */
     console.log(info.cityName)
     window.scrollTo(0, 0)
     body.classList.add('modal')
     darkImageEditComp.classList.remove('none')
+    darkImageEditComp.style.visibility = 'visible'
+    companyCityEdit.style.top = '0px'
     /* main.classList.add('height-add-ctc') */
     
     const options = {                   
@@ -394,7 +398,7 @@ async function companyEdition(info) {
             Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
         }
     }
-    const response = await fetch(`http://localhost:3000/companies/${info.companyId}`, options)
+    const response = await fetch(`http://localhost:3000/companies/${varCompId}`, options)
     const data = await response.json()
     console.log(data)
     loadDataCompany(data)
@@ -447,9 +451,10 @@ function closeWindowEditCompany(event) {
 companySltEdit.addEventListener('click', () => {
         if(varSelectCityComp === 0) {
             companyListEdit.innerHTML = ''
-            getCitiesComp(companyListEdit, companySltEdit)
+            getCitiesComp(companyListEdit, companySltEdit, companyCityEdit)
         } else if(varSelectCityComp === 1) {
             companyListEdit.classList.add('none')
+            companyCityEdit.style.top = '0px'
             companyListEdit.innerHTML = ''
             varSelectCityComp = 0
         }
@@ -468,7 +473,7 @@ async function editCompany(event) {
         city_id: varCompCityId,
     }
 
-    validateCompanyData(company, companyNameEdit, msgCompanyNameEdit, companyEmailEdit, msgCompanyEmailEdit, 
+    validateCompanyData(modifiedCompany, companyNameEdit, msgCompanyNameEdit, companyEmailEdit, msgCompanyEmailEdit, 
         compAddressEdit, msgCompAddressEdit, compTelephoneEdit, msgCompTelephoneEdit, companySltEdit, companyListEdit)
     const options = {                   
         method: 'PUT',  
@@ -478,7 +483,8 @@ async function editCompany(event) {
             "Content-Type": "application/json"
         }
     }
-    const response = await fetch(`http://localhost:3000/companies/${varEditContact}`, options)
+    const response = await fetch(`http://localhost:3000/companies/${varCompId}`, options)
+    /* console.log(response.text()) */
     if(response.status === 409) {
         companyNameEdit.classList.add('border-wrong')
         msgCompanyNameEdit.classList.add('visible')
@@ -487,6 +493,7 @@ async function editCompany(event) {
     const data = await response.json()
     console.log(data)
     closeWindowEditCompany(event)
+    showCompanies() 
 }
 
 //delete contact (contact edition)
