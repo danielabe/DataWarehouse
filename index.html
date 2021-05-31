@@ -548,6 +548,51 @@
                 <li class="u-item h-item h-act">Acciones</li>
             </ul>
             <ul id="usersList" class="users-list"></ul>
+            <div id="darkImageNewUser" class="dark-image none">
+                <div class="head-window">
+                    <p class="wind-title">Nuevo usuario</p>
+                    <i id="closeNewUser" class="fas fa-times"></i>
+                </div>
+                <form class="window-white company-window">
+                    <button id="cancelUser" class="btn-white">Cancelar</button>
+                    <button id="saveUser" class="btn-grey">Guardar usuario</button>
+                </form>
+                <form id="newUserForm" class="new-form ">
+                    <label class="form-lbl pad" for="userName">
+                        <p>Nombre<span class="red-asterisk">*</span></p>
+                        <input id="userName" class="field ncnt-input" type="text">
+                        <p id="msgUserName" class="msg-container">Este campo es obligatorio</p>
+                    </label>
+                    <label class="form-lbl pad" for="userLastname">
+                        <p>Apellido<span class="red-asterisk">*</span></p>
+                        <input id="userLastname" class="field ncnt-input" type="text">
+                        <p id="msgUserLastname" class="msg-container">Este campo es obligatorio</p>
+                    </label>
+                    <label class="form-lbl pad" for="userEmail">
+                        <p>Email<span class="red-asterisk">*</span></p>
+                        <input id="userEmail" class="field ncnt-input" type="text">
+                        <p id="msgUserEmail" class="msg-container">Error en datos ingresados</p>
+                    </label>
+                    <div id="userPerfil" class="form-lbl comp-lbl">
+                        <p>Perfil<span class="red-asterisk">*</span></p>
+                        <div id="perfilSlt" class="field ncnt-input select-company">
+                            Seleccionar perfil<i class="fas fa-caret-down"></i>
+                        </div>
+                        <!-- <p id="msgLast" class="msg-container">Este campo es obligatorio</p> -->
+                        <ul id="perfilList" class="company-list none"></ul>
+                    </div>
+                    <label class="form-lbl pad" for="userPass">
+                        <p>Contraseña<span class="red-asterisk">*</span></p>
+                        <input id="userPass" class="field ncnt-input" type="text">
+                        <p id="msgUserPass" class="msg-container">Este campo es obligatorio</p>
+                    </label>
+                    <label class="form-lbl pad" for="userPassRep">
+                        <p>Repetir contraseña<span class="red-asterisk">*</span></p>
+                        <input id="userPassRep" class="field ncnt-input" type="text">
+                        <p id="msgUserPassRep" class="msg-container">Este campo es obligatorio</p>
+                    </label>
+                </form>
+            </div>
         </section>
         <section id="locationSection" class="location none">
             <h2 class="t2">Región/Ciudad</h2>

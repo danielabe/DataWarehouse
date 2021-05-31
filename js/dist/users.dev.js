@@ -166,9 +166,14 @@ function editUser(info, usersList) {
       }
     }
   });
-} //new user
+} //add user
 
 
+var darkImageNewUser = document.getElementById('darkImageNewUser');
 newUserBtn.addEventListener('click', function () {
-  return console.log('new user');
+  window.scrollTo(0, 0);
+  /* body.classList.add('modal') */
+
+  darkImageNewUser.classList.remove('none');
+  /* companyCity.style.top = '0px' */
 });

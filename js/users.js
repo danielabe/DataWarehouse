@@ -101,5 +101,12 @@ async function editUser(info, usersList) {  //esta funcion la voy a hacer luego,
     getUsers()
 }
 
-//new user
-newUserBtn.addEventListener('click', () => console.log('new user'))
+//add user
+const darkImageNewUser = document.getElementById('darkImageNewUser')
+newUserBtn.addEventListener('click', () => {
+    window.scrollTo(0, 0)
+    /* body.classList.add('modal') */
+    darkImageNewUser.classList.remove('none')
+    /* companyCity.style.top = '0px' */
+})
+
