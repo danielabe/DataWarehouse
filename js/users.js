@@ -1,5 +1,6 @@
 const headUs = document.getElementById('headUs')
 const usersList = document.getElementById('usersList')
+const newUserBtn = document.getElementById('newUserBtn')
 
 async function getUsers() {
     usersList.innerHTML = ''
@@ -101,6 +102,4 @@ async function editUser(info, usersList) {  //esta funcion la voy a hacer luego,
 }
 
 //new user
-const newUserBtn = document.getElementById('newUserBtn')
-
 newUserBtn.addEventListener('click', () => console.log('new user'))

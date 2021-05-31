@@ -13,8 +13,8 @@ async function selectUserLogin(username, password, req, res) {
     })
     const perfil = user[0].perfil
     const user_id = user[0].user_id
-    res.status(200).json(jwt.sign({ username, perfil, user_id} , authorizationPassword))
-}
+    res.status(200).json(Object.assign({}, {token: jwt.sign({ username, perfil, user_id} , authorizationPassword)}, {perf: perfil}))
+}//cambio token
 
 async function validateLoginQuery(req, res, next) {
     const { username, password } = req.body

@@ -32,11 +32,15 @@ function selectUserLogin(username, password, req, res) {
           user = _context.sent;
           perfil = user[0].perfil;
           user_id = user[0].user_id;
-          res.status(200).json(jwt.sign({
-            username: username,
-            perfil: perfil,
-            user_id: user_id
-          }, authorizationPassword));
+          res.status(200).json(Object.assign({}, {
+            token: jwt.sign({
+              username: username,
+              perfil: perfil,
+              user_id: user_id
+            }, authorizationPassword)
+          }, {
+            perf: perfil
+          }));
 
         case 6:
         case "end":
@@ -44,7 +48,8 @@ function selectUserLogin(username, password, req, res) {
       }
     }
   });
-}
+} //cambio token
+
 
 function validateLoginQuery(req, res, next) {
   var _req$body, username, password, user;

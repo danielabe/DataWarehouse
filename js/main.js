@@ -1,5 +1,7 @@
 sessionStorage.clear()
+
 let varSect = 'log'
+
 const submit = document.getElementById('submit')
 const username = document.getElementById('username')
 const password = document.getElementById('password')
@@ -12,6 +14,7 @@ const locations = document.getElementById('location')
 const locationSection = document.getElementById('locationSection')
 const companiesSection = document.getElementById('companiesSection')
 const contactsSection = document.getElementById('contactsSection')
+const usersLink = document.getElementById('usersLink')
 
 submit.addEventListener('click', (event) => {
     event.preventDefault()
@@ -42,10 +45,17 @@ async function loginFunction() {
         contactsSection.classList.remove('none')
         getContacts()
     }
+
+    if(data.perf === 'Admin') {
+        usersLink.classList.remove('none')
+    } else {
+        usersLink.classList.add('none')
+    }
 }
 
 function saveToken(data) {
-    sessionStorage.setItem('Token', JSON.stringify(data))
+    console.log(data.token)
+    sessionStorage.setItem('Token', JSON.stringify(data.token))//cambio token
 }
 
 contacts.addEventListener('click', () => {

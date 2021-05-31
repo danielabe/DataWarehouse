@@ -2,6 +2,7 @@
 
 var headUs = document.getElementById('headUs');
 var usersList = document.getElementById('usersList');
+var newUserBtn = document.getElementById('newUserBtn');
 
 function getUsers() {
   var options, response, data;
@@ -168,7 +169,6 @@ function editUser(info, usersList) {
 } //new user
 
 
-var newUserBtn = document.getElementById('newUserBtn');
 newUserBtn.addEventListener('click', function () {
   return console.log('new user');
 });

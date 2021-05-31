@@ -14,6 +14,7 @@ var locations = document.getElementById('location');
 var locationSection = document.getElementById('locationSection');
 var companiesSection = document.getElementById('companiesSection');
 var contactsSection = document.getElementById('contactsSection');
+var usersLink = document.getElementById('usersLink');
 submit.addEventListener('click', function (event) {
   event.preventDefault();
   loginFunction(); //funcion nueva pantalla
@@ -56,7 +57,13 @@ function loginFunction() {
             getContacts();
           }
 
-        case 9:
+          if (data.perf === 'Admin') {
+            usersLink.classList.remove('none');
+          } else {
+            usersLink.classList.add('none');
+          }
+
+        case 10:
         case "end":
           return _context.stop();
       }
@@ -65,7 +72,8 @@ function loginFunction() {
 }
 
 function saveToken(data) {
-  sessionStorage.setItem('Token', JSON.stringify(data));
+  console.log(data.token);
+  sessionStorage.setItem('Token', JSON.stringify(data.token)); //cambio token
 }
 
 contacts.addEventListener('click', function () {
