@@ -3,6 +3,16 @@
 var headUs = document.getElementById('headUs');
 var usersList = document.getElementById('usersList');
 var newUserBtn = document.getElementById('newUserBtn');
+var darkImageNewUser = document.getElementById('darkImageNewUser');
+var closeNewUser = document.getElementById('closeNewUser');
+var cancelUser = document.getElementById('cancelUser');
+var userName = document.getElementById('userName');
+var userLastname = document.getElementById('userLastname');
+var userEmail = document.getElementById('userEmail');
+var userPass = document.getElementById('userPass');
+var userPassRep = document.getElementById('userPassRep');
+var perfilSlt = document.getElementById('perfilSlt');
+var perfilList = document.getElementById('perfilList');
 
 function getUsers() {
   var options, response, data;
@@ -169,16 +179,6 @@ function editUser(info, usersList) {
 } //add user
 
 
-var darkImageNewUser = document.getElementById('darkImageNewUser');
-var closeNewUser = document.getElementById('closeNewUser');
-var cancelUser = document.getElementById('cancelUser');
-var userName = document.getElementById('userName');
-var userLastname = document.getElementById('userLastname');
-var userEmail = document.getElementById('userEmail');
-var userPass = document.getElementById('userPass');
-var userPassRep = document.getElementById('userPassRep');
-var perfilSlt = document.getElementById('perfilSlt');
-var perfilList = document.getElementById('perfilList');
 newUserBtn.addEventListener('click', function () {
   window.scrollTo(0, 0);
   /* body.classList.add('modal') */
@@ -205,19 +205,58 @@ function closeWindowNewUser(event) {
 
   /* body.classList.remove('modal') */
 
-  companyName.classList.remove('border-wrong');
-  msgCompanyName.classList.remove('visible');
-  companyEmail.classList.remove('border-wrong');
-  msgCompanyEmail.classList.remove('visible');
-  compAddress.classList.remove('border-wrong');
-  msgCompAddress.classList.remove('visible');
-  compTelephone.classList.remove('border-wrong');
-  msgCompTelephone.classList.remove('visible');
-  companySlt.classList.remove('border-wrong');
+  /* companyName.classList.remove('border-wrong')
+  msgCompanyName.classList.remove('visible')
+  companyEmail.classList.remove('border-wrong')
+  msgCompanyEmail.classList.remove('visible')
+  compAddress.classList.remove('border-wrong')
+  msgCompAddress.classList.remove('visible')
+  compTelephone.classList.remove('border-wrong')
+  msgCompTelephone.classList.remove('visible')
+  companySlt.classList.remove('border-wrong') */
+
   darkImageNewUser.classList.add('none');
-  perfilList.classList.add('none');
+  perfilList.classList.add('no-visible');
   /* companyCity.style.top = '0px' */
 
   /* varCompCityId = null
   varSelectCityComp = 0 */
+
+  varSelectPerfil = 0;
+} //select perfil
+
+/* cosnt = document.getElementById('') */
+
+
+var varSelectPerfil = 0;
+perfilSlt.addEventListener('click', function () {
+  if (varSelectPerfil === 0) {
+    var perfilClass = 'perfil';
+    showPerfil(perfilList, perfilSlt, perfilClass);
+  } else if (varSelectPerfil === 1) {
+    perfilList.classList.add('no-visible');
+    /* userPerfil.style.top = '0px' */
+
+    /* perfilList.innerHTML = '' */
+
+    varSelectPerfil = 0;
+  }
+});
+
+function showPerfil(perfList, perfSlt, perfilC) {
+  perfList.classList.remove('no-visible');
+  varSelectPerfil = 1;
+  perfArray = document.querySelectorAll(".".concat(perfilC));
+  console.log(perfArray);
+  perfArray.forEach(function (element) {
+    element.addEventListener('click', function () {
+      return selectPerfilFunction(element.innerHTML, perfList, perfSlt);
+    });
+  });
+}
+
+function selectPerfilFunction(perfil, perfList, perfSlt) {
+  varSelectPerfil = 0;
+  perfList.classList.add('no-visible');
+  perfSlt.innerHTML = "".concat(perfil, "<i class=\"fas fa-caret-down\"></i>");
 }

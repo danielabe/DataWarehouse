@@ -1023,6 +1023,14 @@ progress::-moz-progress-bar {
   width: 60%;
 }
 
+.no-visible {
+  visibility: hidden;
+}
+
+.us-height {
+  height: 81px;
+}
+
 .none {
   display: none;
 }

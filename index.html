@@ -573,13 +573,16 @@
                         <input id="userEmail" class="field ncnt-input" type="text">
                         <p id="msgUserEmail" class="msg-container">Error en datos ingresados</p>
                     </label>
-                    <div id="userPerfil" class="form-lbl us-lbl comp-lbl">
+                    <div id="userPerfil" class="form-lbl us-lbl comp-lbl us-height">
                         <p>Perfil<span class="red-asterisk">*</span></p>
                         <div id="perfilSlt" class="field ncnt-input select-company">
                             Seleccionar perfil<i class="fas fa-caret-down"></i>
                         </div>
                         <!-- <p id="msgLast" class="msg-container">Este campo es obligatorio</p> -->
-                        <ul id="perfilList" class="company-list none"></ul>
+                        <ul id="perfilList" class="company-list no-visible">
+                            <li class="sug-comp perfil">Básico</li>
+                            <li class="sug-comp perfil">Admin</li>
+                        </ul>
                         <p id="msgUserPass" class="msg-container">Este campo es obligatorio</p>
                     </div>
                     <label class="form-lbl us-lbl" for="userPass">

@@ -1,6 +1,16 @@
 const headUs = document.getElementById('headUs')
 const usersList = document.getElementById('usersList')
 const newUserBtn = document.getElementById('newUserBtn')
+const darkImageNewUser = document.getElementById('darkImageNewUser')
+const closeNewUser = document.getElementById('closeNewUser')
+const cancelUser = document.getElementById('cancelUser')
+const userName = document.getElementById('userName')
+const userLastname = document.getElementById('userLastname')
+const userEmail = document.getElementById('userEmail')
+const userPass = document.getElementById('userPass')
+const userPassRep = document.getElementById('userPassRep')
+const perfilSlt = document.getElementById('perfilSlt')
+const perfilList = document.getElementById('perfilList')
 
 async function getUsers() {
     usersList.innerHTML = ''
@@ -102,16 +112,6 @@ async function editUser(info, usersList) {  //esta funcion la voy a hacer luego,
 }
 
 //add user
-const darkImageNewUser = document.getElementById('darkImageNewUser')
-const closeNewUser = document.getElementById('closeNewUser')
-const cancelUser = document.getElementById('cancelUser')
-const userName = document.getElementById('userName')
-const userLastname = document.getElementById('userLastname')
-const userEmail = document.getElementById('userEmail')
-const userPass = document.getElementById('userPass')
-const userPassRep = document.getElementById('userPassRep')
-const perfilSlt = document.getElementById('perfilSlt')
-const perfilList = document.getElementById('perfilList')
 newUserBtn.addEventListener('click', () => {
     window.scrollTo(0, 0)
     /* body.classList.add('modal') */
@@ -133,7 +133,7 @@ function closeWindowNewUser(event) {
     /* msgCompanyName.innerText = 'Este campo es obligatorio' */
     
     /* body.classList.remove('modal') */
-    companyName.classList.remove('border-wrong')
+    /* companyName.classList.remove('border-wrong')
     msgCompanyName.classList.remove('visible')
     companyEmail.classList.remove('border-wrong')
     msgCompanyEmail.classList.remove('visible')
@@ -141,12 +141,44 @@ function closeWindowNewUser(event) {
     msgCompAddress.classList.remove('visible')
     compTelephone.classList.remove('border-wrong')
     msgCompTelephone.classList.remove('visible')
-    companySlt.classList.remove('border-wrong')
+    companySlt.classList.remove('border-wrong') */
     
     darkImageNewUser.classList.add('none')
-    perfilList.classList.add('none')
+    perfilList.classList.add('no-visible')
     /* companyCity.style.top = '0px' */
 
     /* varCompCityId = null
     varSelectCityComp = 0 */
+    varSelectPerfil = 0
+}
+
+//select perfil
+/* cosnt = document.getElementById('') */
+let varSelectPerfil = 0
+perfilSlt.addEventListener('click', () => {
+    if(varSelectPerfil === 0) {
+        const perfilClass = 'perfil'
+        showPerfil(perfilList, perfilSlt, perfilClass)
+    } else if(varSelectPerfil === 1) {
+        perfilList.classList.add('no-visible')
+        /* userPerfil.style.top = '0px' */
+        /* perfilList.innerHTML = '' */
+        varSelectPerfil = 0
+    }
+})
+
+function showPerfil(perfList, perfSlt, perfilC) {
+    perfList.classList.remove('no-visible')
+    varSelectPerfil = 1
+    perfArray = document.querySelectorAll(`.${perfilC}`)
+    console.log(perfArray)
+    perfArray.forEach(element => {
+        element.addEventListener('click', () => selectPerfilFunction(element.innerHTML, perfList, perfSlt))
+    })
+}
+
+function selectPerfilFunction(perfil, perfList, perfSlt) {
+    varSelectPerfil = 0
+    perfList.classList.add('no-visible')
+    perfSlt.innerHTML = `${perfil}<i class="fas fa-caret-down"></i>`
 }
