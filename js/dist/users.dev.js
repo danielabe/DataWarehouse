@@ -219,12 +219,12 @@ function selectPerfilFunction(perfil, perfList, perfSlt) {
 
 
 saveUser.addEventListener('click', function (event) {
-  return addContact(event);
+  return addUsers(event);
 });
 
-function addContact(event) {
+function addUsers(event) {
   var user, options, response, data;
-  return regeneratorRuntime.async(function addContact$(_context2) {
+  return regeneratorRuntime.async(function addUsers$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
         case 0:

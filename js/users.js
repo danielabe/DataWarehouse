@@ -193,9 +193,9 @@ function selectPerfilFunction(perfil, perfList, perfSlt) {
 }
 
 //save user
-saveUser.addEventListener('click', (event) => addContact(event))
+saveUser.addEventListener('click', (event) => addUsers(event))
 
-async function addContact(event) {
+async function addUsers(event) {
     msgUserEmail.innerText = 'Error en datos ingresados'
     event.preventDefault()
     const user = {
@@ -220,7 +220,6 @@ async function addContact(event) {
     }
     try {
         const response = await fetch('http://localhost:3000/users/register', options)
-        
         if(response.status === 409) {
             userEmail.classList.add('border-wrong')
             msgUserEmail.classList.add('visible')

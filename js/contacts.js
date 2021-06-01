@@ -324,6 +324,7 @@ async function deleteContact(info/* , contactsList */) {
         checkAfterSortAndSearch() //no se si funciona el data, con o sin data va igual, no se si es correcto
         darkImageEditCtc.style.visibility = 'visible'
         main.classList.remove('height-add-ctc')
+        getContacts()
     } catch(reason) {
         return reason
     }
@@ -351,6 +352,7 @@ function deleteContacts() {
         /* getContacts() */
     })
     checkAfterSortAndSearch() //no se si funciona el data, con o sin data va igual, no se si es correcto
+    getContacts()
 }
 
 //sort columns
@@ -1387,6 +1389,7 @@ async function addContact(event) {
         return reason
     }
     closeWindowNewContact(event)
+    getContacts()
 }
 
 function validateData(contact, first, msgFirst, last, msgLast, pos, msgPos, email, msgEmail, comp, 
@@ -1625,6 +1628,8 @@ function closeWindowEditContact(event) {
     varRegId = null
     varCountId = null
     varCityId = null
+
+    getContacts()
 }
 
 //select company
@@ -1857,10 +1862,9 @@ deleteContactBtn.addEventListener('click', () => {
 //queries.js else res.status(409).send("The city already exists").end() ahora es 409
 //corregir postman (creo que solo los put)
 
-//ordenar no funciona 
+//actualizar al crud de regiones
+//cuando ordeno no tiene hover
 //borrar ubicaciones?
 //borrar en cascada
-//no refresca al eliminar, crear contacto, provocaba error al ordenar
-//si tengo ganas cambiar los id de los canalaes en el html
 //edita sin direccion --> arreglada en el back pero queda igual a la otra funcion sin put
-//cuando ordeno no tiene hover
+//si tengo ganas cambiar los id de los canalaes en el html

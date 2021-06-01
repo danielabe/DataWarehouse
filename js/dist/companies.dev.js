@@ -252,8 +252,9 @@ function addCompany(event) {
 
         case 19:
           closeWindowNewCompany(event);
+          showCompanies();
 
-        case 20:
+        case 21:
         case "end":
           return _context3.stop();
       }

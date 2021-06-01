@@ -369,20 +369,21 @@ function deleteContact(info
 
           darkImageEditCtc.style.visibility = 'visible';
           main.classList.remove('height-add-ctc');
-          _context3.next = 18;
+          getContacts();
+          _context3.next = 19;
           break;
 
-        case 15:
-          _context3.prev = 15;
+        case 16:
+          _context3.prev = 16;
           _context3.t0 = _context3["catch"](1);
           return _context3.abrupt("return", _context3.t0);
 
-        case 18:
+        case 19:
         case "end":
           return _context3.stop();
       }
     }
-  }, null, null, [[1, 15]]);
+  }, null, null, [[1, 16]]);
 }
 
 dltCtcBtn.addEventListener('click', function () {
@@ -426,6 +427,8 @@ function deleteContacts() {
     });
   });
   checkAfterSortAndSearch(); //no se si funciona el data, con o sin data va igual, no se si es correcto
+
+  getContacts();
 } //sort columns
 
 
@@ -1690,8 +1693,9 @@ function addContact(event) {
 
         case 22:
           closeWindowNewContact(event);
+          getContacts();
 
-        case 23:
+        case 24:
         case "end":
           return _context11.stop();
       }
@@ -1968,6 +1972,7 @@ function closeWindowEditContact(event) {
   varRegId = null;
   varCountId = null;
   varCityId = null;
+  getContacts();
 } //select company
 
 
@@ -2223,10 +2228,9 @@ deleteContactBtn.addEventListener('click', function () {
 //queries.js else res.status(409).send("The city already exists").end() ahora es 409
 //queries.js else res.status(409).send("The city already exists").end() ahora es 409
 //corregir postman (creo que solo los put)
-//ordenar no funciona 
+//actualizar al crud de regiones
+//cuando ordeno no tiene hover
 //borrar ubicaciones?
 //borrar en cascada
-//no refresca al eliminar, crear contacto, provocaba error al ordenar
-//si tengo ganas cambiar los id de los canalaes en el html
 //edita sin direccion --> arreglada en el back pero queda igual a la otra funcion sin put
-//cuando ordeno no tiene hover
+//si tengo ganas cambiar los id de los canalaes en el html

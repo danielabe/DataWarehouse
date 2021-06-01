@@ -197,6 +197,7 @@ async function addCompany(event) {
         return reason
     }
     closeWindowNewCompany(event)
+    showCompanies() 
 }
 
 function validateCompanyData(company, compName, msgCom, compEmail, msgEmail, comAddress, msgAddress, 
