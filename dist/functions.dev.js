@@ -449,12 +449,13 @@ function validateAddressPut(req, res, next) {
     while (1) {
       switch (_context21.prev = _context21.next) {
         case 0:
-          if (req.body.address) {
-            address = req.body.address;
-            if (address.length >= 1 && address.length <= 64) next();else res.status(400).send("The address is wrong").end();
-          } else next();
+          /* if(req.body.address) { */
+          //asi es igual a la otra sin put
+          address = req.body.address;
+          if (address.length >= 1 && address.length <= 64) next();else res.status(400).send("The address is wrong").end();
+          /* } else next() */
 
-        case 1:
+        case 2:
         case "end":
           return _context21.stop();
       }

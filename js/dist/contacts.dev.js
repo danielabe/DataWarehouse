@@ -105,6 +105,7 @@ var msgAddressEdit = document.getElementById('msgAddressEdit');
 var contIdArray = [];
 var dataCheckbox = [];
 var channelsDB = [];
+var newData = [];
 var cId = {};
 var varSortName = 0;
 var varSortCountry = 0;
@@ -166,58 +167,16 @@ function getContacts() {
 
         case 7:
           data = _context.sent;
+          console.log(data);
           dataCheckbox = data;
+          newData = data;
           renderResults(data);
           /* checkboxAll.addEventListener('click', () => checkboxAllFunction(data)) */
 
-          varSortName = 0;
-          sortName.addEventListener('click', function () {
-            if (varSortName === 0) {
-              sortByName(data);
-            } else if (varSortName === 1) {
-              sortByNameReverse(data);
-            }
+          /* varSortName = 0  */
+          // no se para que esta este
 
-            checkAfterSortAndSearch(data);
-          });
-          sortCountry.addEventListener('click', function () {
-            if (varSortCountry === 0) {
-              sortByCountry(data);
-            } else if (varSortCountry === 1) {
-              sortByCountryReverse(data);
-            }
-
-            checkAfterSortAndSearch(data);
-          });
-          sortCompany.addEventListener('click', function () {
-            if (varSortCompany === 0) {
-              sortByCompany(data);
-            } else if (varSortCompany === 1) {
-              sortByCompanyReverse(data);
-            }
-
-            checkAfterSortAndSearch(data);
-          });
-          sortPosition.addEventListener('click', function () {
-            if (varSortPosition === 0) {
-              sortByPosition(data);
-            } else if (varSortPosition === 1) {
-              sortByPositionReverse(data);
-            }
-
-            checkAfterSortAndSearch(data);
-          });
-          sortInterest.addEventListener('click', function () {
-            if (varSortInterest === 0) {
-              sortByInterest(data);
-            } else if (varSortInterest === 1) {
-              sortByInterestReverse(data);
-            }
-
-            checkAfterSortAndSearch(data);
-          });
-
-        case 16:
+        case 12:
         case "end":
           return _context.stop();
       }
@@ -394,35 +353,36 @@ function deleteContact(info
             }
           };
           _context3.prev = 1;
-          _context3.next = 4;
+          console.log(info.contactId);
+          _context3.next = 5;
           return regeneratorRuntime.awrap(fetch("http://localhost:3000/contacts/".concat(info.contactId), options));
 
-        case 4:
+        case 5:
           response = _context3.sent;
-          _context3.next = 7;
+          _context3.next = 8;
           return regeneratorRuntime.awrap(response.json());
 
-        case 7:
+        case 8:
           data = _context3.sent;
           console.log(data);
           checkAfterSortAndSearch(); //no se si funciona el data, con o sin data va igual, no se si es correcto
 
           darkImageEditCtc.style.visibility = 'visible';
           main.classList.remove('height-add-ctc');
-          _context3.next = 17;
+          _context3.next = 18;
           break;
 
-        case 14:
-          _context3.prev = 14;
+        case 15:
+          _context3.prev = 15;
           _context3.t0 = _context3["catch"](1);
           return _context3.abrupt("return", _context3.t0);
 
-        case 17:
+        case 18:
         case "end":
           return _context3.stop();
       }
     }
-  }, null, null, [[1, 14]]);
+  }, null, null, [[1, 15]]);
 }
 
 dltCtcBtn.addEventListener('click', function () {
@@ -468,6 +428,82 @@ function deleteContacts() {
   checkAfterSortAndSearch(); //no se si funciona el data, con o sin data va igual, no se si es correcto
 } //sort columns
 
+
+sortName.addEventListener('click', function () {
+  console.log(varSortName);
+
+  if (varSortName === 0) {
+    sortByName(newData);
+  } else if (varSortName === 1) {
+    sortByNameReverse(newData);
+  }
+
+  checkAfterSortAndSearch(newData);
+  varSortCountry = 0;
+  varSortCompany = 0;
+  varSortPosition = 0;
+  varSortInterest = 0;
+});
+sortCountry.addEventListener('click', function () {
+  console.log(varSortCountry);
+
+  if (varSortCountry === 0) {
+    sortByCountry(newData);
+  } else if (varSortCountry === 1) {
+    sortByCountryReverse(newData);
+  }
+
+  checkAfterSortAndSearch(newData);
+  varSortName = 0;
+  varSortCompany = 0;
+  varSortPosition = 0;
+  varSortInterest = 0;
+});
+sortCompany.addEventListener('click', function () {
+  console.log(varSortCompany);
+
+  if (varSortCompany === 0) {
+    sortByCompany(newData);
+  } else if (varSortCompany === 1) {
+    sortByCompanyReverse(newData);
+  }
+
+  checkAfterSortAndSearch(newData);
+  varSortName = 0;
+  varSortCountry = 0;
+  varSortPosition = 0;
+  varSortInterest = 0;
+});
+sortPosition.addEventListener('click', function () {
+  console.log(varSortPosition);
+
+  if (varSortPosition === 0) {
+    sortByPosition(newData);
+  } else if (varSortPosition === 1) {
+    sortByPositionReverse(newData);
+  }
+
+  checkAfterSortAndSearch(newData);
+  varSortName = 0;
+  varSortCountry = 0;
+  varSortCompany = 0;
+  varSortInterest = 0;
+});
+sortInterest.addEventListener('click', function () {
+  console.log(varSortInterest);
+
+  if (varSortInterest === 0) {
+    sortByInterest(newData);
+  } else if (varSortInterest === 1) {
+    sortByInterestReverse(newData);
+  }
+
+  checkAfterSortAndSearch(newData);
+  varSortName = 0;
+  varSortCountry = 0;
+  varSortCompany = 0;
+  varSortPosition = 0;
+});
 
 function sortByName(data) {
   /* console.log(data) */
@@ -2117,6 +2153,7 @@ function editContact(event) {
             interest: +interestSelectEdit.innerText.slice(0, -1),
             preferred_channels: filteredChannels
           };
+          console.log(modifiedContact);
           validateData(modifiedContact, firstnameEdit, msgFirstEdit, lastnameEdit, msgLastEdit, positionEdit, msgPosEdit, emailEdit, msgEmailEdit, companyEdit, selectCompanyEdit, regionSelectEdit, regionsListEdit, countrySelectEdit, countriesListEdit, citySelectEdit, citiesListEdit, addressEdit, msgAddressEdit);
           options = {
             method: 'PUT',
@@ -2126,10 +2163,10 @@ function editContact(event) {
               "Content-Type": "application/json"
             }
           };
-          _context13.next = 9;
+          _context13.next = 10;
           return regeneratorRuntime.awrap(fetch("http://localhost:3000/contacts/".concat(varEditContact), options));
 
-        case 9:
+        case 10:
           response = _context13.sent;
 
           if (response.status === 409) {
@@ -2138,15 +2175,15 @@ function editContact(event) {
             msgEmailEdit.innerText = 'El email ya existe';
           }
 
-          _context13.next = 13;
+          _context13.next = 14;
           return regeneratorRuntime.awrap(response.json());
 
-        case 13:
+        case 14:
           data = _context13.sent;
           console.log(data);
           closeWindowEditContact(event);
 
-        case 16:
+        case 17:
         case "end":
           return _context13.stop();
       }
@@ -2185,8 +2222,11 @@ deleteContactBtn.addEventListener('click', function () {
 //queries.js else res.status(409).send("The country already exists").end() ahora es 409
 //queries.js else res.status(409).send("The city already exists").end() ahora es 409
 //queries.js else res.status(409).send("The city already exists").end() ahora es 409
+//corregir postman (creo que solo los put)
 //ordenar no funciona 
 //borrar ubicaciones?
+//borrar en cascada
 //no refresca al eliminar, crear contacto, provocaba error al ordenar
-//corregir postman (creo que solo los put)
 //si tengo ganas cambiar los id de los canalaes en el html
+//edita sin direccion --> arreglada en el back pero queda igual a la otra funcion sin put
+//cuando ordeno no tiene hover

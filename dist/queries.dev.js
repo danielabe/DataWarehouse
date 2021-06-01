@@ -1967,9 +1967,9 @@ function validateChannelIdPutQuery(req, res, next) {
   });
 }
 
-function modifycontact(req, res) {
+function modifyContact(req, res) {
   var contact, modifiedContact, modified, deleteChannels, contactRes, channels, contactAndChannels;
-  return regeneratorRuntime.async(function modifycontact$(_context64) {
+  return regeneratorRuntime.async(function modifyContact$(_context64) {
     while (1) {
       switch (_context64.prev = _context64.next) {
         case 0:
@@ -1990,24 +1990,27 @@ function modifycontact(req, res) {
             address: req.body.address || contact[0].address,
             company_id: req.body.company_id || contact[0].company_id,
             position: req.body.position || contact[0].position,
-            interest: req.body.interest || contact[0].interest
+            interest: +req.body.interest
+            /* || contact[0].interest */
+
             /* preferred_channels: req.body.preferred_channels || chan[0].preferred_channels */
 
           };
-          _context64.next = 6;
+          console.log(req.body.interest, contact[0].interest, modifiedContact);
+          _context64.next = 7;
           return regeneratorRuntime.awrap(db.query("\n    UPDATE contacts SET firstname = :firstname, lastname = :lastname, email = :email, city_id = :city_id, \n    address = :address, company_id = :company_id, position = :position, interest = :interest\n    WHERE contact_id = :contact_id\n    ", {
             replacements: modifiedContact,
             type: QueryTypes.UPDATE
           }));
 
-        case 6:
+        case 7:
           modified = _context64.sent;
-          _context64.next = 9;
+          _context64.next = 10;
           return regeneratorRuntime.awrap(db.query("\n    DELETE FROM contacts_channels WHERE contact_id = ".concat(req.params.contactId, "\n    "), {
             type: QueryTypes.DELETE
           }));
 
-        case 9:
+        case 10:
           deleteChannels = _context64.sent;
           req.body.preferred_channels.forEach(function _callee2(chan) {
             return regeneratorRuntime.async(function _callee2$(_context63) {
@@ -2027,28 +2030,28 @@ function modifycontact(req, res) {
               }
             });
           });
-          _context64.next = 13;
+          _context64.next = 14;
           return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, cont.email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.company_id, cont.address, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    WHERE contact_id = ?\n    ", {
             replacements: [req.params.contactId],
             type: QueryTypes.SELECT
           }));
 
-        case 13:
+        case 14:
           contactRes = _context64.sent;
-          _context64.next = 16;
+          _context64.next = 17;
           return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM contacts_channels cc \n    INNER JOIN channels ch ON cc.channel_id = ch.channel_id\n    WHERE contact_id = ?", {
             replacements: [req.params.contactId],
             type: QueryTypes.SELECT
           }));
 
-        case 16:
+        case 17:
           channels = _context64.sent;
           contactAndChannels = Object.assign({}, contactRes[0], {
             preferred_channels: channels
           });
           res.status(201).json(Object.assign(contactAndChannels));
 
-        case 19:
+        case 20:
         case "end":
           return _context64.stop();
       }
@@ -2246,7 +2249,7 @@ function getResults(req, res) {
         case 0:
           searchValue = req.body.search_value;
           _context70.next = 3;
-          return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, cont.email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.address, cont.company_id, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    WHERE firstname LIKE '%".concat(searchValue, "%' OR lastname LIKE '%").concat(searchValue, "%' OR email LIKE '%").concat(searchValue, "%'\n    OR ci.city_name LIKE '").concat(searchValue, "%' OR co.country_name LIKE '").concat(searchValue, "%' OR re.region_name LIKE '").concat(searchValue, "%'\n    OR cont.address LIKE '").concat(searchValue, "%' OR comp.company_name LIKE '").concat(searchValue, "%' OR position LIKE '%").concat(searchValue, "%'\n    OR interest LIKE '").concat(searchValue, "%'\n    "), {
+          return regeneratorRuntime.awrap(db.query("\n    SELECT contact_id, firstname, lastname, cont.email, cont.city_id, ci.city_name, ci.country_id,\n    co.country_name, co.region_id, re.region_name, cont.address, cont.company_id, comp.company_name,\n    position, interest\n    FROM contacts cont \n    JOIN cities ci ON ci.city_id = cont.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    JOIN companies comp ON comp.company_id = cont.company_id\n    WHERE firstname LIKE '%".concat(searchValue, "%' OR lastname LIKE '%").concat(searchValue, "%' OR cont.email LIKE '%").concat(searchValue, "%'\n    OR ci.city_name LIKE '").concat(searchValue, "%' OR co.country_name LIKE '").concat(searchValue, "%' OR re.region_name LIKE '").concat(searchValue, "%'\n    OR cont.address LIKE '").concat(searchValue, "%' OR comp.company_name LIKE '").concat(searchValue, "%' OR position LIKE '%").concat(searchValue, "%'\n    OR interest LIKE '").concat(searchValue, "%'\n    "), {
             replacements: [searchValue],
             type: QueryTypes.SELECT
           }));
@@ -2590,7 +2593,7 @@ module.exports = {
   validateEmailContactsPutQuery: validateEmailContactsPutQuery,
   validateCompanyIdPutQuery: validateCompanyIdPutQuery,
   validateChannelIdPutQuery: validateChannelIdPutQuery,
-  modifycontact: modifycontact,
+  modifyContact: modifyContact,
   deleteContact: deleteContact,
   validateChannelIdAddQuery: validateChannelIdAddQuery,
   addChannel: addChannel,

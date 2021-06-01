@@ -47,7 +47,7 @@ var _require = require('./queries.js'),
     getContactInserted = _require.getContactInserted,
     getChannelsInserted = _require.getChannelsInserted,
     getContact = _require.getContact,
-    modifycontact = _require.modifycontact,
+    modifyContact = _require.modifyContact,
     deleteContact = _require.deleteContact,
     addChannel = _require.addChannel,
     deleteChannelContact = _require.deleteChannelContact,
@@ -702,7 +702,7 @@ app.put('/contacts/:contactId', validateContactId, validateFirstnamePut, validat
     while (1) {
       switch (_context34.prev = _context34.next) {
         case 0:
-          modifycontact(req, res);
+          modifyContact(req, res);
 
         case 1:
         case "end":

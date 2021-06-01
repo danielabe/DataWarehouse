@@ -9,7 +9,7 @@ const { selectUserLogin, getUsers, createUser, getUser, modifyUser, deleteUser, 
     getCitiesRegion, getRegionsCountriesCities, getCountries, createCountry, getCountry, modifyCountry,
     deleteCountry, getCitiesCountry, getCities, createCity, getCity, modifyCity,
     deleteCity, getCompanies, createCompany, getCompany, modifyCompany, deleteCompany,
-    getContacts, createContact, addChannelsContacts, getContactInserted, getChannelsInserted, getContact, modifycontact, deleteContact, addChannel,
+    getContacts, createContact, addChannelsContacts, getContactInserted, getChannelsInserted, getContact, modifyContact, deleteContact, addChannel,
     deleteChannelContact, getResults, getChannels, createChannel, getChannel, modifyChannel,
     deleteChannel } = require('./queries.js')
 
@@ -251,7 +251,7 @@ app.get('/contacts/:contactId', validateContactId, async (req, res) => {
 app.put('/contacts/:contactId', validateContactId, validateFirstnamePut, validateLastnamePut,
 validateEmailContactsPut, validateCityIdPut, validateAddressPut,validateCompanyIdPut, validatePositionPut, 
 validateInterestPut, validateChannelIdPut, async (req, res) => {
-    modifycontact(req, res)
+    modifyContact(req, res)
 })
 
 app.delete('/contacts/:contactId', validateContactId, async (req, res) => {

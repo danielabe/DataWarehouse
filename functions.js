@@ -190,11 +190,11 @@ async function validateCityIdPut(req, res, next) {
 }
 
 async function validateAddressPut(req, res, next) {
-    if(req.body.address) {
+    /* if(req.body.address) { */ //asi es igual a la otra sin put
         const address = req.body.address
         if(address.length >= 1 && address.length <= 64) next()
         else res.status(400).send("The address is wrong").end()
-    } else next()
+    /* } else next() */
 }
 
 //contacts

@@ -104,6 +104,7 @@ const msgAddressEdit = document.getElementById('msgAddressEdit')
 let contIdArray = []
 let dataCheckbox = []
 let channelsDB = []
+let newData = []
 let cId = {}
 
 let varSortName = 0
@@ -154,50 +155,12 @@ async function getContacts() {
     }
     const response = await fetch('http://localhost:3000/contacts', options)
     const data = await response.json()
+    console.log(data)
     dataCheckbox = data
+    newData = data
     renderResults(data)
     /* checkboxAll.addEventListener('click', () => checkboxAllFunction(data)) */
-    varSortName = 0
-    sortName.addEventListener('click', () => {
-        if(varSortName === 0) {
-            sortByName(data)
-        } else if(varSortName === 1) {
-            sortByNameReverse(data)
-        }
-        checkAfterSortAndSearch(data) 
-    })
-    sortCountry.addEventListener('click', () => {
-        if(varSortCountry === 0) {
-            sortByCountry(data)
-        } else if(varSortCountry === 1) {
-            sortByCountryReverse(data)
-        }
-        checkAfterSortAndSearch(data)
-    })
-    sortCompany.addEventListener('click', () => {
-        if(varSortCompany === 0) {
-            sortByCompany(data)
-        } else if(varSortCompany === 1) {
-            sortByCompanyReverse(data)
-        }
-        checkAfterSortAndSearch(data)
-    })
-    sortPosition.addEventListener('click', () => {
-        if(varSortPosition === 0) {
-            sortByPosition(data)
-        } else if(varSortPosition === 1) {
-            sortByPositionReverse(data)
-        }
-        checkAfterSortAndSearch(data)
-    })
-    sortInterest.addEventListener('click', () => {
-        if(varSortInterest === 0) {
-            sortByInterest(data)
-        } else if(varSortInterest === 1) {
-            sortByInterestReverse(data)
-        }
-        checkAfterSortAndSearch(data)
-    })
+    /* varSortName = 0  */// no se para que esta este
 }
 
 function checkAfterSortAndSearch(data) {
@@ -354,6 +317,7 @@ async function deleteContact(info/* , contactsList */) {
         }
     }
     try {
+        console.log(info.contactId)
         const response = await fetch(`http://localhost:3000/contacts/${info.contactId}`, options)
         const data = await response.json()
         console.log(data)
@@ -390,6 +354,76 @@ function deleteContacts() {
 }
 
 //sort columns
+sortName.addEventListener('click', () => {
+    console.log(varSortName)
+    if(varSortName === 0) {
+        sortByName(newData)
+    } else if(varSortName === 1) {
+        sortByNameReverse(newData)
+    }
+    checkAfterSortAndSearch(newData) 
+    varSortCountry = 0
+    varSortCompany = 0
+    varSortPosition = 0
+    varSortInterest = 0
+})
+
+sortCountry.addEventListener('click', () => {
+    console.log(varSortCountry)
+    if(varSortCountry === 0) {
+        sortByCountry(newData)
+    } else if(varSortCountry === 1) {
+        sortByCountryReverse(newData)
+    }
+    checkAfterSortAndSearch(newData)
+    varSortName = 0
+    varSortCompany = 0
+    varSortPosition = 0
+    varSortInterest = 0
+})
+
+sortCompany.addEventListener('click', () => {
+    console.log(varSortCompany)
+    if(varSortCompany === 0) {
+        sortByCompany(newData)
+    } else if(varSortCompany === 1) {
+        sortByCompanyReverse(newData)
+    }
+    checkAfterSortAndSearch(newData)
+    varSortName = 0
+    varSortCountry = 0
+    varSortPosition = 0
+    varSortInterest = 0
+})
+
+sortPosition.addEventListener('click', () => {
+    console.log(varSortPosition)
+    if(varSortPosition === 0) {
+        sortByPosition(newData)
+    } else if(varSortPosition === 1) {
+        sortByPositionReverse(newData)
+    }
+    checkAfterSortAndSearch(newData)
+    varSortName = 0
+    varSortCountry = 0
+    varSortCompany = 0
+    varSortInterest = 0
+})
+
+sortInterest.addEventListener('click', () => {
+    console.log(varSortInterest)
+    if(varSortInterest === 0) {
+        sortByInterest(newData)
+    } else if(varSortInterest === 1) {
+        sortByInterestReverse(newData)
+    }
+    checkAfterSortAndSearch(newData)
+    varSortName = 0
+    varSortCountry = 0
+    varSortCompany = 0
+    varSortPosition = 0
+})
+
 function sortByName(data) {
     /* console.log(data) */
     const sortedNames = data.sort(function (a, b) {
@@ -1760,7 +1794,7 @@ async function editContact(event) {
         interest: +interestSelectEdit.innerText.slice(0, -1),
         preferred_channels: filteredChannels
     }
-
+    console.log(modifiedContact)
     validateData(modifiedContact, firstnameEdit, msgFirstEdit, lastnameEdit, msgLastEdit, positionEdit, 
         msgPosEdit, emailEdit, msgEmailEdit, companyEdit, selectCompanyEdit, regionSelectEdit, regionsListEdit,
         countrySelectEdit, countriesListEdit, citySelectEdit, citiesListEdit, addressEdit, msgAddressEdit)
@@ -1821,8 +1855,12 @@ deleteContactBtn.addEventListener('click', () => {
 //queries.js else res.status(409).send("The country already exists").end() ahora es 409
 //queries.js else res.status(409).send("The city already exists").end() ahora es 409
 //queries.js else res.status(409).send("The city already exists").end() ahora es 409
+//corregir postman (creo que solo los put)
+
 //ordenar no funciona 
 //borrar ubicaciones?
+//borrar en cascada
 //no refresca al eliminar, crear contacto, provocaba error al ordenar
-//corregir postman (creo que solo los put)
 //si tengo ganas cambiar los id de los canalaes en el html
+//edita sin direccion --> arreglada en el back pero queda igual a la otra funcion sin put
+//cuando ordeno no tiene hover

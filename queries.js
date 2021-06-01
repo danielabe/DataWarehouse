@@ -815,7 +815,7 @@ async function validateChannelIdPutQuery(req, res, next) {
     } else next()
 }
 
-async function modifycontact(req, res) {
+async function modifyContact(req, res) {
     const contact = await db.query(`SELECT * FROM contacts WHERE contact_id = ?`, {
         replacements: [req.params.contactId],
         type: QueryTypes.SELECT
@@ -830,9 +830,10 @@ async function modifycontact(req, res) {
         address: req.body.address || contact[0].address,
         company_id: req.body.company_id || contact[0].company_id,
         position: req.body.position || contact[0].position,
-        interest: req.body.interest || contact[0].interest,
+        interest: +req.body.interest /* || contact[0].interest */,
         /* preferred_channels: req.body.preferred_channels || chan[0].preferred_channels */
     }
+    console.log(req.body.interest, contact[0].interest, modifiedContact)
     const modified = await db.query(`
     UPDATE contacts SET firstname = :firstname, lastname = :lastname, email = :email, city_id = :city_id, 
     address = :address, company_id = :company_id, position = :position, interest = :interest
@@ -980,7 +981,7 @@ async function getResults(req, res) {
     JOIN countries co ON co.country_id = ci.country_id
     JOIN regions re ON re.region_id = co.region_id
     JOIN companies comp ON comp.company_id = cont.company_id
-    WHERE firstname LIKE '%${searchValue}%' OR lastname LIKE '%${searchValue}%' OR email LIKE '%${searchValue}%'
+    WHERE firstname LIKE '%${searchValue}%' OR lastname LIKE '%${searchValue}%' OR cont.email LIKE '%${searchValue}%'
     OR ci.city_name LIKE '${searchValue}%' OR co.country_name LIKE '${searchValue}%' OR re.region_name LIKE '${searchValue}%'
     OR cont.address LIKE '${searchValue}%' OR comp.company_name LIKE '${searchValue}%' OR position LIKE '%${searchValue}%'
     OR interest LIKE '${searchValue}%'
@@ -1108,6 +1109,6 @@ module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser,
     validateCityIdPutQuery, deleteCompany, getContacts, validateEmailContactsQuery, 
     validateChannelIdQuery, createContact, addChannelsContacts, getContactInserted, getChannelsInserted, validateContactIdQuery, getContact, 
     validateEmailContactsPutQuery, validateCompanyIdPutQuery, validateChannelIdPutQuery, 
-    modifycontact, deleteContact, validateChannelIdAddQuery, addChannel, deleteChannelContact, 
+    modifyContact, deleteContact, validateChannelIdAddQuery, addChannel, deleteChannelContact, 
     validateChannelIdDelQuery, getResults, getChannels, validateChannelNameQuery, createChannel, 
     validateChannelIdExQuery, getChannel, validateChannelNamePutQuery, modifyChannel, deleteChannel }
