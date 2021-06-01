@@ -363,7 +363,7 @@ function modalDeleteUser() {
 deleteUserBtn.addEventListener('click', (event) => {
     body.classList.remove('modal')
     darkImageUsers.classList.add('none')
-    /* darkImageEditCtc.classList.add('none') */
+    darkImageEditUser.classList.add('none')
     deleteUser(uId, event)
 })
 
@@ -498,3 +498,16 @@ async function editUser(event) {
     closeWindowEditUser(event)
     getUsers() 
 }
+
+//delete user (edition)
+const deleteUserEdit = document.getElementById('deleteUserEdit')
+
+deleteUserEdit.addEventListener('click', (event) => {
+    event.preventDefault()
+    uId = {
+        userId: varUserId
+    }
+    darkImageEditUser.style.visibility = 'hidden'
+    modalDeleteUser()
+})
+

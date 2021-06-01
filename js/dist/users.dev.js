@@ -420,8 +420,7 @@ function modalDeleteUser() {
 deleteUserBtn.addEventListener('click', function (event) {
   body.classList.remove('modal');
   darkImageUsers.classList.add('none');
-  /* darkImageEditCtc.classList.add('none') */
-
+  darkImageEditUser.classList.add('none');
   deleteUser(uId, event);
 });
 
@@ -622,4 +621,15 @@ function editUser(event) {
       }
     }
   });
-}
+} //delete user (edition)
+
+
+var deleteUserEdit = document.getElementById('deleteUserEdit');
+deleteUserEdit.addEventListener('click', function (event) {
+  event.preventDefault();
+  uId = {
+    userId: varUserId
+  };
+  darkImageEditUser.style.visibility = 'hidden';
+  modalDeleteUser();
+});
