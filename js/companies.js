@@ -503,7 +503,7 @@ deleteEditCompany.addEventListener('click', (event) => {
     modalDeleteCompany(varCompId)
 })
 
-deleteContactBtn.addEventListener('click', () => {
+deleteCompBtn.addEventListener('click', () => {
     body.classList.remove('modal')
     darkImageContacts.classList.add('none')
     darkImageEditCtc.classList.add('none')

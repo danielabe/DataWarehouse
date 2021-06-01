@@ -19,7 +19,11 @@ var msgUserName = document.getElementById('msgUserName');
 var msgUserLastname = document.getElementById('msgUserLastname');
 var msgUserPass = document.getElementById('msgUserPass');
 var msgUserPassRep = document.getElementById('msgUserPassRep');
+var darkImageUsers = document.getElementById('darkImageUsers');
+var cancelDltUserBtn = document.getElementById('cancelDltUserBtn');
+var deleteUserBtn = document.getElementById('deleteUserBtn');
 var varSelectPerfil = 0;
+var uId = {};
 
 function getUsers() {
   var options, response, data;
@@ -89,10 +93,15 @@ function getUsers() {
               return outRow(ellipsis, trash, pen);
             });
             trash.addEventListener('click', function () {
-              return deleteUser(info, usersList);
+              uId = {
+                userId: element.user_id
+              };
+              modalDeleteUser();
             });
             pen.addEventListener('click', function () {
-              return editUser(info, usersList);
+              return editUser(info
+              /* , usersList */
+              );
             });
           });
 
@@ -116,14 +125,17 @@ function outRow(ellipsis, trash, pen) {
   pen.classList.add('none');
 }
 
-function deleteUser(info, usersList) {
+function editUser(info, usersList) {
   var options, response, data;
-  return regeneratorRuntime.async(function deleteUser$(_context2) {
+  return regeneratorRuntime.async(function editUser$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
         case 0:
+          //esta funcion la voy a hacer luego, para ver
           options = {
-            method: 'DELETE',
+            //primero como se hace en contactos, hacer
+            method: 'PUT',
+            //diseño correspondiente y generar json para el body
             headers: {
               Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
             }
@@ -144,42 +156,6 @@ function deleteUser(info, usersList) {
         case 9:
         case "end":
           return _context2.stop();
-      }
-    }
-  });
-}
-
-function editUser(info, usersList) {
-  var options, response, data;
-  return regeneratorRuntime.async(function editUser$(_context3) {
-    while (1) {
-      switch (_context3.prev = _context3.next) {
-        case 0:
-          //esta funcion la voy a hacer luego, para ver
-          options = {
-            //primero como se hace en contactos, hacer
-            method: 'PUT',
-            //diseño correspondiente y generar json para el body
-            headers: {
-              Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
-            }
-          };
-          _context3.next = 3;
-          return regeneratorRuntime.awrap(fetch("http://localhost:3000/users/".concat(info.userId), options));
-
-        case 3:
-          response = _context3.sent;
-          _context3.next = 6;
-          return regeneratorRuntime.awrap(response.json());
-
-        case 6:
-          data = _context3.sent;
-          console.log(data);
-          getUsers();
-
-        case 9:
-        case "end":
-          return _context3.stop();
       }
     }
   });
@@ -268,9 +244,9 @@ saveUser.addEventListener('click', function (event) {
 
 function addContact(event) {
   var user, options, response, data;
-  return regeneratorRuntime.async(function addContact$(_context4) {
+  return regeneratorRuntime.async(function addContact$(_context3) {
     while (1) {
-      switch (_context4.prev = _context4.next) {
+      switch (_context3.prev = _context3.next) {
         case 0:
           msgUserEmail.innerText = 'Error en datos ingresados';
           event.preventDefault();
@@ -291,12 +267,12 @@ function addContact(event) {
               Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
             }
           };
-          _context4.prev = 5;
-          _context4.next = 8;
+          _context3.prev = 5;
+          _context3.next = 8;
           return regeneratorRuntime.awrap(fetch('http://localhost:3000/users/register', options));
 
         case 8:
-          response = _context4.sent;
+          response = _context3.sent;
 
           if (response.status === 409) {
             userEmail.classList.add('border-wrong');
@@ -304,19 +280,19 @@ function addContact(event) {
             msgUserEmail.innerText = 'El email ya existe';
           }
 
-          _context4.next = 12;
+          _context3.next = 12;
           return regeneratorRuntime.awrap(response.json());
 
         case 12:
-          data = _context4.sent;
+          data = _context3.sent;
           console.log(data);
-          _context4.next = 19;
+          _context3.next = 19;
           break;
 
         case 16:
-          _context4.prev = 16;
-          _context4.t0 = _context4["catch"](5);
-          return _context4.abrupt("return", _context4.t0);
+          _context3.prev = 16;
+          _context3.t0 = _context3["catch"](5);
+          return _context3.abrupt("return", _context3.t0);
 
         case 19:
           closeWindowNewUser(event);
@@ -324,7 +300,7 @@ function addContact(event) {
 
         case 21:
         case "end":
-          return _context4.stop();
+          return _context3.stop();
       }
     }
   }, null, null, [[5, 16]]);
@@ -397,4 +373,69 @@ function validateUserData(user, usName, msgUsName, usLastname, msgUsLastname, us
       }
     });
   }
+} //delete user
+
+
+function modalDeleteUser() {
+  console.log(uId);
+  window.scrollTo(0, 0);
+  body.classList.add('modal');
+  darkImageUsers.classList.remove('none');
+  cancelDltUserBtn.addEventListener('click', function () {
+    body.classList.remove('modal');
+    darkImageUsers.classList.add('none');
+    /* darkImageEditCtc.style.visibility = 'visible' */
+  });
+  /* deleteContactBtn.addEventListener('click', () => {
+      body.classList.remove('modal')
+      darkImageContacts.classList.add('none')
+      //contactsList.innerHTML = ''
+      if(varDelete === 0) {
+          deleteContact(info)
+      } else if (varDelete === 1) {
+          deleteContacts()
+      }
+  }) */
+}
+
+deleteUserBtn.addEventListener('click', function (event) {
+  body.classList.remove('modal');
+  darkImageUsers.classList.add('none');
+  /* darkImageEditCtc.classList.add('none') */
+
+  deleteUser(uId, event);
+});
+
+function deleteUser(info, event) {
+  var options, response, data;
+  return regeneratorRuntime.async(function deleteUser$(_context4) {
+    while (1) {
+      switch (_context4.prev = _context4.next) {
+        case 0:
+          options = {
+            method: 'DELETE',
+            headers: {
+              Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
+            }
+          };
+          _context4.next = 3;
+          return regeneratorRuntime.awrap(fetch("http://localhost:3000/users/".concat(info.userId), options));
+
+        case 3:
+          response = _context4.sent;
+          _context4.next = 6;
+          return regeneratorRuntime.awrap(response.json());
+
+        case 6:
+          data = _context4.sent;
+          console.log(data);
+          closeWindowNewUser(event);
+          getUsers();
+
+        case 10:
+        case "end":
+          return _context4.stop();
+      }
+    }
+  });
 }

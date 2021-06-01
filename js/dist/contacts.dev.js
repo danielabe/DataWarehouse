@@ -266,9 +266,6 @@ function renderResults(data) {
               interest: element.interest,
               varSelectContact: 0
             };
-            cId = {
-              contactId: info.contactId
-            };
             row = document.createElement('li');
             checkbox = document.createElement('i');
             contact = document.createElement('div');
@@ -336,7 +333,12 @@ function renderResults(data) {
               return outRow(ellipsis, trash, pen);
             });
             trash.addEventListener('click', function () {
-              return modalDelete();
+              cId = {
+                contactId: element.contact_id
+              };
+              console.log(element.contact_id);
+              console.log(cId.contactId);
+              modalDelete();
             });
             pen.addEventListener('click', function () {
               return contactEdition(info);
@@ -345,7 +347,7 @@ function renderResults(data) {
               return selectContact(checkbox, info, data, row);
             });
 
-          case 49:
+          case 48:
           case "end":
             return _context2.stop();
         }
@@ -356,6 +358,7 @@ function renderResults(data) {
 
 
 function modalDelete() {
+  console.log(cId);
   window.scrollTo(0, 0);
   body.classList.add('modal');
   darkImageContacts.classList.remove('none');

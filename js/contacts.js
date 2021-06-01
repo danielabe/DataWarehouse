@@ -234,9 +234,7 @@ function renderResults(data) {
             interest: element.interest,
             varSelectContact : 0
         }
-        cId = {
-            contactId: info.contactId
-        }
+        
         
         const row = document.createElement('li')
         const checkbox = document.createElement('i')
@@ -309,7 +307,14 @@ function renderResults(data) {
         row.addEventListener('mouseover', () => hoverRow(ellipsis, trash, pen))
         row.addEventListener('mouseout', () => outRow(ellipsis, trash, pen))
 
-        trash.addEventListener('click', () => modalDelete())
+        trash.addEventListener('click', () => {
+            cId = {
+                contactId: element.contact_id
+            }
+            console.log(element.contact_id)
+            console.log(cId.contactId)
+            modalDelete()
+        })
         pen.addEventListener('click', () => contactEdition(info))
 
         checkbox.addEventListener('click', () => selectContact(checkbox, info, data, row))
@@ -318,6 +323,7 @@ function renderResults(data) {
 
 //delete contact
 function modalDelete() {
+    console.log(cId)
     window.scrollTo(0, 0)
     body.classList.add('modal')
     darkImageContacts.classList.remove('none')

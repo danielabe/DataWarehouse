@@ -656,7 +656,7 @@ deleteEditCompany.addEventListener('click', function (event) {
   darkImageEditComp.style.visibility = 'hidden';
   modalDeleteCompany(varCompId);
 });
-deleteContactBtn.addEventListener('click', function () {
+deleteCompBtn.addEventListener('click', function () {
   body.classList.remove('modal');
   darkImageContacts.classList.add('none');
   darkImageEditCtc.classList.add('none');

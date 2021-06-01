@@ -17,8 +17,13 @@ const msgUserName = document.getElementById('msgUserName')
 const msgUserLastname = document.getElementById('msgUserLastname')
 const msgUserPass = document.getElementById('msgUserPass')
 const msgUserPassRep = document.getElementById('msgUserPassRep')
+const darkImageUsers = document.getElementById('darkImageUsers')
+const cancelDltUserBtn = document.getElementById('cancelDltUserBtn')
+const deleteUserBtn = document.getElementById('deleteUserBtn')
 
 let varSelectPerfil = 0
+
+let uId = {}
 
 async function getUsers() {
     usersList.innerHTML = ''
@@ -41,6 +46,7 @@ async function getUsers() {
             email: element.email,
             perfil: element.perfil
         }
+
         console.log(element)
         const row = document.createElement('li')
         const user = document.createElement('div')
@@ -76,8 +82,13 @@ async function getUsers() {
         row.addEventListener('mouseover', () => hoverRow(ellipsis, trash, pen))
         row.addEventListener('mouseout', () => outRow(ellipsis, trash, pen))
 
-        trash.addEventListener('click', () => deleteUser(info, usersList))
-        pen.addEventListener('click', () => editUser(info, usersList))
+        trash.addEventListener('click', () => {
+            uId = {
+                userId: element.user_id
+            }
+            modalDeleteUser()
+        })
+        pen.addEventListener('click', () => editUser(info/* , usersList */))
     })
 }
 
@@ -91,19 +102,6 @@ function outRow(ellipsis, trash, pen) {
     ellipsis.classList.remove('none')
     trash.classList.add('none')
     pen.classList.add('none')
-}
-
-async function deleteUser(info, usersList) {
-    const options = {
-        method: 'DELETE',
-        headers: {
-            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
-        }
-    }
-    const response = await fetch(`http://localhost:3000/users/${info.userId}`, options)
-    const data = await response.json()
-    console.log(data)
-    getUsers()
 }
 
 async function editUser(info, usersList) {  //esta funcion la voy a hacer luego, para ver
@@ -294,4 +292,50 @@ function validateUserData(user, usName, msgUsName, usLastname, msgUsLastname, us
             }
         })
     }
+}
+
+//delete user
+function modalDeleteUser() {
+    console.log(uId)
+    window.scrollTo(0, 0)
+    body.classList.add('modal')
+    darkImageUsers.classList.remove('none')
+    
+    cancelDltUserBtn.addEventListener('click', () => {
+        body.classList.remove('modal')
+        darkImageUsers.classList.add('none')
+        /* darkImageEditCtc.style.visibility = 'visible' */
+    })
+    
+    /* deleteContactBtn.addEventListener('click', () => {
+        body.classList.remove('modal')
+        darkImageContacts.classList.add('none')
+        //contactsList.innerHTML = ''
+        if(varDelete === 0) {
+            deleteContact(info)
+        } else if (varDelete === 1) {
+            deleteContacts()
+        }
+    }) */
+}
+
+deleteUserBtn.addEventListener('click', (event) => {
+    body.classList.remove('modal')
+    darkImageUsers.classList.add('none')
+    /* darkImageEditCtc.classList.add('none') */
+    deleteUser(uId, event)
+})
+
+async function deleteUser(info, event) {
+    const options = {
+        method: 'DELETE',
+        headers: {
+            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
+        }
+    }
+    const response = await fetch(`http://localhost:3000/users/${info.userId}`, options)
+    const data = await response.json()
+    console.log(data)
+    closeWindowNewUser(event)
+    getUsers()
 }
