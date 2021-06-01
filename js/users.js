@@ -11,6 +11,14 @@ const userPass = document.getElementById('userPass')
 const userPassRep = document.getElementById('userPassRep')
 const perfilSlt = document.getElementById('perfilSlt')
 const perfilList = document.getElementById('perfilList')
+const saveUser = document.getElementById('saveUser')
+const msgUserEmail = document.getElementById('msgUserEmail')
+const msgUserName = document.getElementById('msgUserName')
+const msgUserLastname = document.getElementById('msgUserLastname')
+const msgUserPass = document.getElementById('msgUserPass')
+const msgUserPassRep = document.getElementById('msgUserPassRep')
+
+let varSelectPerfil = 0
 
 async function getUsers() {
     usersList.innerHTML = ''
@@ -130,22 +138,22 @@ function closeWindowNewUser(event) {
     userPass.value = ''
     userPassRep.value = ''
     perfilSlt.innerHTML = 'Seleccionar perfil<i class="fas fa-caret-down"></i>'
-    /* msgCompanyName.innerText = 'Este campo es obligatorio' */
+    msgUserEmail.innerText = 'Error en datos ingresados'
     
-    /* body.classList.remove('modal') */
-    /* companyName.classList.remove('border-wrong')
-    msgCompanyName.classList.remove('visible')
-    companyEmail.classList.remove('border-wrong')
-    msgCompanyEmail.classList.remove('visible')
-    compAddress.classList.remove('border-wrong')
-    msgCompAddress.classList.remove('visible')
-    compTelephone.classList.remove('border-wrong')
-    msgCompTelephone.classList.remove('visible')
-    companySlt.classList.remove('border-wrong') */
+    userName.classList.remove('border-wrong')
+    msgUserName.classList.remove('visible')
+    userLastname.classList.remove('border-wrong')
+    msgUserLastname.classList.remove('visible')
+    userEmail.classList.remove('border-wrong')
+    msgUserEmail.classList.remove('visible')
+    userPass.classList.remove('border-wrong')
+    msgUserPass.style.color = '#333333'
+    userPassRep.classList.remove('border-wrong')
+    msgUserPassRep.classList.remove('visible')
+    perfilSlt.classList.remove('border-wrong')
     
     darkImageNewUser.classList.add('none')
     perfilList.classList.add('no-visible')
-    /* companyCity.style.top = '0px' */
 
     /* varCompCityId = null
     varSelectCityComp = 0 */
@@ -153,8 +161,6 @@ function closeWindowNewUser(event) {
 }
 
 //select perfil
-/* cosnt = document.getElementById('') */
-let varSelectPerfil = 0
 perfilSlt.addEventListener('click', () => {
     if(varSelectPerfil === 0) {
         const perfilClass = 'perfil'
@@ -181,4 +187,111 @@ function selectPerfilFunction(perfil, perfList, perfSlt) {
     varSelectPerfil = 0
     perfList.classList.add('no-visible')
     perfSlt.innerHTML = `${perfil}<i class="fas fa-caret-down"></i>`
+}
+
+//save user
+saveUser.addEventListener('click', (event) => addContact(event))
+
+async function addContact(event) {
+    msgUserEmail.innerText = 'Error en datos ingresados'
+    event.preventDefault()
+    const user = {
+        firstname: userName.value,
+        lastname: userLastname.value,
+        email: userEmail.value,
+        perfil: perfilSlt.innerText,
+        password: userPass.value,
+        repeated_password: userPassRep.value
+    }
+    
+    validateUserData(user, userName, msgUserName, userLastname, msgUserLastname, userEmail, msgUserEmail, 
+        perfilSlt, perfilList, userPass, msgUserPass, userPassRep, msgUserPassRep)
+    const options = {
+        method: 'POST',
+        body: JSON.stringify(user),
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
+        }
+    }
+    try {
+        const response = await fetch('http://localhost:3000/users/register', options)
+        
+        if(response.status === 409) {
+            userEmail.classList.add('border-wrong')
+            msgUserEmail.classList.add('visible')
+            msgUserEmail.innerText = 'El email ya existe'
+        }
+        
+        const data = await response.json()
+        console.log(data)
+    } catch(reason) {
+        return reason
+    }
+    closeWindowNewUser(event)
+    getUsers()
+}
+
+function validateUserData(user, usName, msgUsName, usLastname, msgUsLastname, usEmail, msgUsEmail, 
+    perfilSlt, perfilList, usPass, msgUsPass, usPassRep, msgUsPassRep) {
+    if(usName.value === '') {
+        usName.classList.add('border-wrong')
+        msgUsName.classList.add('visible')
+        usName.addEventListener('keyup', () => {
+            if(usName.value !== '') {
+                usName.classList.remove('border-wrong')
+                msgUsName.classList.remove('visible')
+            }
+        })
+    }
+    if(usLastname.value === '') {
+        usLastname.classList.add('border-wrong')
+        msgUsLastname.classList.add('visible')
+        usLastname.addEventListener('keyup', () => {
+            if(usLastname.value !== '') {
+                usLastname.classList.remove('border-wrong')
+                msgUsLastname.classList.remove('visible')
+            }
+        })
+    }
+    if(usEmail.value === '' || !(/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(usEmail.value))) {
+        usEmail.classList.add('border-wrong')
+        msgUsEmail.classList.add('visible')
+        usEmail.addEventListener('keyup', () => {
+            if(usEmail.value !== '' && (/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(usEmail.value))) {
+                usEmail.classList.remove('border-wrong')
+                msgUsEmail.classList.remove('visible')
+            }
+        })
+    }
+    if(perfilSlt.innerText === 'Seleccionar perfil') {
+        perfilSlt.classList.add('border-wrong')
+        perfilList.addEventListener('click', () => {
+            console.log(perfilSlt.innerText)
+            if(perfilSlt.innerText !== 'Seleccionar ciudad') {
+                console.log('//////')
+                perfilSlt.classList.remove('border-wrong')
+            }
+        })
+    }
+    if(usPass.value === '' || !(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$@$!%*?&#.$($)$-$_]{4,15}$/.test(usPass.value))) {
+        usPass.classList.add('border-wrong')
+        msgUsPass.style.color = '#F03738'
+        usPass.addEventListener('keyup', () => {
+            if(usPass.value !== '') {
+                usPass.classList.remove('border-wrong')
+                msgUsPass.style.color = '#333333'
+            }
+        })
+    }
+    if(usPassRep.value === '' || usPassRep.value !== usPass.value || !(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$@$!%*?&#.$($)$-$_]{4,15}$/.test(usPassRep.value))) {
+        usPassRep.classList.add('border-wrong')
+        msgUsPassRep.classList.add('visible')
+        usPassRep.addEventListener('keyup', () => {
+            if(usPassRep.value !== '') {
+                usPassRep.classList.remove('border-wrong')
+                msgUsPassRep.classList.remove('visible')
+            }
+        })
+    }
 }

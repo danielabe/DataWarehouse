@@ -13,6 +13,13 @@ var userPass = document.getElementById('userPass');
 var userPassRep = document.getElementById('userPassRep');
 var perfilSlt = document.getElementById('perfilSlt');
 var perfilList = document.getElementById('perfilList');
+var saveUser = document.getElementById('saveUser');
+var msgUserEmail = document.getElementById('msgUserEmail');
+var msgUserName = document.getElementById('msgUserName');
+var msgUserLastname = document.getElementById('msgUserLastname');
+var msgUserPass = document.getElementById('msgUserPass');
+var msgUserPassRep = document.getElementById('msgUserPassRep');
+var varSelectPerfil = 0;
 
 function getUsers() {
   var options, response, data;
@@ -201,34 +208,27 @@ function closeWindowNewUser(event) {
   userPass.value = '';
   userPassRep.value = '';
   perfilSlt.innerHTML = 'Seleccionar perfil<i class="fas fa-caret-down"></i>';
-  /* msgCompanyName.innerText = 'Este campo es obligatorio' */
-
-  /* body.classList.remove('modal') */
-
-  /* companyName.classList.remove('border-wrong')
-  msgCompanyName.classList.remove('visible')
-  companyEmail.classList.remove('border-wrong')
-  msgCompanyEmail.classList.remove('visible')
-  compAddress.classList.remove('border-wrong')
-  msgCompAddress.classList.remove('visible')
-  compTelephone.classList.remove('border-wrong')
-  msgCompTelephone.classList.remove('visible')
-  companySlt.classList.remove('border-wrong') */
-
+  msgUserEmail.innerText = 'Error en datos ingresados';
+  userName.classList.remove('border-wrong');
+  msgUserName.classList.remove('visible');
+  userLastname.classList.remove('border-wrong');
+  msgUserLastname.classList.remove('visible');
+  userEmail.classList.remove('border-wrong');
+  msgUserEmail.classList.remove('visible');
+  userPass.classList.remove('border-wrong');
+  msgUserPass.style.color = '#333333';
+  userPassRep.classList.remove('border-wrong');
+  msgUserPassRep.classList.remove('visible');
+  perfilSlt.classList.remove('border-wrong');
   darkImageNewUser.classList.add('none');
   perfilList.classList.add('no-visible');
-  /* companyCity.style.top = '0px' */
-
   /* varCompCityId = null
   varSelectCityComp = 0 */
 
   varSelectPerfil = 0;
 } //select perfil
 
-/* cosnt = document.getElementById('') */
 
-
-var varSelectPerfil = 0;
 perfilSlt.addEventListener('click', function () {
   if (varSelectPerfil === 0) {
     var perfilClass = 'perfil';
@@ -259,4 +259,142 @@ function selectPerfilFunction(perfil, perfList, perfSlt) {
   varSelectPerfil = 0;
   perfList.classList.add('no-visible');
   perfSlt.innerHTML = "".concat(perfil, "<i class=\"fas fa-caret-down\"></i>");
+} //save user
+
+
+saveUser.addEventListener('click', function (event) {
+  return addContact(event);
+});
+
+function addContact(event) {
+  var user, options, response, data;
+  return regeneratorRuntime.async(function addContact$(_context4) {
+    while (1) {
+      switch (_context4.prev = _context4.next) {
+        case 0:
+          msgUserEmail.innerText = 'Error en datos ingresados';
+          event.preventDefault();
+          user = {
+            firstname: userName.value,
+            lastname: userLastname.value,
+            email: userEmail.value,
+            perfil: perfilSlt.innerText,
+            password: userPass.value,
+            repeated_password: userPassRep.value
+          };
+          validateUserData(user, userName, msgUserName, userLastname, msgUserLastname, userEmail, msgUserEmail, perfilSlt, perfilList, userPass, msgUserPass, userPassRep, msgUserPassRep);
+          options = {
+            method: 'POST',
+            body: JSON.stringify(user),
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
+            }
+          };
+          _context4.prev = 5;
+          _context4.next = 8;
+          return regeneratorRuntime.awrap(fetch('http://localhost:3000/users/register', options));
+
+        case 8:
+          response = _context4.sent;
+
+          if (response.status === 409) {
+            userEmail.classList.add('border-wrong');
+            msgUserEmail.classList.add('visible');
+            msgUserEmail.innerText = 'El email ya existe';
+          }
+
+          _context4.next = 12;
+          return regeneratorRuntime.awrap(response.json());
+
+        case 12:
+          data = _context4.sent;
+          console.log(data);
+          _context4.next = 19;
+          break;
+
+        case 16:
+          _context4.prev = 16;
+          _context4.t0 = _context4["catch"](5);
+          return _context4.abrupt("return", _context4.t0);
+
+        case 19:
+          closeWindowNewUser(event);
+          getUsers();
+
+        case 21:
+        case "end":
+          return _context4.stop();
+      }
+    }
+  }, null, null, [[5, 16]]);
+}
+
+function validateUserData(user, usName, msgUsName, usLastname, msgUsLastname, usEmail, msgUsEmail, perfilSlt, perfilList, usPass, msgUsPass, usPassRep, msgUsPassRep) {
+  if (usName.value === '') {
+    usName.classList.add('border-wrong');
+    msgUsName.classList.add('visible');
+    usName.addEventListener('keyup', function () {
+      if (usName.value !== '') {
+        usName.classList.remove('border-wrong');
+        msgUsName.classList.remove('visible');
+      }
+    });
+  }
+
+  if (usLastname.value === '') {
+    usLastname.classList.add('border-wrong');
+    msgUsLastname.classList.add('visible');
+    usLastname.addEventListener('keyup', function () {
+      if (usLastname.value !== '') {
+        usLastname.classList.remove('border-wrong');
+        msgUsLastname.classList.remove('visible');
+      }
+    });
+  }
+
+  if (usEmail.value === '' || !/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(usEmail.value)) {
+    usEmail.classList.add('border-wrong');
+    msgUsEmail.classList.add('visible');
+    usEmail.addEventListener('keyup', function () {
+      if (usEmail.value !== '' && /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(usEmail.value)) {
+        usEmail.classList.remove('border-wrong');
+        msgUsEmail.classList.remove('visible');
+      }
+    });
+  }
+
+  if (perfilSlt.innerText === 'Seleccionar perfil') {
+    perfilSlt.classList.add('border-wrong');
+    perfilList.addEventListener('click', function () {
+      console.log(perfilSlt.innerText);
+
+      if (perfilSlt.innerText !== 'Seleccionar ciudad') {
+        console.log('//////');
+        perfilSlt.classList.remove('border-wrong');
+      }
+    });
+  }
+
+  if (usPass.value === '' || !/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$@$!%*?&#.$($)$-$_]{4,15}$/.test(usPass.value)) {
+    usPass.classList.add('border-wrong');
+    msgUsPass.style.color = '#F03738';
+    usPass.addEventListener('keyup', function () {
+      if (usPass.value !== '') {
+        usPass.classList.remove('border-wrong');
+        msgUsPass.style.color = '#333333';
+      }
+    });
+  }
+
+  if (usPassRep.value === '' || usPassRep.value !== usPass.value || !/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$@$!%*?&#.$($)$-$_]{4,15}$/.test(usPassRep.value)) {
+    usPassRep.classList.add('border-wrong');
+    msgUsPassRep.classList.add('visible');
+    usPassRep.addEventListener('keyup', function () {
+      if (usPassRep.value !== '') {
+        usPassRep.classList.remove('border-wrong');
+        msgUsPassRep.classList.remove('visible');
+      }
+    });
+  }
 }

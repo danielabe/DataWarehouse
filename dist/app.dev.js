@@ -164,6 +164,7 @@ app.post('/users/register', filterAdmin, validateFirstname, validateLastname, va
             firstname: req.body.firstname,
             lastname: req.body.lastname,
             email: req.body.email,
+            perfil: req.body.perfil,
             password: req.body.password
           };
           createUser(newUser, req, res);

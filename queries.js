@@ -37,8 +37,8 @@ async function getUsers(req, res) {
 
 async function createUser(newUser, req, res) {
     const inserted = await db.query(`
-    INSERT INTO users (firstname, lastname, email, password)
-    VALUES (:firstname, :lastname, :email, :password)
+    INSERT INTO users (firstname, lastname, email, perfil, password)
+    VALUES (:firstname, :lastname, :email, :perfil, :password)
     `, {
         replacements: newUser,
         type: QueryTypes.INSERT

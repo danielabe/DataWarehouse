@@ -110,7 +110,7 @@ function createUser(newUser, req, res) {
       switch (_context4.prev = _context4.next) {
         case 0:
           _context4.next = 2;
-          return regeneratorRuntime.awrap(db.query("\n    INSERT INTO users (firstname, lastname, email, password)\n    VALUES (:firstname, :lastname, :email, :password)\n    ", {
+          return regeneratorRuntime.awrap(db.query("\n    INSERT INTO users (firstname, lastname, email, perfil, password)\n    VALUES (:firstname, :lastname, :email, :perfil, :password)\n    ", {
             replacements: newUser,
             type: QueryTypes.INSERT
           }));

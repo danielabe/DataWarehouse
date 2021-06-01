@@ -1008,18 +1008,18 @@ progress::-moz-progress-bar {
 }
 
 .dk-img-nuser {
-    height: 940px;
+    height: 1000px;
 }
 
 .user-window {
     width: 50vw;
-    height: 730px;
+    height: 780px;
 }
 
 .nuser-form {
     width: 40vw;
-    height: 664px;
-    top: -570px;
+    height: 700px;
+    top: -610px;
     margin-bottom: -367px;
 }
 
@@ -1037,6 +1037,15 @@ progress::-moz-progress-bar {
 
 .us-height {
     height: 81px;
+}
+
+.msg-pass {
+    width: 100%;
+    /* visibility: hidden; */
+    font-size: 12px;
+    font-style: italic;
+    /* color: #F03738; */
+    color: #333333;
 }
 
 .none {
