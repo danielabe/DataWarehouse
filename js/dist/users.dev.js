@@ -22,8 +22,24 @@ var msgUserPassRep = document.getElementById('msgUserPassRep');
 var darkImageUsers = document.getElementById('darkImageUsers');
 var cancelDltUserBtn = document.getElementById('cancelDltUserBtn');
 var deleteUserBtn = document.getElementById('deleteUserBtn');
+var darkImageEditUser = document.getElementById('darkImageEditUser');
+var userNameEdit = document.getElementById('userNameEdit');
+var userLastnameEdit = document.getElementById('userLastnameEdit');
+var userEmailEdit = document.getElementById('userEmailEdit');
+var perfilSltEdit = document.getElementById('perfilSltEdit');
+var closeEditUser = document.getElementById('closeEditUser');
+var msgUserNameEdit = document.getElementById('msgUserNameEdit');
+var msgUserLastnameEdit = document.getElementById('msgUserLastnameEdit');
+var msgUserEmailEdit = document.getElementById('msgUserEmailEdit');
+var perfilListEdit = document.getElementById('perfilListEdit');
+var saveEditedUser = document.getElementById('saveEditedUser');
+var userPassEdit = document.getElementById('userPassEdit');
+var userPassRepEdit = document.getElementById('userPassRepEdit');
+var msgUserPassRepEdit = document.getElementById('msgUserPassRepEdit');
+var msgUserPassEdit = document.getElementById('msgUserPassEdit');
+var varUserId = null;
 var varSelectPerfil = 0;
-var uId = {};
+var uId = {}; //show users
 
 function getUsers() {
   var options, response, data;
@@ -99,7 +115,7 @@ function getUsers() {
               modalDeleteUser();
             });
             pen.addEventListener('click', function () {
-              return editUser(info
+              return userEdition(info
               /* , usersList */
               );
             });
@@ -123,42 +139,6 @@ function outRow(ellipsis, trash, pen) {
   ellipsis.classList.remove('none');
   trash.classList.add('none');
   pen.classList.add('none');
-}
-
-function editUser(info, usersList) {
-  var options, response, data;
-  return regeneratorRuntime.async(function editUser$(_context2) {
-    while (1) {
-      switch (_context2.prev = _context2.next) {
-        case 0:
-          //esta funcion la voy a hacer luego, para ver
-          options = {
-            //primero como se hace en contactos, hacer
-            method: 'PUT',
-            //diseño correspondiente y generar json para el body
-            headers: {
-              Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
-            }
-          };
-          _context2.next = 3;
-          return regeneratorRuntime.awrap(fetch("http://localhost:3000/users/".concat(info.userId), options));
-
-        case 3:
-          response = _context2.sent;
-          _context2.next = 6;
-          return regeneratorRuntime.awrap(response.json());
-
-        case 6:
-          data = _context2.sent;
-          console.log(data);
-          getUsers();
-
-        case 9:
-        case "end":
-          return _context2.stop();
-      }
-    }
-  });
 } //add user
 
 
@@ -244,9 +224,9 @@ saveUser.addEventListener('click', function (event) {
 
 function addContact(event) {
   var user, options, response, data;
-  return regeneratorRuntime.async(function addContact$(_context3) {
+  return regeneratorRuntime.async(function addContact$(_context2) {
     while (1) {
-      switch (_context3.prev = _context3.next) {
+      switch (_context2.prev = _context2.next) {
         case 0:
           msgUserEmail.innerText = 'Error en datos ingresados';
           event.preventDefault();
@@ -267,12 +247,12 @@ function addContact(event) {
               Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
             }
           };
-          _context3.prev = 5;
-          _context3.next = 8;
+          _context2.prev = 5;
+          _context2.next = 8;
           return regeneratorRuntime.awrap(fetch('http://localhost:3000/users/register', options));
 
         case 8:
-          response = _context3.sent;
+          response = _context2.sent;
 
           if (response.status === 409) {
             userEmail.classList.add('border-wrong');
@@ -280,19 +260,19 @@ function addContact(event) {
             msgUserEmail.innerText = 'El email ya existe';
           }
 
-          _context3.next = 12;
+          _context2.next = 12;
           return regeneratorRuntime.awrap(response.json());
 
         case 12:
-          data = _context3.sent;
+          data = _context2.sent;
           console.log(data);
-          _context3.next = 19;
+          _context2.next = 19;
           break;
 
         case 16:
-          _context3.prev = 16;
-          _context3.t0 = _context3["catch"](5);
-          return _context3.abrupt("return", _context3.t0);
+          _context2.prev = 16;
+          _context2.t0 = _context2["catch"](5);
+          return _context2.abrupt("return", _context2.t0);
 
         case 19:
           closeWindowNewUser(event);
@@ -300,7 +280,7 @@ function addContact(event) {
 
         case 21:
         case "end":
-          return _context3.stop();
+          return _context2.stop();
       }
     }
   }, null, null, [[5, 16]]);
@@ -356,7 +336,7 @@ function validateUserData(user, usName, msgUsName, usLastname, msgUsLastname, us
     usPass.classList.add('border-wrong');
     msgUsPass.style.color = '#F03738';
     usPass.addEventListener('keyup', function () {
-      if (usPass.value !== '') {
+      if (usPass.value !== '' && /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$@$!%*?&#.$($)$-$_]{4,15}$/.test(usPass.value)) {
         usPass.classList.remove('border-wrong');
         msgUsPass.style.color = '#333333';
       }
@@ -367,9 +347,48 @@ function validateUserData(user, usName, msgUsName, usLastname, msgUsLastname, us
     usPassRep.classList.add('border-wrong');
     msgUsPassRep.classList.add('visible');
     usPassRep.addEventListener('keyup', function () {
-      if (usPassRep.value !== '') {
+      if (usPassRep.value !== '' && /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$@$!%*?&#.$($)$-$_]{4,15}$/.test(usPassRep.value)) {
         usPassRep.classList.remove('border-wrong');
         msgUsPassRep.classList.remove('visible');
+      }
+    });
+  }
+}
+
+function validatePass(userPassEdit, msgUserPassRep, userPassRepEdit, msgUserPassRepEdit) {
+  if (userPassEdit.value === '') {
+    userPassEdit.classList.remove('border-wrong');
+    msgUserPassRep.style.color = '#333333';
+  }
+
+  if (userPassEdit.value !== '' && !/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$@$!%*?&#.$($)$-$_]{4,15}$/.test(userPassEdit.value)) {
+    userPassEdit.classList.add('border-wrong');
+    msgUserPassRep.style.color = '#F03738';
+    userPassEdit.addEventListener('keyup', function () {
+      if (userPassEdit.value === '') {
+        userPassEdit.classList.remove('border-wrong');
+        msgUserPassRep.style.color = '#333333';
+      }
+
+      if (userPassEdit.value !== '' && /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$@$!%*?&#.$($)$-$_]{4,15}$/.test(userPassEdit.value)) {
+        userPassEdit.classList.remove('border-wrong');
+        msgUserPassRep.style.color = '#333333';
+      }
+    });
+  }
+
+  if (userPassRepEdit.value === '') {
+    userPassRepEdit.classList.remove('border-wrong');
+    msgUserPassRepEdit.classList.remove('visible');
+  }
+
+  if (userPassRepEdit.value !== '' && !/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$@$!%*?&#.$($)$-$_]{4,15}$/.test(userPassRepEdit.value) || userPassRepEdit.value !== userPassEdit.value) {
+    userPassRepEdit.classList.add('border-wrong');
+    msgUserPassRepEdit.classList.add('visible');
+    userPassRepEdit.addEventListener('keyup', function () {
+      if (userPassRepEdit.value !== '' && !/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$@$!%*?&#.$($)$-$_]{4,15}$/.test(userPassRepEdit.value) && userPassRepEdit.value !== userPassEdit.value) {
+        userPassRepEdit.classList.remove('border-wrong');
+        msgUserPassRepEdit.classList.remove('visible');
       }
     });
   }
@@ -408,9 +427,9 @@ deleteUserBtn.addEventListener('click', function (event) {
 
 function deleteUser(info, event) {
   var options, response, data;
-  return regeneratorRuntime.async(function deleteUser$(_context4) {
+  return regeneratorRuntime.async(function deleteUser$(_context3) {
     while (1) {
-      switch (_context4.prev = _context4.next) {
+      switch (_context3.prev = _context3.next) {
         case 0:
           options = {
             method: 'DELETE',
@@ -418,23 +437,188 @@ function deleteUser(info, event) {
               Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
             }
           };
-          _context4.next = 3;
+          _context3.next = 3;
           return regeneratorRuntime.awrap(fetch("http://localhost:3000/users/".concat(info.userId), options));
 
         case 3:
-          response = _context4.sent;
-          _context4.next = 6;
+          response = _context3.sent;
+          _context3.next = 6;
           return regeneratorRuntime.awrap(response.json());
 
         case 6:
-          data = _context4.sent;
+          data = _context3.sent;
           console.log(data);
           closeWindowNewUser(event);
           getUsers();
 
         case 10:
         case "end":
+          return _context3.stop();
+      }
+    }
+  });
+} //edit user
+
+
+function userEdition(info) {
+  var options, response, data;
+  return regeneratorRuntime.async(function userEdition$(_context4) {
+    while (1) {
+      switch (_context4.prev = _context4.next) {
+        case 0:
+          varUserId = +info.userId;
+          console.log(varUserId);
+          /* varCompCityId = +info.cityId
+          varCompId = +info.companyId */
+
+          /* varCompanyId = +info.companyId
+          varEditContact = info.contactId */
+
+          window.scrollTo(0, 0);
+          /* body.classList.add('modal') */
+
+          darkImageEditUser.classList.remove('none');
+          darkImageEditUser.style.visibility = 'visible';
+          /* companyCityEdit.style.top = '0px' */
+
+          /* main.classList.add('height-add-ctc') */
+
+          options = {
+            method: 'GET',
+            headers: {
+              Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
+            }
+          };
+          _context4.next = 8;
+          return regeneratorRuntime.awrap(fetch("http://localhost:3000/users/".concat(varUserId), options));
+
+        case 8:
+          response = _context4.sent;
+          _context4.next = 11;
+          return regeneratorRuntime.awrap(response.json());
+
+        case 11:
+          data = _context4.sent;
+          console.log(data);
+          loadUserData(data);
+
+        case 14:
+        case "end":
           return _context4.stop();
+      }
+    }
+  });
+}
+
+function loadUserData(data) {
+  userNameEdit.value = data.firstname;
+  userLastnameEdit.value = data.lastname;
+  userEmailEdit.value = data.email;
+
+  if (data.perfil === '') {
+    perfilSltEdit.innerHTML = 'Seleccionar perfil<i class="fas fa-caret-down"></i>';
+  } else {
+    perfilSltEdit.innerHTML = "".concat(data.perfil, "<i class=\"fas fa-caret-down\"></i>");
+  }
+} //close window edit user
+
+
+closeEditUser.addEventListener('click', function (event) {
+  return closeWindowEditUser(event);
+});
+
+function closeWindowEditUser(event) {
+  event.preventDefault();
+  darkImageEditUser.classList.add('none');
+  /* companyListEdit.classList.add('none') */
+
+  /* body.classList.remove('modal') */
+
+  /* main.classList.remove('height-add-ctc') */
+
+  userNameEdit.classList.remove('border-wrong');
+  msgUserNameEdit.classList.remove('visible');
+  userLastnameEdit.classList.remove('border-wrong');
+  msgUserLastnameEdit.classList.remove('visible');
+  userEmailEdit.classList.remove('border-wrong');
+  msgUserEmailEdit.classList.remove('visible');
+  perfilSltEdit.classList.remove('border-wrong');
+  userPassEdit.classList.remove('border-wrong');
+  msgUserPassEdit.style.color = '#333333';
+  userPassRepEdit.classList.remove('border-wrong');
+  msgUserPassRepEdit.classList.remove('visible');
+  msgUserEmailEdit.innerText = 'Error en datos ingresados';
+  /* varSelectCityComp = 0 */
+
+  /* varCityId = null */
+
+  varUserId = null;
+} //select perfil
+
+
+perfilSltEdit.addEventListener('click', function () {
+  if (varSelectPerfil === 0) {
+    var perfilClass = 'perfil-edit';
+    showPerfil(perfilListEdit, perfilSltEdit, perfilClass);
+  } else if (varSelectPerfil === 1) {
+    perfilListEdit.classList.add('no-visible');
+    varSelectPerfil = 0;
+  }
+}); //save edited user
+
+saveEditedUser.addEventListener('click', function (event) {
+  return editUser(event);
+});
+
+function editUser(event) {
+  var modifiedUser, options, response, data;
+  return regeneratorRuntime.async(function editUser$(_context5) {
+    while (1) {
+      switch (_context5.prev = _context5.next) {
+        case 0:
+          event.preventDefault();
+          modifiedUser = {
+            firstname: userNameEdit.value,
+            lastname: userLastnameEdit.value,
+            email: userEmailEdit.value,
+            perfil: perfilSltEdit.innerText,
+            password: userPassEdit.value
+          };
+          validateUserData(modifiedUser, userNameEdit, msgUserNameEdit, userLastnameEdit, msgUserLastnameEdit, userEmailEdit, msgUserEmailEdit, perfilSltEdit, perfilListEdit, userPassEdit, msgUserPassRep, userPassRepEdit, msgUserPassRepEdit);
+          validatePass(userPassEdit, msgUserPassRep, userPassRepEdit, msgUserPassRepEdit);
+          options = {
+            method: 'PUT',
+            body: JSON.stringify(modifiedUser),
+            headers: {
+              Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token'))),
+              "Content-Type": "application/json"
+            }
+          };
+          _context5.next = 7;
+          return regeneratorRuntime.awrap(fetch("http://localhost:3000/users/".concat(varUserId), options));
+
+        case 7:
+          response = _context5.sent;
+
+          /* console.log(response.text()) */
+          if (response.status === 409) {
+            userEmailEdit.classList.add('border-wrong');
+            msgUserEmailEdit.classList.add('visible');
+            msgUserEmailEdit.innerText = 'El email ya existe';
+          }
+
+          _context5.next = 11;
+          return regeneratorRuntime.awrap(response.json());
+
+        case 11:
+          data = _context5.sent;
+          console.log(data);
+          closeWindowEditUser(event);
+          getUsers();
+
+        case 15:
+        case "end":
+          return _context5.stop();
       }
     }
   });

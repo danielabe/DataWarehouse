@@ -8,6 +8,7 @@ var _require = require('./queries.js'),
     validateLoginQuery = _require.validateLoginQuery,
     validateEmailQuery = _require.validateEmailQuery,
     validateUserIdQuery = _require.validateUserIdQuery,
+    validateEmailPutQuery = _require.validateEmailPutQuery,
     validateRegionNameQuery = _require.validateRegionNameQuery,
     validateRegionIdQuery = _require.validateRegionIdQuery,
     validateRegionNamePutQuery = _require.validateRegionNamePutQuery,
@@ -134,15 +135,35 @@ function validateUserId(req, res, next) {
 }
 
 function validateFirstnamePut(req, res, next) {
-  if (req.body.firstname) {
-    if (req.body.firstname.length >= 1 && req.body.firstname.length <= 64) next();else res.status(400).send("The firstname length is wrong").end();
-  } else next();
+  /* if(req.body.firstname) { */
+  if (req.body.firstname.length >= 1 && req.body.firstname.length <= 64) next();else res.status(400).send("The firstname length is wrong").end();
+  /* } else next() */
 }
 
 function validateLastnamePut(req, res, next) {
-  if (req.body.lastname) {
-    if (req.body.lastname.length >= 1 && req.body.lastname.length <= 64) next();else res.status(400).send("The lastname length is wrong").end();
-  } else next();
+  /* if(req.body.lastname) { */
+  if (req.body.lastname.length >= 1 && req.body.lastname.length <= 64) next();else res.status(400).send("The lastname length is wrong").end();
+  /* } else next() */
+}
+
+function validateEmailPut(req, res, next) {
+  return regeneratorRuntime.async(function validateEmailPut$(_context4) {
+    while (1) {
+      switch (_context4.prev = _context4.next) {
+        case 0:
+          _context4.next = 2;
+          return regeneratorRuntime.awrap(validateEmailPutQuery(req, res, next));
+
+        case 2:
+        case "end":
+          return _context4.stop();
+      }
+    }
+  });
+}
+
+function validatePerfil(req, res, next) {
+  if (req.body.perfil === 'Admin' || req.body.perfil === 'Básico') next();else res.status(400).send("The perfil is wrong").end();
 }
 
 function validatePasswordPut(req, res, next) {
@@ -153,28 +174,12 @@ function validatePasswordPut(req, res, next) {
 
 
 function validateRegionName(req, res, next) {
-  return regeneratorRuntime.async(function validateRegionName$(_context4) {
-    while (1) {
-      switch (_context4.prev = _context4.next) {
-        case 0:
-          _context4.next = 2;
-          return regeneratorRuntime.awrap(validateRegionNameQuery(req, res, next));
-
-        case 2:
-        case "end":
-          return _context4.stop();
-      }
-    }
-  });
-}
-
-function validateRegionId(req, res, next) {
-  return regeneratorRuntime.async(function validateRegionId$(_context5) {
+  return regeneratorRuntime.async(function validateRegionName$(_context5) {
     while (1) {
       switch (_context5.prev = _context5.next) {
         case 0:
           _context5.next = 2;
-          return regeneratorRuntime.awrap(validateRegionIdQuery(req, res, next));
+          return regeneratorRuntime.awrap(validateRegionNameQuery(req, res, next));
 
         case 2:
         case "end":
@@ -184,13 +189,13 @@ function validateRegionId(req, res, next) {
   });
 }
 
-function validateRegionNamePut(req, res, next) {
-  return regeneratorRuntime.async(function validateRegionNamePut$(_context6) {
+function validateRegionId(req, res, next) {
+  return regeneratorRuntime.async(function validateRegionId$(_context6) {
     while (1) {
       switch (_context6.prev = _context6.next) {
         case 0:
           _context6.next = 2;
-          return regeneratorRuntime.awrap(validateRegionNamePutQuery(req, res, next));
+          return regeneratorRuntime.awrap(validateRegionIdQuery(req, res, next));
 
         case 2:
         case "end":
@@ -198,16 +203,15 @@ function validateRegionNamePut(req, res, next) {
       }
     }
   });
-} //countries 
+}
 
-
-function validateCountryName(req, res, next) {
-  return regeneratorRuntime.async(function validateCountryName$(_context7) {
+function validateRegionNamePut(req, res, next) {
+  return regeneratorRuntime.async(function validateRegionNamePut$(_context7) {
     while (1) {
       switch (_context7.prev = _context7.next) {
         case 0:
           _context7.next = 2;
-          return regeneratorRuntime.awrap(validateCountryNameQuery(req, res, next));
+          return regeneratorRuntime.awrap(validateRegionNamePutQuery(req, res, next));
 
         case 2:
         case "end":
@@ -215,15 +219,16 @@ function validateCountryName(req, res, next) {
       }
     }
   });
-}
+} //countries 
 
-function validateCountryId(req, res, next) {
-  return regeneratorRuntime.async(function validateCountryId$(_context8) {
+
+function validateCountryName(req, res, next) {
+  return regeneratorRuntime.async(function validateCountryName$(_context8) {
     while (1) {
       switch (_context8.prev = _context8.next) {
         case 0:
           _context8.next = 2;
-          return regeneratorRuntime.awrap(validateCountryIdQuery(req, res, next));
+          return regeneratorRuntime.awrap(validateCountryNameQuery(req, res, next));
 
         case 2:
         case "end":
@@ -233,13 +238,13 @@ function validateCountryId(req, res, next) {
   });
 }
 
-function validateCountryNamePut(req, res, next) {
-  return regeneratorRuntime.async(function validateCountryNamePut$(_context9) {
+function validateCountryId(req, res, next) {
+  return regeneratorRuntime.async(function validateCountryId$(_context9) {
     while (1) {
       switch (_context9.prev = _context9.next) {
         case 0:
           _context9.next = 2;
-          return regeneratorRuntime.awrap(validateCountryNamePutQuery(req, res, next));
+          return regeneratorRuntime.awrap(validateCountryIdQuery(req, res, next));
 
         case 2:
         case "end":
@@ -249,13 +254,13 @@ function validateCountryNamePut(req, res, next) {
   });
 }
 
-function validateRegionIdCountry(req, res, next) {
-  return regeneratorRuntime.async(function validateRegionIdCountry$(_context10) {
+function validateCountryNamePut(req, res, next) {
+  return regeneratorRuntime.async(function validateCountryNamePut$(_context10) {
     while (1) {
       switch (_context10.prev = _context10.next) {
         case 0:
           _context10.next = 2;
-          return regeneratorRuntime.awrap(validateRegionIdCountryQuery(req, res, next));
+          return regeneratorRuntime.awrap(validateCountryNamePutQuery(req, res, next));
 
         case 2:
         case "end":
@@ -263,16 +268,15 @@ function validateRegionIdCountry(req, res, next) {
       }
     }
   });
-} //cities
+}
 
-
-function validateCityName(req, res, next) {
-  return regeneratorRuntime.async(function validateCityName$(_context11) {
+function validateRegionIdCountry(req, res, next) {
+  return regeneratorRuntime.async(function validateRegionIdCountry$(_context11) {
     while (1) {
       switch (_context11.prev = _context11.next) {
         case 0:
           _context11.next = 2;
-          return regeneratorRuntime.awrap(validateCityNameQuery(req, res, next));
+          return regeneratorRuntime.awrap(validateRegionIdCountryQuery(req, res, next));
 
         case 2:
         case "end":
@@ -280,15 +284,16 @@ function validateCityName(req, res, next) {
       }
     }
   });
-}
+} //cities
 
-function validateCityId(req, res, next) {
-  return regeneratorRuntime.async(function validateCityId$(_context12) {
+
+function validateCityName(req, res, next) {
+  return regeneratorRuntime.async(function validateCityName$(_context12) {
     while (1) {
       switch (_context12.prev = _context12.next) {
         case 0:
           _context12.next = 2;
-          return regeneratorRuntime.awrap(validateCityIdQuery(req, res, next));
+          return regeneratorRuntime.awrap(validateCityNameQuery(req, res, next));
 
         case 2:
         case "end":
@@ -298,13 +303,13 @@ function validateCityId(req, res, next) {
   });
 }
 
-function validateCountryIdCity(req, res, next) {
-  return regeneratorRuntime.async(function validateCountryIdCity$(_context13) {
+function validateCityId(req, res, next) {
+  return regeneratorRuntime.async(function validateCityId$(_context13) {
     while (1) {
       switch (_context13.prev = _context13.next) {
         case 0:
           _context13.next = 2;
-          return regeneratorRuntime.awrap(validateCountryIdCityQuery(req, res, next));
+          return regeneratorRuntime.awrap(validateCityIdQuery(req, res, next));
 
         case 2:
         case "end":
@@ -314,13 +319,13 @@ function validateCountryIdCity(req, res, next) {
   });
 }
 
-function validateCityNamePut(req, res, next) {
-  return regeneratorRuntime.async(function validateCityNamePut$(_context14) {
+function validateCountryIdCity(req, res, next) {
+  return regeneratorRuntime.async(function validateCountryIdCity$(_context14) {
     while (1) {
       switch (_context14.prev = _context14.next) {
         case 0:
           _context14.next = 2;
-          return regeneratorRuntime.awrap(validateCityNamePutQuery(req, res, next));
+          return regeneratorRuntime.awrap(validateCountryIdCityQuery(req, res, next));
 
         case 2:
         case "end":
@@ -328,20 +333,36 @@ function validateCityNamePut(req, res, next) {
       }
     }
   });
-} //companies
+}
 
-
-function validateCompanyName(req, res, next) {
-  return regeneratorRuntime.async(function validateCompanyName$(_context15) {
+function validateCityNamePut(req, res, next) {
+  return regeneratorRuntime.async(function validateCityNamePut$(_context15) {
     while (1) {
       switch (_context15.prev = _context15.next) {
         case 0:
           _context15.next = 2;
-          return regeneratorRuntime.awrap(validateCompanyNameQuery(req, res, next));
+          return regeneratorRuntime.awrap(validateCityNamePutQuery(req, res, next));
 
         case 2:
         case "end":
           return _context15.stop();
+      }
+    }
+  });
+} //companies
+
+
+function validateCompanyName(req, res, next) {
+  return regeneratorRuntime.async(function validateCompanyName$(_context16) {
+    while (1) {
+      switch (_context16.prev = _context16.next) {
+        case 0:
+          _context16.next = 2;
+          return regeneratorRuntime.awrap(validateCompanyNameQuery(req, res, next));
+
+        case 2:
+        case "end":
+          return _context16.stop();
       }
     }
   });
@@ -354,16 +375,16 @@ function validateAddress(req, res, next) {
 
 function validateEmailCompanies(req, res, next) {
   var email;
-  return regeneratorRuntime.async(function validateEmailCompanies$(_context16) {
+  return regeneratorRuntime.async(function validateEmailCompanies$(_context17) {
     while (1) {
-      switch (_context16.prev = _context16.next) {
+      switch (_context17.prev = _context17.next) {
         case 0:
           email = req.body.email;
           if (/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(email)) next();else res.status(400).send("The email is wrong").end();
 
         case 2:
         case "end":
-          return _context16.stop();
+          return _context17.stop();
       }
     }
   });
@@ -375,28 +396,12 @@ function validateTelephone(req, res, next) {
 }
 
 function validateCompanyId(req, res, next) {
-  return regeneratorRuntime.async(function validateCompanyId$(_context17) {
-    while (1) {
-      switch (_context17.prev = _context17.next) {
-        case 0:
-          _context17.next = 2;
-          return regeneratorRuntime.awrap(validateCompanyIdQuery(req, res, next));
-
-        case 2:
-        case "end":
-          return _context17.stop();
-      }
-    }
-  });
-}
-
-function validateCompanyNamePut(req, res, next) {
-  return regeneratorRuntime.async(function validateCompanyNamePut$(_context18) {
+  return regeneratorRuntime.async(function validateCompanyId$(_context18) {
     while (1) {
       switch (_context18.prev = _context18.next) {
         case 0:
           _context18.next = 2;
-          return regeneratorRuntime.awrap(validateCompanyNamePutQuery(req, res, next));
+          return regeneratorRuntime.awrap(validateCompanyIdQuery(req, res, next));
 
         case 2:
         case "end":
@@ -406,13 +411,13 @@ function validateCompanyNamePut(req, res, next) {
   });
 }
 
-function validateCityIdPut(req, res, next) {
-  return regeneratorRuntime.async(function validateCityIdPut$(_context19) {
+function validateCompanyNamePut(req, res, next) {
+  return regeneratorRuntime.async(function validateCompanyNamePut$(_context19) {
     while (1) {
       switch (_context19.prev = _context19.next) {
         case 0:
           _context19.next = 2;
-          return regeneratorRuntime.awrap(validateCityIdPutQuery(req, res, next));
+          return regeneratorRuntime.awrap(validateCompanyNamePutQuery(req, res, next));
 
         case 2:
         case "end":
@@ -422,11 +427,27 @@ function validateCityIdPut(req, res, next) {
   });
 }
 
-function validateAddressPut(req, res, next) {
-  var address;
-  return regeneratorRuntime.async(function validateAddressPut$(_context20) {
+function validateCityIdPut(req, res, next) {
+  return regeneratorRuntime.async(function validateCityIdPut$(_context20) {
     while (1) {
       switch (_context20.prev = _context20.next) {
+        case 0:
+          _context20.next = 2;
+          return regeneratorRuntime.awrap(validateCityIdPutQuery(req, res, next));
+
+        case 2:
+        case "end":
+          return _context20.stop();
+      }
+    }
+  });
+}
+
+function validateAddressPut(req, res, next) {
+  var address;
+  return regeneratorRuntime.async(function validateAddressPut$(_context21) {
+    while (1) {
+      switch (_context21.prev = _context21.next) {
         case 0:
           if (req.body.address) {
             address = req.body.address;
@@ -435,7 +456,7 @@ function validateAddressPut(req, res, next) {
 
         case 1:
         case "end":
-          return _context20.stop();
+          return _context21.stop();
       }
     }
   });
@@ -443,16 +464,16 @@ function validateAddressPut(req, res, next) {
 
 
 function validateEmailContacts(req, res, next) {
-  return regeneratorRuntime.async(function validateEmailContacts$(_context21) {
+  return regeneratorRuntime.async(function validateEmailContacts$(_context22) {
     while (1) {
-      switch (_context21.prev = _context21.next) {
+      switch (_context22.prev = _context22.next) {
         case 0:
-          _context21.next = 2;
+          _context22.next = 2;
           return regeneratorRuntime.awrap(validateEmailContactsQuery(req, res, next));
 
         case 2:
         case "end":
-          return _context21.stop();
+          return _context22.stop();
       }
     }
   });
@@ -469,32 +490,32 @@ function validateInterest(req, res, next) {
 }
 
 function validateChannelId(req, res, next) {
-  return regeneratorRuntime.async(function validateChannelId$(_context22) {
+  return regeneratorRuntime.async(function validateChannelId$(_context23) {
     while (1) {
-      switch (_context22.prev = _context22.next) {
+      switch (_context23.prev = _context23.next) {
         case 0:
-          _context22.next = 2;
+          _context23.next = 2;
           return regeneratorRuntime.awrap(validateChannelIdQuery(req, res, next));
 
         case 2:
         case "end":
-          return _context22.stop();
+          return _context23.stop();
       }
     }
   });
 }
 
 function validateContactId(req, res, next) {
-  return regeneratorRuntime.async(function validateContactId$(_context23) {
+  return regeneratorRuntime.async(function validateContactId$(_context24) {
     while (1) {
-      switch (_context23.prev = _context23.next) {
+      switch (_context24.prev = _context24.next) {
         case 0:
-          _context23.next = 2;
+          _context24.next = 2;
           return regeneratorRuntime.awrap(validateContactIdQuery(req, res, next));
 
         case 2:
         case "end":
-          return _context23.stop();
+          return _context24.stop();
       }
     }
   });
@@ -509,9 +530,9 @@ function validateUserAccount(req, res, next) {
 
 function validatePreference(req, res, next) {
   var channelsBody;
-  return regeneratorRuntime.async(function validatePreference$(_context24) {
+  return regeneratorRuntime.async(function validatePreference$(_context25) {
     while (1) {
-      switch (_context24.prev = _context24.next) {
+      switch (_context25.prev = _context25.next) {
         case 0:
           channelsBody = req.body.preferred_channels;
           channelsBody.every(function (element) {
@@ -521,39 +542,39 @@ function validatePreference(req, res, next) {
 
         case 2:
         case "end":
-          return _context24.stop();
-      }
-    }
-  });
-}
-
-function validateEmailContactsPut(req, res, next) {
-  return regeneratorRuntime.async(function validateEmailContactsPut$(_context25) {
-    while (1) {
-      switch (_context25.prev = _context25.next) {
-        case 0:
-          _context25.next = 2;
-          return regeneratorRuntime.awrap(validateEmailContactsPutQuery(req, res, next));
-
-        case 2:
-        case "end":
           return _context25.stop();
       }
     }
   });
 }
 
-function validateCompanyIdPut(req, res, next) {
-  return regeneratorRuntime.async(function validateCompanyIdPut$(_context26) {
+function validateEmailContactsPut(req, res, next) {
+  return regeneratorRuntime.async(function validateEmailContactsPut$(_context26) {
     while (1) {
       switch (_context26.prev = _context26.next) {
         case 0:
           _context26.next = 2;
-          return regeneratorRuntime.awrap(validateCompanyIdPutQuery(req, res, next));
+          return regeneratorRuntime.awrap(validateEmailContactsPutQuery(req, res, next));
 
         case 2:
         case "end":
           return _context26.stop();
+      }
+    }
+  });
+}
+
+function validateCompanyIdPut(req, res, next) {
+  return regeneratorRuntime.async(function validateCompanyIdPut$(_context27) {
+    while (1) {
+      switch (_context27.prev = _context27.next) {
+        case 0:
+          _context27.next = 2;
+          return regeneratorRuntime.awrap(validateCompanyIdPutQuery(req, res, next));
+
+        case 2:
+        case "end":
+          return _context27.stop();
       }
     }
   });
@@ -574,28 +595,12 @@ function validateInterestPut(req, res, next) {
 }
 
 function validateChannelIdPut(req, res, next) {
-  return regeneratorRuntime.async(function validateChannelIdPut$(_context27) {
-    while (1) {
-      switch (_context27.prev = _context27.next) {
-        case 0:
-          _context27.next = 2;
-          return regeneratorRuntime.awrap(validateChannelIdPutQuery(req, res, next));
-
-        case 2:
-        case "end":
-          return _context27.stop();
-      }
-    }
-  });
-}
-
-function validateChannelIdAdd(req, res, next) {
-  return regeneratorRuntime.async(function validateChannelIdAdd$(_context28) {
+  return regeneratorRuntime.async(function validateChannelIdPut$(_context28) {
     while (1) {
       switch (_context28.prev = _context28.next) {
         case 0:
           _context28.next = 2;
-          return regeneratorRuntime.awrap(validateChannelIdAddQuery(req, res, next));
+          return regeneratorRuntime.awrap(validateChannelIdPutQuery(req, res, next));
 
         case 2:
         case "end":
@@ -605,13 +610,13 @@ function validateChannelIdAdd(req, res, next) {
   });
 }
 
-function validateChannelIdDel(req, res, next) {
-  return regeneratorRuntime.async(function validateChannelIdDel$(_context29) {
+function validateChannelIdAdd(req, res, next) {
+  return regeneratorRuntime.async(function validateChannelIdAdd$(_context29) {
     while (1) {
       switch (_context29.prev = _context29.next) {
         case 0:
           _context29.next = 2;
-          return regeneratorRuntime.awrap(validateChannelIdDelQuery(req, res, next));
+          return regeneratorRuntime.awrap(validateChannelIdAddQuery(req, res, next));
 
         case 2:
         case "end":
@@ -621,13 +626,13 @@ function validateChannelIdDel(req, res, next) {
   });
 }
 
-function validateChannelName(req, res, next) {
-  return regeneratorRuntime.async(function validateChannelName$(_context30) {
+function validateChannelIdDel(req, res, next) {
+  return regeneratorRuntime.async(function validateChannelIdDel$(_context30) {
     while (1) {
       switch (_context30.prev = _context30.next) {
         case 0:
           _context30.next = 2;
-          return regeneratorRuntime.awrap(validateChannelNameQuery(req, res, next));
+          return regeneratorRuntime.awrap(validateChannelIdDelQuery(req, res, next));
 
         case 2:
         case "end":
@@ -637,13 +642,13 @@ function validateChannelName(req, res, next) {
   });
 }
 
-function validateChannelIdEx(req, res, next) {
-  return regeneratorRuntime.async(function validateChannelIdEx$(_context31) {
+function validateChannelName(req, res, next) {
+  return regeneratorRuntime.async(function validateChannelName$(_context31) {
     while (1) {
       switch (_context31.prev = _context31.next) {
         case 0:
           _context31.next = 2;
-          return regeneratorRuntime.awrap(validateChannelIdExQuery(req, res, next));
+          return regeneratorRuntime.awrap(validateChannelNameQuery(req, res, next));
 
         case 2:
         case "end":
@@ -653,17 +658,33 @@ function validateChannelIdEx(req, res, next) {
   });
 }
 
-function validateChannelNamePut(req, res, next) {
-  return regeneratorRuntime.async(function validateChannelNamePut$(_context32) {
+function validateChannelIdEx(req, res, next) {
+  return regeneratorRuntime.async(function validateChannelIdEx$(_context32) {
     while (1) {
       switch (_context32.prev = _context32.next) {
         case 0:
           _context32.next = 2;
-          return regeneratorRuntime.awrap(validateChannelNamePutQuery(req, res, next));
+          return regeneratorRuntime.awrap(validateChannelIdExQuery(req, res, next));
 
         case 2:
         case "end":
           return _context32.stop();
+      }
+    }
+  });
+}
+
+function validateChannelNamePut(req, res, next) {
+  return regeneratorRuntime.async(function validateChannelNamePut$(_context33) {
+    while (1) {
+      switch (_context33.prev = _context33.next) {
+        case 0:
+          _context33.next = 2;
+          return regeneratorRuntime.awrap(validateChannelNamePutQuery(req, res, next));
+
+        case 2:
+        case "end":
+          return _context33.stop();
       }
     }
   });
@@ -681,6 +702,8 @@ module.exports = {
   validateUserId: validateUserId,
   validateFirstnamePut: validateFirstnamePut,
   validateLastnamePut: validateLastnamePut,
+  validateEmailPut: validateEmailPut,
+  validatePerfil: validatePerfil,
   validatePasswordPut: validatePasswordPut,
   validateRegionName: validateRegionName,
   validateRegionId: validateRegionId,

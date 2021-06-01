@@ -2188,4 +2188,5 @@ deleteContactBtn.addEventListener('click', function () {
 //ordenar no funciona 
 //borrar ubicaciones?
 //no refresca al eliminar, crear contacto, provocaba error al ordenar
+//corregir postman (creo que solo los put)
 //si tengo ganas cambiar los id de los canalaes en el html

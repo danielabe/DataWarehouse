@@ -81,6 +81,18 @@ async function getUser(userId, req, res) {
     res.status(200).json(user[0])
 }
 
+async function validateEmailPutQuery(req, res, next) {
+    const email = req.body.email
+    const emails = await db.query(`SELECT email FROM users WHERE user_id != ${req.params.userId}`, {
+        type: QueryTypes.SELECT
+    })
+    const emailsArray = emails.map(user => user.email)
+    if(/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(email)) {
+        if(emailsArray.every(e => e != email)) next()
+        else res.status(409).send("The email already exists").end()
+    } else res.status(400).send("The email is wrong").end()
+}
+
 async function modifyUser(userId, req, res) {
     const user = await db.query(`SELECT * FROM users WHERE user_id = ?`, {
         replacements: [userId],
@@ -92,10 +104,12 @@ async function modifyUser(userId, req, res) {
         firstname: req.body.firstname || user[0].firstname,
         lastname: req.body.lastname || user[0].lastname,
         email: req.body.email || user[0].email,
-        perfil: user[0].perfil
+        perfil: req.body.perfil || user[0].perfil,
+        password: req.body.password
+
     }
     const modified = await db.query(`
-    UPDATE users SET firstname = :firstname, lastname = :lastname, email = :email, 
+    UPDATE users SET firstname = :firstname, lastname = :lastname, email = :email, perfil = :perfil, 
     password = :password WHERE user_id = :user_id
     `, {
         replacements: Object.assign( {}, newUser, {password: password} ),
@@ -1081,7 +1095,7 @@ async function deleteChannel(channelId, req, res) {
 }
 
 module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, 
-    validateEmailQuery, validateUserIdQuery, getUser, modifyUser, deleteUser, 
+    validateEmailQuery, validateUserIdQuery, getUser, modifyUser, validateEmailPutQuery,deleteUser, 
     getRegions, createRegion, validateRegionNameQuery, validateRegionIdQuery, 
     getRegion, validateRegionNamePutQuery, modifyRegion, deleteRegion, 
     getCountriesRegion, getCitiesRegion, getRegionsCountriesCities, getCountries, 

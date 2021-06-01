@@ -70,6 +70,8 @@ var _require2 = require('./functions.js'),
     validateUserId = _require2.validateUserId,
     validateFirstnamePut = _require2.validateFirstnamePut,
     validateLastnamePut = _require2.validateLastnamePut,
+    validateEmailPut = _require2.validateEmailPut,
+    validatePerfil = _require2.validatePerfil,
     validatePasswordPut = _require2.validatePasswordPut,
     validateRegionName = _require2.validateRegionName,
     validateRegionId = _require2.validateRegionId,
@@ -192,7 +194,7 @@ app.get('/users/:userId', validateUser, validateUserId, function _callee4(req, r
     }
   });
 });
-app.put('/users/:userId', validateUser, validateUserId, validateFirstnamePut, validateLastnamePut, validatePasswordPut, function _callee5(req, res) {
+app.put('/users/:userId', validateUser, validateUserId, validateFirstnamePut, validateLastnamePut, validateEmailPut, validatePerfil, validatePasswordPut, function _callee5(req, res) {
   var userId;
   return regeneratorRuntime.async(function _callee5$(_context5) {
     while (1) {

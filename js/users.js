@@ -20,11 +20,29 @@ const msgUserPassRep = document.getElementById('msgUserPassRep')
 const darkImageUsers = document.getElementById('darkImageUsers')
 const cancelDltUserBtn = document.getElementById('cancelDltUserBtn')
 const deleteUserBtn = document.getElementById('deleteUserBtn')
+const darkImageEditUser = document.getElementById('darkImageEditUser')
+const userNameEdit = document.getElementById('userNameEdit')
+const userLastnameEdit = document.getElementById('userLastnameEdit')
+const userEmailEdit = document.getElementById('userEmailEdit')
+const perfilSltEdit = document.getElementById('perfilSltEdit')
+const closeEditUser = document.getElementById('closeEditUser')
+const msgUserNameEdit = document.getElementById('msgUserNameEdit')
+const msgUserLastnameEdit = document.getElementById('msgUserLastnameEdit')
+const msgUserEmailEdit = document.getElementById('msgUserEmailEdit')
+const perfilListEdit = document.getElementById('perfilListEdit')
+const saveEditedUser = document.getElementById('saveEditedUser')
+const userPassEdit = document.getElementById('userPassEdit')
+const userPassRepEdit = document.getElementById('userPassRepEdit')
+const msgUserPassRepEdit = document.getElementById('msgUserPassRepEdit')
+const msgUserPassEdit = document.getElementById('msgUserPassEdit')
+
+let varUserId = null
 
 let varSelectPerfil = 0
 
 let uId = {}
 
+//show users
 async function getUsers() {
     usersList.innerHTML = ''
     console.log(JSON.parse(sessionStorage.getItem('Token')))
@@ -88,7 +106,7 @@ async function getUsers() {
             }
             modalDeleteUser()
         })
-        pen.addEventListener('click', () => editUser(info/* , usersList */))
+        pen.addEventListener('click', () => userEdition(info/* , usersList */))
     })
 }
 
@@ -102,19 +120,6 @@ function outRow(ellipsis, trash, pen) {
     ellipsis.classList.remove('none')
     trash.classList.add('none')
     pen.classList.add('none')
-}
-
-async function editUser(info, usersList) {  //esta funcion la voy a hacer luego, para ver
-    const options = {                   //primero como se hace en contactos, hacer
-        method: 'PUT',                  //diseño correspondiente y generar json para el body
-        headers: {
-            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
-        }
-    }
-    const response = await fetch(`http://localhost:3000/users/${info.userId}`, options)
-    const data = await response.json()
-    console.log(data)
-    getUsers()
 }
 
 //add user
@@ -204,6 +209,7 @@ async function addContact(event) {
     
     validateUserData(user, userName, msgUserName, userLastname, msgUserLastname, userEmail, msgUserEmail, 
         perfilSlt, perfilList, userPass, msgUserPass, userPassRep, msgUserPassRep)
+
     const options = {
         method: 'POST',
         body: JSON.stringify(user),
@@ -276,7 +282,7 @@ function validateUserData(user, usName, msgUsName, usLastname, msgUsLastname, us
         usPass.classList.add('border-wrong')
         msgUsPass.style.color = '#F03738'
         usPass.addEventListener('keyup', () => {
-            if(usPass.value !== '') {
+            if(usPass.value !== '' && (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$@$!%*?&#.$($)$-$_]{4,15}$/.test(usPass.value))) {
                 usPass.classList.remove('border-wrong')
                 msgUsPass.style.color = '#333333'
             }
@@ -286,9 +292,44 @@ function validateUserData(user, usName, msgUsName, usLastname, msgUsLastname, us
         usPassRep.classList.add('border-wrong')
         msgUsPassRep.classList.add('visible')
         usPassRep.addEventListener('keyup', () => {
-            if(usPassRep.value !== '') {
+            if(usPassRep.value !== '' && (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$@$!%*?&#.$($)$-$_]{4,15}$/.test(usPassRep.value))) {
                 usPassRep.classList.remove('border-wrong')
                 msgUsPassRep.classList.remove('visible')
+            }
+        })
+    }
+}
+
+function validatePass(userPassEdit, msgUserPassRep, userPassRepEdit, msgUserPassRepEdit) {
+    if(userPassEdit.value === '') {
+        userPassEdit.classList.remove('border-wrong')
+        msgUserPassRep.style.color = '#333333'
+    }
+    if(userPassEdit.value !== '' && !(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$@$!%*?&#.$($)$-$_]{4,15}$/.test(userPassEdit.value))) {
+        userPassEdit.classList.add('border-wrong')
+        msgUserPassRep.style.color = '#F03738'
+        userPassEdit.addEventListener('keyup', () => {
+            if(userPassEdit.value === '') {
+                userPassEdit.classList.remove('border-wrong')
+                msgUserPassRep.style.color = '#333333'
+            }
+            if(userPassEdit.value !== '' && (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$@$!%*?&#.$($)$-$_]{4,15}$/.test(userPassEdit.value))) {
+                userPassEdit.classList.remove('border-wrong')
+                msgUserPassRep.style.color = '#333333'
+            }
+        })
+    }
+    if(userPassRepEdit.value === '') {
+        userPassRepEdit.classList.remove('border-wrong')
+        msgUserPassRepEdit.classList.remove('visible')
+    }
+    if(userPassRepEdit.value !== '' && !(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$@$!%*?&#.$($)$-$_]{4,15}$/.test(userPassRepEdit.value)) || userPassRepEdit.value !== userPassEdit.value) {
+        userPassRepEdit.classList.add('border-wrong')
+        msgUserPassRepEdit.classList.add('visible')
+        userPassRepEdit.addEventListener('keyup', () => {
+            if(userPassRepEdit.value !== '' && !(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$@$!%*?&#.$($)$-$_]{4,15}$/.test(userPassRepEdit.value)) && userPassRepEdit.value !== userPassEdit.value) {
+                userPassRepEdit.classList.remove('border-wrong')
+                msgUserPassRepEdit.classList.remove('visible')
             }
         })
     }
@@ -338,4 +379,122 @@ async function deleteUser(info, event) {
     console.log(data)
     closeWindowNewUser(event)
     getUsers()
+}
+
+//edit user
+async function userEdition(info) {
+    varUserId = +info.userId
+    console.log(varUserId)
+    /* varCompCityId = +info.cityId
+    varCompId = +info.companyId */
+    /* varCompanyId = +info.companyId
+    varEditContact = info.contactId */
+    
+    window.scrollTo(0, 0)
+    /* body.classList.add('modal') */
+    darkImageEditUser.classList.remove('none')
+    darkImageEditUser.style.visibility = 'visible'
+    /* companyCityEdit.style.top = '0px' */
+    /* main.classList.add('height-add-ctc') */
+    
+    const options = {                   
+        method: 'GET',  
+        headers: {
+            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`
+        }
+    }
+    const response = await fetch(`http://localhost:3000/users/${varUserId}`, options)
+    const data = await response.json()
+    console.log(data)
+    loadUserData(data)
+}
+
+function loadUserData(data) {
+    userNameEdit.value = data.firstname
+    userLastnameEdit.value = data.lastname
+    userEmailEdit.value = data.email
+
+    if(data.perfil === '') {
+        perfilSltEdit.innerHTML = 'Seleccionar perfil<i class="fas fa-caret-down"></i>'
+    } else {
+        perfilSltEdit.innerHTML = `${data.perfil}<i class="fas fa-caret-down"></i>`
+    }
+}
+
+//close window edit user
+closeEditUser.addEventListener('click', (event) => closeWindowEditUser(event))
+
+function closeWindowEditUser(event) {
+    event.preventDefault()
+    darkImageEditUser.classList.add('none')
+    /* companyListEdit.classList.add('none') */
+    /* body.classList.remove('modal') */
+
+    /* main.classList.remove('height-add-ctc') */
+    userNameEdit.classList.remove('border-wrong')
+    msgUserNameEdit.classList.remove('visible')
+    userLastnameEdit.classList.remove('border-wrong')
+    msgUserLastnameEdit.classList.remove('visible')
+    userEmailEdit.classList.remove('border-wrong')
+    msgUserEmailEdit.classList.remove('visible')
+    perfilSltEdit.classList.remove('border-wrong')
+    userPassEdit.classList.remove('border-wrong')
+    msgUserPassEdit.style.color = '#333333'
+    userPassRepEdit.classList.remove('border-wrong')
+    msgUserPassRepEdit.classList.remove('visible')
+
+    msgUserEmailEdit.innerText = 'Error en datos ingresados'
+
+    
+    /* varSelectCityComp = 0 */
+    /* varCityId = null */
+    varUserId = null
+}
+
+//select perfil
+perfilSltEdit.addEventListener('click', () => {
+    if(varSelectPerfil === 0) {
+        const perfilClass = 'perfil-edit'
+        showPerfil(perfilListEdit, perfilSltEdit, perfilClass)
+    } else if(varSelectPerfil === 1) {
+        perfilListEdit.classList.add('no-visible')
+        varSelectPerfil = 0
+    }
+})
+
+//save edited user
+saveEditedUser.addEventListener('click', (event) => editUser(event))
+
+async function editUser(event) {
+    event.preventDefault()  
+    const modifiedUser = {
+        firstname: userNameEdit.value,
+        lastname: userLastnameEdit.value,
+        email: userEmailEdit.value,
+        perfil: perfilSltEdit.innerText,
+        password: userPassEdit.value,
+    }
+    
+    validateUserData(modifiedUser, userNameEdit, msgUserNameEdit, userLastnameEdit, msgUserLastnameEdit, 
+        userEmailEdit, msgUserEmailEdit, perfilSltEdit, perfilListEdit, userPassEdit, msgUserPassRep, userPassRepEdit, msgUserPassRepEdit)
+    validatePass(userPassEdit, msgUserPassRep, userPassRepEdit, msgUserPassRepEdit)
+        const options = {                   
+        method: 'PUT',  
+        body: JSON.stringify(modifiedUser),
+        headers: {
+            Authorization: `token ${JSON.parse(sessionStorage.getItem('Token'))}`,
+            "Content-Type": "application/json"
+        }
+    }
+    const response = await fetch(`http://localhost:3000/users/${varUserId}`, options)
+    /* console.log(response.text()) */
+    if(response.status === 409) {
+        userEmailEdit.classList.add('border-wrong')
+        msgUserEmailEdit.classList.add('visible')
+        msgUserEmailEdit.innerText = 'El email ya existe'
+    }
+    const data = await response.json()
+    console.log(data)
+    closeWindowEditUser(event)
+    getUsers() 
 }

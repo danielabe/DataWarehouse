@@ -15,7 +15,7 @@ const { selectUserLogin, getUsers, createUser, getUser, modifyUser, deleteUser, 
 
 const { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
     validateEmail, validatePassword, validateUser, validateUserId, validateFirstnamePut,
-    validateLastnamePut, validatePasswordPut, validateRegionName, validateRegionId, 
+    validateLastnamePut, validateEmailPut, validatePerfil, validatePasswordPut, validateRegionName, validateRegionId, 
     validateRegionNamePut, validateCountryName, validateCountryId, validateCountryNamePut,
     validateRegionIdCountry, validateCityName, validateCityId, validateCountryIdCity,
     validateCityNamePut, validateCompanyName, validateAddress, validateCompanyId, 
@@ -69,7 +69,7 @@ app.get('/users/:userId', validateUser, validateUserId, async (req, res) => {
 }) 
 
 app.put('/users/:userId', validateUser, validateUserId, validateFirstnamePut, 
-validateLastnamePut, validatePasswordPut, async (req, res) => {
+validateLastnamePut, validateEmailPut, validatePerfil, validatePasswordPut, async (req, res) => {
     const userId = +req.params.userId
     modifyUser(userId, req, res)
 })

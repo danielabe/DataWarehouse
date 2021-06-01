@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 
 const authorizationPassword = 'tmo$Q$bG5xR56'
 
-const { validateLoginQuery, validateEmailQuery, validateUserIdQuery, 
+const { validateLoginQuery, validateEmailQuery, validateUserIdQuery, validateEmailPutQuery,
     validateRegionNameQuery, validateRegionIdQuery, validateRegionNamePutQuery,
     validateCountryNameQuery, validateCountryIdQuery, validateCountryNamePutQuery,
     validateRegionIdCountryQuery, validateCityNameQuery, validateCityIdQuery,
@@ -78,17 +78,26 @@ async function validateUserId(req, res, next) {
 }
 
 function validateFirstnamePut(req, res, next) {
-    if(req.body.firstname) {
+    /* if(req.body.firstname) { */
         if(req.body.firstname.length >= 1 && req.body.firstname.length <= 64) next()  
         else res.status(400).send("The firstname length is wrong").end()
-    } else next()
+    /* } else next() */
 }
 
 function validateLastnamePut(req, res, next) {
-    if(req.body.lastname) {
+    /* if(req.body.lastname) { */
         if(req.body.lastname.length >= 1 && req.body.lastname.length <= 64) next()  
         else res.status(400).send("The lastname length is wrong").end()
-    } else next()
+    /* } else next() */
+}
+
+async function validateEmailPut(req, res, next) {
+    await validateEmailPutQuery(req, res, next)
+}
+
+function validatePerfil(req, res, next) { 
+    if(req.body.perfil === 'Admin' || req.body.perfil === 'Básico') next()
+    else res.status(400).send("The perfil is wrong").end()
 }
 
 function validatePasswordPut(req, res, next) {
@@ -283,7 +292,7 @@ async function validateChannelNamePut(req, res, next) {
 
 module.exports = { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
     validateEmail, validatePassword, validateUser, validateUserId, validateFirstnamePut, 
-    validateLastnamePut, validatePasswordPut, validateRegionName, validateRegionId, 
+    validateLastnamePut, validateEmailPut, validatePerfil, validatePasswordPut, validateRegionName, validateRegionId, 
     validateRegionNamePut, validateCountryName, validateCountryId, validateCountryNamePut,
     validateRegionIdCountry, validateCityName, validateCityId, validateCountryIdCity,
     validateCityNamePut, validateCompanyName, validateAddress, validateEmailCompanies, 

@@ -598,6 +598,56 @@
                     </label>
                 </form>
             </div>
+            <div id="darkImageEditUser" class="dark-image dk-img-nuser none">
+                <div class="head-window hd-user-wd">
+                    <p class="wind-title">Editar usuario</p>
+                    <i id="closeEditUser" class="fas fa-times"></i>
+                </div>
+                <form class="window-white user-window">
+                    <button id="deleteUserEdit" class="btn-white btn-red">Eliminar usuario</button>
+                    <button id="saveEditedUser" class="btn-grey btn-green">Guardar usuario</button>
+                </form>
+                <form id="editUserForm" class="new-form nuser-form">
+                    <label class="form-lbl us-lbl" for="userName">
+                        <p>Nombre<span class="red-asterisk">*</span></p>
+                        <input id="userNameEdit" class="field ncnt-input" type="text">
+                        <p id="msgUserNameEdit" class="msg-container">Este campo es obligatorio</p>
+                    </label>
+                    <label class="form-lbl us-lbl" for="userLastname">
+                        <p>Apellido<span class="red-asterisk">*</span></p>
+                        <input id="userLastnameEdit" class="field ncnt-input" type="text">
+                        <p id="msgUserLastnameEdit" class="msg-container">Este campo es obligatorio</p>
+                    </label>
+                    <label class="form-lbl us-lbl" for="userEmail">
+                        <p>Email<span class="red-asterisk">*</span></p>
+                        <input id="userEmailEdit" class="field ncnt-input" type="text">
+                        <p id="msgUserEmailEdit" class="msg-container">Error en datos ingresados</p>
+                    </label>
+                    <div id="userPerfilEdit" class="form-lbl us-lbl comp-lbl us-height">
+                        <p>Perfil<span class="red-asterisk">*</span></p>
+                        <div id="perfilSltEdit" class="field ncnt-input select-company">
+                            Seleccionar perfil<i class="fas fa-caret-down"></i>
+                        </div>
+                        <!-- <p id="msgLast" class="msg-container">Este campo es obligatorio</p> -->
+                        <ul id="perfilListEdit" class="company-list no-visible">
+                            <li class="sug-comp perfil-edit">Básico</li>
+                            <li class="sug-comp perfil-edit">Admin</li>
+                        </ul>
+                        <!-- <p id="msgUserPass" class="msg-container">Este campo es obligatorio</p> -->
+                    </div>
+                    <label class="form-lbl us-lbl" for="userPass">
+                        <p>Contraseña<span class="red-asterisk">*</span></p>
+                        <input id="userPassEdit" class="field ncnt-input" type="text">
+                        <p id="msgUserPassEdit" class="msg-pass">La contraseña debe tener de 4 a 15 caracteres, 
+                            al menos 1 letra, al menos 1 número y no debe contener espacios en blanco</p>
+                    </label>
+                    <label class="form-lbl us-lbl" for="userPassRep">
+                        <p>Repetir contraseña<span class="red-asterisk">*</span></p>
+                        <input id="userPassRepEdit" class="field ncnt-input" type="text">
+                        <p id="msgUserPassRepEdit" class="msg-container">Error en datos ingresados</p>
+                    </label>
+                </form>
+            </div>
             <div id="darkImageUsers" class="dark-image dk-img-cont none">
                 <div class="window-del-cont">
                     <img class="delete-contact" src="styles/images/delete-contact.png" alt="Contact"/>
