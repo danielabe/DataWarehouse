@@ -615,20 +615,31 @@ async function modifyCompany(companyId, req, res) {
 }
 
 async function deleteCompany(companyId, req, res) {
-    const company = await db.query(`
-    SELECT company_id, company_name, c.city_id, city_name, ci.country_id, country_name, 
-    co.region_id, region_name, address
-    FROM companies c
-    JOIN cities ci ON ci.city_id = c.city_id
-    JOIN countries co ON co.country_id = ci.country_id
-    JOIN regions re ON re.region_id = co.region_id
-    WHERE company_id = ?
-    `, { replacements: [companyId], type: QueryTypes.SELECT })
-    const deleted = await db.query(`DELETE FROM companies WHERE company_id = ?`, {
-        replacements: [companyId],
-        type: QueryTypes.DELETE
+    //hacer magia
+    const companiesId = await db.query(`SELECT company_id FROM contacts`, { 
+        type: QueryTypes.SELECT 
     })
-    res.status(200).json(company[0])
+    const ids = companiesId.map(id => id.company_id)
+    console.log(ids + '///' + companyId)
+    if(!ids.includes(companyId)) {
+        next()
+        const company = await db.query(`
+        SELECT company_id, company_name, c.city_id, city_name, ci.country_id, country_name, 
+        co.region_id, region_name, address
+        FROM companies c
+        JOIN cities ci ON ci.city_id = c.city_id
+        JOIN countries co ON co.country_id = ci.country_id
+        JOIN regions re ON re.region_id = co.region_id
+        WHERE company_id = ?
+        `, { replacements: [companyId], type: QueryTypes.SELECT })
+        const deleted = await db.query(`DELETE FROM companies WHERE company_id = ?`, {
+            replacements: [companyId],
+            type: QueryTypes.DELETE
+        })
+        res.status(200).json(company[0])
+    }
+    else res.status(400).send("You cannot delete this company").end()
+    /* const channelsArray = channelsIdDB.map(id => id.channel_id) */
 }
 
 //contacts

@@ -607,7 +607,7 @@ app["delete"]('/companies/:companyId', validateCompanyId, function _callee30(req
       switch (_context30.prev = _context30.next) {
         case 0:
           companyId = +req.params.companyId;
-          deleteCompany(companyId, req, res); //no puedo borrar una ciudad si tengo contactos o compañias en ella 
+          deleteCompany(companyId, req, res); //no puedo borrar una compañía si tengo contactos  en ella 
           //o borro todos los contactos o compañias que tiene
 
         case 2:

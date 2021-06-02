@@ -1530,30 +1530,53 @@ function modifyCompany(companyId, req, res) {
 }
 
 function deleteCompany(companyId, req, res) {
-  var company, deleted;
+  var companiesId, ids, company, deleted;
   return regeneratorRuntime.async(function deleteCompany$(_context49) {
     while (1) {
       switch (_context49.prev = _context49.next) {
         case 0:
           _context49.next = 2;
-          return regeneratorRuntime.awrap(db.query("\n    SELECT company_id, company_name, c.city_id, city_name, ci.country_id, country_name, \n    co.region_id, region_name, address\n    FROM companies c\n    JOIN cities ci ON ci.city_id = c.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    WHERE company_id = ?\n    ", {
-            replacements: [companyId],
+          return regeneratorRuntime.awrap(db.query("SELECT company_id FROM contacts", {
             type: QueryTypes.SELECT
           }));
 
         case 2:
+          companiesId = _context49.sent;
+          ids = companiesId.map(function (id) {
+            return id.company_id;
+          });
+          console.log(ids + '///' + companyId);
+
+          if (ids.includes(companyId)) {
+            _context49.next = 16;
+            break;
+          }
+
+          next();
+          _context49.next = 9;
+          return regeneratorRuntime.awrap(db.query("\n        SELECT company_id, company_name, c.city_id, city_name, ci.country_id, country_name, \n        co.region_id, region_name, address\n        FROM companies c\n        JOIN cities ci ON ci.city_id = c.city_id\n        JOIN countries co ON co.country_id = ci.country_id\n        JOIN regions re ON re.region_id = co.region_id\n        WHERE company_id = ?\n        ", {
+            replacements: [companyId],
+            type: QueryTypes.SELECT
+          }));
+
+        case 9:
           company = _context49.sent;
-          _context49.next = 5;
+          _context49.next = 12;
           return regeneratorRuntime.awrap(db.query("DELETE FROM companies WHERE company_id = ?", {
             replacements: [companyId],
             type: QueryTypes.DELETE
           }));
 
-        case 5:
+        case 12:
           deleted = _context49.sent;
           res.status(200).json(company[0]);
+          _context49.next = 17;
+          break;
 
-        case 7:
+        case 16:
+          res.status(400).send("You cannot delete this company").end();
+
+        case 17:
         case "end":
           return _context49.stop();
       }

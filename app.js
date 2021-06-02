@@ -211,7 +211,7 @@ validateAddressPut, validateTelephone, validateCityIdPut,  async (req, res) => {
 app.delete('/companies/:companyId', validateCompanyId, async (req, res) => {
     const companyId = +req.params.companyId
     deleteCompany(companyId, req, res)
-    //no puedo borrar una ciudad si tengo contactos o compañias en ella 
+    //no puedo borrar una compañía si tengo contactos  en ella 
     //o borro todos los contactos o compañias que tiene
 })
 
