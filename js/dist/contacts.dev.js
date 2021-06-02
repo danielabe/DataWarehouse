@@ -139,6 +139,10 @@ var varCheckboxAll = 'unselected'; //show contacts
 
 contacts.addEventListener('click', function () {
   getContacts();
+  checkboxAll.classList = 'far fa-square';
+  counterAndDelete.classList.add('hidden');
+  varCheckboxAll = 'unselected';
+  contIdArray = [];
 });
 
 function getContacts() {
@@ -328,6 +332,7 @@ function modalDelete() {
     body.classList.remove('modal');
     darkImageContacts.classList.add('none');
     darkImageEditCtc.style.visibility = 'visible';
+    varDelete = 0;
   });
   /* deleteContactBtn.addEventListener('click', () => {
       body.classList.remove('modal')
@@ -431,9 +436,12 @@ function deleteContacts() {
     });
   });
   searchInput.value = '';
+  setTimeout(function () {
+    getContacts();
+  }, 500);
   checkAfterSortAndSearch(); //no se si funciona el data, con o sin data va igual, no se si es correcto
 
-  getContacts();
+  varDelete = 0;
 } //sort columns
 
 
@@ -1615,6 +1623,7 @@ function closeWindowNewContact(event) {
   counterAndDelete.classList.add('hidden');
   checkboxAll.classList = 'far fa-square';
   varCheckboxAll = 'unselected';
+  contIdArray = [];
   getContacts();
 } //save contact
 
@@ -1990,6 +1999,7 @@ function closeWindowEditContact(event) {
   counterAndDelete.classList.add('hidden');
   checkboxAll.classList = 'far fa-square';
   varCheckboxAll = 'unselected';
+  contIdArray = [];
   getContacts();
 } //select company
 
@@ -2227,6 +2237,7 @@ deleteContactBtn.addEventListener('click', function () {
   body.classList.remove('modal');
   darkImageContacts.classList.add('none');
   darkImageEditCtc.classList.add('none');
+  console.log(varDelete);
 
   if (varDelete === 0) {
     deleteContact(cId);
@@ -2246,8 +2257,9 @@ deleteContactBtn.addEventListener('click', function () {
 //queries.js else res.status(409).send("The city already exists").end() ahora es 409
 //queries.js else res.status(409).send("The city already exists").end() ahora es 409
 //corregir postman (creo que solo los put)
-//si no selecciono canal no puedo crear contacto
 //borrar ubicaciones?
 //borrar en cascada
+//sacar canales en contacto
+//si no selecciono canal no puedo crear contacto, me lo limitan los middlewares --> se los saque
 //edita sin direccion --> arreglada en el back pero queda igual a la otra funcion sin put
 //si tengo ganas cambiar los id de los canalaes en el html

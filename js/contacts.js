@@ -142,6 +142,10 @@ let varCheckboxAll = 'unselected'
 //show contacts 
 contacts.addEventListener('click', () => {
     getContacts()
+    checkboxAll.classList = 'far fa-square'
+    counterAndDelete.classList.add('hidden')
+    varCheckboxAll = 'unselected'
+    contIdArray = []
 })
 
 async function getContacts() {
@@ -295,6 +299,7 @@ function modalDelete() {
         body.classList.remove('modal')
         darkImageContacts.classList.add('none')
         darkImageEditCtc.style.visibility = 'visible'
+        varDelete = 0
     })
 
     /* deleteContactBtn.addEventListener('click', () => {
@@ -353,8 +358,10 @@ function deleteContacts() {
         /* getContacts() */
     })
     searchInput.value = ''
+    
+    setTimeout(function(){ getContacts() }, 500)
     checkAfterSortAndSearch() //no se si funciona el data, con o sin data va igual, no se si es correcto
-    getContacts()
+    varDelete = 0
 }
 
 //sort columns
@@ -1339,6 +1346,7 @@ function closeWindowNewContact(event) {
     counterAndDelete.classList.add('hidden')
     checkboxAll.classList = 'far fa-square'
     varCheckboxAll = 'unselected'
+    contIdArray = []
     getContacts()
 }
 
@@ -1377,6 +1385,7 @@ async function addContact(event) {
     validateData(contact, firstname, msgFirst, lastname, msgLast, position, msgPos, email, msgEmail, 
         company, selectCompany, regionSelect, regionsList, countrySelect, countriesList, citySelect, 
         citiesList, address, msgAddress)
+
     const options = {
         method: 'POST',
         body: JSON.stringify(contact),
@@ -1643,6 +1652,7 @@ function closeWindowEditContact(event) {
     counterAndDelete.classList.add('hidden')
     checkboxAll.classList = 'far fa-square'
     varCheckboxAll = 'unselected'
+    contIdArray = []
     getContacts()
 }
 
@@ -1850,6 +1860,7 @@ deleteContactBtn.addEventListener('click', () => {
     body.classList.remove('modal')
     darkImageContacts.classList.add('none')
     darkImageEditCtc.classList.add('none')
+    console.log(varDelete)
     if(varDelete === 0) {
         deleteContact(cId)
     } else if (varDelete === 1) {
@@ -1876,8 +1887,10 @@ deleteContactBtn.addEventListener('click', () => {
 //queries.js else res.status(409).send("The city already exists").end() ahora es 409
 //corregir postman (creo que solo los put)
 
-//si no selecciono canal no puedo crear contacto
+
 //borrar ubicaciones?
 //borrar en cascada
+//sacar canales en contacto
+//si no selecciono canal no puedo crear contacto, me lo limitan los middlewares --> se los saque
 //edita sin direccion --> arreglada en el back pero queda igual a la otra funcion sin put
 //si tengo ganas cambiar los id de los canalaes en el html

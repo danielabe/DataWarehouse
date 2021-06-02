@@ -632,7 +632,10 @@ app.get('/contacts', function _callee31(req, res) {
     }
   });
 });
-app.post('/contacts', validateFirstname, validateLastname, validatePosition, validateEmailContacts, validateCompanyId, validateCityId, validateAddress, validateInterest, validateChannelId, validateUserAccount, validatePreference, function _callee32(req, res) {
+app.post('/contacts', validateFirstname, validateLastname, validatePosition, validateEmailContacts, validateCompanyId, validateCityId, validateAddress, validateInterest,
+/* validateChannelId, 
+validateUserAccount, validatePreference, */
+function _callee32(req, res) {
   var newContact, contactId, insertChannels, insertedContact, insertedChannels, contactAndChannels;
   return regeneratorRuntime.async(function _callee32$(_context32) {
     while (1) {
