@@ -218,11 +218,18 @@ async function deleteRegion(regionId, req, res) {
         replacements: [regionId],
         type: QueryTypes.SELECT 
     })
-    const deleted = await db.query(`DELETE FROM regions WHERE region_id = ?`, {
-        replacements: [regionId],
-        type: QueryTypes.DELETE
+
+    const regionsId = await db.query(`SELECT region_id FROM countries`, { 
+        type: QueryTypes.SELECT 
     })
-    res.status(200).json(region)
+    const ids = regionsId.map(id => id.region_id)
+    if(!ids.includes(regionId)) {
+        const deleted = await db.query(`DELETE FROM regions WHERE region_id = ?`, {
+            replacements: [regionId],
+            type: QueryTypes.DELETE
+        })
+        res.status(200).json(region)
+    } else res.status(400).send("You cannot delete this region").end()
 }
 
 async function getCountriesRegion(regionId, req, res) {

@@ -547,7 +547,7 @@ function modifyRegion(regionId, req, res) {
 }
 
 function deleteRegion(regionId, req, res) {
-  var region, deleted;
+  var region, regionsId, ids, deleted;
   return regeneratorRuntime.async(function deleteRegion$(_context18) {
     while (1) {
       switch (_context18.prev = _context18.next) {
@@ -561,16 +561,37 @@ function deleteRegion(regionId, req, res) {
         case 2:
           region = _context18.sent;
           _context18.next = 5;
+          return regeneratorRuntime.awrap(db.query("SELECT region_id FROM countries", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 5:
+          regionsId = _context18.sent;
+          ids = regionsId.map(function (id) {
+            return id.region_id;
+          });
+
+          if (ids.includes(regionId)) {
+            _context18.next = 14;
+            break;
+          }
+
+          _context18.next = 10;
           return regeneratorRuntime.awrap(db.query("DELETE FROM regions WHERE region_id = ?", {
             replacements: [regionId],
             type: QueryTypes.DELETE
           }));
 
-        case 5:
+        case 10:
           deleted = _context18.sent;
           res.status(200).json(region);
+          _context18.next = 15;
+          break;
 
-        case 7:
+        case 14:
+          res.status(400).send("You cannot delete this region").end();
+
+        case 15:
         case "end":
           return _context18.stop();
       }
