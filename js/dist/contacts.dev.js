@@ -169,14 +169,15 @@ function getContacts() {
           data = _context.sent;
           console.log(data);
           dataCheckbox = data;
-          newData = data;
+          /* newData = data */
+
           renderResults(data);
           /* checkboxAll.addEventListener('click', () => checkboxAllFunction(data)) */
 
           /* varSortName = 0  */
           // no se para que esta este
 
-        case 12:
+        case 11:
         case "end":
           return _context.stop();
       }
@@ -197,9 +198,11 @@ checkboxAll.addEventListener('click', function () {
 });
 
 function renderResults(data) {
+  newData = data;
   /* checkboxAll.classList = 'fas fa-check-square'
           checkboxAllFunction(data)
    */
+
   contactsList.innerHTML = '';
   data.forEach(function _callee(element) {
     var info, row, checkbox, contact, country, company, position, preferredChannel, interest, actions, ellipsis, trash, pen;
@@ -369,21 +372,22 @@ function deleteContact(info
 
           darkImageEditCtc.style.visibility = 'visible';
           main.classList.remove('height-add-ctc');
+          searchInput.value = '';
           getContacts();
-          _context3.next = 19;
+          _context3.next = 20;
           break;
 
-        case 16:
-          _context3.prev = 16;
+        case 17:
+          _context3.prev = 17;
           _context3.t0 = _context3["catch"](1);
           return _context3.abrupt("return", _context3.t0);
 
-        case 19:
+        case 20:
         case "end":
           return _context3.stop();
       }
     }
-  }, null, null, [[1, 16]]);
+  }, null, null, [[1, 17]]);
 }
 
 dltCtcBtn.addEventListener('click', function () {
@@ -426,6 +430,7 @@ function deleteContacts() {
       }
     });
   });
+  searchInput.value = '';
   checkAfterSortAndSearch(); //no se si funciona el data, con o sin data va igual, no se si es correcto
 
   getContacts();
@@ -741,7 +746,9 @@ function selectContact(checkbox, info, data, row) {
 
 function check(checkbox, info, data, row) {
   checkbox.classList = 'fas fa-check-square u-item select';
-  row.style.backgroundColor = 'rgba(142, 199, 252, 0.5)';
+  /* row.style.backgroundColor = 'rgba(142, 199, 252, 0.5)' */
+
+  row.classList.add('selected-row');
   contIdArray = contIdArray.concat(info.contactId);
   console.log(contIdArray);
   contactCounter(contIdArray);
@@ -750,7 +757,9 @@ function check(checkbox, info, data, row) {
 
 function uncheck(checkbox, info, data, row) {
   checkbox.classList = 'far fa-square u-item select';
-  row.style.backgroundColor = 'white';
+  /* row.style.backgroundColor = 'white' */
+
+  row.classList.remove('selected-row');
   var index = contIdArray.indexOf(info.contactId);
   contIdArray.splice(index, 1);
   console.log(contIdArray);
@@ -802,7 +811,7 @@ function checkboxAllFunction(data) {
       contIdArray = contIdArray.concat(element.contact_id);
     });
     rowContact.forEach(function (row) {
-      return row.style.backgroundColor = 'rgba(142, 199, 252, 0.5)';
+      return row.classList.add('selected-row');
     });
     console.log(contIdArray);
     contactCounter(contIdArray);
@@ -820,7 +829,7 @@ function checkboxAllFunction(data) {
       element.classList = 'far fa-square u-item select';
     });
     rowContact.forEach(function (row) {
-      return row.style.backgroundColor = 'white';
+      return row.classList.remove('selected-row');
     });
     contactCounter(contIdArray);
     varCheckboxAll = 'unselected';
@@ -838,7 +847,7 @@ function checkboxAllFunction(data) {
       element.classList = 'far fa-square u-item select';
     });
     rowContact.forEach(function (row) {
-      return row.style.backgroundColor = 'white';
+      return row.classList.remove('selected-row');
     });
     contactCounter(contIdArray);
     varCheckboxAll = 'unselected';
@@ -1530,6 +1539,7 @@ closeNewCtc.addEventListener('click', () => getContacts()) */
 
 function closeWindowNewContact(event) {
   event.preventDefault();
+  searchInput.value = '';
   firstname.value = '';
   lastname.value = '';
   position.value = '';
@@ -1602,6 +1612,10 @@ function closeWindowNewContact(event) {
   varEnablePrefL = 0;
   varSelectCompany = 0;
   varSelectInterest = 0;
+  counterAndDelete.classList.add('hidden');
+  checkboxAll.classList = 'far fa-square';
+  varCheckboxAll = 'unselected';
+  getContacts();
 } //save contact
 
 
@@ -1950,6 +1964,7 @@ function closeWindowEditContact(event) {
   addressEdit.classList.remove('border-wrong');
   msgAddressEdit.classList.remove('visible');
   citySelectEdit.classList.remove('disable');
+  searchInput.value = '';
   telephoneEdit.value = '';
   whatsappEdit.value = '';
   instagramEdit.value = '';
@@ -1972,6 +1987,9 @@ function closeWindowEditContact(event) {
   varRegId = null;
   varCountId = null;
   varCityId = null;
+  counterAndDelete.classList.add('hidden');
+  checkboxAll.classList = 'far fa-square';
+  varCheckboxAll = 'unselected';
   getContacts();
 } //select company
 
@@ -2228,7 +2246,7 @@ deleteContactBtn.addEventListener('click', function () {
 //queries.js else res.status(409).send("The city already exists").end() ahora es 409
 //queries.js else res.status(409).send("The city already exists").end() ahora es 409
 //corregir postman (creo que solo los put)
-//cuando ordeno no tiene hover
+//si no selecciono canal no puedo crear contacto
 //borrar ubicaciones?
 //borrar en cascada
 //edita sin direccion --> arreglada en el back pero queda igual a la otra funcion sin put

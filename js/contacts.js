@@ -157,7 +157,7 @@ async function getContacts() {
     const data = await response.json()
     console.log(data)
     dataCheckbox = data
-    newData = data
+    /* newData = data */
     renderResults(data)
     /* checkboxAll.addEventListener('click', () => checkboxAllFunction(data)) */
     /* varSortName = 0  */// no se para que esta este
@@ -173,7 +173,7 @@ function checkAfterSortAndSearch(data) {
 checkboxAll.addEventListener('click', () => checkboxAllFunction(dataCheckbox))
 
 function renderResults(data) {
-    
+    newData = data
     /* checkboxAll.classList = 'fas fa-check-square'
             checkboxAllFunction(data)
      */
@@ -324,6 +324,7 @@ async function deleteContact(info/* , contactsList */) {
         checkAfterSortAndSearch() //no se si funciona el data, con o sin data va igual, no se si es correcto
         darkImageEditCtc.style.visibility = 'visible'
         main.classList.remove('height-add-ctc')
+        searchInput.value = ''
         getContacts()
     } catch(reason) {
         return reason
@@ -351,6 +352,7 @@ function deleteContacts() {
         const data = await response.json()
         /* getContacts() */
     })
+    searchInput.value = ''
     checkAfterSortAndSearch() //no se si funciona el data, con o sin data va igual, no se si es correcto
     getContacts()
 }
@@ -617,7 +619,8 @@ function selectContact(checkbox, info, data, row) {
 
 function check(checkbox, info, data, row) {
     checkbox.classList = 'fas fa-check-square u-item select'
-    row.style.backgroundColor = 'rgba(142, 199, 252, 0.5)'
+    /* row.style.backgroundColor = 'rgba(142, 199, 252, 0.5)' */
+    row.classList.add('selected-row')
     contIdArray = contIdArray.concat(info.contactId)
     console.log(contIdArray)
     contactCounter(contIdArray)
@@ -626,7 +629,8 @@ function check(checkbox, info, data, row) {
 
 function uncheck(checkbox, info, data, row) {
     checkbox.classList = 'far fa-square u-item select'
-    row.style.backgroundColor = 'white'
+    /* row.style.backgroundColor = 'white' */
+    row.classList.remove('selected-row')
     const index = contIdArray.indexOf(info.contactId)
     contIdArray.splice(index, 1)
     console.log(contIdArray)
@@ -672,7 +676,7 @@ function checkboxAllFunction(data) {
         data.forEach(element => {
             contIdArray = contIdArray.concat(element.contact_id)
         })
-        rowContact.forEach(row => row.style.backgroundColor = 'rgba(142, 199, 252, 0.5)')
+        rowContact.forEach(row => row.classList.add('selected-row'))
         console.log(contIdArray)
         contactCounter(contIdArray)
         varCheckboxAll = 'selected'
@@ -686,7 +690,7 @@ function checkboxAllFunction(data) {
         allConts.forEach(element => {
             element.classList = 'far fa-square u-item select'
         })
-        rowContact.forEach(row => row.style.backgroundColor = 'white')
+        rowContact.forEach(row => row.classList.remove('selected-row'))
         contactCounter(contIdArray)
         varCheckboxAll = 'unselected'
         console.log(varCheckboxAll)
@@ -700,7 +704,7 @@ function checkboxAllFunction(data) {
         allConts.forEach(element => {
             element.classList = 'far fa-square u-item select'
         })
-        rowContact.forEach(row => row.style.backgroundColor = 'white')
+        rowContact.forEach(row => row.classList.remove('selected-row'))
         contactCounter(contIdArray)
         varCheckboxAll = 'unselected'
     }
@@ -1255,6 +1259,7 @@ closeNewCtc.addEventListener('click', () => getContacts()) */
 
 function closeWindowNewContact(event) {
     event.preventDefault()
+    searchInput.value = ''
     firstname.value = ''
     lastname.value = ''
     position.value = ''
@@ -1330,6 +1335,11 @@ function closeWindowNewContact(event) {
     varEnablePrefL = 0
     varSelectCompany = 0
     varSelectInterest = 0
+
+    counterAndDelete.classList.add('hidden')
+    checkboxAll.classList = 'far fa-square'
+    varCheckboxAll = 'unselected'
+    getContacts()
 }
 
 //save contact
@@ -1605,6 +1615,7 @@ function closeWindowEditContact(event) {
     msgAddressEdit.classList.remove('visible')
     citySelectEdit.classList.remove('disable')
 
+    searchInput.value = ''
     telephoneEdit.value = ''
     whatsappEdit.value = ''
     instagramEdit.value = ''
@@ -1629,6 +1640,9 @@ function closeWindowEditContact(event) {
     varCountId = null
     varCityId = null
 
+    counterAndDelete.classList.add('hidden')
+    checkboxAll.classList = 'far fa-square'
+    varCheckboxAll = 'unselected'
     getContacts()
 }
 
@@ -1862,7 +1876,7 @@ deleteContactBtn.addEventListener('click', () => {
 //queries.js else res.status(409).send("The city already exists").end() ahora es 409
 //corregir postman (creo que solo los put)
 
-//cuando ordeno no tiene hover
+//si no selecciono canal no puedo crear contacto
 //borrar ubicaciones?
 //borrar en cascada
 //edita sin direccion --> arreglada en el back pero queda igual a la otra funcion sin put

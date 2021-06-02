@@ -55,6 +55,7 @@ function loginFunction() {
             varSect = 'noLog';
             contactsSection.classList.remove('none');
             getContacts();
+            contacts.classList.add('bold');
           }
 
           if (data.perf === 'Admin') {

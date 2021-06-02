@@ -44,6 +44,7 @@ async function loginFunction() {
        
         contactsSection.classList.remove('none')
         getContacts()
+        contacts.classList.add('bold')
     }
 
     if(data.perf === 'Admin') {
