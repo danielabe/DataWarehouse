@@ -382,6 +382,7 @@ async function editRegion() {
         const data = await response.json()
         console.log(data)
         closeWindowEditRegion()
+        getLocations()
     } catch (reason) {
         return reason
     }

@@ -2228,7 +2228,6 @@ deleteContactBtn.addEventListener('click', function () {
 //queries.js else res.status(409).send("The city already exists").end() ahora es 409
 //queries.js else res.status(409).send("The city already exists").end() ahora es 409
 //corregir postman (creo que solo los put)
-//actualizar al crud de regiones
 //cuando ordeno no tiene hover
 //borrar ubicaciones?
 //borrar en cascada

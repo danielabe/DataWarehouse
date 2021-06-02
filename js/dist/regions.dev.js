@@ -474,20 +474,21 @@ function editRegion() {
           data = _context4.sent;
           console.log(data);
           closeWindowEditRegion();
-          _context4.next = 19;
+          getLocations();
+          _context4.next = 20;
           break;
 
-        case 16:
-          _context4.prev = 16;
+        case 17:
+          _context4.prev = 17;
           _context4.t0 = _context4["catch"](4);
           return _context4.abrupt("return", _context4.t0);
 
-        case 19:
+        case 20:
         case "end":
           return _context4.stop();
       }
     }
-  }, null, null, [[4, 16]]);
+  }, null, null, [[4, 17]]);
 } //add country 
 
 
