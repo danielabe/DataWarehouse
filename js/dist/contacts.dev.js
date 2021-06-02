@@ -209,7 +209,7 @@ function renderResults(data) {
 
   contactsList.innerHTML = '';
   data.forEach(function _callee(element) {
-    var info, row, checkbox, contact, country, company, position, preferredChannel, interest, actions, ellipsis, trash, pen;
+    var info, row, checkbox, contact, country, company, position, interest, actions, ellipsis, trash, pen;
     return regeneratorRuntime.async(function _callee$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -238,7 +238,8 @@ function renderResults(data) {
             country = document.createElement('div');
             company = document.createElement('div');
             position = document.createElement('div');
-            preferredChannel = document.createElement('div');
+            /* const preferredChannel = document.createElement('div') */
+
             interest = document.createElement('div');
             actions = document.createElement('div');
             ellipsis = document.createElement('i');
@@ -248,19 +249,20 @@ function renderResults(data) {
             country.innerHTML = "<p>".concat(info.countryName, "</p><p class=\"grey-info\">").concat(info.regionName, "</p>");
             company.innerText = info.companyName;
             position.innerText = info.position;
-            info.preferredChannel.map(function (element) {
-              //esto no es obligatorio
-              var channel = document.createElement('div');
-              channel.innerText = element.channel_name;
-              channel.classList.add('channel');
-              preferredChannel.appendChild(channel);
-            });
+            /* info.preferredChannel.map(element => { //esto no es obligatorio
+                const channel = document.createElement('div')
+                channel.innerText = element.channel_name
+                channel.classList.add('channel')
+                preferredChannel.appendChild(channel)
+            }) */
+
             row.classList.add('row-contact');
             contact.classList = 'u-item col-item';
             country.classList = 'u-item col-item';
             company.classList.add('u-item');
             position.classList.add('u-item');
-            preferredChannel.classList.add('u-item');
+            /* preferredChannel.classList.add('u-item')   */
+
             interest.classList.add('u-item');
             checkbox.classList = 'far fa-square u-item select';
             actions.classList = 'u-item action';
@@ -289,7 +291,8 @@ function renderResults(data) {
             row.appendChild(country);
             row.appendChild(company);
             row.appendChild(position);
-            row.appendChild(preferredChannel);
+            /* row.appendChild(preferredChannel) */
+
             row.appendChild(interest);
             row.appendChild(actions);
             row.addEventListener('mouseover', function () {
@@ -313,7 +316,7 @@ function renderResults(data) {
               return selectContact(checkbox, info, data, row);
             });
 
-          case 48:
+          case 44:
           case "end":
             return _context2.stop();
         }
@@ -2244,22 +2247,13 @@ deleteContactBtn.addEventListener('click', function () {
   } else if (varDelete === 1) {
     deleteContacts();
   }
-}); //ui kit
-//inicio
-//nuevo contacto
-//editar contacto
-//editar canales de contacto
-//corregir swagger, put de contactos y delte de contactos
+}); //corregir swagger, put de contactos y delte de contactos
 //queries.js else res.status(409).send("The region already exists").end() ahora es 409
 //queries.js else res.status(409).send("The region already exists").end() ahora es 409
 //queries.js else res.status(409).send("The country already exists").end() ahora es 409
 //queries.js else res.status(409).send("The country already exists").end() ahora es 409
 //queries.js else res.status(409).send("The city already exists").end() ahora es 409
 //queries.js else res.status(409).send("The city already exists").end() ahora es 409
-//corregir postman (creo que solo los put)
-//borrar ubicaciones?
-//borrar en cascada
-//sacar canales en contacto
-//si no selecciono canal no puedo crear contacto, me lo limitan los middlewares --> se los saque
-//edita sin direccion --> arreglada en el back pero queda igual a la otra funcion sin put
-//si tengo ganas cambiar los id de los canalaes en el html
+//corregir postman (creo que solo los put, poner todos los datos hasta los que no quiero cambiar)
+//organizar en carpetas
+//quitar comentarios (chequeo)

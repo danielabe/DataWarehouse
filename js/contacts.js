@@ -209,7 +209,7 @@ function renderResults(data) {
         const country = document.createElement('div')
         const company = document.createElement('div')
         const position = document.createElement('div')
-        const preferredChannel = document.createElement('div')
+        /* const preferredChannel = document.createElement('div') */
         const interest = document.createElement('div')
         const actions = document.createElement('div')
         const ellipsis = document.createElement('i')
@@ -221,19 +221,19 @@ function renderResults(data) {
         company.innerText = info.companyName
         position.innerText = info.position
         
-        info.preferredChannel.map(element => { //esto no es obligatorio
+        /* info.preferredChannel.map(element => { //esto no es obligatorio
             const channel = document.createElement('div')
             channel.innerText = element.channel_name
             channel.classList.add('channel')
             preferredChannel.appendChild(channel)
-        })
+        }) */
 
         row.classList.add('row-contact')
         contact.classList = 'u-item col-item'        
         country.classList = 'u-item col-item'     
         company.classList.add('u-item')        
         position.classList.add('u-item')        
-        preferredChannel.classList.add('u-item')        
+        /* preferredChannel.classList.add('u-item')   */      
         interest.classList.add('u-item')            
         checkbox.classList = 'far fa-square u-item select'
         actions.classList = 'u-item action'
@@ -267,7 +267,7 @@ function renderResults(data) {
         row.appendChild(country)
         row.appendChild(company)
         row.appendChild(position)
-        row.appendChild(preferredChannel)
+        /* row.appendChild(preferredChannel) */
         row.appendChild(interest)
         row.appendChild(actions)
 
@@ -1868,16 +1868,6 @@ deleteContactBtn.addEventListener('click', () => {
     }
 })
 
-
-
-//ui kit
-//inicio
-//nuevo contacto
-//editar contacto
-//editar canales de contacto
-
-
-
 //corregir swagger, put de contactos y delte de contactos
 //queries.js else res.status(409).send("The region already exists").end() ahora es 409
 //queries.js else res.status(409).send("The region already exists").end() ahora es 409
@@ -1885,12 +1875,7 @@ deleteContactBtn.addEventListener('click', () => {
 //queries.js else res.status(409).send("The country already exists").end() ahora es 409
 //queries.js else res.status(409).send("The city already exists").end() ahora es 409
 //queries.js else res.status(409).send("The city already exists").end() ahora es 409
-//corregir postman (creo que solo los put)
+//corregir postman (creo que solo los put, poner todos los datos hasta los que no quiero cambiar)
 
-
-//borrar ubicaciones?
-//borrar en cascada
-//sacar canales en contacto
-//si no selecciono canal no puedo crear contacto, me lo limitan los middlewares --> se los saque
-//edita sin direccion --> arreglada en el back pero queda igual a la otra funcion sin put
-//si tengo ganas cambiar los id de los canalaes en el html
+//organizar en carpetas
+//quitar comentarios (chequeo)
