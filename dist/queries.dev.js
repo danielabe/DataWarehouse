@@ -1231,7 +1231,7 @@ function modifyCity(cityId, req, res) {
 }
 
 function deleteCity(cityId, req, res) {
-  var city, deleted;
+  var city, citiesIdContacts, idsContacts, citiesIdCompanies, idsCompanies, deleted;
   return regeneratorRuntime.async(function deleteCity$(_context40) {
     while (1) {
       switch (_context40.prev = _context40.next) {
@@ -1245,16 +1245,49 @@ function deleteCity(cityId, req, res) {
         case 2:
           city = _context40.sent;
           _context40.next = 5;
+          return regeneratorRuntime.awrap(db.query("SELECT city_id FROM contacts", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 5:
+          citiesIdContacts = _context40.sent;
+          idsContacts = citiesIdContacts.map(function (id) {
+            return id.city_id;
+          });
+          console.log(idsContacts);
+          _context40.next = 10;
+          return regeneratorRuntime.awrap(db.query("SELECT city_id FROM companies", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 10:
+          citiesIdCompanies = _context40.sent;
+          idsCompanies = citiesIdCompanies.map(function (id) {
+            return id.city_id;
+          });
+          console.log(idsCompanies);
+
+          if (!(!idsContacts.includes(cityId) && !idsCompanies.includes(cityId))) {
+            _context40.next = 20;
+            break;
+          }
+
+          _context40.next = 16;
           return regeneratorRuntime.awrap(db.query("DELETE FROM cities WHERE city_id = ?", {
             replacements: [cityId],
             type: QueryTypes.DELETE
           }));
 
-        case 5:
+        case 16:
           deleted = _context40.sent;
           res.status(200).json(city);
+          _context40.next = 21;
+          break;
 
-        case 7:
+        case 20:
+          res.status(400).send("You cannot delete this city").end();
+
+        case 21:
         case "end":
           return _context40.stop();
       }
@@ -1548,35 +1581,34 @@ function deleteCompany(companyId, req, res) {
           console.log(ids + '///' + companyId);
 
           if (ids.includes(companyId)) {
-            _context49.next = 16;
+            _context49.next = 15;
             break;
           }
 
-          next();
-          _context49.next = 9;
+          _context49.next = 8;
           return regeneratorRuntime.awrap(db.query("\n        SELECT company_id, company_name, c.city_id, city_name, ci.country_id, country_name, \n        co.region_id, region_name, address\n        FROM companies c\n        JOIN cities ci ON ci.city_id = c.city_id\n        JOIN countries co ON co.country_id = ci.country_id\n        JOIN regions re ON re.region_id = co.region_id\n        WHERE company_id = ?\n        ", {
             replacements: [companyId],
             type: QueryTypes.SELECT
           }));
 
-        case 9:
+        case 8:
           company = _context49.sent;
-          _context49.next = 12;
+          _context49.next = 11;
           return regeneratorRuntime.awrap(db.query("DELETE FROM companies WHERE company_id = ?", {
             replacements: [companyId],
             type: QueryTypes.DELETE
           }));
 
-        case 12:
+        case 11:
           deleted = _context49.sent;
           res.status(200).json(company[0]);
-          _context49.next = 17;
+          _context49.next = 16;
           break;
 
-        case 16:
+        case 15:
           res.status(400).send("You cannot delete this company").end();
 
-        case 17:
+        case 16:
         case "end":
           return _context49.stop();
       }

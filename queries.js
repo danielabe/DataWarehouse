@@ -480,11 +480,26 @@ async function deleteCity(cityId, req, res) {
         replacements: [cityId],
         type: QueryTypes.SELECT 
     })
-    const deleted = await db.query(`DELETE FROM cities WHERE city_id = ?`, {
-        replacements: [cityId],
-        type: QueryTypes.DELETE
+
+    const citiesIdContacts = await db.query(`SELECT city_id FROM contacts`, { 
+        type: QueryTypes.SELECT 
     })
-    res.status(200).json(city)
+    const idsContacts = citiesIdContacts.map(id => id.city_id)
+    console.log(idsContacts)
+
+    const citiesIdCompanies = await db.query(`SELECT city_id FROM companies`, { 
+        type: QueryTypes.SELECT 
+    })
+    const idsCompanies = citiesIdCompanies.map(id => id.city_id)
+    console.log(idsCompanies)
+
+    if(!idsContacts.includes(cityId) && !idsCompanies.includes(cityId)) {
+        const deleted = await db.query(`DELETE FROM cities WHERE city_id = ?`, {
+            replacements: [cityId],
+            type: QueryTypes.DELETE
+        })
+        res.status(200).json(city)
+    } else res.status(400).send("You cannot delete this city").end()
 }
 
 //companies
@@ -615,14 +630,12 @@ async function modifyCompany(companyId, req, res) {
 }
 
 async function deleteCompany(companyId, req, res) {
-    //hacer magia
     const companiesId = await db.query(`SELECT company_id FROM contacts`, { 
         type: QueryTypes.SELECT 
     })
     const ids = companiesId.map(id => id.company_id)
     console.log(ids + '///' + companyId)
     if(!ids.includes(companyId)) {
-        next()
         const company = await db.query(`
         SELECT company_id, company_name, c.city_id, city_name, ci.country_id, country_name, 
         co.region_id, region_name, address
@@ -639,7 +652,6 @@ async function deleteCompany(companyId, req, res) {
         res.status(200).json(company[0])
     }
     else res.status(400).send("You cannot delete this company").end()
-    /* const channelsArray = channelsIdDB.map(id => id.channel_id) */
 }
 
 //contacts
