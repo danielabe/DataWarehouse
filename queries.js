@@ -364,11 +364,19 @@ async function deleteCountry(countryId, req, res) {
         replacements: [countryId],
         type: QueryTypes.SELECT 
     })
-    const deleted = await db.query(`DELETE FROM countries WHERE country_id = ?`, {
-        replacements: [countryId],
-        type: QueryTypes.DELETE
+
+    const countriesId = await db.query(`SELECT country_id FROM cities`, { 
+        type: QueryTypes.SELECT 
     })
-    res.status(200).json(country)
+    const ids = countriesId.map(id => id.country_id)
+
+    if(!ids.includes(countryId)) {
+        const deleted = await db.query(`DELETE FROM countries WHERE country_id = ?`, {
+            replacements: [countryId],
+            type: QueryTypes.DELETE
+        })
+        res.status(200).json(country)
+    } else res.status(400).send("You cannot delete this country").end()
 }
 
 async function getCitiesCountry(countryId, req, res) {
@@ -650,8 +658,7 @@ async function deleteCompany(companyId, req, res) {
             type: QueryTypes.DELETE
         })
         res.status(200).json(company[0])
-    }
-    else res.status(400).send("You cannot delete this company").end()
+    } else res.status(400).send("You cannot delete this company").end()
 }
 
 //contacts

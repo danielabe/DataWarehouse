@@ -927,7 +927,7 @@ function validateRegionIdCountryQuery(req, res, next) {
 }
 
 function deleteCountry(countryId, req, res) {
-  var country, deleted;
+  var country, countriesId, ids, deleted;
   return regeneratorRuntime.async(function deleteCountry$(_context30) {
     while (1) {
       switch (_context30.prev = _context30.next) {
@@ -941,16 +941,37 @@ function deleteCountry(countryId, req, res) {
         case 2:
           country = _context30.sent;
           _context30.next = 5;
+          return regeneratorRuntime.awrap(db.query("SELECT country_id FROM cities", {
+            type: QueryTypes.SELECT
+          }));
+
+        case 5:
+          countriesId = _context30.sent;
+          ids = countriesId.map(function (id) {
+            return id.country_id;
+          });
+
+          if (ids.includes(countryId)) {
+            _context30.next = 14;
+            break;
+          }
+
+          _context30.next = 10;
           return regeneratorRuntime.awrap(db.query("DELETE FROM countries WHERE country_id = ?", {
             replacements: [countryId],
             type: QueryTypes.DELETE
           }));
 
-        case 5:
+        case 10:
           deleted = _context30.sent;
           res.status(200).json(country);
+          _context30.next = 15;
+          break;
 
-        case 7:
+        case 14:
+          res.status(400).send("You cannot delete this country").end();
+
+        case 15:
         case "end":
           return _context30.stop();
       }
