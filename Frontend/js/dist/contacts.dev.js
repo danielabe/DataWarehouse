@@ -2248,6 +2248,5 @@ deleteContactBtn.addEventListener('click', function () {
     deleteContacts();
   }
 }); //poner nombres bien en postman
-//logo
 //quitar comentarios (chequeo)
 //actualizar base de datos
