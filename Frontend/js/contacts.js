@@ -1868,15 +1868,9 @@ deleteContactBtn.addEventListener('click', () => {
     }
 })
 
-//corregir swagger, put de contactos y delte de contactos
-//queries.js else res.status(409).send("The region already exists").end() ahora es 409
-//queries.js else res.status(409).send("The region already exists").end() ahora es 409
-//queries.js else res.status(409).send("The country already exists").end() ahora es 409
-//queries.js else res.status(409).send("The country already exists").end() ahora es 409
-//queries.js else res.status(409).send("The city already exists").end() ahora es 409
-//queries.js else res.status(409).send("The city already exists").end() ahora es 409
-//corregir postman (creo que solo los put, poner todos los datos hasta los que no quiero cambiar)
 
-//organizar en carpetas
+//poner nombres bien en postman
+
+//logo
 //quitar comentarios (chequeo)
 //actualizar base de datos

@@ -115,7 +115,8 @@ async function modifyUser(userId, req, res) {
         replacements: Object.assign( {}, newUser, {password: password} ),
         type: QueryTypes.UPDATE
     })
-    res.status(200).json(newUser)
+    res.status(200).json({user_id: newUser.user_id, firstname: newUser.firstname, lastname: newUser.lastname, 
+        email: newUser.email, perfil: newUser.perfil})
 }
 
 async function deleteUser(userId, req, res) {
@@ -184,7 +185,7 @@ async function getRegion(regionId, req, res) {
 async function validateRegionNamePutQuery(req, res, next) {
     /* if(req.body.region_name){ */
         const region = req.body.region_name
-        const regions = await db.query(`SELECT region_name FROM regions`, {
+        const regions = await db.query(`SELECT region_name FROM regions WHERE region_id != ${req.params.regionId}`, {
             type: QueryTypes.SELECT
         })
         const regionsArray = regions.map(region => region.region_name)
@@ -323,7 +324,7 @@ async function getCountry(countryId, req, res) {
 async function validateCountryNamePutQuery(req, res, next) {
     /* if(req.body.country_name){ */
         const country = req.body.country_name
-        const countries = await db.query(`SELECT country_name FROM countries`, {
+        const countries = await db.query(`SELECT country_name FROM countries WHERE country_id != ${req.params.countryId}`, {
             type: QueryTypes.SELECT
         })
         const countriesArray = countries.map(country => country.country_name)
@@ -382,7 +383,7 @@ async function deleteCountry(countryId, req, res) {
             replacements: [countryId],
             type: QueryTypes.DELETE
         })
-        res.status(200).json(country)
+        res.status(200).json(country[0])
     } else res.status(400).send("You cannot delete this country").end()
 }
 
@@ -459,7 +460,7 @@ async function validateCountryIdCityQuery(req, res, next) {
 async function validateCityNamePutQuery(req, res, next) {
     /* if(req.body.city_name){ */
         const city = req.body.city_name
-        const cities = await db.query(`SELECT city_name FROM cities`, {
+        const cities = await db.query(`SELECT city_name FROM cities WHERE city_id != ${req.params.cityId}`, {
             type: QueryTypes.SELECT
         })
         const citiesArray = cities.map(city => city.city_name)
@@ -551,8 +552,8 @@ async function createCompany(newCompany, req, res) {
         type: QueryTypes.INSERT
     })
     const company = await db.query(`
-    SELECT company_id, company_name, c.city_id, city_name, ci.country_id, country_name, 
-    co.region_id, region_name, address
+    SELECT company_id, company_name, email, c.city_id, city_name, ci.country_id, country_name, 
+    co.region_id, region_name, address, telephone
     FROM companies c
     JOIN cities ci ON ci.city_id = c.city_id
     JOIN countries co ON co.country_id = ci.country_id
@@ -575,8 +576,12 @@ async function validateCompanyIdQuery(req, res, next) {
 
 async function getCompany(companyId, req, res) {
     const company = await db.query(`
-    SELECT * FROM companies comp
+    SELECT company_id, company_name, email, comp.city_id, city_name, ci.country_id, country_name, 
+    co.region_id, region_name, address, telephone 
+    FROM companies comp
     JOIN cities ci ON ci.city_id = comp.city_id
+    JOIN countries co ON co.country_id = ci.country_id
+    JOIN regions re ON re.region_id = co.region_id
     WHERE company_id = ?
     `, { 
         replacements: [companyId],
@@ -633,8 +638,8 @@ async function modifyCompany(companyId, req, res) {
         type: QueryTypes.UPDATE
     })
     const companyRes = await db.query(`
-    SELECT company_id, company_name, c.city_id, city_name, ci.country_id, country_name, 
-    co.region_id, region_name, address
+    SELECT company_id, company_name, email, c.city_id, city_name, ci.country_id, country_name, 
+    co.region_id, region_name, address, telephone
     FROM companies c
     JOIN cities ci ON ci.city_id = c.city_id
     JOIN countries co ON co.country_id = ci.country_id
@@ -652,8 +657,8 @@ async function deleteCompany(companyId, req, res) {
     console.log(ids + '///' + companyId)
     if(!ids.includes(companyId)) {
         const company = await db.query(`
-        SELECT company_id, company_name, c.city_id, city_name, ci.country_id, country_name, 
-        co.region_id, region_name, address
+        SELECT company_id, company_name, email, c.city_id, city_name, ci.country_id, country_name, 
+        co.region_id, region_name, address, telephone
         FROM companies c
         JOIN cities ci ON ci.city_id = c.city_id
         JOIN countries co ON co.country_id = ci.country_id
@@ -868,7 +873,7 @@ async function modifyContact(req, res) {
         company_id: req.body.company_id || contact[0].company_id,
         position: req.body.position || contact[0].position,
         interest: +req.body.interest /* || contact[0].interest */,
-        /* preferred_channels: req.body.preferred_channels || chan[0].preferred_channels */
+        preferred_channels: req.body.preferred_channels /* || chan[0].preferred_channels */
     }
     console.log(req.body.interest, contact[0].interest, modifiedContact)
     const modified = await db.query(`
@@ -883,7 +888,7 @@ async function modifyContact(req, res) {
     DELETE FROM contacts_channels WHERE contact_id = ${req.params.contactId}
     `, { type: QueryTypes.DELETE })
 
-    req.body.preferred_channels.forEach(async chan => { 
+    req.body.preferred_channels.forEach(async chan => { //esto no funciona
         await db.query(`
     INSERT INTO contacts_channels (contact_id, channel_id, user_account, preference) 
     VALUES (${req.params.contactId}, ${chan.channel_id}, '${chan.user_account}', '${chan.preference}')

@@ -285,7 +285,13 @@ function modifyUser(userId, req, res) {
 
         case 7:
           modified = _context9.sent;
-          res.status(200).json(newUser);
+          res.status(200).json({
+            user_id: newUser.user_id,
+            firstname: newUser.firstname,
+            lastname: newUser.lastname,
+            email: newUser.email,
+            perfil: newUser.perfil
+          });
 
         case 9:
         case "end":
@@ -482,7 +488,7 @@ function validateRegionNamePutQuery(req, res, next) {
           /* if(req.body.region_name){ */
           region = req.body.region_name;
           _context16.next = 3;
-          return regeneratorRuntime.awrap(db.query("SELECT region_name FROM regions", {
+          return regeneratorRuntime.awrap(db.query("SELECT region_name FROM regions WHERE region_id != ".concat(req.params.regionId), {
             type: QueryTypes.SELECT
           }));
 
@@ -847,7 +853,7 @@ function validateCountryNamePutQuery(req, res, next) {
           /* if(req.body.country_name){ */
           country = req.body.country_name;
           _context27.next = 3;
-          return regeneratorRuntime.awrap(db.query("SELECT country_name FROM countries", {
+          return regeneratorRuntime.awrap(db.query("SELECT country_name FROM countries WHERE country_id != ".concat(req.params.countryId), {
             type: QueryTypes.SELECT
           }));
 
@@ -985,7 +991,7 @@ function deleteCountry(countryId, req, res) {
 
         case 10:
           deleted = _context30.sent;
-          res.status(200).json(country);
+          res.status(200).json(country[0]);
           _context30.next = 15;
           break;
 
@@ -1209,7 +1215,7 @@ function validateCityNamePutQuery(req, res, next) {
           /* if(req.body.city_name){ */
           city = req.body.city_name;
           _context38.next = 3;
-          return regeneratorRuntime.awrap(db.query("SELECT city_name FROM cities", {
+          return regeneratorRuntime.awrap(db.query("SELECT city_name FROM cities WHERE city_id != ".concat(req.params.cityId), {
             type: QueryTypes.SELECT
           }));
 
@@ -1408,7 +1414,7 @@ function createCompany(newCompany, req, res) {
         case 2:
           inserted = _context43.sent;
           _context43.next = 5;
-          return regeneratorRuntime.awrap(db.query("\n    SELECT company_id, company_name, c.city_id, city_name, ci.country_id, country_name, \n    co.region_id, region_name, address\n    FROM companies c\n    JOIN cities ci ON ci.city_id = c.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    WHERE company_id = ?\n    ", {
+          return regeneratorRuntime.awrap(db.query("\n    SELECT company_id, company_name, email, c.city_id, city_name, ci.country_id, country_name, \n    co.region_id, region_name, address, telephone\n    FROM companies c\n    JOIN cities ci ON ci.city_id = c.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    WHERE company_id = ?\n    ", {
             replacements: [inserted[0]],
             type: QueryTypes.SELECT
           }));
@@ -1459,7 +1465,7 @@ function getCompany(companyId, req, res) {
       switch (_context45.prev = _context45.next) {
         case 0:
           _context45.next = 2;
-          return regeneratorRuntime.awrap(db.query("\n    SELECT * FROM companies comp\n    JOIN cities ci ON ci.city_id = comp.city_id\n    WHERE company_id = ?\n    ", {
+          return regeneratorRuntime.awrap(db.query("\n    SELECT company_id, company_name, email, comp.city_id, city_name, ci.country_id, country_name, \n    co.region_id, region_name, address, telephone \n    FROM companies comp\n    JOIN cities ci ON ci.city_id = comp.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    WHERE company_id = ?\n    ", {
             replacements: [companyId],
             type: QueryTypes.SELECT
           }));
@@ -1587,7 +1593,7 @@ function modifyCompany(companyId, req, res) {
         case 6:
           modified = _context48.sent;
           _context48.next = 9;
-          return regeneratorRuntime.awrap(db.query("\n    SELECT company_id, company_name, c.city_id, city_name, ci.country_id, country_name, \n    co.region_id, region_name, address\n    FROM companies c\n    JOIN cities ci ON ci.city_id = c.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    WHERE company_id = :company_id\n    ", {
+          return regeneratorRuntime.awrap(db.query("\n    SELECT company_id, company_name, email, c.city_id, city_name, ci.country_id, country_name, \n    co.region_id, region_name, address, telephone\n    FROM companies c\n    JOIN cities ci ON ci.city_id = c.city_id\n    JOIN countries co ON co.country_id = ci.country_id\n    JOIN regions re ON re.region_id = co.region_id\n    WHERE company_id = :company_id\n    ", {
             replacements: newcompany,
             type: QueryTypes.SELECT
           }));
@@ -1628,7 +1634,7 @@ function deleteCompany(companyId, req, res) {
           }
 
           _context49.next = 8;
-          return regeneratorRuntime.awrap(db.query("\n        SELECT company_id, company_name, c.city_id, city_name, ci.country_id, country_name, \n        co.region_id, region_name, address\n        FROM companies c\n        JOIN cities ci ON ci.city_id = c.city_id\n        JOIN countries co ON co.country_id = ci.country_id\n        JOIN regions re ON re.region_id = co.region_id\n        WHERE company_id = ?\n        ", {
+          return regeneratorRuntime.awrap(db.query("\n        SELECT company_id, company_name, email, c.city_id, city_name, ci.country_id, country_name, \n        co.region_id, region_name, address, telephone\n        FROM companies c\n        JOIN cities ci ON ci.city_id = c.city_id\n        JOIN countries co ON co.country_id = ci.country_id\n        JOIN regions re ON re.region_id = co.region_id\n        WHERE company_id = ?\n        ", {
             replacements: [companyId],
             type: QueryTypes.SELECT
           }));
@@ -2089,8 +2095,9 @@ function modifyContact(req, res) {
             position: req.body.position || contact[0].position,
             interest: +req.body.interest
             /* || contact[0].interest */
-
-            /* preferred_channels: req.body.preferred_channels || chan[0].preferred_channels */
+            ,
+            preferred_channels: req.body.preferred_channels
+            /* || chan[0].preferred_channels */
 
           };
           console.log(req.body.interest, contact[0].interest, modifiedContact);
