@@ -45,6 +45,10 @@ Position yourself in your directory from a terminal and execute the following Sc
 ## Documentation 📚
 Check the file 📂 *spec.yml*, here you will find the endpoints and requirements to use the API.
 
+## Test 📚
+[Postman Collection](https://documenter.getpostman.com/view/13361525/TzY4gbGb#e24e195e-4062-4421-97f6-318519b98c34 "Postman Collection")
+
+
 ## Repository
 Link to the repository on GitHub:
 
