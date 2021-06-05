@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-04-2021 a las 22:10:53
+-- Tiempo de generación: 05-06-2021 a las 04:52:28
 -- Versión del servidor: 10.4.17-MariaDB
 -- Versión de PHP: 8.0.0
 
@@ -37,10 +37,11 @@ CREATE TABLE `channels` (
 --
 
 INSERT INTO `channels` (`channel_id`, `channel_name`) VALUES
-(1, 'Whatsapp'),
-(2, 'Facebook'),
-(3, 'Telegram'),
-(4, 'Discord');
+(1, 'Teléfono'),
+(2, 'Whatsapp'),
+(3, 'Instagram'),
+(4, 'Facebook'),
+(5, 'Linkedin');
 
 -- --------------------------------------------------------
 
@@ -59,11 +60,22 @@ CREATE TABLE `cities` (
 --
 
 INSERT INTO `cities` (`city_id`, `country_id`, `city_name`) VALUES
-(1, 1, 'Rosario'),
-(4, 1, 'Córdoba'),
-(7, 7, 'La Paz'),
-(10, 8, 'Asunción'),
-(11, 9, 'NYC');
+(1, 1, 'Buenos Aires'),
+(2, 1, 'Córdoba'),
+(3, 1, 'Rosario'),
+(4, 2, 'Bogotá'),
+(5, 2, 'Cúcuta'),
+(6, 2, 'Medellín'),
+(7, 3, 'Atacama'),
+(8, 3, 'Santiago'),
+(9, 3, 'Valparaíso'),
+(10, 4, 'Canelones'),
+(11, 4, 'Maldonado'),
+(12, 4, 'Montevideo'),
+(13, 5, 'Ciudad de México'),
+(14, 5, 'Tijuana'),
+(15, 6, 'Florida'),
+(16, 6, 'Texas');
 
 -- --------------------------------------------------------
 
@@ -75,23 +87,22 @@ CREATE TABLE `companies` (
   `company_id` int(3) NOT NULL,
   `company_name` varchar(64) NOT NULL,
   `city_id` int(3) NOT NULL,
-  `address` varchar(64) NOT NULL
+  `address` varchar(64) NOT NULL,
+  `email` varchar(64) DEFAULT NULL,
+  `telephone` varchar(64) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `companies`
 --
 
-INSERT INTO `companies` (`company_id`, `company_name`, `city_id`, `address`) VALUES
-(1, 'Acámica', 1, 'aaa'),
-(2, 'Globant', 1, 'bbb'),
-(3, 'LDC', 1, 'Paraguay 777'),
-(4, 'LDC2', 1, 'Paraguay 777'),
-(5, 'LDC3', 1, 'Paraguay 777'),
-(6, 'LDC4', 1, 'Paraguay 777'),
-(7, 'LDC5', 1, 'Paraguay 777'),
-(8, 'Neural Soft', 1, 'Roca'),
-(9, 'LDC7', 1, 'Paraguay 777');
+INSERT INTO `companies` (`company_id`, `company_name`, `city_id`, `address`, `email`, `telephone`) VALUES
+(1, 'Acámica', 1, 'Humboldt 1967', 'hola@acamica.com', '540112345678'),
+(2, 'Globant', 3, 'Av. Madres Plaza de Mayo 3020', 'hi@globant.com', '540341234567'),
+(3, 'Gryffindor', 2, 'Sarmiento 1234', 'gryffindor@gmail.com', '540351456789'),
+(4, 'Slytherin ', 4, 'Pasco 123', 'slytherin@yahoo.com', '57123456789'),
+(5, 'Ravenclaw', 16, 'Pedernera 4567', 'ravenclaw@gmail.com', '1830123456789'),
+(6, 'Hufflepuff ', 12, 'Pellegrini 3456', 'hufflepuff@gmail.com', '598234567890');
 
 -- --------------------------------------------------------
 
@@ -116,29 +127,21 @@ CREATE TABLE `contacts` (
 --
 
 INSERT INTO `contacts` (`contact_id`, `firstname`, `lastname`, `email`, `city_id`, `company_id`, `position`, `interest`, `address`) VALUES
-(3, 'maria', 'dichiara', 'mari@google.com', 1, 2, 'comer', 75, ''),
-(6, 'dan', 'nielsen', 'dan@google.com', 1, 2, 'developer', 100, ''),
-(7, 'Agustín Emanuel', 'Soria', 'agustinesoria96@gmail.com', 1, 1, 'UI Designer', 100, ''),
-(8, 'Agustín Emanuel', 'Soria', 'agustinesoria96@gmail.com', 1, 1, 'UI Designer', 100, ''),
-(9, 'Agustín Emanuel', 'Soria', 'agustinesoria96@gmail.com', 1, 1, 'UI Designer', 100, ''),
-(10, 'Agustín Emanuel', 'Soria', 'agustinesoria96@gmail.com', 1, 1, 'UI Designer', 100, ''),
-(11, 'Agustín Emanuel', 'Soria', 'agustinesoria96@gmail.com', 1, 1, 'UI Designer', 100, ''),
-(12, 'Agustín Emanuel', 'Soria', 'dani_agustinesoria96@gmail.com', 1, 1, 'UI Designer', 100, ''),
-(13, 'Agustín Emanuel', 'Soria', 'dan_agustinesoria96@gmail.com', 1, 1, 'UI Designer', 100, ''),
-(14, 'Agustín Emanuel', 'Soria', 'da_agustinesoria96@gmail.com', 1, 1, 'UI Designer', 100, ''),
-(15, 'Agustín Emanuel', 'Soria', 'd_agustinesoria96@gmail.com', 1, 1, 'UI Designer', 100, ''),
-(16, 'Agustín Emanuel', 'Soria', '_agustinesoria96@gmail.com', 1, 1, 'UI Designer', 100, ''),
-(17, 'Agustín Emanuel', 'Soria', '__agustinesoria96@gmail.com', 1, 1, 'UI Designer', 100, ''),
-(18, 'Agustín Emanuel', 'Soria', '__.agustinesoria96@gmail.com', 1, 1, 'UI Designer', 100, ''),
-(19, 'Agustín Emanuel', 'Soria', '_.agustinesoria96@gmail.com', 1, 1, 'UI Designer', 100, ''),
-(20, 'Agustín Emanuel', 'Soria', 'ma_agustinesoria96@gmail.com', 1, 1, 'UI Designer', 100, ''),
-(22, 'Daniela', 'Berardi', 'danielaberardi@gmail.com', 4, 2, 'Fontend', 45, ''),
-(23, 'Agustín Emanuel', 'Soria', 'aagustinesoria96@gmail.com', 1, 1, 'UI Designer', 100, ''),
-(24, 'Agustín Emanuel', 'Soria', 'bagustinesoria96@gmail.com', 1, 1, 'UI Designer', 100, ''),
-(26, 'Agustín Emanuel', 'Soria', 'dagustinesoria96@gmail.com', 1, 1, 'UI Designer', 100, ''),
-(27, 'Agustín Emanuel', 'Soria', 'eagustinesoria96@gmail.com', 1, 1, 'UI Designer', 100, ''),
-(28, 'Agustín Emanuel', 'Soria', 'fagustinesoria96@gmail.com', 1, 1, 'Fontend', 100, ''),
-(29, 'Agustín Emanuel', 'Soria', 'gagustinesoria96@gmail.com', 1, 1, 'UI Designer', 100, '');
+(1, 'Severus', 'Snape', 'severussnape@gmail.com', 14, 4, 'Dark Arts', 100, 'Mitre 3355'),
+(2, 'Hermione', 'Granger', 'hermionegranger@yahoo.com', 13, 3, 'Witch', 100, 'San Martín 456'),
+(3, 'Harry', 'Potter', 'harrypotter@gmail.com', 8, 3, 'Wizard', 50, 'España 7768'),
+(4, 'Ronald', 'Weasley', 'ronaldweasley@gmail.com', 1, 3, 'Wizard', 50, 'Italia 2367'),
+(5, 'Albus', 'Dumbledore', 'albusdumbledore@yahoo.com', 12, 3, 'Headmaster', 75, 'Balcarce 567'),
+(6, 'Cedric', 'Diggory', 'cedricdiggory@gmail.com', 2, 6, 'Wizard', 25, 'Moreno 980'),
+(7, 'Luna', 'Lovegood', 'lunalovegood@gmail.com', 3, 5, 'Witch', 75, 'Maipú 2136'),
+(8, 'Bellatrix', 'Lestrange', 'bellatrixlestrange@gmail.com', 1, 4, 'Witch', 0, 'Pasco 3245'),
+(9, 'Draco', 'Malfoy', 'dmalfoy@acamica.com', 6, 1, 'Wizard', 0, 'Ayacucho 1987'),
+(10, 'Lord', 'Voldemort', 'lordvoldemort@globant.com', 16, 2, 'Wizard', 25, 'Cochabamba 1531'),
+(11, 'Rubeus', 'Hagrid', 'hagrid@globant.com', 2, 2, 'Wizard', 100, 'Montevideo 2654'),
+(12, 'Minerva', 'McGonagall', 'minervamcgonagall@acamica.com', 7, 1, 'Transfiguration', 75, 'Mendoza 2105'),
+(13, 'Neville', 'Longbottom', 'nevillelongbottom@gryffindor.com', 11, 3, 'Wizard', 75, 'Entre Ríos 1920'),
+(14, 'Sirius', 'Black', 'siriusblack@acamica.com', 6, 1, 'Wizard', 75, 'Pescio 2106'),
+(15, 'Dolores', 'Umbridge', 'doloresumbridge@slytherin.com', 14, 4, 'Witch', 50, 'La Paz');
 
 -- --------------------------------------------------------
 
@@ -159,51 +162,31 @@ CREATE TABLE `contacts_channels` (
 
 INSERT INTO `contacts_channels` (`contact_id`, `channel_id`, `user_account`, `preference`) VALUES
 (0, 0, '', NULL),
-(3, 1, '', NULL),
-(3, 2, '', NULL),
-(6, 1, '', NULL),
-(7, 1, '', NULL),
-(7, 2, '', NULL),
-(7, 3, '', NULL),
-(8, 1, '', NULL),
-(8, 2, '', NULL),
-(8, 3, '', NULL),
-(9, 1, '', NULL),
-(9, 2, '', NULL),
-(9, 3, '', NULL),
-(10, 1, '', NULL),
-(10, 2, '', NULL),
-(10, 3, '', NULL),
-(11, 1, '', NULL),
-(11, 2, '', NULL),
-(11, 3, '', NULL),
-(12, 1, '', NULL),
-(12, 2, '', NULL),
-(12, 3, '', NULL),
-(13, 1, '', NULL),
-(13, 2, '', NULL),
-(14, 1, '', NULL),
-(14, 2, '', NULL),
-(15, 1, '', NULL),
-(15, 2, '', NULL),
-(16, 1, '', NULL),
-(16, 2, '', NULL),
-(17, 1, '', NULL),
-(17, 2, '', NULL),
-(18, 1, '', NULL),
-(18, 2, '', NULL),
-(19, 1, '', NULL),
-(19, 2, '', NULL),
-(20, 1, '', NULL),
-(20, 2, '', NULL),
-(22, 2, '', NULL),
-(22, 3, 'https://www.facebook.com/agustinsoria', 'No molestar'),
-(27, 1, '341564399', 'Canal favorito'),
-(27, 2, 'https://www.facebook.com/agustinsoria', 'No molestar'),
-(28, 1, '341564399', 'Canal favorito'),
-(28, 2, 'https://www.facebook.com/agustinsoria', 'No molestar'),
-(29, 1, '341564399', 'Canal favorito'),
-(29, 2, 'https://www.facebook.com/agustinsoria', 'No molestar');
+(2, 1, '52554567777', 'Canal favorito'),
+(3, 3, '@harrypotter', 'No molestar'),
+(3, 5, 'https://www.linkedin.com/in/harrypotter', 'Canal favorito'),
+(4, 1, '54114563336', 'Canal favorito'),
+(4, 4, 'https://www.facebook.com/ronweasley', 'Sin preferencia'),
+(5, 1, '598234567655', 'Canal favorito'),
+(6, 2, '543515678457', 'No molestar'),
+(7, 1, '543415567433', 'Canal favorito'),
+(8, 1, '54115654766', 'No molestar'),
+(8, 3, '@bellatrixlestrange', 'Sin preferencia'),
+(9, 1, '57123456789', 'Canal favorito'),
+(10, 3, '@lordvoldemort', 'Canal favorito'),
+(11, 1, '54351432334', 'Sin preferencia'),
+(11, 2, '543515678435', 'Canal favorito'),
+(12, 3, '@minervamcgonagall', 'No molestar'),
+(12, 5, 'https://www.linkedin.com/in/harrypotter', 'Canal favorito'),
+(13, 3, '@nevillelongbottom', 'No molestar'),
+(13, 5, 'https://www.linkedin.com/in/nevillelongbottom', 'Canal favorito'),
+(14, 2, '5724567435', 'Canal favorito'),
+(14, 3, '@siriusblack', 'Sin preferencia'),
+(15, 1, '5255568964', 'No molestar'),
+(15, 2, '5255345343', 'No molestar'),
+(15, 3, '@doloresumbridge', 'No molestar'),
+(15, 4, 'https://www.facebook.com/doloresumbridge', 'No molestar'),
+(15, 5, 'https://www.linkedin.com/in/doloresumbridge', 'No molestar');
 
 -- --------------------------------------------------------
 
@@ -223,10 +206,11 @@ CREATE TABLE `countries` (
 
 INSERT INTO `countries` (`country_id`, `region_id`, `country_name`) VALUES
 (1, 1, 'Argentina'),
-(5, 1, 'Chile'),
-(7, 1, 'Bolivia'),
-(8, 1, 'Paraguay'),
-(9, 5, 'USA');
+(2, 1, 'Colombia'),
+(3, 1, 'Chile'),
+(4, 1, 'Uruguay'),
+(5, 2, 'México'),
+(6, 2, 'Estados Unidos');
 
 -- --------------------------------------------------------
 
@@ -245,15 +229,7 @@ CREATE TABLE `regions` (
 
 INSERT INTO `regions` (`region_id`, `region_name`) VALUES
 (1, 'Sudamérica'),
-(5, 'Norteamérica'),
-(6, 'Centroamérica'),
-(7, 'Sudáfrica'),
-(8, 'Sudáfrica2'),
-(9, 'da'),
-(10, 'Centroamérica3'),
-(11, 'ssssssss'),
-(12, 'eu'),
-(13, 'Europa');
+(2, 'Norteamérica');
 
 -- --------------------------------------------------------
 
@@ -277,10 +253,8 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`user_id`, `firstname`, `lastname`, `email`, `perfil`, `password`) VALUES
 (1, 'Daniela', 'Berardi', 'danielaberardi@live.com.ar', 'Admin', '1234'),
 (2, 'Olivia', 'Dichiara', 'olivia@hotmail.com', 'Básico', '5678'),
-(3, 'gus', 'elias', 'gu@google.com', 'Admin', '1aaa'),
-(4, 'gustavo2', 'gustavo2', '', 'Admin', ''),
-(5, 'gustavo2', 'elias', '', 'Admin', ''),
-(15, 'gustavo2', 'elias', 'gustavo1@yahoo.com', 'Básico', 'a111');
+(3, 'Gustavo ', 'Elias', 'gaelias@yahoo.com', 'Básico', '123a'),
+(4, 'Alejandro', 'Trobianni', 'aletrobbiani@hotmail.com', 'Básico', '123a');
 
 --
 -- Índices para tablas volcadas
@@ -354,60 +328,37 @@ ALTER TABLE `channels`
 -- AUTO_INCREMENT de la tabla `cities`
 --
 ALTER TABLE `cities`
-  MODIFY `city_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `city_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `companies`
 --
 ALTER TABLE `companies`
-  MODIFY `company_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `company_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `contacts`
 --
 ALTER TABLE `contacts`
-  MODIFY `contact_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `contact_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `countries`
 --
 ALTER TABLE `countries`
-  MODIFY `country_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `country_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `regions`
 --
 ALTER TABLE `regions`
-  MODIFY `region_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `region_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
-
---
--- Restricciones para tablas volcadas
---
-
---
--- Filtros para la tabla `companies`
---
-ALTER TABLE `companies`
-  ADD CONSTRAINT `companies_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `cities` (`city_id`);
-
---
--- Filtros para la tabla `contacts`
---
-ALTER TABLE `contacts`
-  ADD CONSTRAINT `contacts_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `cities` (`city_id`),
-  ADD CONSTRAINT `contacts_ibfk_2` FOREIGN KEY (`company_id`) REFERENCES `companies` (`company_id`);
-
---
--- Filtros para la tabla `countries`
---
-ALTER TABLE `countries`
-  ADD CONSTRAINT `countries_ibfk_1` FOREIGN KEY (`region_id`) REFERENCES `regions` (`region_id`) ON DELETE CASCADE;
+  MODIFY `user_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

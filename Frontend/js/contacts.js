@@ -1869,7 +1869,6 @@ deleteContactBtn.addEventListener('click', () => {
 })
 
 
-//poner nombres bien en postman
-
+//actualizar base de datos y descargar
+//poner nombres bien en postman y crear archivo
 //quitar comentarios (chequeo)
-//actualizar base de datos
