@@ -29,7 +29,7 @@ Clone the project from a terminal
 
 `git clone https://github.com/danielabe/DataWarehouse`
 ## Dependencies
-Install the required dependencies for the correct operation of the application in the Backend folder.
+Install the required dependencies for the correct operation of the application in the 📂 *Backend* folder.
 
 `npm install`
 ## Database
@@ -37,7 +37,7 @@ Use the 📂 *data_warehouse.sql* file to import it into your Database client, i
 ## :warning: Important
 Remember to modify the file 📂 *db.js* with the data of your environment.
 ## Start the Server 💻
-Position yourself in the Backend folder from a terminal and execute the following Script:
+Position yourself in the 📂 *Backend* folder from a terminal and execute the following Script:
 
 `npm run app.js`
 ## Documentation 📚
