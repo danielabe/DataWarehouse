@@ -58,7 +58,6 @@ let varEditCity = 0
 
 //show regions, countries and cities
 async function getLocations() {
-    console.log(varCountryId)
     regionList.innerHTML = ''
     const options = {
         method: 'GET',
@@ -68,7 +67,6 @@ async function getLocations() {
     }
     const response = await fetch('http://localhost:3000/regionsCountriesCities', options)
     const data = await response.json()
-    console.log(data)
     
     data.forEach(reg => {
         const region = document.createElement('li')
@@ -110,7 +108,6 @@ async function getLocations() {
             body.classList.add('modal')
             darkImageNewCountry.classList.remove('none')
             varRegionId = +reg.region_id
-            console.log(varRegionId)
         })
 
 
@@ -154,7 +151,6 @@ async function getLocations() {
                 body.classList.add('modal')
                 darkImageNewCity.classList.remove('none')
                 varCountryId = +count.country_id
-                console.log(varCountryId)
             })
 
             count.cities.forEach(cit => {
@@ -189,17 +185,7 @@ addRegBtn.addEventListener('click', () => {
     window.scrollTo(0, 0)
     body.classList.add('modal')
     darkImage.classList.remove('none')
-    
-    /* newRegion.addEventListener('keyup', () => disabledBtn()) */
 })
-
-/* function disabledBtn() {
-    if(newRegion.value !== '') {
-        saveRegion.classList.add('blue')
-    }
-    if(newRegion.value === '')
-        saveRegion.classList.remove('blue')
-} */
 
 saveRegion.addEventListener('click', (event) => addRegion(event))
 
@@ -222,7 +208,6 @@ async function addRegion(event) {
             msgNReg.innerText = 'La región ya existe'
         }
         const data = await response.json()
-        console.log(data)
         closeWindowNewRegion(event)
         getLocations()
     } catch(reason) {
@@ -231,7 +216,7 @@ async function addRegion(event) {
 }
 
 //validate region
-function validateLocation(location, msg) { //newRegion, msgNReg
+function validateLocation(location, msg) {
     if(location.value === '') {
         location.classList.add('border-wrong')
         msg.classList.add('visible')
@@ -261,7 +246,6 @@ function closeWindowNewRegion(event) {
 
 //delete region 
 function modalDeleteRegion(regionId) {
-    console.log(regionId)
     varRegionId = regionId
     window.scrollTo(0, 0)
     body.classList.add('modal')
@@ -269,34 +253,27 @@ function modalDeleteRegion(regionId) {
 }
 
 cancelDltRegBtn.addEventListener('click', () => {
-    /* window.scrollTo(0, 0)
-    body.classList.add('modal')
-    darkImageEditReg.style.visibility = 'visible' */
     cancelDeleteReg()
 })
 
 function cancelDeleteReg() {
     if(varEditRegion === 0) {
-        console.log('despues de no edition')
         body.classList.remove('modal')
         darkImageEditReg.style.visibility = 'hidden'
         darkImageEditReg.classList.add('none')
     } else if(varEditRegion === 1) {
-        console.log('despues de edition')
         window.scrollTo(0, 0)
         body.classList.add('modal')
         darkImageEditReg.style.visibility = 'visible'
         darkImageEditReg.classList.remove('none')
     }
     darkImageRegions.classList.add('none')
-    console.log(varRegionId)
 }
 
 function cancelReg() {
     body.classList.remove('modal')
     darkImageRegions.classList.add('none')
     varRegionId = null
-    console.log(varRegionId)
 }
 
 deleteRegBtn.addEventListener('click', () => {
@@ -313,10 +290,8 @@ async function deleteRegion(regId) {
         }
     }
     try {
-        console.log(varRegionId)
         const response = await fetch(`http://localhost:3000/regions/${regId}`, options)
         const data = await response.json()
-        console.log(data)
         cancelReg()
         getLocations()
     } catch(reason) {
@@ -326,12 +301,10 @@ async function deleteRegion(regId) {
 
 //edit region
 function regionEdition(reg) {
-    console.log(reg)
     window.scrollTo(0, 0)
     darkImageEditReg.classList.remove('none')
     darkImageEditReg.style.visibility = 'visible'
     body.classList.add('modal')
-    /* main.classList.add('height-add-ctc') */
     regionEdit.value = reg.region_name
     varRegionId = reg.region_id
     varEditRegion = 1
@@ -341,7 +314,6 @@ function regionEdition(reg) {
 closeEditRegion.addEventListener('click', () => closeWindowEditRegion())
 
 function closeWindowEditRegion() {
-    /* event.preventDefault() */
     darkImageEditReg.classList.add('none')
     body.classList.remove('modal')
     regionEdit.classList.remove('border-wrong')
@@ -351,7 +323,6 @@ function closeWindowEditRegion() {
 }
 
 deleteRegEdit.addEventListener('click', () => {
-    /* darkImageEditReg.style.visibility = 'hidden' */
     darkImageEditReg.style.visibility = 'visible'
     darkImageEditReg.classList.add('none')
     modalDeleteRegion(varRegionId)
@@ -380,7 +351,6 @@ async function editRegion() {
             msgEReg.innerText = 'La región ya existe'
         }
         const data = await response.json()
-        console.log(data)
         closeWindowEditRegion()
         getLocations()
     } catch (reason) {
@@ -413,7 +383,6 @@ async function addCountry(event, reg) {
             msgNCount.innerText = 'El país ya existe'
         }
         const data = await response.json()
-        console.log(data)
         closeWindowNewCountry()
         getLocations()
     } catch(reason) {
@@ -439,7 +408,6 @@ saveCountry.addEventListener('click', (event) => addCountry(event, varRegionId))
 
 //delete country
 function modalDeleteCountry(countryId) {
-    console.log(countryId)
     varCountryId = countryId
     window.scrollTo(0, 0)
     body.classList.add('modal')
@@ -447,27 +415,21 @@ function modalDeleteCountry(countryId) {
 }
 
 cancelDltCountBtn.addEventListener('click', () => {
-    /* window.scrollTo(0, 0)
-    body.classList.add('modal')
-    darkImageEditReg.style.visibility = 'visible' */
     cancelDeleteCount()
 })
 
 function cancelDeleteCount() {
     if(varEditCountry === 0) {
-        console.log('despues de no edition')
         body.classList.remove('modal')
         darkImageEditCount.style.visibility = 'hidden'
         darkImageEditCount.classList.add('none')
     } else if(varEditCountry === 1) {
-        console.log('despues de edition')
         window.scrollTo(0, 0)
         body.classList.add('modal')
         darkImageEditCount.style.visibility = 'visible'
         darkImageEditCount.classList.remove('none')
     }
     darkImageCountries.classList.add('none')
-    /* console.log(varRegionId) */
 }
 
 deleteCountBtn.addEventListener('click', () => {
@@ -484,11 +446,8 @@ async function deleteCountry(countId) {
         }
     }
     try {
-        console.log(varCountryId)
-        console.log(countId)
         const response = await fetch(`http://localhost:3000/countries/${countId}`, options)
         const data = await response.json()
-        console.log(data)
         cancelCount()
         getLocations()
     } catch(reason) {
@@ -500,17 +459,14 @@ function cancelCount() {
     body.classList.remove('modal')
     darkImageCountries.classList.add('none')
     varCountryId = null
-    console.log(varCountryId)
 }
 
 //edit country
 function countryEdition(count) {
-    console.log(count)
     window.scrollTo(0, 0)
     darkImageEditCount.classList.remove('none')
     darkImageEditCount.style.visibility = 'visible'
     body.classList.add('modal')
-    /* main.classList.add('height-add-ctc') */
     countryEdit.value = count.country_name
     varCountryId = count.country_id
     varEditCountry = 1
@@ -520,7 +476,6 @@ function countryEdition(count) {
 closeEditCountry.addEventListener('click', () => closeWindowEditCountry())
 
 function closeWindowEditCountry() {
-    /* event.preventDefault() */
     darkImageEditCount.classList.add('none')
     body.classList.remove('modal')
     countryEdit.classList.remove('border-wrong')
@@ -559,10 +514,8 @@ async function editCountry() {
             msgECount.innerText = 'El país ya existe'
         }
         const data = await response.json()
-        console.log(data)
         closeWindowEditCountry()
         getLocations()
-        console.log(varCountryId)
     } catch (reason) {
         return reason
     }
@@ -593,7 +546,6 @@ async function addCity(event, count) {
             msgNCit.innerText = 'La ciudad ya existe'
         }
         const data = await response.json()
-        console.log(data)
         closeWindowNewCity()
         getLocations()
     } catch(reason) {
@@ -619,7 +571,6 @@ saveCity.addEventListener('click', (event) => addCity(event, varCountryId))
 
 //delete city
 function modalDeleteCity(cityId) {
-    console.log(cityId)
     varCitId = cityId
     window.scrollTo(0, 0)
     body.classList.add('modal')
@@ -627,27 +578,21 @@ function modalDeleteCity(cityId) {
 }
 
 cancelDltCitBtn.addEventListener('click', () => {
-    /* window.scrollTo(0, 0)
-    body.classList.add('modal')
-    darkImageEditReg.style.visibility = 'visible' */
     cancelDeleteCity()
 })
 
 function cancelDeleteCity() {
     if(varEditCity === 0) {
-        console.log('despues de no edition')
         body.classList.remove('modal')
         darkImageEditCity.style.visibility = 'hidden'
         darkImageEditCity.classList.add('none')
     } else if(varEditCity === 1) {
-        console.log('despues de edition')
         window.scrollTo(0, 0)
         body.classList.add('modal')
         darkImageEditCity.style.visibility = 'visible'
         darkImageEditCity.classList.remove('none')
     }
     darkImageCities.classList.add('none')
-    /* console.log(varRegionId) */
 }
 
 deleteCitBtn.addEventListener('click', () => {
@@ -664,11 +609,8 @@ async function deleteCity(citId) {
         }
     }
     try {
-        console.log(varCitId)
-        console.log(citId)
         const response = await fetch(`http://localhost:3000/cities/${citId}`, options)
         const data = await response.json()
-        console.log(data)
         cancelCit()
         getLocations()
     } catch(reason) {
@@ -680,16 +622,13 @@ function cancelCit() {
     body.classList.remove('modal')
     darkImageCities.classList.add('none')
     varCitId = null
-    console.log(varCitId)
 }
 //edit city
 function cityEdition(cit) {
-    console.log(cit)
     window.scrollTo(0, 0)
     darkImageEditCity.classList.remove('none')
     darkImageEditCity.style.visibility = 'visible'
     body.classList.add('modal')
-    /* main.classList.add('height-add-ctc') */
     cityEdit.value = cit.city_name
     varCitId = cit.city_id
     varEditCity = 1
@@ -699,7 +638,6 @@ function cityEdition(cit) {
 closeEditCity.addEventListener('click', () => closeWindowEditCity())
 
 function closeWindowEditCity() {
-    /* event.preventDefault() */
     darkImageEditCity.classList.add('none')
     body.classList.remove('modal')
     cityEdit.classList.remove('border-wrong')
@@ -738,10 +676,8 @@ async function editCity() {
             msgECit.innerText = 'La ciudad ya existe'
         }
         const data = await response.json()
-        console.log(data)
         closeWindowEditCity()
         getLocations()
-        console.log(varCitId)
     } catch (reason) {
         return reason
     }

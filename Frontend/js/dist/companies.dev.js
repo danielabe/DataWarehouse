@@ -50,8 +50,7 @@ function showCompanies() {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
-          companiesList.innerHTML = ''; //ver si puedo sacar este
-
+          companiesList.innerHTML = '';
           options = {
             method: 'GET',
             headers: {
@@ -68,10 +67,9 @@ function showCompanies() {
 
         case 7:
           data = _context.sent;
-          console.log(data);
           renderCompanies(data);
 
-        case 10:
+        case 9:
         case "end":
           return _context.stop();
       }
@@ -229,7 +227,6 @@ function addCompany(event) {
         case 8:
           response = _context3.sent;
 
-          /* console.log(response.text()) */
           if (response.status === 409) {
             companyName.classList.add('border-wrong');
             msgCompanyName.classList.add('visible');
@@ -241,30 +238,28 @@ function addCompany(event) {
 
         case 12:
           data = _context3.sent;
-          console.log(data);
-          _context3.next = 19;
+          _context3.next = 18;
           break;
 
-        case 16:
-          _context3.prev = 16;
+        case 15:
+          _context3.prev = 15;
           _context3.t0 = _context3["catch"](5);
           return _context3.abrupt("return", _context3.t0);
 
-        case 19:
+        case 18:
           closeWindowNewCompany(event);
           showCompanies();
 
-        case 21:
+        case 20:
         case "end":
           return _context3.stop();
       }
     }
-  }, null, null, [[5, 16]]);
+  }, null, null, [[5, 15]]);
 }
 
 function validateCompanyData(company, compName, msgCom, compEmail, msgEmail, comAddress, msgAddress, compTeleph, msgCompTeleph, compSlt, compList) {
   if (compName.value === '') {
-    //cambiar por values, cambiar en contactos y otros
     compName.classList.add('border-wrong');
     msgCom.classList.add('visible');
     compName.addEventListener('keyup', function () {
@@ -308,15 +303,10 @@ function validateCompanyData(company, compName, msgCom, compEmail, msgEmail, com
     });
   }
 
-  console.log(company.city_id);
-
   if (company.city_id === undefined || company.city_id === null) {
     compSlt.classList.add('border-wrong');
     compList.addEventListener('click', function () {
-      console.log(compSlt.innerText);
-
       if (compSlt.innerText !== 'Seleccionar ciudad') {
-        console.log('//////');
         compSlt.classList.remove('border-wrong');
       }
     });
@@ -357,10 +347,9 @@ function getCitiesComp(citList, citSelect, compCity) {
 
         case 6:
           data = _context4.sent;
-          console.log(data);
           renderSelectCitiesComp(data, citList, citSelect, compCity);
 
-        case 9:
+        case 8:
         case "end":
           return _context4.stop();
       }
@@ -373,7 +362,6 @@ function renderSelectCitiesComp(data, citList, citSelect, compCity) {
   citList.innerHTML = '';
   citList.classList.remove('none');
   var hcit = (data.length * 24 + 6) / 2;
-  console.log(hcit);
   compCity.style.top = "".concat(hcit, "px");
   data.forEach(function (element) {
     var info = {
@@ -401,29 +389,22 @@ function selectCityCompFunction(info, citList, citSelect, compCity) {
 
 
 function modalDeleteCompany(companyId) {
-  console.log(companyId);
-  varCompId = companyId; ///
-
+  varCompId = companyId;
   window.scrollTo(0, 0);
   body.classList.add('modal');
   darkImageCompanies.classList.remove('none');
 }
 
 cancelDltCompBtn.addEventListener('click', function () {
-  /* window.scrollTo(0, 0)
-  body.classList.add('modal')
-  darkImageEditReg.style.visibility = 'visible' */
   cancelDeleteComp();
 });
 
 function cancelDeleteComp() {
   if (varEditCompany === 0) {
-    console.log('despues de no edition');
     body.classList.remove('modal');
     darkImageEditComp.style.visibility = 'hidden';
     darkImageEditComp.classList.add('none');
   } else if (varEditCompany === 1) {
-    console.log('despues de edition');
     window.scrollTo(0, 0);
     body.classList.add('modal');
     darkImageEditComp.style.visibility = 'visible';
@@ -431,14 +412,12 @@ function cancelDeleteComp() {
   }
 
   darkImageCompanies.classList.add('none');
-  console.log(varRegionId);
 }
 
 function cancelComp() {
   body.classList.remove('modal');
   darkImageCompanies.classList.add('none');
   varCompId = null;
-  console.log(varCompId);
 }
 
 deleteCompBtn.addEventListener('click', function () {
@@ -460,34 +439,32 @@ function deleteCompany(compId) {
             }
           };
           _context5.prev = 1;
-          console.log(varRegionId);
-          _context5.next = 5;
+          _context5.next = 4;
           return regeneratorRuntime.awrap(fetch("http://localhost:3000/companies/".concat(compId), options));
 
-        case 5:
+        case 4:
           response = _context5.sent;
-          _context5.next = 8;
+          _context5.next = 7;
           return regeneratorRuntime.awrap(response.json());
 
-        case 8:
+        case 7:
           data = _context5.sent;
-          console.log(data);
           cancelComp();
           showCompanies();
-          _context5.next = 17;
+          _context5.next = 15;
           break;
 
-        case 14:
-          _context5.prev = 14;
+        case 12:
+          _context5.prev = 12;
           _context5.t0 = _context5["catch"](1);
           return _context5.abrupt("return", _context5.t0);
 
-        case 17:
+        case 15:
         case "end":
           return _context5.stop();
       }
     }
-  }, null, null, [[1, 14]]);
+  }, null, null, [[1, 12]]);
 } //edit company
 
 
@@ -497,40 +474,32 @@ function companyEdition(info) {
     while (1) {
       switch (_context6.prev = _context6.next) {
         case 0:
-          console.log(info.companyName);
           varCompCityId = +info.cityId;
           varCompId = +info.companyId;
-          /* varCompanyId = +info.companyId
-          varEditContact = info.contactId */
-
-          console.log(info.cityName);
           window.scrollTo(0, 0);
           body.classList.add('modal');
           darkImageEditComp.classList.remove('none');
           darkImageEditComp.style.visibility = 'visible';
           companyCityEdit.style.top = '0px';
-          /* main.classList.add('height-add-ctc') */
-
           options = {
             method: 'GET',
             headers: {
               Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
             }
           };
-          _context6.next = 12;
+          _context6.next = 10;
           return regeneratorRuntime.awrap(fetch("http://localhost:3000/companies/".concat(varCompId), options));
 
-        case 12:
+        case 10:
           response = _context6.sent;
-          _context6.next = 15;
+          _context6.next = 13;
           return regeneratorRuntime.awrap(response.json());
 
-        case 15:
+        case 13:
           data = _context6.sent;
-          console.log(data);
           loadDataCompany(data);
 
-        case 18:
+        case 15:
         case "end":
           return _context6.stop();
       }
@@ -561,8 +530,6 @@ function closeWindowEditCompany(event) {
   darkImageEditComp.classList.add('none');
   companyListEdit.classList.add('none');
   body.classList.remove('modal');
-  /* main.classList.remove('height-add-ctc') */
-
   companyNameEdit.classList.remove('border-wrong');
   msgCompanyNameEdit.classList.remove('visible');
   companyEmailEdit.classList.remove('border-wrong');
@@ -573,12 +540,8 @@ function closeWindowEditCompany(event) {
   msgCompTelephoneEdit.classList.remove('visible');
   companySltEdit.classList.remove('border-wrong');
   msgCompanyEmailEdit.innerText = 'Error en datos ingresados';
-  /* compLbl.style.top = '0px'
-   */
-
   companyCityEdit.style.top = '0px';
   varSelectCityComp = 0;
-  /* varCityId = null */
 } //select city
 
 
@@ -627,7 +590,6 @@ function editCompany(event) {
         case 6:
           response = _context7.sent;
 
-          /* console.log(response.text()) */
           if (response.status === 409) {
             companyNameEdit.classList.add('border-wrong');
             msgCompanyNameEdit.classList.add('visible');
@@ -639,11 +601,10 @@ function editCompany(event) {
 
         case 10:
           data = _context7.sent;
-          console.log(data);
           closeWindowEditCompany(event);
           showCompanies();
 
-        case 14:
+        case 13:
         case "end":
           return _context7.stop();
       }

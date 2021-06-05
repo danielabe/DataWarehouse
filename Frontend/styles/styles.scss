@@ -44,19 +44,7 @@ $header-height: 64px;
     color: #FFFFFF;
 }
 
-main {
-    /* display: flex;
-    justify-content: center;
-    align-items: center;
-    height: calc(100vh - #{$header-height}); */
-}
-
 .login {
-    /* display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%; */
-
     display: flex;
     justify-content: center;
     align-items: center;
@@ -156,7 +144,6 @@ main {
 .row-user {
     display: grid;
     grid-template: repeat(1, 1fr)/32% 35% 18% 15%;
-    /* width: 95.9vw; */
     &:hover {
         background: rgba(0,0,0,0.05);
     }
@@ -264,7 +251,6 @@ main {
 }
 
 .btn {
-    /* outline: none; */
     border: none;
     border-radius: 2px;
     background: rgb(29, 114, 194);
@@ -287,14 +273,13 @@ main {
     width: 60px;
     height: 27px;
     margin: 0 5px 0 5px;
-    /* background-color: #0683F9; */
 }
 
 .delete {
     width: 70px;
     height: 27px;
     margin: 0 5px 0 5px;
-    background-color: #bb3e3f; /* #F03738 */
+    background-color: #bb3e3f;
     &:hover {
         background-color: #F03738;
     }
@@ -331,27 +316,18 @@ main {
 }
 
 .head-window {
+    display: flex;
+    justify-content: space-between;
     width: 90vw;
     height: 140px;
     position: relative;
     top: 96px;
+    padding: 26.7px 31.8px 0 31.8px;
     background-color: rgb(29, 114, 194);
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-bottom: 0px;
     font-weight: bold;
     color: white;
-
-
-    display: flex;
-    justify-content: space-between;
-    padding: 26.7px 31.8px 0 31.8px;
-    /* box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%); */
-}
-
-.wind-title {
-    /* position: relative;
-    top: 26.7px;
-    left: 31.8px; */
 }
 
 .window-white {
@@ -417,7 +393,6 @@ main {
     height: 42px;
     margin: 0 30px 30px 0;
     background-color: rgba(0,0,0,0.25);
-    /* background-color:  rgb(232, 232, 232); */
     border: none;
     border-radius: 2px;
     font-weight: bold;
@@ -544,7 +519,6 @@ main {
 .row-contact {
     display: grid;
     grid-template: repeat(1, 1fr)/4.1% 21.85% 16.25% 16.25% 16.25% 16.25% 9.05%;
-    /* width: 95.9vw; */
     background: white;
     &:hover {
         background: rgba(0,0,0,0.05);
@@ -770,7 +744,6 @@ progress::-moz-progress-bar {
 .form-lbl {
     width: 95%;
     padding: 0 0 10.6px 0;
-    /* z-index: 1; */
     font-size: 14px;
     color: rgb(51, 51, 51);
 }
@@ -791,7 +764,6 @@ progress::-moz-progress-bar {
 .fa-caret-down {
     width: min-content;
     padding-right: 15px;
-    /* text-align: right; */
     font-size: 15px;
     color: rgba(0,0,0,0.50);
 }
@@ -832,9 +804,6 @@ progress::-moz-progress-bar {
 }
 
 .contact-channel {
-    /* display: grid;
-    grid-template: repeat(1, 1fr)/33% 33% 33%;
-    grid-gap: 7px; */
     display: flex;
     flex-direction: column;
     align-self: flex-start;
@@ -957,7 +926,6 @@ progress::-moz-progress-bar {
 .reg-btn {
     display: flex;
     width: min-content;
-    /* margin: 10px 0 10px 30px; */
 }
 
 .reg-msg {
@@ -981,7 +949,6 @@ progress::-moz-progress-bar {
 .row-companies {
     display: grid;
     grid-template: repeat(1, 1fr)/20% 20% 20% 20% 20%;
-    /* width: 95.9%; */
     &:hover {
         background: rgba(0,0,0,0.05);
     }
@@ -1001,10 +968,6 @@ progress::-moz-progress-bar {
     display: flex;
     align-items: flex-end;
     width: 95.9%
-}
-
-.company-window {
-    /* height: 300px; */
 }
 
 .new-comp-form {
@@ -1048,10 +1011,8 @@ progress::-moz-progress-bar {
 
 .msg-pass {
     width: 100%;
-    /* visibility: hidden; */
     font-size: 12px;
     font-style: italic;
-    /* color: #F03738; */
     color: #333333;
 }
 

@@ -17,7 +17,7 @@ var contactsSection = document.getElementById('contactsSection');
 var usersLink = document.getElementById('usersLink');
 submit.addEventListener('click', function (event) {
   event.preventDefault();
-  loginFunction(); //funcion nueva pantalla
+  loginFunction();
 });
 
 function loginFunction() {
@@ -49,7 +49,6 @@ function loginFunction() {
           data = _context.sent;
 
           if (response.status === 200) {
-            console.log(data);
             saveToken(data);
             login.classList.add('none');
             varSect = 'noLog';
@@ -73,8 +72,7 @@ function loginFunction() {
 }
 
 function saveToken(data) {
-  console.log(data.token);
-  sessionStorage.setItem('Token', JSON.stringify(data.token)); //cambio token
+  sessionStorage.setItem('Token', JSON.stringify(data.token));
 }
 
 contacts.addEventListener('click', function () {

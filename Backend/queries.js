@@ -14,7 +14,7 @@ async function selectUserLogin(username, password, req, res) {
     const perfil = user[0].perfil
     const user_id = user[0].user_id
     res.status(200).json(Object.assign({}, {token: jwt.sign({ username, perfil, user_id} , authorizationPassword)}, {perf: perfil}))
-}//cambio token
+}
 
 async function validateLoginQuery(req, res, next) {
     const { username, password } = req.body
@@ -43,7 +43,6 @@ async function createUser(newUser, req, res) {
         replacements: newUser,
         type: QueryTypes.INSERT
     })
-    console.log(inserted)
     const { firstname , lastname, email  } = newUser
     res.status(201).json(Object.assign({}, { user_id: inserted[0] } , 
         { firstname: firstname , lastname: lastname, email: email}, {perfil: "Básico"}))
@@ -151,7 +150,6 @@ async function validateRegionNameQuery(req, res, next) {
 }
 
 async function createRegion(newRegion, req, res) {
-    console.log(newRegion)
     const inserted = await db.query(`
     INSERT INTO regions (region_name)
     VALUES (:newRegion)
@@ -183,17 +181,15 @@ async function getRegion(regionId, req, res) {
 }
 
 async function validateRegionNamePutQuery(req, res, next) {
-    /* if(req.body.region_name){ */
-        const region = req.body.region_name
-        const regions = await db.query(`SELECT region_name FROM regions WHERE region_id != ${req.params.regionId}`, {
-            type: QueryTypes.SELECT
-        })
-        const regionsArray = regions.map(region => region.region_name)
-        if(req.body.region_name.length >= 1 && req.body.region_name.length <= 64) {
-            if(regionsArray.every(name => name !== region)) next()
-            else res.status(409).send("The region already exists").end()
-        } else res.status(400).send("The region name length is wrong").end()
-    /* } else next() */
+    const region = req.body.region_name
+    const regions = await db.query(`SELECT region_name FROM regions WHERE region_id != ${req.params.regionId}`, {
+        type: QueryTypes.SELECT
+    })
+    const regionsArray = regions.map(region => region.region_name)
+    if(req.body.region_name.length >= 1 && req.body.region_name.length <= 64) {
+        if(regionsArray.every(name => name !== region)) next()
+        else res.status(409).send("The region already exists").end()
+    } else res.status(400).send("The region name length is wrong").end()
 }
 
 async function modifyRegion(regionId, req, res) {
@@ -208,7 +204,7 @@ async function modifyRegion(regionId, req, res) {
     const modified = await db.query(`
     UPDATE regions SET region_name = :regionName WHERE region_id = :regionId
     `, {
-        replacements:  newRegion /* Object.assign( {}, newRegion, {password: password} ) */,
+        replacements:  newRegion,
         type: QueryTypes.UPDATE
     })
     res.status(200).json(newRegion)
@@ -238,7 +234,6 @@ async function getCountriesRegion(regionId, req, res) {
     SELECT * FROM countries WHERE region_id = ?
     `, { replacements: [regionId],
         type: QueryTypes.SELECT })
-        console.table(countries)
     res.status(200).json(countries)
 }
 
@@ -251,7 +246,6 @@ async function getCitiesRegion(regionId, req, res) {
     WHERE re.region_id = ?
     `, { replacements: [regionId],
         type: QueryTypes.SELECT })
-        console.table(cities)
     res.status(200).json(cities)
 }
 
@@ -322,17 +316,15 @@ async function getCountry(countryId, req, res) {
 }
 
 async function validateCountryNamePutQuery(req, res, next) {
-    /* if(req.body.country_name){ */
-        const country = req.body.country_name
-        const countries = await db.query(`SELECT country_name FROM countries WHERE country_id != ${req.params.countryId}`, {
-            type: QueryTypes.SELECT
-        })
-        const countriesArray = countries.map(country => country.country_name)
-        if(req.body.country_name.length >= 1 && req.body.country_name.length <= 64) {
-            if(countriesArray.every(name => name !== country)) next()
-            else res.status(409).send("The country already exists").end()
-        } else res.status(400).send("The country name length is wrong").end()
-    /* } else next() */
+    const country = req.body.country_name
+    const countries = await db.query(`SELECT country_name FROM countries WHERE country_id != ${req.params.countryId}`, {
+        type: QueryTypes.SELECT
+    })
+    const countriesArray = countries.map(country => country.country_name)
+    if(req.body.country_name.length >= 1 && req.body.country_name.length <= 64) {
+        if(countriesArray.every(name => name !== country)) next()
+        else res.status(409).send("The country already exists").end()
+    } else res.status(400).send("The country name length is wrong").end()
 }
 
 async function modifyCountry(countryId, req, res) {
@@ -392,7 +384,6 @@ async function getCitiesCountry(countryId, req, res) {
     SELECT * FROM cities WHERE country_id = ?
     `, { replacements: [countryId],
         type: QueryTypes.SELECT })
-        console.table(cities)
     res.status(200).json(cities)
 }
 
@@ -458,17 +449,15 @@ async function validateCountryIdCityQuery(req, res, next) {
 }
 
 async function validateCityNamePutQuery(req, res, next) {
-    /* if(req.body.city_name){ */
-        const city = req.body.city_name
-        const cities = await db.query(`SELECT city_name FROM cities WHERE city_id != ${req.params.cityId}`, {
-            type: QueryTypes.SELECT
-        })
-        const citiesArray = cities.map(city => city.city_name)
-        if(req.body.city_name.length >= 1 && req.body.city_name.length <= 64) {
-            if(citiesArray.every(name => name !== city)) next()
-            else res.status(409).send("The city already exists").end()
-        } else res.status(400).send("The city name length is wrong").end()
-    /* } else next() */
+    const city = req.body.city_name
+    const cities = await db.query(`SELECT city_name FROM cities WHERE city_id != ${req.params.cityId}`, {
+        type: QueryTypes.SELECT
+    })
+    const citiesArray = cities.map(city => city.city_name)
+    if(req.body.city_name.length >= 1 && req.body.city_name.length <= 64) {
+        if(citiesArray.every(name => name !== city)) next()
+        else res.status(409).send("The city already exists").end()
+    } else res.status(400).send("The city name length is wrong").end()
 }
 
 async function modifyCity(cityId, req, res) {
@@ -501,13 +490,11 @@ async function deleteCity(cityId, req, res) {
         type: QueryTypes.SELECT 
     })
     const idsContacts = citiesIdContacts.map(id => id.city_id)
-    console.log(idsContacts)
 
     const citiesIdCompanies = await db.query(`SELECT city_id FROM companies`, { 
         type: QueryTypes.SELECT 
     })
     const idsCompanies = citiesIdCompanies.map(id => id.city_id)
-    console.log(idsCompanies)
 
     if(!idsContacts.includes(cityId) && !idsCompanies.includes(cityId)) {
         const deleted = await db.query(`DELETE FROM cities WHERE city_id = ?`, {
@@ -654,7 +641,6 @@ async function deleteCompany(companyId, req, res) {
         type: QueryTypes.SELECT 
     })
     const ids = companiesId.map(id => id.company_id)
-    console.log(ids + '///' + companyId)
     if(!ids.includes(companyId)) {
         const company = await db.query(`
         SELECT company_id, company_name, email, c.city_id, city_name, ci.country_id, country_name, 
@@ -729,7 +715,7 @@ function different(value, index, list) {
     return list.indexOf(value) === index
 }
 
-async function createContact(newContact, req, res) { //arreglar la asincronia, a veces no me devuelve el dato que se inserto
+async function createContact(newContact, req, res) {
     const contactInserted = await db.query(`
     INSERT INTO contacts (firstname, lastname, email, city_id, address, company_id, position, interest)
     VALUES (:firstname, :lastname, :email, :city_id, :address, :company_id, :position, :interest)
@@ -780,7 +766,7 @@ async function getChannelsInserted(contactId, req, res) {
 }
 
 async function validateContactIdQuery(req, res, next) {
-    const contactId = +req.params.contactId /* || req.body.contact_id */
+    const contactId = +req.params.contactId
     const contacts = await db.query(`SELECT contact_id FROM contacts`, {
         type: QueryTypes.SELECT
     })
@@ -872,10 +858,9 @@ async function modifyContact(req, res) {
         address: req.body.address || contact[0].address,
         company_id: req.body.company_id || contact[0].company_id,
         position: req.body.position || contact[0].position,
-        interest: +req.body.interest /* || contact[0].interest */,
-        preferred_channels: req.body.preferred_channels /* || chan[0].preferred_channels */
+        interest: +req.body.interest,
+        preferred_channels: req.body.preferred_channels
     }
-    console.log(req.body.interest, contact[0].interest, modifiedContact)
     const modified = await db.query(`
     UPDATE contacts SET firstname = :firstname, lastname = :lastname, email = :email, city_id = :city_id, 
     address = :address, company_id = :company_id, position = :position, interest = :interest
@@ -888,7 +873,7 @@ async function modifyContact(req, res) {
     DELETE FROM contacts_channels WHERE contact_id = ${req.params.contactId}
     `, { type: QueryTypes.DELETE })
 
-    req.body.preferred_channels.forEach(async chan => { //esto no funciona
+    req.body.preferred_channels.forEach(async chan => {
         await db.query(`
     INSERT INTO contacts_channels (contact_id, channel_id, user_account, preference) 
     VALUES (${req.params.contactId}, ${chan.channel_id}, '${chan.user_account}', '${chan.preference}')
@@ -939,7 +924,6 @@ async function deleteContact(contactId, req, res) {
         replacements: [contactId],
         type: QueryTypes.DELETE
     })
-    /* res.status(200).json(contact) */
     const contactAndChannels = Object.assign( {} , contact[0], { preferred_channels: channels})
     res.status(200).json(Object.assign( contactAndChannels ))
 }
@@ -959,7 +943,6 @@ async function validateChannelIdAddQuery(req, res, next) {
         type: QueryTypes.SELECT 
     })
     const channelsContactArray = channelsContact.map(cc => cc.channel_id)
-    console.log(channelsContactArray)
 
     if(channelsArray.includes(channelId)) {
         if(channelsContactArray.includes(channelId)) {
@@ -978,7 +961,6 @@ async function validateChannelIdDelQuery(req, res, next) {
         type: QueryTypes.SELECT 
     })
     const channelsContactArray = channelsContact.map(cc => cc.channel_id)
-    console.log(channelsContactArray)
     if(channelsContactArray.includes(channelId)) next()
     else res.status(404).send("The contact does not have that channel").end()
 }
@@ -1031,7 +1013,6 @@ async function getResults(req, res) {
         replacements: [searchValue],
         type: QueryTypes.SELECT 
     })
-    console.table(contacts)
     const channels = await db.query(`
     SELECT * FROM contacts_channels cc 
     INNER JOIN channels ch ON cc.channel_id = ch.channel_id`, { 
@@ -1119,7 +1100,7 @@ async function modifyChannel(channelId, req, res) {
     const modified = await db.query(`
     UPDATE channels SET channel_name = :channelName WHERE channel_id = :channelId
     `, {
-        replacements:  newChannel /* Object.assign( {}, newchannel, {password: password} ) */,
+        replacements:  newChannel,
         type: QueryTypes.UPDATE
     })
     res.status(200).json(newChannel)
@@ -1138,19 +1119,20 @@ async function deleteChannel(channelId, req, res) {
 }
 
 module.exports = { selectUserLogin, validateLoginQuery, getUsers, createUser, 
-    validateEmailQuery, validateUserIdQuery, getUser, modifyUser, validateEmailPutQuery,deleteUser, 
-    getRegions, createRegion, validateRegionNameQuery, validateRegionIdQuery, 
-    getRegion, validateRegionNamePutQuery, modifyRegion, deleteRegion, 
-    getCountriesRegion, getCitiesRegion, getRegionsCountriesCities, getCountries, 
-    validateCountryNameQuery, createCountry, validateCountryIdQuery, getCountry, 
-    validateCountryNamePutQuery, modifyCountry, validateRegionIdCountryQuery, 
-    deleteCountry, getCitiesCountry, getCities, validateCityNameQuery, createCity, 
-    validateCityIdQuery, getCity, validateCountryIdCityQuery, validateCityNamePutQuery, 
-    modifyCity, deleteCity, getCompanies, validateCompanyNameQuery, createCompany,
-    validateCompanyIdQuery, getCompany, validateCompanyNamePutQuery, modifyCompany, 
-    validateCityIdPutQuery, deleteCompany, getContacts, validateEmailContactsQuery, 
-    validateChannelIdQuery, createContact, addChannelsContacts, getContactInserted, getChannelsInserted, validateContactIdQuery, getContact, 
-    validateEmailContactsPutQuery, validateCompanyIdPutQuery, validateChannelIdPutQuery, 
-    modifyContact, deleteContact, validateChannelIdAddQuery, addChannel, deleteChannelContact, 
-    validateChannelIdDelQuery, getResults, getChannels, validateChannelNameQuery, createChannel, 
-    validateChannelIdExQuery, getChannel, validateChannelNamePutQuery, modifyChannel, deleteChannel }
+    validateEmailQuery, validateUserIdQuery, getUser, modifyUser, validateEmailPutQuery,
+    deleteUser, getRegions, createRegion, validateRegionNameQuery, validateRegionIdQuery, 
+    getRegion, validateRegionNamePutQuery, modifyRegion, deleteRegion, getCountriesRegion, 
+    getCitiesRegion, getRegionsCountriesCities, getCountries, validateCountryNameQuery, 
+    createCountry, validateCountryIdQuery, getCountry, validateCountryNamePutQuery, 
+    modifyCountry, validateRegionIdCountryQuery, deleteCountry, getCitiesCountry, 
+    getCities, validateCityNameQuery, createCity, validateCityIdQuery, getCity, 
+    validateCountryIdCityQuery, validateCityNamePutQuery, modifyCity, deleteCity, 
+    getCompanies, validateCompanyNameQuery, createCompany, validateCompanyIdQuery, 
+    getCompany, validateCompanyNamePutQuery, modifyCompany, validateCityIdPutQuery, 
+    deleteCompany, getContacts, validateEmailContactsQuery, validateChannelIdQuery, 
+    createContact, addChannelsContacts, getContactInserted, getChannelsInserted, 
+    validateContactIdQuery, getContact, validateEmailContactsPutQuery, 
+    validateCompanyIdPutQuery, validateChannelIdPutQuery, modifyContact, deleteContact, 
+    validateChannelIdAddQuery, addChannel, deleteChannelContact, validateChannelIdDelQuery, 
+    getResults, getChannels, validateChannelNameQuery, createChannel, validateChannelIdExQuery, 
+    getChannel, validateChannelNamePutQuery, modifyChannel, deleteChannel }

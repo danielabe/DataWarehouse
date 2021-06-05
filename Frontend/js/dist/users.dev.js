@@ -65,7 +65,6 @@ function getUsers() {
 
         case 8:
           data = _context.sent;
-          console.log(data);
           data.forEach(function (element) {
             var info = {
               userId: element.user_id,
@@ -74,7 +73,6 @@ function getUsers() {
               email: element.email,
               perfil: element.perfil
             };
-            console.log(element);
             var row = document.createElement('li');
             var user = document.createElement('div');
             var email = document.createElement('div');
@@ -115,13 +113,11 @@ function getUsers() {
               modalDeleteUser();
             });
             pen.addEventListener('click', function () {
-              return userEdition(info
-              /* , usersList */
-              );
+              return userEdition(info);
             });
           });
 
-        case 11:
+        case 10:
         case "end":
           return _context.stop();
       }
@@ -144,10 +140,7 @@ function outRow(ellipsis, trash, pen) {
 
 newUserBtn.addEventListener('click', function () {
   window.scrollTo(0, 0);
-  /* body.classList.add('modal') */
-
   darkImageNewUser.classList.remove('none');
-  /* companyCity.style.top = '0px' */
 });
 closeNewUser.addEventListener('click', function (event) {
   return closeWindowNewUser(event);
@@ -178,9 +171,6 @@ function closeWindowNewUser(event) {
   perfilSlt.classList.remove('border-wrong');
   darkImageNewUser.classList.add('none');
   perfilList.classList.add('no-visible');
-  /* varCompCityId = null
-  varSelectCityComp = 0 */
-
   varSelectPerfil = 0;
 } //select perfil
 
@@ -191,10 +181,6 @@ perfilSlt.addEventListener('click', function () {
     showPerfil(perfilList, perfilSlt, perfilClass);
   } else if (varSelectPerfil === 1) {
     perfilList.classList.add('no-visible');
-    /* userPerfil.style.top = '0px' */
-
-    /* perfilList.innerHTML = '' */
-
     varSelectPerfil = 0;
   }
 });
@@ -203,7 +189,6 @@ function showPerfil(perfList, perfSlt, perfilC) {
   perfList.classList.remove('no-visible');
   varSelectPerfil = 1;
   perfArray = document.querySelectorAll(".".concat(perfilC));
-  console.log(perfArray);
   perfArray.forEach(function (element) {
     element.addEventListener('click', function () {
       return selectPerfilFunction(element.innerHTML, perfList, perfSlt);
@@ -265,25 +250,24 @@ function addUsers(event) {
 
         case 12:
           data = _context2.sent;
-          console.log(data);
-          _context2.next = 19;
+          _context2.next = 18;
           break;
 
-        case 16:
-          _context2.prev = 16;
+        case 15:
+          _context2.prev = 15;
           _context2.t0 = _context2["catch"](5);
           return _context2.abrupt("return", _context2.t0);
 
-        case 19:
+        case 18:
           closeWindowNewUser(event);
           getUsers();
 
-        case 21:
+        case 20:
         case "end":
           return _context2.stop();
       }
     }
-  }, null, null, [[5, 16]]);
+  }, null, null, [[5, 15]]);
 }
 
 function validateUserData(user, usName, msgUsName, usLastname, msgUsLastname, usEmail, msgUsEmail, perfilSlt, perfilList, usPass, msgUsPass, usPassRep, msgUsPassRep) {
@@ -323,10 +307,7 @@ function validateUserData(user, usName, msgUsName, usLastname, msgUsLastname, us
   if (perfilSlt.innerText === 'Seleccionar perfil') {
     perfilSlt.classList.add('border-wrong');
     perfilList.addEventListener('click', function () {
-      console.log(perfilSlt.innerText);
-
       if (perfilSlt.innerText !== 'Seleccionar ciudad') {
-        console.log('//////');
         perfilSlt.classList.remove('border-wrong');
       }
     });
@@ -396,25 +377,13 @@ function validatePass(userPassEdit, msgUserPassRep, userPassRepEdit, msgUserPass
 
 
 function modalDeleteUser() {
-  console.log(uId);
   window.scrollTo(0, 0);
   body.classList.add('modal');
   darkImageUsers.classList.remove('none');
   cancelDltUserBtn.addEventListener('click', function () {
     body.classList.remove('modal');
     darkImageUsers.classList.add('none');
-    /* darkImageEditCtc.style.visibility = 'visible' */
   });
-  /* deleteContactBtn.addEventListener('click', () => {
-      body.classList.remove('modal')
-      darkImageContacts.classList.add('none')
-      //contactsList.innerHTML = ''
-      if(varDelete === 0) {
-          deleteContact(info)
-      } else if (varDelete === 1) {
-          deleteContacts()
-      }
-  }) */
 }
 
 deleteUserBtn.addEventListener('click', function (event) {
@@ -446,11 +415,10 @@ function deleteUser(info, event) {
 
         case 6:
           data = _context3.sent;
-          console.log(data);
           closeWindowNewUser(event);
           getUsers();
 
-        case 10:
+        case 9:
         case "end":
           return _context3.stop();
       }
@@ -466,42 +434,28 @@ function userEdition(info) {
       switch (_context4.prev = _context4.next) {
         case 0:
           varUserId = +info.userId;
-          console.log(varUserId);
-          /* varCompCityId = +info.cityId
-          varCompId = +info.companyId */
-
-          /* varCompanyId = +info.companyId
-          varEditContact = info.contactId */
-
           window.scrollTo(0, 0);
-          /* body.classList.add('modal') */
-
           darkImageEditUser.classList.remove('none');
           darkImageEditUser.style.visibility = 'visible';
-          /* companyCityEdit.style.top = '0px' */
-
-          /* main.classList.add('height-add-ctc') */
-
           options = {
             method: 'GET',
             headers: {
               Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
             }
           };
-          _context4.next = 8;
+          _context4.next = 7;
           return regeneratorRuntime.awrap(fetch("http://localhost:3000/users/".concat(varUserId), options));
 
-        case 8:
+        case 7:
           response = _context4.sent;
-          _context4.next = 11;
+          _context4.next = 10;
           return regeneratorRuntime.awrap(response.json());
 
-        case 11:
+        case 10:
           data = _context4.sent;
-          console.log(data);
           loadUserData(data);
 
-        case 14:
+        case 12:
         case "end":
           return _context4.stop();
       }
@@ -529,12 +483,6 @@ closeEditUser.addEventListener('click', function (event) {
 function closeWindowEditUser(event) {
   event.preventDefault();
   darkImageEditUser.classList.add('none');
-  /* companyListEdit.classList.add('none') */
-
-  /* body.classList.remove('modal') */
-
-  /* main.classList.remove('height-add-ctc') */
-
   userNameEdit.classList.remove('border-wrong');
   msgUserNameEdit.classList.remove('visible');
   userLastnameEdit.classList.remove('border-wrong');
@@ -547,10 +495,6 @@ function closeWindowEditUser(event) {
   userPassRepEdit.classList.remove('border-wrong');
   msgUserPassRepEdit.classList.remove('visible');
   msgUserEmailEdit.innerText = 'Error en datos ingresados';
-  /* varSelectCityComp = 0 */
-
-  /* varCityId = null */
-
   varUserId = null;
 } //select perfil
 
@@ -599,7 +543,6 @@ function editUser(event) {
         case 7:
           response = _context5.sent;
 
-          /* console.log(response.text()) */
           if (response.status === 409) {
             userEmailEdit.classList.add('border-wrong');
             msgUserEmailEdit.classList.add('visible');
@@ -611,11 +554,10 @@ function editUser(event) {
 
         case 11:
           data = _context5.sent;
-          console.log(data);
           closeWindowEditUser(event);
           getUsers();
 
-        case 15:
+        case 14:
         case "end":
           return _context5.stop();
       }

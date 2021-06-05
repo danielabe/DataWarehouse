@@ -44,7 +44,7 @@ let varCompCityId = null
 companies.addEventListener('click', () => showCompanies())
 
 async function showCompanies() {
-    companiesList.innerHTML = '' //ver si puedo sacar este
+    companiesList.innerHTML = ''
     const options = {
         method: 'GET',
         headers: {
@@ -53,7 +53,6 @@ async function showCompanies() {
     }
     const response = await fetch('http://localhost:3000/companies', options)
     const data = await response.json()
-    console.log(data)
     renderCompanies(data)
 }
 
@@ -114,7 +113,6 @@ function renderCompanies(data) {
 
         trash.addEventListener('click', () => modalDeleteCompany(info.companyId))
         pen.addEventListener('click', () => companyEdition(info))
-
     })
 }
 
@@ -184,15 +182,12 @@ async function addCompany(event) {
     }
     try {
         const response = await fetch('http://localhost:3000/companies', options)
-        /* console.log(response.text()) */
         if(response.status === 409) {
             companyName.classList.add('border-wrong')
             msgCompanyName.classList.add('visible')
             msgCompanyName.innerText = 'La empresa ya existe'
         }
-        
         const data = await response.json()
-        console.log(data)
     } catch(reason) {
         return reason
     }
@@ -202,7 +197,7 @@ async function addCompany(event) {
 
 function validateCompanyData(company, compName, msgCom, compEmail, msgEmail, comAddress, msgAddress, 
     compTeleph, msgCompTeleph, compSlt, compList) {
-    if(compName.value === '') {//cambiar por values, cambiar en contactos y otros
+    if(compName.value === '') {
         compName.classList.add('border-wrong')
         msgCom.classList.add('visible')
         compName.addEventListener('keyup', () => {
@@ -242,13 +237,10 @@ function validateCompanyData(company, compName, msgCom, compEmail, msgEmail, com
             }
         })
     }
-    console.log(company.city_id)
     if(company.city_id === undefined || company.city_id === null) {
         compSlt.classList.add('border-wrong')
         compList.addEventListener('click', () => {
-            console.log(compSlt.innerText)
             if(compSlt.innerText !== 'Seleccionar ciudad') {
-                console.log('//////')
                 compSlt.classList.remove('border-wrong')
             }
         })
@@ -276,7 +268,6 @@ async function getCitiesComp(citList, citSelect, compCity) {
     }
     const response = await fetch(`http://localhost:3000/cities`, options)
     const data = await response.json()
-    console.log(data)
     renderSelectCitiesComp(data, citList, citSelect, compCity)
 }
 
@@ -286,7 +277,6 @@ function renderSelectCitiesComp(data, citList, citSelect, compCity) {
     citList.classList.remove('none')
 
     const hcit = (data.length * 24 + 6) / 2
-    console.log(hcit)
     compCity.style.top = `${hcit}px`
 
     data.forEach(element => {
@@ -312,45 +302,36 @@ function selectCityCompFunction(info, citList, citSelect, compCity) {
     varCompCityId = +info.cityId
 }
 
-
 //delete company
 function modalDeleteCompany(companyId) {
-    console.log(companyId)
-    varCompId = companyId///
+    varCompId = companyId
     window.scrollTo(0, 0)
     body.classList.add('modal')
     darkImageCompanies.classList.remove('none')
 }
 
 cancelDltCompBtn.addEventListener('click', () => {
-    /* window.scrollTo(0, 0)
-    body.classList.add('modal')
-    darkImageEditReg.style.visibility = 'visible' */
     cancelDeleteComp()
 })
 
 function cancelDeleteComp() {
     if(varEditCompany === 0) {
-        console.log('despues de no edition')
         body.classList.remove('modal')
         darkImageEditComp.style.visibility = 'hidden'
         darkImageEditComp.classList.add('none')
     } else if(varEditCompany === 1) {
-        console.log('despues de edition')
         window.scrollTo(0, 0)
         body.classList.add('modal')
         darkImageEditComp.style.visibility = 'visible'
         darkImageEditComp.classList.remove('none')
     }
     darkImageCompanies.classList.add('none')
-    console.log(varRegionId)
 }
 
 function cancelComp() {
     body.classList.remove('modal')
     darkImageCompanies.classList.add('none')
     varCompId = null
-    console.log(varCompId)
 }
 
 deleteCompBtn.addEventListener('click', () => {
@@ -367,10 +348,8 @@ async function deleteCompany(compId) {
         }
     }
     try {
-        console.log(varRegionId)
         const response = await fetch(`http://localhost:3000/companies/${compId}`, options)
         const data = await response.json()
-        console.log(data)
         cancelComp()
         showCompanies()
     } catch(reason) {
@@ -380,18 +359,13 @@ async function deleteCompany(compId) {
 
 //edit company
 async function companyEdition(info) {
-    console.log(info.companyName)
     varCompCityId = +info.cityId
     varCompId = +info.companyId
-    /* varCompanyId = +info.companyId
-    varEditContact = info.contactId */
-    console.log(info.cityName)
     window.scrollTo(0, 0)
     body.classList.add('modal')
     darkImageEditComp.classList.remove('none')
     darkImageEditComp.style.visibility = 'visible'
     companyCityEdit.style.top = '0px'
-    /* main.classList.add('height-add-ctc') */
     
     const options = {                   
         method: 'GET',  
@@ -401,7 +375,6 @@ async function companyEdition(info) {
     }
     const response = await fetch(`http://localhost:3000/companies/${varCompId}`, options)
     const data = await response.json()
-    console.log(data)
     loadDataCompany(data)
 }
 
@@ -427,7 +400,6 @@ function closeWindowEditCompany(event) {
     companyListEdit.classList.add('none')
     body.classList.remove('modal')
 
-    /* main.classList.remove('height-add-ctc') */
     companyNameEdit.classList.remove('border-wrong')
     msgCompanyNameEdit.classList.remove('visible')
     companyEmailEdit.classList.remove('border-wrong')
@@ -440,25 +412,21 @@ function closeWindowEditCompany(event) {
 
     msgCompanyEmailEdit.innerText = 'Error en datos ingresados'
 
-    /* compLbl.style.top = '0px'
-     */
     companyCityEdit.style.top = '0px'
     varSelectCityComp = 0
-
-    /* varCityId = null */
 }
 
 //select city
 companySltEdit.addEventListener('click', () => {
-        if(varSelectCityComp === 0) {
-            companyListEdit.innerHTML = ''
-            getCitiesComp(companyListEdit, companySltEdit, companyCityEdit)
-        } else if(varSelectCityComp === 1) {
-            companyListEdit.classList.add('none')
-            companyCityEdit.style.top = '0px'
-            companyListEdit.innerHTML = ''
-            varSelectCityComp = 0
-        }
+    if(varSelectCityComp === 0) {
+        companyListEdit.innerHTML = ''
+        getCitiesComp(companyListEdit, companySltEdit, companyCityEdit)
+    } else if(varSelectCityComp === 1) {
+        companyListEdit.classList.add('none')
+        companyCityEdit.style.top = '0px'
+        companyListEdit.innerHTML = ''
+        varSelectCityComp = 0
+    }
 })
 
 //save edited contact
@@ -485,14 +453,12 @@ async function editCompany(event) {
         }
     }
     const response = await fetch(`http://localhost:3000/companies/${varCompId}`, options)
-    /* console.log(response.text()) */
     if(response.status === 409) {
         companyNameEdit.classList.add('border-wrong')
         msgCompanyNameEdit.classList.add('visible')
         msgCompanyNameEdit.innerText = 'La empresa ya existe'
     }
     const data = await response.json()
-    console.log(data)
     closeWindowEditCompany(event)
     showCompanies() 
 }

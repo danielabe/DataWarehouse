@@ -63,7 +63,6 @@ function getLocations() {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
-          console.log(varCountryId);
           regionList.innerHTML = '';
           options = {
             method: 'GET',
@@ -71,17 +70,16 @@ function getLocations() {
               Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
             }
           };
-          _context.next = 5;
+          _context.next = 4;
           return regeneratorRuntime.awrap(fetch('http://localhost:3000/regionsCountriesCities', options));
 
-        case 5:
+        case 4:
           response = _context.sent;
-          _context.next = 8;
+          _context.next = 7;
           return regeneratorRuntime.awrap(response.json());
 
-        case 8:
+        case 7:
           data = _context.sent;
-          console.log(data);
           data.forEach(function (reg) {
             var region = document.createElement('li');
             var countryList = document.createElement('ul');
@@ -121,7 +119,6 @@ function getLocations() {
               body.classList.add('modal');
               darkImageNewCountry.classList.remove('none');
               varRegionId = +reg.region_id;
-              console.log(varRegionId);
             });
             reg.countries.forEach(function (count) {
               var country = document.createElement('li');
@@ -162,7 +159,6 @@ function getLocations() {
                 body.classList.add('modal');
                 darkImageNewCity.classList.remove('none');
                 varCountryId = +count.country_id;
-                console.log(varCountryId);
               });
               count.cities.forEach(function (cit) {
                 var city = document.createElement('li');
@@ -190,7 +186,7 @@ function getLocations() {
             });
           });
 
-        case 11:
+        case 9:
         case "end":
           return _context.stop();
       }
@@ -203,16 +199,7 @@ addRegBtn.addEventListener('click', function () {
   window.scrollTo(0, 0);
   body.classList.add('modal');
   darkImage.classList.remove('none');
-  /* newRegion.addEventListener('keyup', () => disabledBtn()) */
 });
-/* function disabledBtn() {
-    if(newRegion.value !== '') {
-        saveRegion.classList.add('blue')
-    }
-    if(newRegion.value === '')
-        saveRegion.classList.remove('blue')
-} */
-
 saveRegion.addEventListener('click', function (event) {
   return addRegion(event);
 });
@@ -253,28 +240,26 @@ function addRegion(event) {
 
         case 10:
           data = _context2.sent;
-          console.log(data);
           closeWindowNewRegion(event);
           getLocations();
-          _context2.next = 19;
+          _context2.next = 18;
           break;
 
-        case 16:
-          _context2.prev = 16;
+        case 15:
+          _context2.prev = 15;
           _context2.t0 = _context2["catch"](3);
           return _context2.abrupt("return", _context2.t0);
 
-        case 19:
+        case 18:
         case "end":
           return _context2.stop();
       }
     }
-  }, null, null, [[3, 16]]);
+  }, null, null, [[3, 15]]);
 } //validate region
 
 
 function validateLocation(location, msg) {
-  //newRegion, msgNReg
   if (location.value === '') {
     location.classList.add('border-wrong');
     msg.classList.add('visible');
@@ -307,7 +292,6 @@ function closeWindowNewRegion(event) {
 
 
 function modalDeleteRegion(regionId) {
-  console.log(regionId);
   varRegionId = regionId;
   window.scrollTo(0, 0);
   body.classList.add('modal');
@@ -315,20 +299,15 @@ function modalDeleteRegion(regionId) {
 }
 
 cancelDltRegBtn.addEventListener('click', function () {
-  /* window.scrollTo(0, 0)
-  body.classList.add('modal')
-  darkImageEditReg.style.visibility = 'visible' */
   cancelDeleteReg();
 });
 
 function cancelDeleteReg() {
   if (varEditRegion === 0) {
-    console.log('despues de no edition');
     body.classList.remove('modal');
     darkImageEditReg.style.visibility = 'hidden';
     darkImageEditReg.classList.add('none');
   } else if (varEditRegion === 1) {
-    console.log('despues de edition');
     window.scrollTo(0, 0);
     body.classList.add('modal');
     darkImageEditReg.style.visibility = 'visible';
@@ -336,14 +315,12 @@ function cancelDeleteReg() {
   }
 
   darkImageRegions.classList.add('none');
-  console.log(varRegionId);
 }
 
 function cancelReg() {
   body.classList.remove('modal');
   darkImageRegions.classList.add('none');
   varRegionId = null;
-  console.log(varRegionId);
 }
 
 deleteRegBtn.addEventListener('click', function () {
@@ -365,45 +342,40 @@ function deleteRegion(regId) {
             }
           };
           _context3.prev = 1;
-          console.log(varRegionId);
-          _context3.next = 5;
+          _context3.next = 4;
           return regeneratorRuntime.awrap(fetch("http://localhost:3000/regions/".concat(regId), options));
 
-        case 5:
+        case 4:
           response = _context3.sent;
-          _context3.next = 8;
+          _context3.next = 7;
           return regeneratorRuntime.awrap(response.json());
 
-        case 8:
+        case 7:
           data = _context3.sent;
-          console.log(data);
           cancelReg();
           getLocations();
-          _context3.next = 17;
+          _context3.next = 15;
           break;
 
-        case 14:
-          _context3.prev = 14;
+        case 12:
+          _context3.prev = 12;
           _context3.t0 = _context3["catch"](1);
           return _context3.abrupt("return", _context3.t0);
 
-        case 17:
+        case 15:
         case "end":
           return _context3.stop();
       }
     }
-  }, null, null, [[1, 14]]);
+  }, null, null, [[1, 12]]);
 } //edit region
 
 
 function regionEdition(reg) {
-  console.log(reg);
   window.scrollTo(0, 0);
   darkImageEditReg.classList.remove('none');
   darkImageEditReg.style.visibility = 'visible';
   body.classList.add('modal');
-  /* main.classList.add('height-add-ctc') */
-
   regionEdit.value = reg.region_name;
   varRegionId = reg.region_id;
   varEditRegion = 1;
@@ -415,7 +387,6 @@ closeEditRegion.addEventListener('click', function () {
 });
 
 function closeWindowEditRegion() {
-  /* event.preventDefault() */
   darkImageEditReg.classList.add('none');
   body.classList.remove('modal');
   regionEdit.classList.remove('border-wrong');
@@ -425,7 +396,6 @@ function closeWindowEditRegion() {
 }
 
 deleteRegEdit.addEventListener('click', function () {
-  /* darkImageEditReg.style.visibility = 'hidden' */
   darkImageEditReg.style.visibility = 'visible';
   darkImageEditReg.classList.add('none');
   modalDeleteRegion(varRegionId);
@@ -472,23 +442,22 @@ function editRegion() {
 
         case 11:
           data = _context4.sent;
-          console.log(data);
           closeWindowEditRegion();
           getLocations();
-          _context4.next = 20;
+          _context4.next = 19;
           break;
 
-        case 17:
-          _context4.prev = 17;
+        case 16:
+          _context4.prev = 16;
           _context4.t0 = _context4["catch"](4);
           return _context4.abrupt("return", _context4.t0);
 
-        case 20:
+        case 19:
         case "end":
           return _context4.stop();
       }
     }
-  }, null, null, [[4, 17]]);
+  }, null, null, [[4, 16]]);
 } //add country 
 
 
@@ -531,23 +500,22 @@ function addCountry(event, reg) {
 
         case 12:
           data = _context5.sent;
-          console.log(data);
           closeWindowNewCountry();
           getLocations();
-          _context5.next = 21;
+          _context5.next = 20;
           break;
 
-        case 18:
-          _context5.prev = 18;
+        case 17:
+          _context5.prev = 17;
           _context5.t0 = _context5["catch"](5);
           return _context5.abrupt("return", _context5.t0);
 
-        case 21:
+        case 20:
         case "end":
           return _context5.stop();
       }
     }
-  }, null, null, [[5, 18]]);
+  }, null, null, [[5, 17]]);
 } //close new country window
 
 
@@ -573,7 +541,6 @@ saveCountry.addEventListener('click', function (event) {
 }); //delete country
 
 function modalDeleteCountry(countryId) {
-  console.log(countryId);
   varCountryId = countryId;
   window.scrollTo(0, 0);
   body.classList.add('modal');
@@ -581,20 +548,15 @@ function modalDeleteCountry(countryId) {
 }
 
 cancelDltCountBtn.addEventListener('click', function () {
-  /* window.scrollTo(0, 0)
-  body.classList.add('modal')
-  darkImageEditReg.style.visibility = 'visible' */
   cancelDeleteCount();
 });
 
 function cancelDeleteCount() {
   if (varEditCountry === 0) {
-    console.log('despues de no edition');
     body.classList.remove('modal');
     darkImageEditCount.style.visibility = 'hidden';
     darkImageEditCount.classList.add('none');
   } else if (varEditCountry === 1) {
-    console.log('despues de edition');
     window.scrollTo(0, 0);
     body.classList.add('modal');
     darkImageEditCount.style.visibility = 'visible';
@@ -602,7 +564,6 @@ function cancelDeleteCount() {
   }
 
   darkImageCountries.classList.add('none');
-  /* console.log(varRegionId) */
 }
 
 deleteCountBtn.addEventListener('click', function () {
@@ -624,53 +585,46 @@ function deleteCountry(countId) {
             }
           };
           _context6.prev = 1;
-          console.log(varCountryId);
-          console.log(countId);
-          _context6.next = 6;
+          _context6.next = 4;
           return regeneratorRuntime.awrap(fetch("http://localhost:3000/countries/".concat(countId), options));
 
-        case 6:
+        case 4:
           response = _context6.sent;
-          _context6.next = 9;
+          _context6.next = 7;
           return regeneratorRuntime.awrap(response.json());
 
-        case 9:
+        case 7:
           data = _context6.sent;
-          console.log(data);
           cancelCount();
           getLocations();
-          _context6.next = 18;
+          _context6.next = 15;
           break;
 
-        case 15:
-          _context6.prev = 15;
+        case 12:
+          _context6.prev = 12;
           _context6.t0 = _context6["catch"](1);
           return _context6.abrupt("return", _context6.t0);
 
-        case 18:
+        case 15:
         case "end":
           return _context6.stop();
       }
     }
-  }, null, null, [[1, 15]]);
+  }, null, null, [[1, 12]]);
 }
 
 function cancelCount() {
   body.classList.remove('modal');
   darkImageCountries.classList.add('none');
   varCountryId = null;
-  console.log(varCountryId);
 } //edit country
 
 
 function countryEdition(count) {
-  console.log(count);
   window.scrollTo(0, 0);
   darkImageEditCount.classList.remove('none');
   darkImageEditCount.style.visibility = 'visible';
   body.classList.add('modal');
-  /* main.classList.add('height-add-ctc') */
-
   countryEdit.value = count.country_name;
   varCountryId = count.country_id;
   varEditCountry = 1;
@@ -682,7 +636,6 @@ closeEditCountry.addEventListener('click', function () {
 });
 
 function closeWindowEditCountry() {
-  /* event.preventDefault() */
   darkImageEditCount.classList.add('none');
   body.classList.remove('modal');
   countryEdit.classList.remove('border-wrong');
@@ -739,24 +692,22 @@ function editCountry() {
 
         case 11:
           data = _context7.sent;
-          console.log(data);
           closeWindowEditCountry();
           getLocations();
-          console.log(varCountryId);
-          _context7.next = 21;
+          _context7.next = 19;
           break;
 
-        case 18:
-          _context7.prev = 18;
+        case 16:
+          _context7.prev = 16;
           _context7.t0 = _context7["catch"](4);
           return _context7.abrupt("return", _context7.t0);
 
-        case 21:
+        case 19:
         case "end":
           return _context7.stop();
       }
     }
-  }, null, null, [[4, 18]]);
+  }, null, null, [[4, 16]]);
 } //add city
 
 
@@ -799,23 +750,22 @@ function addCity(event, count) {
 
         case 12:
           data = _context8.sent;
-          console.log(data);
           closeWindowNewCity();
           getLocations();
-          _context8.next = 21;
+          _context8.next = 20;
           break;
 
-        case 18:
-          _context8.prev = 18;
+        case 17:
+          _context8.prev = 17;
           _context8.t0 = _context8["catch"](5);
           return _context8.abrupt("return", _context8.t0);
 
-        case 21:
+        case 20:
         case "end":
           return _context8.stop();
       }
     }
-  }, null, null, [[5, 18]]);
+  }, null, null, [[5, 17]]);
 } //close new city window
 
 
@@ -841,7 +791,6 @@ saveCity.addEventListener('click', function (event) {
 }); //delete city
 
 function modalDeleteCity(cityId) {
-  console.log(cityId);
   varCitId = cityId;
   window.scrollTo(0, 0);
   body.classList.add('modal');
@@ -849,20 +798,15 @@ function modalDeleteCity(cityId) {
 }
 
 cancelDltCitBtn.addEventListener('click', function () {
-  /* window.scrollTo(0, 0)
-  body.classList.add('modal')
-  darkImageEditReg.style.visibility = 'visible' */
   cancelDeleteCity();
 });
 
 function cancelDeleteCity() {
   if (varEditCity === 0) {
-    console.log('despues de no edition');
     body.classList.remove('modal');
     darkImageEditCity.style.visibility = 'hidden';
     darkImageEditCity.classList.add('none');
   } else if (varEditCity === 1) {
-    console.log('despues de edition');
     window.scrollTo(0, 0);
     body.classList.add('modal');
     darkImageEditCity.style.visibility = 'visible';
@@ -870,7 +814,6 @@ function cancelDeleteCity() {
   }
 
   darkImageCities.classList.add('none');
-  /* console.log(varRegionId) */
 }
 
 deleteCitBtn.addEventListener('click', function () {
@@ -892,53 +835,46 @@ function deleteCity(citId) {
             }
           };
           _context9.prev = 1;
-          console.log(varCitId);
-          console.log(citId);
-          _context9.next = 6;
+          _context9.next = 4;
           return regeneratorRuntime.awrap(fetch("http://localhost:3000/cities/".concat(citId), options));
 
-        case 6:
+        case 4:
           response = _context9.sent;
-          _context9.next = 9;
+          _context9.next = 7;
           return regeneratorRuntime.awrap(response.json());
 
-        case 9:
+        case 7:
           data = _context9.sent;
-          console.log(data);
           cancelCit();
           getLocations();
-          _context9.next = 18;
+          _context9.next = 15;
           break;
 
-        case 15:
-          _context9.prev = 15;
+        case 12:
+          _context9.prev = 12;
           _context9.t0 = _context9["catch"](1);
           return _context9.abrupt("return", _context9.t0);
 
-        case 18:
+        case 15:
         case "end":
           return _context9.stop();
       }
     }
-  }, null, null, [[1, 15]]);
+  }, null, null, [[1, 12]]);
 }
 
 function cancelCit() {
   body.classList.remove('modal');
   darkImageCities.classList.add('none');
   varCitId = null;
-  console.log(varCitId);
 } //edit city
 
 
 function cityEdition(cit) {
-  console.log(cit);
   window.scrollTo(0, 0);
   darkImageEditCity.classList.remove('none');
   darkImageEditCity.style.visibility = 'visible';
   body.classList.add('modal');
-  /* main.classList.add('height-add-ctc') */
-
   cityEdit.value = cit.city_name;
   varCitId = cit.city_id;
   varEditCity = 1;
@@ -950,7 +886,6 @@ closeEditCity.addEventListener('click', function () {
 });
 
 function closeWindowEditCity() {
-  /* event.preventDefault() */
   darkImageEditCity.classList.add('none');
   body.classList.remove('modal');
   cityEdit.classList.remove('border-wrong');
@@ -1007,22 +942,20 @@ function editCity() {
 
         case 11:
           data = _context10.sent;
-          console.log(data);
           closeWindowEditCity();
           getLocations();
-          console.log(varCitId);
-          _context10.next = 21;
+          _context10.next = 19;
           break;
 
-        case 18:
-          _context10.prev = 18;
+        case 16:
+          _context10.prev = 16;
           _context10.t0 = _context10["catch"](4);
           return _context10.abrupt("return", _context10.t0);
 
-        case 21:
+        case 19:
         case "end":
           return _context10.stop();
       }
     }
-  }, null, null, [[4, 18]]);
+  }, null, null, [[4, 16]]);
 }

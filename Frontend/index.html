@@ -60,7 +60,6 @@
                 <li class="u-item h-item">País/Región<i id="sortCountry" class="fas fa-sort-alpha-down"></i></li>
                 <li class="u-item h-item">Compañía<i id="sortCompany" class="fas fa-sort-alpha-down"></i></li>
                 <li class="u-item h-item">Cargo<i id="sortPosition" class="fas fa-sort-alpha-down"></i></li>
-                <!-- <li class="u-item h-item">Canal preferido</li> -->
                 <li class="u-item h-item">Interés<i id="sortInterest" class="fas fa-sort-alpha-down"></i></li>
                 <li class="u-item h-item">Acciones</li>
             </ul>
@@ -93,11 +92,11 @@
                             </div>
                             <ul id="citiesList" class="company-list none"></ul>
                         </div>
-                        <label class="form-lbl" for="address">
+                        <div class="form-lbl">
                             <p>Dirección</p>
                             <input id="address" class="field ncnt-input disable" type="text" disabled placeholder="Ingresa una dirección">
                             <p id="msgAddress" class="msg-container">Este campo es obligatorio</p>
-                        </label>
+                        </div>
                         <div id="interestLbl" class="form-lbl comp-lbl">
                             <p>Interés</p>
                             <div id="interestSelect" class="field ncnt-input select-company slct-int">
@@ -114,15 +113,15 @@
                     </div>
                     <div class="contact-channel">
                         <div class="chan">
-                            <div id="" class="form-lbl comp-lbl">
+                            <div class="form-lbl comp-lbl">
                                 <p>Canal de contacto</p>
-                                <p id="" class="field ncnt-input s-channel"></p>
+                                <p class="field ncnt-input s-channel"></p>
                             </div>
-                            <label class="form-lbl" for="telephone">
+                            <div class="form-lbl">
                                 <p>Cuenta de usuario</p>
                                 <input id="telephone" class="field ncnt-input" type="text">
-                            </label>
-                            <div id="" class="form-lbl comp-lbl h-pref5">
+                            </div>
+                            <div class="form-lbl comp-lbl h-pref5">
                                 <p>Preferencias</p>
                                 <p id="selectTelephone" class="field ncnt-input select-company disable">
                                     Sin preferencia<i class="fas fa-caret-down"></i>
@@ -135,13 +134,13 @@
                             </div>
                         </div>
                         <div class="chan">
-                            <div id="" class="form-lbl comp-lbl">
-                                <p id="" class="field ncnt-input s-channel"></p>
+                            <div class="form-lbl comp-lbl">
+                                <p class="field ncnt-input s-channel"></p>
                             </div>
                             <label class="form-lbl" for="whatsapp">
                                 <input id="whatsapp" class="field ncnt-input" type="text">
                             </label>
-                            <div id="" class="form-lbl comp-lbl h-pref4">
+                            <div class="form-lbl comp-lbl h-pref4">
                                 <p id="selectWhatsapp" class="field ncnt-input select-company disable">
                                     Sin preferencia<i class="fas fa-caret-down"></i>
                                 </p>
@@ -153,13 +152,13 @@
                             </div>
                         </div>
                         <div class="chan">
-                            <div id="" class="form-lbl comp-lbl">
-                                <p id="" class="field ncnt-input s-channel"></p>
+                            <div class="form-lbl comp-lbl">
+                                <p class="field ncnt-input s-channel"></p>
                             </div>
                             <label class="form-lbl" for="instagram">
                                 <input id="instagram" class="field ncnt-input" type="text">
                             </label>
-                            <div id="" class="form-lbl comp-lbl h-pref3">
+                            <div class="form-lbl comp-lbl h-pref3">
                                 <p id="selectInstagram" class="field ncnt-input select-company disable">
                                     Sin preferencia<i class="fas fa-caret-down"></i>
                                 </p>
@@ -171,13 +170,13 @@
                             </div>
                         </div>
                         <div class="chan">
-                            <div id="" class="form-lbl comp-lbl">
-                                <p id="" class="field ncnt-input s-channel"></p>
+                            <div class="form-lbl comp-lbl">
+                                <p class="field ncnt-input s-channel"></p>
                             </div>
                             <label class="form-lbl" for="facebook">
                                 <input id="facebook" class="field ncnt-input" type="text">
                             </label>
-                            <div id="" class="form-lbl comp-lbl h-pref2">
+                            <div class="form-lbl comp-lbl h-pref2">
                                 <p id="selectFacebook" class="field ncnt-input select-company disable">
                                     Sin preferencia<i class="fas fa-caret-down"></i>
                                 </p>
@@ -189,13 +188,13 @@
                             </div>
                         </div>
                         <div class="chan">
-                            <div id="" class="form-lbl comp-lbl">
-                                <p id="" class="field ncnt-input s-channel"></p>
+                            <div class="form-lbl comp-lbl">
+                                <p class="field ncnt-input s-channel"></p>
                             </div>
                             <label class="form-lbl" for="linkedin">
                                 <input id="linkedin" class="field ncnt-input" type="text">
                             </label>
-                            <div id="" class="form-lbl comp-lbl h-pref1">
+                            <div class="form-lbl comp-lbl h-pref1">
                                 <p id="selectLinkedin" class="field ncnt-input select-company disable">
                                     Sin preferencia<i class="fas fa-caret-down"></i>
                                 </p>
@@ -213,32 +212,31 @@
                     </div>
                 </form>
                 <form id="newCtcForm" class="new-form new-ctc-form">
-                    <label class="form-lbl pad" for="firstname">
+                    <div class="form-lbl pad">
                         <p>Nombre<span class="red-asterisk">*</span></p>
                         <input id="firstname" class="field ncnt-input" type="text">
                         <p id="msgFirst" class="msg-container">Este campo es obligatorio</p>
-                    </label>
-                    <label class="form-lbl pad" for="lastname">
+                    </div>
+                    <div class="form-lbl pad">
                         <p>Apellido<span class="red-asterisk">*</span></p>
                         <input id="lastname" class="field ncnt-input" type="text">
                         <p id="msgLast" class="msg-container">Este campo es obligatorio</p>
-                    </label>
-                    <label class="form-lbl pad" for="position">
+                    </div>
+                    <div class="form-lbl pad">
                         <p>Cargo<span class="red-asterisk">*</span></p>
                         <input id="position" class="field ncnt-input" type="text">
                         <p id="msgPos" class="msg-container">Este campo es obligatorio</p>
-                    </label>
-                    <label class="form-lbl pad" for="email">
+                    </div>
+                    <div class="form-lbl pad">
                         <p>Email<span class="red-asterisk">*</span></p>
                         <input id="email" class="field ncnt-input" type="text">
                         <p id="msgEmail" class="msg-container">Error en datos ingresados</p>
-                    </label>
+                    </div>
                     <div id="compLbl" class="form-lbl comp-lbl">
                         <p>Compañía<span class="red-asterisk">*</span></p>
                         <p id="company" class="field ncnt-input select-company">
                             Seleccionar compañía<i class="fas fa-caret-down"></i>
                         </p>
-                        <!-- <p id="msgLast" class="msg-container">Este campo es obligatorio</p> -->
                         <ul id="selectCompany" class="company-list none"></ul>
                     </div>
                 </form>
@@ -250,33 +248,33 @@
                 </div>
                 <form class="window-white contact-window">
                     <div class="location-and-interest">
-                        <div id="regionLblEdit" class="form-lbl comp-lbl index-slct"><!-- regionLbl -->
+                        <div id="regionLblEdit" class="form-lbl comp-lbl index-slct">
                             <p>Región</p>
                             <div id="regionSelectEdit" class="field ncnt-input select-company">
                                 Seleccionar región<i class="fas fa-caret-down"></i>
                             </div>
                             <ul id="regionsListEdit" class="company-list none"></ul>
                         </div>
-                        <div id="" class="form-lbl comp-lbl index-slct"><!-- countryLbl -->
+                        <div class="form-lbl comp-lbl index-slct">
                             <p>País</p>
                             <div id="countrySelectEdit" class="field ncnt-input select-company">
                                 Seleccionar país<i class="fas fa-caret-down"></i>
                             </div>
                             <ul id="countriesListEdit" class="company-list none"></ul>
                         </div>
-                        <div id="" class="form-lbl comp-lbl index-slct"><!-- cityLbl -->
+                        <div class="form-lbl comp-lbl index-slct">
                             <p>Ciudad</p>
                             <div id="citySelectEdit" class="field ncnt-input select-company">
                                 Seleccionar ciudad<i class="fas fa-caret-down"></i>
                             </div>
                             <ul id="citiesListEdit" class="company-list none"></ul>
                         </div>
-                        <label class="form-lbl" for="addressEdit">
+                        <div class="form-lbl">
                             <p>Dirección</p>
                             <input id="addressEdit" class="field ncnt-input" type="text" placeholder="Ingresa una dirección">
                             <p id="msgAddressEdit" class="msg-container">Este campo es obligatorio</p>
-                        </label>
-                        <div id="" class="form-lbl comp-lbl"><!-- interestLbl -->
+                        </div>
+                        <div class="form-lbl comp-lbl">
                             <p>Interés</p>
                             <div id="interestSelectEdit" class="field ncnt-input select-company slct-int">
                                 0%<i class="fas fa-caret-down"></i>
@@ -292,15 +290,15 @@
                     </div>
                     <div class="contact-channel">
                         <div class="chan-edit">
-                            <div id="" class="form-lbl comp-lbl">
+                            <div class="form-lbl comp-lbl">
                                 <p>Canal de contacto</p>
                                 <p id="tel" class="field ncnt-input s-channel-edit"></p>
                             </div>
-                            <label class="form-lbl" for="telephone">
+                            <div class="form-lbl">
                                 <p>Cuenta de usuario</p>
                                 <input id="telephoneEdit" class="field ncnt-input" type="text">
-                            </label>
-                            <div id="" class="form-lbl comp-lbl h-pref5">
+                            </div>
+                            <div class="form-lbl comp-lbl h-pref5">
                                 <p>Preferencias</p>
                                 <p id="selectTelephoneEdit" class="field ncnt-input select-company">
                                     Sin preferencia<i class="fas fa-caret-down"></i>
@@ -313,13 +311,13 @@
                             </div>
                         </div>
                         <div class="chan-edit">
-                            <div id="" class="form-lbl comp-lbl">
+                            <div class="form-lbl comp-lbl">
                                 <p id="wsp" class="field ncnt-input s-channel-edit"></p>
                             </div>
-                            <label class="form-lbl" for="whatsapp">
+                            <label class="form-lbl" for="whatsappEdit">
                                 <input id="whatsappEdit" class="field ncnt-input" type="text">
                             </label>
-                            <div id="" class="form-lbl comp-lbl h-pref4">
+                            <div class="form-lbl comp-lbl h-pref4">
                                 <p id="selectWhatsappEdit" class="field ncnt-input select-company ">
                                     Sin preferencia<i class="fas fa-caret-down"></i>
                                 </p>
@@ -331,13 +329,13 @@
                             </div>
                         </div>
                         <div class="chan-edit">
-                            <div id="" class="form-lbl comp-lbl">
+                            <div class="form-lbl comp-lbl">
                                 <p id="inst" class="field ncnt-input s-channel-edit"></p>
                             </div>
-                            <label class="form-lbl" for="instagram">
+                            <label class="form-lbl" for="instagramEdit">
                                 <input id="instagramEdit" class="field ncnt-input" type="text">
                             </label>
-                            <div id="" class="form-lbl comp-lbl h-pref3">
+                            <div class="form-lbl comp-lbl h-pref3">
                                 <p id="selectInstagramEdit" class="field ncnt-input select-company">
                                     Sin preferencia<i class="fas fa-caret-down"></i>
                                 </p>
@@ -349,13 +347,13 @@
                             </div>
                         </div>
                         <div class="chan-edit">
-                            <div id="" class="form-lbl comp-lbl">
+                            <div class="form-lbl comp-lbl">
                                 <p id="face" class="field ncnt-input s-channel-edit"></p>
                             </div>
-                            <label class="form-lbl" for="facebook">
+                            <label class="form-lbl" for="facebookEdit">
                                 <input id="facebookEdit" class="field ncnt-input" type="text">
                             </label>
-                            <div id="" class="form-lbl comp-lbl h-pref2">
+                            <div class="form-lbl comp-lbl h-pref2">
                                 <p id="selectFacebookEdit" class="field ncnt-input select-company">
                                     Sin preferencia<i class="fas fa-caret-down"></i>
                                 </p>
@@ -367,13 +365,13 @@
                             </div>
                         </div>
                         <div class="chan-edit">
-                            <div id="" class="form-lbl comp-lbl">
+                            <div class="form-lbl comp-lbl">
                                 <p id="link" class="field ncnt-input s-channel-edit"></p>
                             </div>
-                            <label class="form-lbl" for="linkedin">
+                            <label class="form-lbl" for="linkedinEdit">
                                 <input id="linkedinEdit" class="field ncnt-input" type="text">
                             </label>
-                            <div id="" class="form-lbl comp-lbl h-pref1">
+                            <div class="form-lbl comp-lbl h-pref1">
                                 <p id="selectLinkedinEdit" class="field ncnt-input select-company">
                                     Sin preferencia<i class="fas fa-caret-down"></i>
                                 </p>
@@ -391,32 +389,31 @@
                     </div>
                 </form>
                 <form id="editCtcForm" class="new-form new-ctc-form">
-                    <label class="form-lbl pad" for="firstname">
+                    <div class="form-lbl pad">
                         <p>Nombre <span class="red-asterisk">*</span></p>
                         <input id="firstnameEdit" class="field ncnt-input" type="text">
                         <p id="msgFirstEdit" class="msg-container">Este campo es obligatorio</p>
-                    </label>
-                    <label class="form-lbl pad" for="lastname">
+                    </div>
+                    <div class="form-lbl pad">
                         <p>Apellido <span class="red-asterisk">*</span></p>
                         <input id="lastnameEdit" class="field ncnt-input" type="text">
                         <p id="msgLastEdit" class="msg-container">Este campo es obligatorio</p>
-                    </label>
-                    <label class="form-lbl pad" for="position">
+                    </div>
+                    <div class="form-lbl pad">
                         <p>Cargo <span class="red-asterisk">*</span></p>
                         <input id="positionEdit" class="field ncnt-input" type="text">
                         <p id="msgPosEdit" class="msg-container">Este campo es obligatorio</p>
-                    </label>
-                    <label class="form-lbl pad" for="email">
+                    </div>
+                    <div class="form-lbl pad">
                         <p>Email <span class="red-asterisk">*</span></p>
                         <input id="emailEdit" class="field ncnt-input" type="text">
                         <p id="msgEmailEdit" class="msg-container">Error en datos ingresados</p>
-                    </label>
+                    </div>
                     <div id="compLblEdit" class="form-lbl comp-lbl">
                         <p>Compañía <span class="red-asterisk">*</span></p>
                         <p id="companyEdit" class="field ncnt-input select-company">
                             Seleccionar compañía<i class="fas fa-caret-down"></i>
                         </p>
-                        <!-- <p id="msgLast" class="msg-container">Este campo es obligatorio</p> -->
                         <ul id="selectCompanyEdit" class="company-list none"></ul>
                     </div>
                 </form>
@@ -455,32 +452,31 @@
                     <button id="saveCompany" class="btn-grey">Guardar compañía</button>
                 </form>
                 <form id="newCompanyForm" class="new-form new-comp-form">
-                    <label class="form-lbl pad" for="companyName">
+                    <div class="form-lbl pad">
                         <p>Nombre<span class="red-asterisk">*</span></p>
                         <input id="companyName" class="field ncnt-input" type="text">
                         <p id="msgCompanyName" class="msg-container">Este campo es obligatorio</p>
-                    </label>
-                    <label class="form-lbl pad" for="companyEmail">
+                    </div>
+                    <div class="form-lbl pad">
                         <p>Email<span class="red-asterisk">*</span></p>
                         <input id="companyEmail" class="field ncnt-input" type="text">
                         <p id="msgCompanyEmail" class="msg-container">Error en datos ingresados</p>
-                    </label>
-                    <label class="form-lbl pad" for="compAddress">
+                    </div>
+                    <div class="form-lbl pad">
                         <p>Dirección<span class="red-asterisk">*</span></p>
                         <input id="compAddress" class="field ncnt-input" type="text">
                         <p id="msgCompAddress" class="msg-container">Este campo es obligatorio</p>
-                    </label>
-                    <label class="form-lbl pad" for="compTelephone">
+                    </div>
+                    <div class="form-lbl pad">
                         <p>Teléfono<span class="red-asterisk">*</span></p>
                         <input id="compTelephone" class="field ncnt-input" type="text">
                         <p id="msgCompTelephone" class="msg-container">Este campo es obligatorio</p>
-                    </label>
+                    </div>
                     <div id="companyCity" class="form-lbl comp-lbl">
                         <p>Ciudad<span class="red-asterisk">*</span></p>
                         <div id="companySlt" class="field ncnt-input select-company">
                             Seleccionar ciudad<i class="fas fa-caret-down"></i>
                         </div>
-                        <!-- <p id="msgLast" class="msg-container">Este campo es obligatorio</p> -->
                         <ul id="companyList" class="company-list none"></ul>
                     </div>
                 </form>
@@ -495,32 +491,31 @@
                     <button id="saveEditCompany" class="btn-grey btn-green">Guardar compañía</button>
                 </form>
                 <form id="editCompanyForm" class="new-form new-comp-form">
-                    <label class="form-lbl pad" for="companyName">
+                    <div class="form-lbl pad">
                         <p>Nombre<span class="red-asterisk">*</span></p>
                         <input id="companyNameEdit" class="field ncnt-input" type="text">
                         <p id="msgCompanyNameEdit" class="msg-container">Este campo es obligatorio</p>
-                    </label>
-                    <label class="form-lbl pad" for="companyEmailEdit">
+                    </div>
+                    <div class="form-lbl pad">
                         <p>Email<span class="red-asterisk">*</span></p>
                         <input id="companyEmailEdit" class="field ncnt-input" type="text">
                         <p id="msgCompanyEmailEdit" class="msg-container">Error en datos ingresados</p>
-                    </label>
-                    <label class="form-lbl pad" for="compAddressEdit">
+                    </div>
+                    <div class="form-lbl pad">
                         <p>Dirección<span class="red-asterisk">*</span></p>
                         <input id="compAddressEdit" class="field ncnt-input" type="text">
                         <p id="msgCompAddressEdit" class="msg-container">Este campo es obligatorio</p>
-                    </label>
-                    <label class="form-lbl pad" for="compTelephoneEdit">
+                    </div>
+                    <div class="form-lbl pad">
                         <p>Teléfono<span class="red-asterisk">*</span></p>
                         <input id="compTelephoneEdit" class="field ncnt-input" type="text">
                         <p id="msgCompTelephoneEdit" class="msg-container">Este campo es obligatorio</p>
-                    </label>
+                    </div>
                     <div id="companyCityEdit" class="form-lbl comp-lbl">
                         <p>Ciudad<span class="red-asterisk">*</span></p>
                         <div id="companySltEdit" class="field ncnt-input select-company">
                             Seleccionar ciudad<i class="fas fa-caret-down"></i>
                         </div>
-                        <!-- <p id="msgLast" class="msg-container">Este campo es obligatorio</p> -->
                         <ul id="companyListEdit" class="company-list none"></ul>
                     </div>
                 </form>
@@ -558,44 +553,42 @@
                     <button id="saveUser" class="btn-grey">Guardar usuario</button>
                 </form>
                 <form id="newUserForm" class="new-form nuser-form">
-                    <label class="form-lbl us-lbl" for="userName">
+                    <div class="form-lbl us-lbl">
                         <p>Nombre<span class="red-asterisk">*</span></p>
                         <input id="userName" class="field ncnt-input" type="text">
                         <p id="msgUserName" class="msg-container">Este campo es obligatorio</p>
-                    </label>
-                    <label class="form-lbl us-lbl" for="userLastname">
+                    </div>
+                    <div class="form-lbl us-lbl">
                         <p>Apellido<span class="red-asterisk">*</span></p>
                         <input id="userLastname" class="field ncnt-input" type="text">
                         <p id="msgUserLastname" class="msg-container">Este campo es obligatorio</p>
-                    </label>
-                    <label class="form-lbl us-lbl" for="userEmail">
+                    </div>
+                    <div class="form-lbl us-lbl">
                         <p>Email<span class="red-asterisk">*</span></p>
                         <input id="userEmail" class="field ncnt-input" type="text">
                         <p id="msgUserEmail" class="msg-container">Error en datos ingresados</p>
-                    </label>
+                    </div>
                     <div id="userPerfil" class="form-lbl us-lbl comp-lbl us-height">
                         <p>Perfil<span class="red-asterisk">*</span></p>
                         <div id="perfilSlt" class="field ncnt-input select-company">
                             Seleccionar perfil<i class="fas fa-caret-down"></i>
                         </div>
-                        <!-- <p id="msgLast" class="msg-container">Este campo es obligatorio</p> -->
                         <ul id="perfilList" class="company-list no-visible">
                             <li class="sug-comp perfil">Básico</li>
                             <li class="sug-comp perfil">Admin</li>
                         </ul>
-                        <!-- <p id="msgUserPass" class="msg-container">Este campo es obligatorio</p> -->
                     </div>
-                    <label class="form-lbl us-lbl" for="userPass">
+                    <div class="form-lbl us-lbl">
                         <p>Contraseña<span class="red-asterisk">*</span></p>
                         <input id="userPass" class="field ncnt-input" type="text">
                         <p id="msgUserPass" class="msg-pass">La contraseña debe tener de 4 a 15 caracteres, 
                             al menos 1 letra, al menos 1 número y no debe contener espacios en blanco</p>
-                    </label>
-                    <label class="form-lbl us-lbl" for="userPassRep">
+                    </div>
+                    <div class="form-lbl us-lbl">
                         <p>Repetir contraseña<span class="red-asterisk">*</span></p>
                         <input id="userPassRep" class="field ncnt-input" type="text">
                         <p id="msgUserPassRep" class="msg-container">Error en datos ingresados</p>
-                    </label>
+                    </div>
                 </form>
             </div>
             <div id="darkImageEditUser" class="dark-image dk-img-nuser none">
@@ -608,44 +601,42 @@
                     <button id="saveEditedUser" class="btn-grey btn-green">Guardar usuario</button>
                 </form>
                 <form id="editUserForm" class="new-form nuser-form">
-                    <label class="form-lbl us-lbl" for="userName">
+                    <div class="form-lbl us-lbl">
                         <p>Nombre<span class="red-asterisk">*</span></p>
                         <input id="userNameEdit" class="field ncnt-input" type="text">
                         <p id="msgUserNameEdit" class="msg-container">Este campo es obligatorio</p>
-                    </label>
-                    <label class="form-lbl us-lbl" for="userLastname">
+                    </div>
+                    <div class="form-lbl us-lbl">
                         <p>Apellido<span class="red-asterisk">*</span></p>
                         <input id="userLastnameEdit" class="field ncnt-input" type="text">
                         <p id="msgUserLastnameEdit" class="msg-container">Este campo es obligatorio</p>
-                    </label>
-                    <label class="form-lbl us-lbl" for="userEmail">
+                    </div>
+                    <div class="form-lbl us-lbl" >
                         <p>Email<span class="red-asterisk">*</span></p>
                         <input id="userEmailEdit" class="field ncnt-input" type="text">
                         <p id="msgUserEmailEdit" class="msg-container">Error en datos ingresados</p>
-                    </label>
+                    </div>
                     <div id="userPerfilEdit" class="form-lbl us-lbl comp-lbl us-height">
                         <p>Perfil<span class="red-asterisk">*</span></p>
                         <div id="perfilSltEdit" class="field ncnt-input select-company">
                             Seleccionar perfil<i class="fas fa-caret-down"></i>
                         </div>
-                        <!-- <p id="msgLast" class="msg-container">Este campo es obligatorio</p> -->
                         <ul id="perfilListEdit" class="company-list no-visible">
                             <li class="sug-comp perfil-edit">Básico</li>
                             <li class="sug-comp perfil-edit">Admin</li>
                         </ul>
-                        <!-- <p id="msgUserPass" class="msg-container">Este campo es obligatorio</p> -->
                     </div>
-                    <label class="form-lbl us-lbl" for="userPass">
+                    <div class="form-lbl us-lbl">
                         <p>Contraseña<span class="red-asterisk">*</span></p>
                         <input id="userPassEdit" class="field ncnt-input" type="text">
                         <p id="msgUserPassEdit" class="msg-pass">La contraseña debe tener de 4 a 15 caracteres, 
                             al menos 1 letra, al menos 1 número y no debe contener espacios en blanco</p>
-                    </label>
-                    <label class="form-lbl us-lbl" for="userPassRep">
+                    </div>
+                    <div class="form-lbl us-lbl">
                         <p>Repetir contraseña<span class="red-asterisk">*</span></p>
                         <input id="userPassRepEdit" class="field ncnt-input" type="text">
                         <p id="msgUserPassRepEdit" class="msg-container">Error en datos ingresados</p>
-                    </label>
+                    </div>
                 </form>
             </div>
             <div id="darkImageUsers" class="dark-image dk-img-cont none">
@@ -680,7 +671,6 @@
                     <label class="nr-lbl" for="newRegion">Nombre de la región<span class="red-asterisk">*</span></label>
                     <input id="newRegion" class="field nr-input" type="text">
                     <p id="msgNReg" class="msg-container reg-msg">Este campo es obligatorio</p>
-                    <!-- <div id="msgContainer" class="msg-container"></div> -->
                 </form>
             </div>
             <div id="darkImageEditReg" class="dark-image none">
@@ -696,7 +686,6 @@
                     <label class="nr-lbl" for="regionEdit">Nombre de la región<span class="red-asterisk">*</span></label>
                     <input id="regionEdit" class="field nr-input" type="text">
                     <p id="msgEReg" class="msg-container reg-msg">Este campo es obligatorio</p>
-                    <!-- <div id="msgContainer" class="msg-container"></div> -->
                 </form>
             </div>
             <div id="darkImageRegions" class="dark-image dk-img-cont none">
@@ -722,7 +711,6 @@
                     <label class="nr-lbl" for="newCountry">Nombre del país<span class="red-asterisk">*</span></label>
                     <input id="newCountry" class="field nr-input" type="text">
                     <p id="msgNCount" class="msg-container reg-msg">Este campo es obligatorio</p>
-                    <!-- <div id="msgContainer" class="msg-container"></div> -->
                 </form>
             </div>
             <div id="darkImageEditCount" class="dark-image none">
@@ -738,7 +726,6 @@
                     <label class="nr-lbl" for="countryEdit">Nombre del país<span class="red-asterisk">*</span></label>
                     <input id="countryEdit" class="field nr-input" type="text">
                     <p id="msgECount" class="msg-container reg-msg">Este campo es obligatorio</p>
-                    <!-- <div id="msgContainer" class="msg-container"></div> -->
                 </form>
             </div>
             <div id="darkImageCountries" class="dark-image dk-img-cont none">
@@ -764,7 +751,6 @@
                     <label class="nr-lbl" for="newCity">Nombre de la ciudad<span class="red-asterisk">*</span></label>
                     <input id="newCity" class="field nr-input" type="text">
                     <p id="msgNCit" class="msg-container reg-msg">Este campo es obligatorio</p>
-                    <!-- <div id="msgContainer" class="msg-container"></div> -->
                 </form>
             </div>
             <div id="darkImageEditCity" class="dark-image none">
@@ -780,7 +766,6 @@
                     <label class="nr-lbl" for="cityEdit">Nombre de la ciudad<span class="red-asterisk">*</span></label>
                     <input id="cityEdit" class="field nr-input" type="text">
                     <p id="msgECit" class="msg-container reg-msg">Este campo es obligatorio</p>
-                    <!-- <div id="msgContainer" class="msg-container"></div> -->
                 </form>
             </div>
             <div id="darkImageCities" class="dark-image dk-img-cont none">

@@ -19,7 +19,6 @@ const usersLink = document.getElementById('usersLink')
 submit.addEventListener('click', (event) => {
     event.preventDefault()
     loginFunction()
-    //funcion nueva pantalla
 })
 
 async function loginFunction() {
@@ -37,7 +36,6 @@ async function loginFunction() {
     const response = await fetch('http://localhost:3000/users/login', options)
     const data = await response.json()
     if (response.status === 200) {
-        console.log(data)
         saveToken(data)
         login.classList.add('none')
         varSect = 'noLog'
@@ -55,8 +53,7 @@ async function loginFunction() {
 }
 
 function saveToken(data) {
-    console.log(data.token)
-    sessionStorage.setItem('Token', JSON.stringify(data.token))//cambio token
+    sessionStorage.setItem('Token', JSON.stringify(data.token))
 }
 
 contacts.addEventListener('click', () => {

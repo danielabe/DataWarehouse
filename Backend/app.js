@@ -5,25 +5,26 @@ const jwt = require('jsonwebtoken')
 const cors = require('cors')
 
 const { selectUserLogin, getUsers, createUser, getUser, modifyUser, deleteUser, getRegions,
-    createRegion, getRegion, modifyRegion, deleteRegion, getCountriesRegion,
-    getCitiesRegion, getRegionsCountriesCities, getCountries, createCountry, getCountry, modifyCountry,
-    deleteCountry, getCitiesCountry, getCities, createCity, getCity, modifyCity,
-    deleteCity, getCompanies, createCompany, getCompany, modifyCompany, deleteCompany,
-    getContacts, createContact, addChannelsContacts, getContactInserted, getChannelsInserted, getContact, modifyContact, deleteContact, addChannel,
-    deleteChannelContact, getResults, getChannels, createChannel, getChannel, modifyChannel,
-    deleteChannel } = require('./queries.js')
+    createRegion, getRegion, modifyRegion, deleteRegion, getCountriesRegion, getCitiesRegion, 
+    getRegionsCountriesCities, getCountries, createCountry, getCountry, modifyCountry,
+    deleteCountry, getCitiesCountry, getCities, createCity, getCity, modifyCity, deleteCity, 
+    getCompanies, createCompany, getCompany, modifyCompany, deleteCompany, getContacts, 
+    createContact, addChannelsContacts, getContactInserted, getChannelsInserted, getContact, 
+    modifyContact, deleteContact, addChannel, deleteChannelContact, getResults, getChannels, 
+    createChannel, getChannel, modifyChannel, deleteChannel } = require('./queries.js')
 
 const { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
     validateEmail, validatePassword, validateUser, validateUserId, validateFirstnamePut,
-    validateLastnamePut, validateEmailPut, validatePerfil, validatePasswordPut, validateRegionName, validateRegionId, 
-    validateRegionNamePut, validateCountryName, validateCountryId, validateCountryNamePut,
-    validateRegionIdCountry, validateCityName, validateCityId, validateCountryIdCity,
-    validateCityNamePut, validateCompanyName, validateAddress, validateCompanyId, 
-    validateCompanyNamePut, validateCityIdPut, validateAddressPut, validateEmailContacts,
-    validatePosition, validateInterest, validateChannelId, validateContactId, validateUserAccount, 
-    validatePreference, validateEmailContactsPut, validateCompanyIdPut, validatePositionPut, 
-    validateInterestPut, validateChannelIdPut, validateChannelIdAdd, validateChannelIdDel, 
-    validateChannelName, validateChannelIdEx, validateChannelNamePut, validateEmailCompanies,
+    validateLastnamePut, validateEmailPut, validatePerfil, validatePasswordPut, 
+    validateRegionName, validateRegionId, validateRegionNamePut, validateCountryName, 
+    validateCountryId, validateCountryNamePut, validateRegionIdCountry, validateCityName, 
+    validateCityId, validateCountryIdCity, validateCityNamePut, validateCompanyName, 
+    validateAddress, validateCompanyId, validateCompanyNamePut, validateCityIdPut, 
+    validateAddressPut, validateEmailContacts, validatePosition, validateInterest, 
+    validateChannelId, validateContactId, validateUserAccount, validatePreference, 
+    validateEmailContactsPut, validateCompanyIdPut, validatePositionPut, validateInterestPut, 
+    validateChannelIdPut, validateChannelIdAdd, validateChannelIdDel, validateChannelName, 
+    validateChannelIdEx, validateChannelNamePut, validateEmailCompanies,
     validateTelephone } = require('./functions.js')
 
 app.use(express.json())
@@ -47,8 +48,8 @@ app.post('/users/login', validateLogin, async (req, res) => {
 app.use(verifyToken)
 
 //users
-app.get('/users', filterAdmin, async (req, res) => {    // Función disponible sólo para admin, chequear
-    getUsers(req, res)                                  //si también debe estar disponible para otros usuarios
+app.get('/users', filterAdmin, async (req, res) => {
+    getUsers(req, res)
 })
 
 app.post('/users/register', filterAdmin, validateFirstname,  validateLastname, validateEmail, 
@@ -102,8 +103,6 @@ app.put('/regions/:regionId', validateRegionId, validateRegionNamePut, async (re
 app.delete('/regions/:regionId', validateRegionId, async (req, res) => {
     const regionId = +req.params.regionId
     deleteRegion(regionId, req, res)
-    //no puedo borrar una region si tengo países en ella o si borro una region 
-    //borro todos los paises que tiene
 })
 
 app.get('/regions/:regionId/countries', validateRegionId, async (req, res) => {
@@ -144,8 +143,6 @@ validateCountryNamePut, async (req, res) => {
 app.delete('/countries/:countryId', validateCountryId, async (req, res) => {
     const countryId = +req.params.countryId
     deleteCountry(countryId, req, res)
-     //no puedo borrar un país si tengo ciudades en el o si borro un país 
-    //borro todas las ciudades que tiene
 })
 
 app.get('/countries/:countryId/cities', validateCountryId, async (req, res) => {
@@ -177,8 +174,6 @@ validateCityNamePut, async (req, res) => {
 app.delete('/cities/:cityId', validateCityId, async (req, res) => {
     const cityId = +req.params.cityId
     deleteCity(cityId, req, res)
-    //no puedo borrar una ciudad si tengo contactos o compañias en ella 
-    //o borro todos los contactos o compañias que tiene
 })
 
 //companies
@@ -186,8 +181,9 @@ app.get('/companies', async (req, res) => {
     getCompanies(req, res)                                 
 })
 
-app.post('/companies', validateCompanyName, validateEmailCompanies, validateAddress, validateTelephone, validateCityId, async (req, res) => {
-    const newCompany = { //chequear si ahora funciona con el const
+app.post('/companies', validateCompanyName, validateEmailCompanies, validateAddress, validateTelephone, 
+validateCityId, async (req, res) => {
+    const newCompany = {
         company_name: req.body.company_name, 
         city_id: req.body.city_id, 
         address: req.body.address,
@@ -211,8 +207,6 @@ validateAddressPut, validateTelephone, validateCityIdPut,  async (req, res) => {
 app.delete('/companies/:companyId', validateCompanyId, async (req, res) => {
     const companyId = +req.params.companyId
     deleteCompany(companyId, req, res)
-    //no puedo borrar una compañía si tengo contactos  en ella 
-    //o borro todos los contactos o compañias que tiene
 })
 
 //contacts
@@ -269,7 +263,8 @@ app.post('/contacts/:contactId/channels', validateContactId, validateChannelIdAd
     addChannel(newContChan, req, res)
 })
 
-app.delete('/contacts/:contactId/channels/:channelId', validateContactId, validateChannelIdDel, async (req, res) => {
+app.delete('/contacts/:contactId/channels/:channelId', validateContactId, validateChannelIdDel, 
+async (req, res) => {
     const newContChan = {
         contact_id: +req.params.contactId,
         channel_id: +req.params.channelId
@@ -304,9 +299,4 @@ app.put('/channels/:channelId', validateChannelIdEx, validateChannelNamePut, asy
 app.delete('/channels/:channelId', validateChannelIdEx, async (req, res) => {
     const channelId = +req.params.channelId
     deleteChannel(channelId, req, res)
-    //no puedo borrar una region si tengo países en ella o si borro una region 
-    //borro todos los paises que tiene
 })
-
-/* express-rate-limit, .env, bcrypt
-*/

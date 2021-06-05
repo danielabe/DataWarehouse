@@ -78,17 +78,13 @@ async function validateUserId(req, res, next) {
 }
 
 function validateFirstnamePut(req, res, next) {
-    /* if(req.body.firstname) { */
-        if(req.body.firstname.length >= 1 && req.body.firstname.length <= 64) next()  
-        else res.status(400).send("The firstname length is wrong").end()
-    /* } else next() */
+    if(req.body.firstname.length >= 1 && req.body.firstname.length <= 64) next()  
+    else res.status(400).send("The firstname length is wrong").end()
 }
 
 function validateLastnamePut(req, res, next) {
-    /* if(req.body.lastname) { */
-        if(req.body.lastname.length >= 1 && req.body.lastname.length <= 64) next()  
-        else res.status(400).send("The lastname length is wrong").end()
-    /* } else next() */
+    if(req.body.lastname.length >= 1 && req.body.lastname.length <= 64) next()  
+    else res.status(400).send("The lastname length is wrong").end()
 }
 
 async function validateEmailPut(req, res, next) {
@@ -190,11 +186,9 @@ async function validateCityIdPut(req, res, next) {
 }
 
 async function validateAddressPut(req, res, next) {
-    /* if(req.body.address) { */ //asi es igual a la otra sin put
-        const address = req.body.address
-        if(address.length >= 1 && address.length <= 64) next()
-        else res.status(400).send("The address is wrong").end()
-    /* } else next() */
+    const address = req.body.address
+    if(address.length >= 1 && address.length <= 64) next()
+    else res.status(400).send("The address is wrong").end()
 }
 
 //contacts
@@ -233,7 +227,6 @@ function validateUserAccount(req, res, next) {
 async function validatePreference(req, res, next) {
     const channelsBody = req.body.preferred_channels
     channelsBody.every(element => { 
-        console.log(element)
         if(element.preference === 'Sin preferencia' || element.preference === 'Canal favorito' 
         || element.preference === 'No molestar') next()
         else res.status(400).send("The preference is wrong").end()
@@ -288,19 +281,16 @@ async function validateChannelNamePut(req, res, next) {
     await validateChannelNamePutQuery(req, res, next)
 }
 
-
-
 module.exports = { validateLogin, verifyToken, filterAdmin, validateFirstname, validateLastname, 
     validateEmail, validatePassword, validateUser, validateUserId, validateFirstnamePut, 
-    validateLastnamePut, validateEmailPut, validatePerfil, validatePasswordPut, validateRegionName, validateRegionId, 
-    validateRegionNamePut, validateCountryName, validateCountryId, validateCountryNamePut,
-    validateRegionIdCountry, validateCityName, validateCityId, validateCountryIdCity,
-    validateCityNamePut, validateCompanyName, validateAddress, validateEmailCompanies, 
-    validateCompanyId, validateTelephone,
-    validateCompanyNamePut, validateCityIdPut, validateAddressPut, validateEmailContacts,
-    validatePosition, validateInterest, validateChannelId, validateUserAccount, validatePreference, 
-    validateContactId, validateEmailContactsPut, validateCompanyIdPut, validatePositionPut, 
-    validateInterestPut, validateChannelIdPut, validateChannelIdAdd, validateChannelIdDel, 
-    validateChannelName, validateChannelIdEx, validateChannelNamePut
+    validateLastnamePut, validateEmailPut, validatePerfil, validatePasswordPut, validateRegionName, 
+    validateRegionId, validateRegionNamePut, validateCountryName, validateCountryId, 
+    validateCountryNamePut, validateRegionIdCountry, validateCityName, validateCityId, 
+    validateCountryIdCity, validateCityNamePut, validateCompanyName, validateAddress, 
+    validateEmailCompanies, validateCompanyId, validateTelephone, validateCompanyNamePut, 
+    validateCityIdPut, validateAddressPut, validateEmailContacts, validatePosition, 
+    validateInterest, validateChannelId, validateUserAccount, validatePreference, validateContactId, 
+    validateEmailContactsPut, validateCompanyIdPut, validatePositionPut, validateInterestPut, 
+    validateChannelIdPut, validateChannelIdAdd, validateChannelIdDel, validateChannelName, 
+    validateChannelIdEx, validateChannelNamePut
 }
-

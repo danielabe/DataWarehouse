@@ -146,8 +146,7 @@ app.get('/users', filterAdmin, function _callee2(req, res) {
     while (1) {
       switch (_context2.prev = _context2.next) {
         case 0:
-          // Función disponible sólo para admin, chequear
-          getUsers(req, res); //si también debe estar disponible para otros usuarios
+          getUsers(req, res);
 
         case 1:
         case "end":
@@ -296,8 +295,7 @@ app["delete"]('/regions/:regionId', validateRegionId, function _callee11(req, re
       switch (_context11.prev = _context11.next) {
         case 0:
           regionId = +req.params.regionId;
-          deleteRegion(regionId, req, res); //no puedo borrar una region si tengo países en ella o si borro una region 
-          //borro todos los paises que tiene
+          deleteRegion(regionId, req, res);
 
         case 2:
         case "end":
@@ -423,8 +421,7 @@ app["delete"]('/countries/:countryId', validateCountryId, function _callee19(req
       switch (_context19.prev = _context19.next) {
         case 0:
           countryId = +req.params.countryId;
-          deleteCountry(countryId, req, res); //no puedo borrar un país si tengo ciudades en el o si borro un país 
-          //borro todas las ciudades que tiene
+          deleteCountry(countryId, req, res);
 
         case 2:
         case "end":
@@ -520,8 +517,7 @@ app["delete"]('/cities/:cityId', validateCityId, function _callee25(req, res) {
       switch (_context25.prev = _context25.next) {
         case 0:
           cityId = +req.params.cityId;
-          deleteCity(cityId, req, res); //no puedo borrar una ciudad si tengo contactos o compañias en ella 
-          //o borro todos los contactos o compañias que tiene
+          deleteCity(cityId, req, res);
 
         case 2:
         case "end":
@@ -552,7 +548,6 @@ app.post('/companies', validateCompanyName, validateEmailCompanies, validateAddr
       switch (_context27.prev = _context27.next) {
         case 0:
           newCompany = {
-            //chequear si ahora funciona con el const
             company_name: req.body.company_name,
             city_id: req.body.city_id,
             address: req.body.address,
@@ -607,8 +602,7 @@ app["delete"]('/companies/:companyId', validateCompanyId, function _callee30(req
       switch (_context30.prev = _context30.next) {
         case 0:
           companyId = +req.params.companyId;
-          deleteCompany(companyId, req, res); //no puedo borrar una compañía si tengo contactos  en ella 
-          //o borro todos los contactos o compañias que tiene
+          deleteCompany(companyId, req, res);
 
         case 2:
         case "end":
@@ -854,8 +848,7 @@ app["delete"]('/channels/:channelId', validateChannelIdEx, function _callee43(re
       switch (_context43.prev = _context43.next) {
         case 0:
           channelId = +req.params.channelId;
-          deleteChannel(channelId, req, res); //no puedo borrar una region si tengo países en ella o si borro una region 
-          //borro todos los paises que tiene
+          deleteChannel(channelId, req, res);
 
         case 2:
         case "end":
@@ -864,5 +857,3 @@ app["delete"]('/channels/:channelId', validateChannelIdEx, function _callee43(re
     }
   });
 });
-/* express-rate-limit, .env, bcrypt
-*/

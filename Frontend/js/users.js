@@ -54,7 +54,6 @@ async function getUsers() {
     }
     const response = await fetch('http://localhost:3000/users', options)
     const data = await response.json()
-    console.log(data)
 
     data.forEach(element => {
         const info = {
@@ -65,7 +64,6 @@ async function getUsers() {
             perfil: element.perfil
         }
 
-        console.log(element)
         const row = document.createElement('li')
         const user = document.createElement('div')
         const email = document.createElement('div')
@@ -106,7 +104,7 @@ async function getUsers() {
             }
             modalDeleteUser()
         })
-        pen.addEventListener('click', () => userEdition(info/* , usersList */))
+        pen.addEventListener('click', () => userEdition(info))
     })
 }
 
@@ -125,9 +123,7 @@ function outRow(ellipsis, trash, pen) {
 //add user
 newUserBtn.addEventListener('click', () => {
     window.scrollTo(0, 0)
-    /* body.classList.add('modal') */
     darkImageNewUser.classList.remove('none')
-    /* companyCity.style.top = '0px' */
 })
 
 closeNewUser.addEventListener('click', (event) => closeWindowNewUser(event))
@@ -158,8 +154,6 @@ function closeWindowNewUser(event) {
     darkImageNewUser.classList.add('none')
     perfilList.classList.add('no-visible')
 
-    /* varCompCityId = null
-    varSelectCityComp = 0 */
     varSelectPerfil = 0
 }
 
@@ -170,8 +164,6 @@ perfilSlt.addEventListener('click', () => {
         showPerfil(perfilList, perfilSlt, perfilClass)
     } else if(varSelectPerfil === 1) {
         perfilList.classList.add('no-visible')
-        /* userPerfil.style.top = '0px' */
-        /* perfilList.innerHTML = '' */
         varSelectPerfil = 0
     }
 })
@@ -180,7 +172,6 @@ function showPerfil(perfList, perfSlt, perfilC) {
     perfList.classList.remove('no-visible')
     varSelectPerfil = 1
     perfArray = document.querySelectorAll(`.${perfilC}`)
-    console.log(perfArray)
     perfArray.forEach(element => {
         element.addEventListener('click', () => selectPerfilFunction(element.innerHTML, perfList, perfSlt))
     })
@@ -227,7 +218,6 @@ async function addUsers(event) {
         }
         
         const data = await response.json()
-        console.log(data)
     } catch(reason) {
         return reason
     }
@@ -270,9 +260,7 @@ function validateUserData(user, usName, msgUsName, usLastname, msgUsLastname, us
     if(perfilSlt.innerText === 'Seleccionar perfil') {
         perfilSlt.classList.add('border-wrong')
         perfilList.addEventListener('click', () => {
-            console.log(perfilSlt.innerText)
             if(perfilSlt.innerText !== 'Seleccionar ciudad') {
-                console.log('//////')
                 perfilSlt.classList.remove('border-wrong')
             }
         })
@@ -336,7 +324,6 @@ function validatePass(userPassEdit, msgUserPassRep, userPassRepEdit, msgUserPass
 
 //delete user
 function modalDeleteUser() {
-    console.log(uId)
     window.scrollTo(0, 0)
     body.classList.add('modal')
     darkImageUsers.classList.remove('none')
@@ -344,19 +331,7 @@ function modalDeleteUser() {
     cancelDltUserBtn.addEventListener('click', () => {
         body.classList.remove('modal')
         darkImageUsers.classList.add('none')
-        /* darkImageEditCtc.style.visibility = 'visible' */
     })
-    
-    /* deleteContactBtn.addEventListener('click', () => {
-        body.classList.remove('modal')
-        darkImageContacts.classList.add('none')
-        //contactsList.innerHTML = ''
-        if(varDelete === 0) {
-            deleteContact(info)
-        } else if (varDelete === 1) {
-            deleteContacts()
-        }
-    }) */
 }
 
 deleteUserBtn.addEventListener('click', (event) => {
@@ -375,7 +350,6 @@ async function deleteUser(info, event) {
     }
     const response = await fetch(`http://localhost:3000/users/${info.userId}`, options)
     const data = await response.json()
-    console.log(data)
     closeWindowNewUser(event)
     getUsers()
 }
@@ -383,18 +357,9 @@ async function deleteUser(info, event) {
 //edit user
 async function userEdition(info) {
     varUserId = +info.userId
-    console.log(varUserId)
-    /* varCompCityId = +info.cityId
-    varCompId = +info.companyId */
-    /* varCompanyId = +info.companyId
-    varEditContact = info.contactId */
-    
     window.scrollTo(0, 0)
-    /* body.classList.add('modal') */
     darkImageEditUser.classList.remove('none')
     darkImageEditUser.style.visibility = 'visible'
-    /* companyCityEdit.style.top = '0px' */
-    /* main.classList.add('height-add-ctc') */
     
     const options = {                   
         method: 'GET',  
@@ -404,7 +369,6 @@ async function userEdition(info) {
     }
     const response = await fetch(`http://localhost:3000/users/${varUserId}`, options)
     const data = await response.json()
-    console.log(data)
     loadUserData(data)
 }
 
@@ -426,10 +390,7 @@ closeEditUser.addEventListener('click', (event) => closeWindowEditUser(event))
 function closeWindowEditUser(event) {
     event.preventDefault()
     darkImageEditUser.classList.add('none')
-    /* companyListEdit.classList.add('none') */
-    /* body.classList.remove('modal') */
 
-    /* main.classList.remove('height-add-ctc') */
     userNameEdit.classList.remove('border-wrong')
     msgUserNameEdit.classList.remove('visible')
     userLastnameEdit.classList.remove('border-wrong')
@@ -444,9 +405,6 @@ function closeWindowEditUser(event) {
 
     msgUserEmailEdit.innerText = 'Error en datos ingresados'
 
-    
-    /* varSelectCityComp = 0 */
-    /* varCityId = null */
     varUserId = null
 }
 
@@ -486,14 +444,12 @@ async function editUser(event) {
         }
     }
     const response = await fetch(`http://localhost:3000/users/${varUserId}`, options)
-    /* console.log(response.text()) */
     if(response.status === 409) {
         userEmailEdit.classList.add('border-wrong')
         msgUserEmailEdit.classList.add('visible')
         msgUserEmailEdit.innerText = 'El email ya existe'
     }
     const data = await response.json()
-    console.log(data)
     closeWindowEditUser(event)
     getUsers() 
 }

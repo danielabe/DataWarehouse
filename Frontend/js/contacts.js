@@ -149,8 +149,7 @@ contacts.addEventListener('click', () => {
 })
 
 async function getContacts() {
-    contactsList.innerHTML = '' //ver si puedo sacar este
-    /* console.log(JSON.parse(sessionStorage.getItem('Token'))) */
+    contactsList.innerHTML = ''
     const options = {
         method: 'GET',
         headers: {
@@ -159,18 +158,13 @@ async function getContacts() {
     }
     const response = await fetch('http://localhost:3000/contacts', options)
     const data = await response.json()
-    console.log(data)
     dataCheckbox = data
-    /* newData = data */
     renderResults(data)
-    /* checkboxAll.addEventListener('click', () => checkboxAllFunction(data)) */
-    /* varSortName = 0  */// no se para que esta este
 }
 
 function checkAfterSortAndSearch(data) {
     counterAndDelete.classList.add('hidden')
     varCheckboxAll = 'indeterminate'
-    /* console.log(varCheckboxAll) */
     checkboxAllFunction(data)
 }
 
@@ -178,9 +172,6 @@ checkboxAll.addEventListener('click', () => checkboxAllFunction(dataCheckbox))
 
 function renderResults(data) {
     newData = data
-    /* checkboxAll.classList = 'fas fa-check-square'
-            checkboxAllFunction(data)
-     */
     contactsList.innerHTML = ''
     data.forEach(async element => {
         const info = {
@@ -209,7 +200,6 @@ function renderResults(data) {
         const country = document.createElement('div')
         const company = document.createElement('div')
         const position = document.createElement('div')
-        /* const preferredChannel = document.createElement('div') */
         const interest = document.createElement('div')
         const actions = document.createElement('div')
         const ellipsis = document.createElement('i')
@@ -220,20 +210,12 @@ function renderResults(data) {
         country.innerHTML = `<p>${info.countryName}</p><p class="grey-info">${info.regionName}</p>`
         company.innerText = info.companyName
         position.innerText = info.position
-        
-        /* info.preferredChannel.map(element => { //esto no es obligatorio
-            const channel = document.createElement('div')
-            channel.innerText = element.channel_name
-            channel.classList.add('channel')
-            preferredChannel.appendChild(channel)
-        }) */
 
         row.classList.add('row-contact')
         contact.classList = 'u-item col-item'        
         country.classList = 'u-item col-item'     
         company.classList.add('u-item')        
-        position.classList.add('u-item')        
-        /* preferredChannel.classList.add('u-item')   */      
+        position.classList.add('u-item')  
         interest.classList.add('u-item')            
         checkbox.classList = 'far fa-square u-item select'
         actions.classList = 'u-item action'
@@ -267,7 +249,6 @@ function renderResults(data) {
         row.appendChild(country)
         row.appendChild(company)
         row.appendChild(position)
-        /* row.appendChild(preferredChannel) */
         row.appendChild(interest)
         row.appendChild(actions)
 
@@ -278,8 +259,6 @@ function renderResults(data) {
             cId = {
                 contactId: element.contact_id
             }
-            console.log(element.contact_id)
-            console.log(cId.contactId)
             modalDelete()
         })
         pen.addEventListener('click', () => contactEdition(info))
@@ -290,7 +269,6 @@ function renderResults(data) {
 
 //delete contact
 function modalDelete() {
-    console.log(cId)
     window.scrollTo(0, 0)
     body.classList.add('modal')
     darkImageContacts.classList.remove('none')
@@ -301,20 +279,9 @@ function modalDelete() {
         darkImageEditCtc.style.visibility = 'visible'
         varDelete = 0
     })
-
-    /* deleteContactBtn.addEventListener('click', () => {
-        body.classList.remove('modal')
-        darkImageContacts.classList.add('none')
-        //contactsList.innerHTML = ''
-        if(varDelete === 0) {
-            deleteContact(info)
-        } else if (varDelete === 1) {
-            deleteContacts()
-        }
-    }) */
 }
 
-async function deleteContact(info/* , contactsList */) {
+async function deleteContact(info) {
     const options = {
         method: 'DELETE',
         headers: {
@@ -322,11 +289,9 @@ async function deleteContact(info/* , contactsList */) {
         }
     }
     try {
-        console.log(info.contactId)
         const response = await fetch(`http://localhost:3000/contacts/${info.contactId}`, options)
         const data = await response.json()
-        console.log(data)
-        checkAfterSortAndSearch() //no se si funciona el data, con o sin data va igual, no se si es correcto
+        checkAfterSortAndSearch()
         darkImageEditCtc.style.visibility = 'visible'
         main.classList.remove('height-add-ctc')
         searchInput.value = ''
@@ -343,7 +308,6 @@ dltCtcBtn.addEventListener('click', () => {
 
 function deleteContacts() {
     contIdArray.forEach(async ctc => {
-        console.log(ctc)
         const info = {
             contactId: ctc
         }
@@ -355,18 +319,16 @@ function deleteContacts() {
         }
         const response = await fetch(`http://localhost:3000/contacts/${info.contactId}`, options)
         const data = await response.json()
-        /* getContacts() */
     })
     searchInput.value = ''
     
     setTimeout(function(){ getContacts() }, 500)
-    checkAfterSortAndSearch() //no se si funciona el data, con o sin data va igual, no se si es correcto
+    checkAfterSortAndSearch()
     varDelete = 0
 }
 
 //sort columns
 sortName.addEventListener('click', () => {
-    console.log(varSortName)
     if(varSortName === 0) {
         sortByName(newData)
     } else if(varSortName === 1) {
@@ -380,7 +342,6 @@ sortName.addEventListener('click', () => {
 })
 
 sortCountry.addEventListener('click', () => {
-    console.log(varSortCountry)
     if(varSortCountry === 0) {
         sortByCountry(newData)
     } else if(varSortCountry === 1) {
@@ -394,7 +355,6 @@ sortCountry.addEventListener('click', () => {
 })
 
 sortCompany.addEventListener('click', () => {
-    console.log(varSortCompany)
     if(varSortCompany === 0) {
         sortByCompany(newData)
     } else if(varSortCompany === 1) {
@@ -408,7 +368,6 @@ sortCompany.addEventListener('click', () => {
 })
 
 sortPosition.addEventListener('click', () => {
-    console.log(varSortPosition)
     if(varSortPosition === 0) {
         sortByPosition(newData)
     } else if(varSortPosition === 1) {
@@ -422,7 +381,6 @@ sortPosition.addEventListener('click', () => {
 })
 
 sortInterest.addEventListener('click', () => {
-    console.log(varSortInterest)
     if(varSortInterest === 0) {
         sortByInterest(newData)
     } else if(varSortInterest === 1) {
@@ -436,9 +394,7 @@ sortInterest.addEventListener('click', () => {
 })
 
 function sortByName(data) {
-    /* console.log(data) */
     const sortedNames = data.sort(function (a, b) {
-        /* console.log(data) */
         if (a.firstname.toUpperCase() > b.firstname.toUpperCase()) { 
             return 1
         }
@@ -448,15 +404,11 @@ function sortByName(data) {
         return 0
     })
     renderResults(sortedNames)
-    console.log(sortedNames)
     varSortName = 1
-    /* varCheckboxAll = 0 */
 }
 
 function sortByNameReverse(data) {
-    console.log('dani')
     const sortedNames = data.reverse(function (a, b) {
-        console.log(data)
         if (a.firstname.toUpperCase() > b.firstname.toUpperCase()) { 
             return 1
         }
@@ -465,7 +417,6 @@ function sortByNameReverse(data) {
         }
         return 0
     })
-    console.log(sortedNames)
     renderResults(sortedNames)
     varSortName = 0
 }
@@ -593,8 +544,7 @@ searchInput.addEventListener('keyup', (event) => {
     if(event.key === 'Backspace' && searchInput.value === '') getSearchResults()
 })
 
-async function getSearchResults() { //espacio apellido?
-    console.log(JSON.parse(sessionStorage.getItem('Token')))
+async function getSearchResults() {
     const search = {
         search_value: searchInput.value
     }
@@ -608,11 +558,9 @@ async function getSearchResults() { //espacio apellido?
     }
     const response = await fetch('http://localhost:3000/search', options)
     const data = await response.json()
-    console.log(data)
     renderResults(data)
     dataCheckbox = data
     checkAfterSortAndSearch(data)
-    /* checkboxAll.addEventListener('click', () => checkboxAllFunction(data)) */
 }
 
 //select contacts 
@@ -626,21 +574,17 @@ function selectContact(checkbox, info, data, row) {
 
 function check(checkbox, info, data, row) {
     checkbox.classList = 'fas fa-check-square u-item select'
-    /* row.style.backgroundColor = 'rgba(142, 199, 252, 0.5)' */
     row.classList.add('selected-row')
     contIdArray = contIdArray.concat(info.contactId)
-    console.log(contIdArray)
     contactCounter(contIdArray)
     allContacts(data)
 }
 
 function uncheck(checkbox, info, data, row) {
     checkbox.classList = 'far fa-square u-item select'
-    /* row.style.backgroundColor = 'white' */
     row.classList.remove('selected-row')
     const index = contIdArray.indexOf(info.contactId)
     contIdArray.splice(index, 1)
-    console.log(contIdArray)
     contactCounter(contIdArray)
     allContacts(data)
 }
@@ -668,15 +612,11 @@ function allContacts(data) {
 }
 
 function checkboxAllFunction(data) {
-    /* console.log(varCheckboxAll) */
     const allConts = document.querySelectorAll('.select')
     const rowContact = document.querySelectorAll('.row-contact')
-    if(/* checkboxAll.classList == 'far fa-square' || */ varCheckboxAll === 'unselected') {
+    if(varCheckboxAll === 'unselected') {
         contIdArray = []
-        console.log('no seleccionado a seleccionado')
         checkboxAll.classList = 'fas fa-check-square'
-        //seleccionar todos
-        /* console.log(allConts) */
         allConts.forEach(element => {
             element.classList = 'fas fa-check-square u-item select'
         })
@@ -684,30 +624,21 @@ function checkboxAllFunction(data) {
             contIdArray = contIdArray.concat(element.contact_id)
         })
         rowContact.forEach(row => row.classList.add('selected-row'))
-        console.log(contIdArray)
         contactCounter(contIdArray)
         varCheckboxAll = 'selected'
-        console.log(varCheckboxAll)
-    } else if(/* checkboxAll.classList == 'fas fa-check-square' || checkboxAll.classList == 'fas fa-minus-square' || */ varCheckboxAll === 'selected') {
-        console.log('seleccionado a no seleccionado')
+    } else if(varCheckboxAll === 'selected') {
         checkboxAll.classList = 'far fa-square'
-        //desseleccionar todos
         contIdArray = []
-        console.log(contIdArray)
         allConts.forEach(element => {
             element.classList = 'far fa-square u-item select'
         })
         rowContact.forEach(row => row.classList.remove('selected-row'))
         contactCounter(contIdArray)
         varCheckboxAll = 'unselected'
-        console.log(varCheckboxAll)
 
-    } else if(/* checkboxAll.classList == 'fas fa-minus-square' */ varCheckboxAll === 'indeterminate') {
-        /* console.log('indeterminado a no seleccionado') */
+    } else if(varCheckboxAll === 'indeterminate') {
         checkboxAll.classList = 'far fa-square'
-        //desseleccionar seleccionados
         contIdArray = []
-        /* console.log(contIdArray) */
         allConts.forEach(element => {
             element.classList = 'far fa-square u-item select'
         })
@@ -719,8 +650,6 @@ function checkboxAllFunction(data) {
 
 //add contact
 newCntBtn.addEventListener('click', () => {
-    /* window.scrollTo(0, 0) */
-    /* body.classList.add('modal') */
     darkImageAddCtc.classList.remove('none')
     main.classList.add('height-add-ctc')
     const sChannel = 's-channel'
@@ -741,7 +670,6 @@ async function getAllChannels(sChannel, chan) {
     data.map(element => {
         channelsDB = channelsDB.concat({channelName: element.channel_name, channelId: element.channel_id})
     })
-    console.log(channelsDB)
     const chanArray = document.querySelectorAll(`.${sChannel}`)
     const chansArray = document.querySelectorAll(`.${chan}`)
     chansArray.forEach((el, i) => {
@@ -782,9 +710,7 @@ function renderSelectCompanies(data, slctCompany, compan, compLb) {
     slctCompany.classList.remove('none')
 
     const hcomp = (data.length * 24 + 6) / 2
-    console.log(hcomp)
     compLb.style.top = `${hcomp}px`
-    /* compLblEdit.style.top = `${hcomp}px` */
 
     data.forEach(element => {
         const info = {
@@ -836,16 +762,12 @@ async function getRegions(regList, regSelect) {
     }
     const response = await fetch('http://localhost:3000/regions', options)
     const data = await response.json()
-    console.log(data)
     renderSelectRegions(data, regList, regSelect)
 }
 
 function renderSelectRegions(data, regList, regSelect) {
     varSelectRegion = 1
     regList.classList.remove('none')
-    /* const hreg = (data.length * 24 + 6) / 2
-    console.log(hreg) */
-    /* compLbl.style.top = `${hreg}px` */
     data.forEach(element => {
         const info = {
             regionId: element.region_id,
@@ -913,7 +835,6 @@ async function getCountries(countList, countSelect) {
     }
     const response = await fetch(`http://localhost:3000/regions/${varRegId}/countries`, options)
     const data = await response.json()
-    console.log(data)
     renderSelectCountries(data, countList, countSelect)
 }
 
@@ -921,8 +842,6 @@ function renderSelectCountries(data, countList, countSelect) {
     varSelectCountry = 1
     countList.innerHTML = ''
     countList.classList.remove('none')
-    /* const hreg = (data.length * 24 + 6) / 2
-    console.log(hreg) */
     data.forEach(element => {
         const info = {
             countryId: element.country_id,
@@ -980,7 +899,6 @@ async function getCities(citList, citSelect) {
     }
     const response = await fetch(`http://localhost:3000/countries/${varCountId}/cities`, options)
     const data = await response.json()
-    console.log(data)
     renderSelectCities(data, citList, citSelect)
 }
 
@@ -988,8 +906,6 @@ function renderSelectCities(data, citList, citSelect) {
     varSelectCity = 1
     citList.innerHTML = ''
     citList.classList.remove('none')
-    // const hreg = (data.length * 24 + 6) / 2
-    // console.log(hreg)
     data.forEach(element => {
         const info = {
             cityId: element.city_id,
@@ -1030,7 +946,7 @@ interestSelect.addEventListener('click', () => {
 function showInterest(intList, intSelect, intC) {
     intList.classList.remove('none')
     varSelectInterest = 1
-    const intArray = document.querySelectorAll(`.${intC}`)/* '.int' */
+    const intArray = document.querySelectorAll(`.${intC}`)
     intArray.forEach(element => {
         element.addEventListener('click', () => selectInterestFunction(element.innerText, intList, intSelect))
     })
@@ -1261,8 +1177,6 @@ function preferenceIcons(pref, select) {
 //close window new contact 
 cancelContact.addEventListener('click', (event) => closeWindowNewContact(event))
 closeNewCtc.addEventListener('click', (event) => closeWindowNewContact(event))
-/* cancelContact.addEventListener('click', () => getContacts())
-closeNewCtc.addEventListener('click', () => getContacts()) */
 
 function closeWindowNewContact(event) {
     event.preventDefault()
@@ -1408,7 +1322,6 @@ async function addContact(event) {
         }
         
         const data = await response.json()
-        console.log(data)
     } catch(reason) {
         return reason
     }
@@ -1504,14 +1417,12 @@ function validateData(contact, first, msgFirst, last, msgLast, pos, msgPos, emai
 
 //edit contact
 async function contactEdition(info) {
-    console.log(info.cityName)
     varRegId = +info.regionId
     varCountId = +info.countryId
     varCityId = +info.cityId
     varCompanyId = +info.companyId
     varEditContact = info.contactId
     varEnableCity = 1
-    console.log(info.cityName)
     if(info.cityName !== '') {
         addressEdit.classList.remove('disable')
         addressEdit.disabled = false
@@ -1529,7 +1440,6 @@ async function contactEdition(info) {
     }
     const response = await fetch(`http://localhost:3000/contacts/${info.contactId}`, options)
     const data = await response.json()
-    console.log(data)
     loadData(data)
     enablePrefTel(telephoneEdit, selectTelephoneEdit)
     enablePrefWsp(whatsappEdit, selectWhatsappEdit)
@@ -1833,7 +1743,6 @@ async function editContact(event) {
         interest: +interestSelectEdit.innerText.slice(0, -1),
         preferred_channels: filteredChannels
     }
-    console.log(modifiedContact)
     validateData(modifiedContact, firstnameEdit, msgFirstEdit, lastnameEdit, msgLastEdit, positionEdit, 
         msgPosEdit, emailEdit, msgEmailEdit, companyEdit, selectCompanyEdit, regionSelectEdit, regionsListEdit,
         countrySelectEdit, countriesListEdit, citySelectEdit, citiesListEdit, addressEdit, msgAddressEdit)
@@ -1852,7 +1761,6 @@ async function editContact(event) {
         msgEmailEdit.innerText = 'El email ya existe'
     }
     const data = await response.json()
-    console.log(data)
     closeWindowEditContact(event)
 }
 
@@ -1870,15 +1778,9 @@ deleteContactBtn.addEventListener('click', () => {
     body.classList.remove('modal')
     darkImageContacts.classList.add('none')
     darkImageEditCtc.classList.add('none')
-    console.log(varDelete)
     if(varDelete === 0) {
         deleteContact(cId)
     } else if (varDelete === 1) {
         deleteContacts()
     }
 })
-
-
-
-//poner nombres bien en postman y crear archivo
-//quitar comentarios (chequeo)

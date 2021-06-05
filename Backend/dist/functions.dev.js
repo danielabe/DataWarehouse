@@ -135,15 +135,11 @@ function validateUserId(req, res, next) {
 }
 
 function validateFirstnamePut(req, res, next) {
-  /* if(req.body.firstname) { */
   if (req.body.firstname.length >= 1 && req.body.firstname.length <= 64) next();else res.status(400).send("The firstname length is wrong").end();
-  /* } else next() */
 }
 
 function validateLastnamePut(req, res, next) {
-  /* if(req.body.lastname) { */
   if (req.body.lastname.length >= 1 && req.body.lastname.length <= 64) next();else res.status(400).send("The lastname length is wrong").end();
-  /* } else next() */
 }
 
 function validateEmailPut(req, res, next) {
@@ -449,11 +445,8 @@ function validateAddressPut(req, res, next) {
     while (1) {
       switch (_context21.prev = _context21.next) {
         case 0:
-          /* if(req.body.address) { */
-          //asi es igual a la otra sin put
           address = req.body.address;
           if (address.length >= 1 && address.length <= 64) next();else res.status(400).send("The address is wrong").end();
-          /* } else next() */
 
         case 2:
         case "end":
@@ -537,7 +530,6 @@ function validatePreference(req, res, next) {
         case 0:
           channelsBody = req.body.preferred_channels;
           channelsBody.every(function (element) {
-            console.log(element);
             if (element.preference === 'Sin preferencia' || element.preference === 'Canal favorito' || element.preference === 'No molestar') next();else res.status(400).send("The preference is wrong").end();
           });
 

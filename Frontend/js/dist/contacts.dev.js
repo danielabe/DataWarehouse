@@ -151,10 +151,7 @@ function getContacts() {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
-          contactsList.innerHTML = ''; //ver si puedo sacar este
-
-          /* console.log(JSON.parse(sessionStorage.getItem('Token'))) */
-
+          contactsList.innerHTML = '';
           options = {
             method: 'GET',
             headers: {
@@ -171,17 +168,10 @@ function getContacts() {
 
         case 7:
           data = _context.sent;
-          console.log(data);
           dataCheckbox = data;
-          /* newData = data */
-
           renderResults(data);
-          /* checkboxAll.addEventListener('click', () => checkboxAllFunction(data)) */
 
-          /* varSortName = 0  */
-          // no se para que esta este
-
-        case 11:
+        case 10:
         case "end":
           return _context.stop();
       }
@@ -192,8 +182,6 @@ function getContacts() {
 function checkAfterSortAndSearch(data) {
   counterAndDelete.classList.add('hidden');
   varCheckboxAll = 'indeterminate';
-  /* console.log(varCheckboxAll) */
-
   checkboxAllFunction(data);
 }
 
@@ -203,10 +191,6 @@ checkboxAll.addEventListener('click', function () {
 
 function renderResults(data) {
   newData = data;
-  /* checkboxAll.classList = 'fas fa-check-square'
-          checkboxAllFunction(data)
-   */
-
   contactsList.innerHTML = '';
   data.forEach(function _callee(element) {
     var info, row, checkbox, contact, country, company, position, interest, actions, ellipsis, trash, pen;
@@ -238,8 +222,6 @@ function renderResults(data) {
             country = document.createElement('div');
             company = document.createElement('div');
             position = document.createElement('div');
-            /* const preferredChannel = document.createElement('div') */
-
             interest = document.createElement('div');
             actions = document.createElement('div');
             ellipsis = document.createElement('i');
@@ -249,20 +231,11 @@ function renderResults(data) {
             country.innerHTML = "<p>".concat(info.countryName, "</p><p class=\"grey-info\">").concat(info.regionName, "</p>");
             company.innerText = info.companyName;
             position.innerText = info.position;
-            /* info.preferredChannel.map(element => { //esto no es obligatorio
-                const channel = document.createElement('div')
-                channel.innerText = element.channel_name
-                channel.classList.add('channel')
-                preferredChannel.appendChild(channel)
-            }) */
-
             row.classList.add('row-contact');
             contact.classList = 'u-item col-item';
             country.classList = 'u-item col-item';
             company.classList.add('u-item');
             position.classList.add('u-item');
-            /* preferredChannel.classList.add('u-item')   */
-
             interest.classList.add('u-item');
             checkbox.classList = 'far fa-square u-item select';
             actions.classList = 'u-item action';
@@ -291,8 +264,6 @@ function renderResults(data) {
             row.appendChild(country);
             row.appendChild(company);
             row.appendChild(position);
-            /* row.appendChild(preferredChannel) */
-
             row.appendChild(interest);
             row.appendChild(actions);
             row.addEventListener('mouseover', function () {
@@ -305,8 +276,6 @@ function renderResults(data) {
               cId = {
                 contactId: element.contact_id
               };
-              console.log(element.contact_id);
-              console.log(cId.contactId);
               modalDelete();
             });
             pen.addEventListener('click', function () {
@@ -327,7 +296,6 @@ function renderResults(data) {
 
 
 function modalDelete() {
-  console.log(cId);
   window.scrollTo(0, 0);
   body.classList.add('modal');
   darkImageContacts.classList.remove('none');
@@ -337,21 +305,9 @@ function modalDelete() {
     darkImageEditCtc.style.visibility = 'visible';
     varDelete = 0;
   });
-  /* deleteContactBtn.addEventListener('click', () => {
-      body.classList.remove('modal')
-      darkImageContacts.classList.add('none')
-      //contactsList.innerHTML = ''
-      if(varDelete === 0) {
-          deleteContact(info)
-      } else if (varDelete === 1) {
-          deleteContacts()
-      }
-  }) */
 }
 
-function deleteContact(info
-/* , contactsList */
-) {
+function deleteContact(info) {
   var options, response, data;
   return regeneratorRuntime.async(function deleteContact$(_context3) {
     while (1) {
@@ -364,38 +320,35 @@ function deleteContact(info
             }
           };
           _context3.prev = 1;
-          console.log(info.contactId);
-          _context3.next = 5;
+          _context3.next = 4;
           return regeneratorRuntime.awrap(fetch("http://localhost:3000/contacts/".concat(info.contactId), options));
 
-        case 5:
+        case 4:
           response = _context3.sent;
-          _context3.next = 8;
+          _context3.next = 7;
           return regeneratorRuntime.awrap(response.json());
 
-        case 8:
+        case 7:
           data = _context3.sent;
-          console.log(data);
-          checkAfterSortAndSearch(); //no se si funciona el data, con o sin data va igual, no se si es correcto
-
+          checkAfterSortAndSearch();
           darkImageEditCtc.style.visibility = 'visible';
           main.classList.remove('height-add-ctc');
           searchInput.value = '';
           getContacts();
-          _context3.next = 20;
+          _context3.next = 18;
           break;
 
-        case 17:
-          _context3.prev = 17;
+        case 15:
+          _context3.prev = 15;
           _context3.t0 = _context3["catch"](1);
           return _context3.abrupt("return", _context3.t0);
 
-        case 20:
+        case 18:
         case "end":
           return _context3.stop();
       }
     }
-  }, null, null, [[1, 17]]);
+  }, null, null, [[1, 15]]);
 }
 
 dltCtcBtn.addEventListener('click', function () {
@@ -410,7 +363,6 @@ function deleteContacts() {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            console.log(ctc);
             info = {
               contactId: ctc
             };
@@ -420,18 +372,18 @@ function deleteContacts() {
                 Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
               }
             };
-            _context4.next = 5;
+            _context4.next = 4;
             return regeneratorRuntime.awrap(fetch("http://localhost:3000/contacts/".concat(info.contactId), options));
 
-          case 5:
+          case 4:
             response = _context4.sent;
-            _context4.next = 8;
+            _context4.next = 7;
             return regeneratorRuntime.awrap(response.json());
 
-          case 8:
+          case 7:
             data = _context4.sent;
 
-          case 9:
+          case 8:
           case "end":
             return _context4.stop();
         }
@@ -442,15 +394,12 @@ function deleteContacts() {
   setTimeout(function () {
     getContacts();
   }, 500);
-  checkAfterSortAndSearch(); //no se si funciona el data, con o sin data va igual, no se si es correcto
-
+  checkAfterSortAndSearch();
   varDelete = 0;
 } //sort columns
 
 
 sortName.addEventListener('click', function () {
-  console.log(varSortName);
-
   if (varSortName === 0) {
     sortByName(newData);
   } else if (varSortName === 1) {
@@ -464,8 +413,6 @@ sortName.addEventListener('click', function () {
   varSortInterest = 0;
 });
 sortCountry.addEventListener('click', function () {
-  console.log(varSortCountry);
-
   if (varSortCountry === 0) {
     sortByCountry(newData);
   } else if (varSortCountry === 1) {
@@ -479,8 +426,6 @@ sortCountry.addEventListener('click', function () {
   varSortInterest = 0;
 });
 sortCompany.addEventListener('click', function () {
-  console.log(varSortCompany);
-
   if (varSortCompany === 0) {
     sortByCompany(newData);
   } else if (varSortCompany === 1) {
@@ -494,8 +439,6 @@ sortCompany.addEventListener('click', function () {
   varSortInterest = 0;
 });
 sortPosition.addEventListener('click', function () {
-  console.log(varSortPosition);
-
   if (varSortPosition === 0) {
     sortByPosition(newData);
   } else if (varSortPosition === 1) {
@@ -509,8 +452,6 @@ sortPosition.addEventListener('click', function () {
   varSortInterest = 0;
 });
 sortInterest.addEventListener('click', function () {
-  console.log(varSortInterest);
-
   if (varSortInterest === 0) {
     sortByInterest(newData);
   } else if (varSortInterest === 1) {
@@ -525,9 +466,7 @@ sortInterest.addEventListener('click', function () {
 });
 
 function sortByName(data) {
-  /* console.log(data) */
   var sortedNames = data.sort(function (a, b) {
-    /* console.log(data) */
     if (a.firstname.toUpperCase() > b.firstname.toUpperCase()) {
       return 1;
     }
@@ -539,16 +478,11 @@ function sortByName(data) {
     return 0;
   });
   renderResults(sortedNames);
-  console.log(sortedNames);
   varSortName = 1;
-  /* varCheckboxAll = 0 */
 }
 
 function sortByNameReverse(data) {
-  console.log('dani');
   var sortedNames = data.reverse(function (a, b) {
-    console.log(data);
-
     if (a.firstname.toUpperCase() > b.firstname.toUpperCase()) {
       return 1;
     }
@@ -559,7 +493,6 @@ function sortByNameReverse(data) {
 
     return 0;
   });
-  console.log(sortedNames);
   renderResults(sortedNames);
   varSortName = 0;
 }
@@ -709,8 +642,6 @@ function getSearchResults() {
     while (1) {
       switch (_context5.prev = _context5.next) {
         case 0:
-          //espacio apellido?
-          console.log(JSON.parse(sessionStorage.getItem('Token')));
           search = {
             search_value: searchInput.value
           };
@@ -722,23 +653,21 @@ function getSearchResults() {
               "Content-Type": "application/json"
             }
           };
-          _context5.next = 5;
+          _context5.next = 4;
           return regeneratorRuntime.awrap(fetch('http://localhost:3000/search', options));
 
-        case 5:
+        case 4:
           response = _context5.sent;
-          _context5.next = 8;
+          _context5.next = 7;
           return regeneratorRuntime.awrap(response.json());
 
-        case 8:
+        case 7:
           data = _context5.sent;
-          console.log(data);
           renderResults(data);
           dataCheckbox = data;
           checkAfterSortAndSearch(data);
-          /* checkboxAll.addEventListener('click', () => checkboxAllFunction(data)) */
 
-        case 13:
+        case 11:
         case "end":
           return _context5.stop();
       }
@@ -757,23 +686,17 @@ function selectContact(checkbox, info, data, row) {
 
 function check(checkbox, info, data, row) {
   checkbox.classList = 'fas fa-check-square u-item select';
-  /* row.style.backgroundColor = 'rgba(142, 199, 252, 0.5)' */
-
   row.classList.add('selected-row');
   contIdArray = contIdArray.concat(info.contactId);
-  console.log(contIdArray);
   contactCounter(contIdArray);
   allContacts(data);
 }
 
 function uncheck(checkbox, info, data, row) {
   checkbox.classList = 'far fa-square u-item select';
-  /* row.style.backgroundColor = 'white' */
-
   row.classList.remove('selected-row');
   var index = contIdArray.indexOf(info.contactId);
   contIdArray.splice(index, 1);
-  console.log(contIdArray);
   contactCounter(contIdArray);
   allContacts(data);
 }
@@ -802,19 +725,12 @@ function allContacts(data) {
 }
 
 function checkboxAllFunction(data) {
-  /* console.log(varCheckboxAll) */
   var allConts = document.querySelectorAll('.select');
   var rowContact = document.querySelectorAll('.row-contact');
 
-  if (
-  /* checkboxAll.classList == 'far fa-square' || */
-  varCheckboxAll === 'unselected') {
+  if (varCheckboxAll === 'unselected') {
     contIdArray = [];
-    console.log('no seleccionado a seleccionado');
-    checkboxAll.classList = 'fas fa-check-square'; //seleccionar todos
-
-    /* console.log(allConts) */
-
+    checkboxAll.classList = 'fas fa-check-square';
     allConts.forEach(function (element) {
       element.classList = 'fas fa-check-square u-item select';
     });
@@ -824,18 +740,11 @@ function checkboxAllFunction(data) {
     rowContact.forEach(function (row) {
       return row.classList.add('selected-row');
     });
-    console.log(contIdArray);
     contactCounter(contIdArray);
     varCheckboxAll = 'selected';
-    console.log(varCheckboxAll);
-  } else if (
-  /* checkboxAll.classList == 'fas fa-check-square' || checkboxAll.classList == 'fas fa-minus-square' || */
-  varCheckboxAll === 'selected') {
-    console.log('seleccionado a no seleccionado');
-    checkboxAll.classList = 'far fa-square'; //desseleccionar todos
-
+  } else if (varCheckboxAll === 'selected') {
+    checkboxAll.classList = 'far fa-square';
     contIdArray = [];
-    console.log(contIdArray);
     allConts.forEach(function (element) {
       element.classList = 'far fa-square u-item select';
     });
@@ -844,16 +753,9 @@ function checkboxAllFunction(data) {
     });
     contactCounter(contIdArray);
     varCheckboxAll = 'unselected';
-    console.log(varCheckboxAll);
-  } else if (
-  /* checkboxAll.classList == 'fas fa-minus-square' */
-  varCheckboxAll === 'indeterminate') {
-    /* console.log('indeterminado a no seleccionado') */
-    checkboxAll.classList = 'far fa-square'; //desseleccionar seleccionados
-
+  } else if (varCheckboxAll === 'indeterminate') {
+    checkboxAll.classList = 'far fa-square';
     contIdArray = [];
-    /* console.log(contIdArray) */
-
     allConts.forEach(function (element) {
       element.classList = 'far fa-square u-item select';
     });
@@ -867,9 +769,6 @@ function checkboxAllFunction(data) {
 
 
 newCntBtn.addEventListener('click', function () {
-  /* window.scrollTo(0, 0) */
-
-  /* body.classList.add('modal') */
   darkImageAddCtc.classList.remove('none');
   main.classList.add('height-add-ctc');
   var sChannel = 's-channel';
@@ -906,7 +805,6 @@ function getAllChannels(sChannel, chan) {
               channelId: element.channel_id
             });
           });
-          console.log(channelsDB);
           chanArray = document.querySelectorAll(".".concat(sChannel));
           chansArray = document.querySelectorAll(".".concat(chan));
           chansArray.forEach(function (el, i) {
@@ -918,7 +816,7 @@ function getAllChannels(sChannel, chan) {
             el.innerText = channelsDB[i].channelName;
           });
 
-        case 14:
+        case 13:
         case "end":
           return _context6.stop();
       }
@@ -975,10 +873,7 @@ function renderSelectCompanies(data, slctCompany, compan, compLb) {
   varSelectCompany = 1;
   slctCompany.classList.remove('none');
   var hcomp = (data.length * 24 + 6) / 2;
-  console.log(hcomp);
   compLb.style.top = "".concat(hcomp, "px");
-  /* compLblEdit.style.top = `${hcomp}px` */
-
   data.forEach(function (element) {
     var info = {
       companyId: element.company_id,
@@ -1043,10 +938,9 @@ function getRegions(regList, regSelect) {
 
         case 6:
           data = _context8.sent;
-          console.log(data);
           renderSelectRegions(data, regList, regSelect);
 
-        case 9:
+        case 8:
         case "end":
           return _context8.stop();
       }
@@ -1057,11 +951,6 @@ function getRegions(regList, regSelect) {
 function renderSelectRegions(data, regList, regSelect) {
   varSelectRegion = 1;
   regList.classList.remove('none');
-  /* const hreg = (data.length * 24 + 6) / 2
-  console.log(hreg) */
-
-  /* compLbl.style.top = `${hreg}px` */
-
   data.forEach(function (element) {
     var info = {
       regionId: element.region_id,
@@ -1141,10 +1030,9 @@ function getCountries(countList, countSelect) {
 
         case 6:
           data = _context9.sent;
-          console.log(data);
           renderSelectCountries(data, countList, countSelect);
 
-        case 9:
+        case 8:
         case "end":
           return _context9.stop();
       }
@@ -1156,9 +1044,6 @@ function renderSelectCountries(data, countList, countSelect) {
   varSelectCountry = 1;
   countList.innerHTML = '';
   countList.classList.remove('none');
-  /* const hreg = (data.length * 24 + 6) / 2
-  console.log(hreg) */
-
   data.forEach(function (element) {
     var info = {
       countryId: element.country_id,
@@ -1228,10 +1113,9 @@ function getCities(citList, citSelect) {
 
         case 6:
           data = _context10.sent;
-          console.log(data);
           renderSelectCities(data, citList, citSelect);
 
-        case 9:
+        case 8:
         case "end":
           return _context10.stop();
       }
@@ -1242,9 +1126,7 @@ function getCities(citList, citSelect) {
 function renderSelectCities(data, citList, citSelect) {
   varSelectCity = 1;
   citList.innerHTML = '';
-  citList.classList.remove('none'); // const hreg = (data.length * 24 + 6) / 2
-  // console.log(hreg)
-
+  citList.classList.remove('none');
   data.forEach(function (element) {
     var info = {
       cityId: element.city_id,
@@ -1287,8 +1169,6 @@ function showInterest(intList, intSelect, intC) {
   intList.classList.remove('none');
   varSelectInterest = 1;
   var intArray = document.querySelectorAll(".".concat(intC));
-  /* '.int' */
-
   intArray.forEach(function (element) {
     element.addEventListener('click', function () {
       return selectInterestFunction(element.innerText, intList, intSelect);
@@ -1545,8 +1425,6 @@ cancelContact.addEventListener('click', function (event) {
 closeNewCtc.addEventListener('click', function (event) {
   return closeWindowNewContact(event);
 });
-/* cancelContact.addEventListener('click', () => getContacts())
-closeNewCtc.addEventListener('click', () => getContacts()) */
 
 function closeWindowNewContact(event) {
   event.preventDefault();
@@ -1713,25 +1591,24 @@ function addContact(event) {
 
         case 15:
           data = _context11.sent;
-          console.log(data);
-          _context11.next = 22;
+          _context11.next = 21;
           break;
 
-        case 19:
-          _context11.prev = 19;
+        case 18:
+          _context11.prev = 18;
           _context11.t0 = _context11["catch"](8);
           return _context11.abrupt("return", _context11.t0);
 
-        case 22:
+        case 21:
           closeWindowNewContact(event);
           getContacts();
 
-        case 24:
+        case 23:
         case "end":
           return _context11.stop();
       }
     }
-  }, null, null, [[8, 19]]);
+  }, null, null, [[8, 18]]);
 }
 
 function validateData(contact, first, msgFirst, last, msgLast, pos, msgPos, email, msgEmail, comp, selectComp, regSelect, regList, countSelect, countList, citSelect, citList, address, msgAddress) {
@@ -1834,14 +1711,12 @@ function contactEdition(info) {
     while (1) {
       switch (_context12.prev = _context12.next) {
         case 0:
-          console.log(info.cityName);
           varRegId = +info.regionId;
           varCountId = +info.countryId;
           varCityId = +info.cityId;
           varCompanyId = +info.companyId;
           varEditContact = info.contactId;
           varEnableCity = 1;
-          console.log(info.cityName);
 
           if (info.cityName !== '') {
             addressEdit.classList.remove('disable');
@@ -1859,17 +1734,16 @@ function contactEdition(info) {
               Authorization: "token ".concat(JSON.parse(sessionStorage.getItem('Token')))
             }
           };
-          _context12.next = 17;
+          _context12.next = 15;
           return regeneratorRuntime.awrap(fetch("http://localhost:3000/contacts/".concat(info.contactId), options));
 
-        case 17:
+        case 15:
           response = _context12.sent;
-          _context12.next = 20;
+          _context12.next = 18;
           return regeneratorRuntime.awrap(response.json());
 
-        case 20:
+        case 18:
           data = _context12.sent;
-          console.log(data);
           loadData(data);
           enablePrefTel(telephoneEdit, selectTelephoneEdit);
           enablePrefWsp(whatsappEdit, selectWhatsappEdit);
@@ -1877,7 +1751,7 @@ function contactEdition(info) {
           enablePrefFace(facebookEdit, selectFacebookEdit);
           enablePrefLink(linkedinEdit, selectLinkedinEdit);
 
-        case 28:
+        case 25:
         case "end":
           return _context12.stop();
       }
@@ -2199,7 +2073,6 @@ function editContact(event) {
             interest: +interestSelectEdit.innerText.slice(0, -1),
             preferred_channels: filteredChannels
           };
-          console.log(modifiedContact);
           validateData(modifiedContact, firstnameEdit, msgFirstEdit, lastnameEdit, msgLastEdit, positionEdit, msgPosEdit, emailEdit, msgEmailEdit, companyEdit, selectCompanyEdit, regionSelectEdit, regionsListEdit, countrySelectEdit, countriesListEdit, citySelectEdit, citiesListEdit, addressEdit, msgAddressEdit);
           options = {
             method: 'PUT',
@@ -2209,10 +2082,10 @@ function editContact(event) {
               "Content-Type": "application/json"
             }
           };
-          _context13.next = 10;
+          _context13.next = 9;
           return regeneratorRuntime.awrap(fetch("http://localhost:3000/contacts/".concat(varEditContact), options));
 
-        case 10:
+        case 9:
           response = _context13.sent;
 
           if (response.status === 409) {
@@ -2221,15 +2094,14 @@ function editContact(event) {
             msgEmailEdit.innerText = 'El email ya existe';
           }
 
-          _context13.next = 14;
+          _context13.next = 13;
           return regeneratorRuntime.awrap(response.json());
 
-        case 14:
+        case 13:
           data = _context13.sent;
-          console.log(data);
           closeWindowEditContact(event);
 
-        case 17:
+        case 15:
         case "end":
           return _context13.stop();
       }
@@ -2250,12 +2122,10 @@ deleteContactBtn.addEventListener('click', function () {
   body.classList.remove('modal');
   darkImageContacts.classList.add('none');
   darkImageEditCtc.classList.add('none');
-  console.log(varDelete);
 
   if (varDelete === 0) {
     deleteContact(cId);
   } else if (varDelete === 1) {
     deleteContacts();
   }
-}); //poner nombres bien en postman y crear archivo
-//quitar comentarios (chequeo)
+});
