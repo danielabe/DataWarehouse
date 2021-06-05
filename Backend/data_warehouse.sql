@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-06-2021 a las 04:52:28
+-- Tiempo de generación: 05-06-2021 a las 05:02:24
 -- Versión del servidor: 10.4.17-MariaDB
 -- Versión de PHP: 8.0.0
 
@@ -141,7 +141,8 @@ INSERT INTO `contacts` (`contact_id`, `firstname`, `lastname`, `email`, `city_id
 (12, 'Minerva', 'McGonagall', 'minervamcgonagall@acamica.com', 7, 1, 'Transfiguration', 75, 'Mendoza 2105'),
 (13, 'Neville', 'Longbottom', 'nevillelongbottom@gryffindor.com', 11, 3, 'Wizard', 75, 'Entre Ríos 1920'),
 (14, 'Sirius', 'Black', 'siriusblack@acamica.com', 6, 1, 'Wizard', 75, 'Pescio 2106'),
-(15, 'Dolores', 'Umbridge', 'doloresumbridge@slytherin.com', 14, 4, 'Witch', 50, 'La Paz');
+(15, 'Dolores', 'Umbridge', 'doloresumbridge@slytherin.com', 14, 4, 'Witch', 50, 'La Paz'),
+(16, 'Narcissa', 'Malfoy', 'narcissamalfoy@slytherin.com', 15, 4, 'Witch', 0, 'Córdoba 1453');
 
 -- --------------------------------------------------------
 
@@ -186,7 +187,8 @@ INSERT INTO `contacts_channels` (`contact_id`, `channel_id`, `user_account`, `pr
 (15, 2, '5255345343', 'No molestar'),
 (15, 3, '@doloresumbridge', 'No molestar'),
 (15, 4, 'https://www.facebook.com/doloresumbridge', 'No molestar'),
-(15, 5, 'https://www.linkedin.com/in/doloresumbridge', 'No molestar');
+(15, 5, 'https://www.linkedin.com/in/doloresumbridge', 'No molestar'),
+(16, 3, '@narcissamalfoy', 'No molestar');
 
 -- --------------------------------------------------------
 
@@ -340,7 +342,7 @@ ALTER TABLE `companies`
 -- AUTO_INCREMENT de la tabla `contacts`
 --
 ALTER TABLE `contacts`
-  MODIFY `contact_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `contact_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `countries`

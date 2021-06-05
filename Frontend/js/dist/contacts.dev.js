@@ -1627,6 +1627,11 @@ function closeWindowNewContact(event) {
   checkboxAll.classList = 'far fa-square';
   varCheckboxAll = 'unselected';
   contIdArray = [];
+  varSortName = 0;
+  varSortCountry = 0;
+  varSortCompany = 0;
+  varSortPosition = 0;
+  varSortInterest = 0;
   getContacts();
 } //save contact
 
@@ -1995,6 +2000,11 @@ function closeWindowEditContact(event) {
   varEnablePrefI = 0;
   varEnablePrefF = 0;
   varEnablePrefL = 0;
+  varSortName = 0;
+  varSortCountry = 0;
+  varSortCompany = 0;
+  varSortPosition = 0;
+  varSortInterest = 0;
   varCompanyId = null;
   varRegId = null;
   varCountId = null;
@@ -2247,6 +2257,5 @@ deleteContactBtn.addEventListener('click', function () {
   } else if (varDelete === 1) {
     deleteContacts();
   }
-}); //actualizar base de datos y descargar
-//poner nombres bien en postman y crear archivo
+}); //poner nombres bien en postman y crear archivo
 //quitar comentarios (chequeo)
