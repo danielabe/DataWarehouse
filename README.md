@@ -1,8 +1,6 @@
 # DataWarehouse
 Project 4 of the Full Stack Web Development course of Acámica
 
-# :construction: Under construction
-
 This project consists in the creation of a platform that allows a Marketing company to manage all the contacts of its clients for its commercial campaigns.
 
 ## Resources and technologies used
@@ -31,7 +29,7 @@ Clone the project from a terminal
 
 `git clone https://github.com/danielabe/DataWarehouse`
 ## Dependencies
-Install the required dependencies for the correct operation of the application
+Install the required dependencies for the correct operation of the application in the Backend folder.
 
 `npm install`
 ## Database
@@ -39,13 +37,15 @@ Use the 📂 *data_warehouse.sql* file to import it into your Database client, i
 ## :warning: Important
 Remember to modify the file 📂 *db.js* with the data of your environment.
 ## Start the Server 💻
-Position yourself in your directory from a terminal and execute the following Script:
+Position yourself in the Backend folder from a terminal and execute the following Script:
 
 `npm run app.js`
 ## Documentation 📚
 Check the file 📂 *spec.yml*, here you will find the endpoints and requirements to use the API.
 
 ## Test 📚
+In the following link, you will find the requests to test the API.
+
 [Postman Collection](https://documenter.getpostman.com/view/13361525/TzY4gbGb#e24e195e-4062-4421-97f6-318519b98c34 "Postman Collection")
 
 
